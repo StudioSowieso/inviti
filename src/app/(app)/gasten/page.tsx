@@ -1,0 +1,81 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ChevronRightIcon, PlusIcon } from "@/components/icons";
+import { PageHeader } from "@/components/page-header";
+import { firstName, greeting, initials, type RsvpStatus } from "@/lib/format";
+import { createClient } from "@/lib/supabase/server";
+import { GuestList, type Guest } from "./guest-list";
+
+export const metadata: Metadata = { title: "Gastenlijst — Inviti" };
+
+export default async function GuestsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ toegevoegd?: string }>;
+}) {
+  const { toegevoegd } = await searchParams;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [{ data: profile }, { data: rows }] = await Promise.all([
+    supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
+    supabase
+      .from("guests")
+      .select(
+        "id, first_name, last_name, email, phone, plus_one_name, dietary, rsvp_status, created_at, guest_groups(name)",
+      )
+      .order("created_at", { ascending: false }),
+  ]);
+
+  const name = profile?.full_name ?? user?.user_metadata?.full_name ?? "";
+
+  const guests: Guest[] = (rows ?? []).map((r) => {
+    const group = r.guest_groups as unknown as { name: string } | { name: string }[] | null;
+    const groupName = Array.isArray(group) ? (group[0]?.name ?? null) : (group?.name ?? null);
+    return {
+      id: r.id as string,
+      firstName: r.first_name as string,
+      lastName: (r.last_name as string | null) ?? "",
+      email: r.email as string | null,
+      phone: r.phone as string | null,
+      plusOne: r.plus_one_name as string | null,
+      dietary: r.dietary as string | null,
+      status: r.rsvp_status as RsvpStatus,
+      group: groupName,
+    };
+  });
+
+  return (
+    <div className="space-y-7">
+      <PageHeader
+        greetingText={`${greeting()}, ${firstName(name)}`}
+        title="Gastenlijst beheren"
+        initials={initials(name)}
+      />
+
+      <Link
+        href="/gasten/nieuw"
+        className="flex items-center gap-4 rounded-[1.25rem] bg-sage/70 p-4 transition hover:bg-sage"
+      >
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-paper text-forest shadow-sm">
+          <PlusIcon />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-medium">Gast toevoegen</span>
+          <span className="block text-sm text-muted">Voeg een nieuwe gast toe aan de lijst</span>
+        </span>
+        <ChevronRightIcon className="text-muted" />
+      </Link>
+
+      {toegevoegd && (
+        <p className="rounded-xl bg-paper px-4 py-3 text-sm text-forest ring-1 ring-sage">
+          Gast toegevoegd aan je lijst.
+        </p>
+      )}
+
+      <GuestList guests={guests} />
+    </div>
+  );
+}
