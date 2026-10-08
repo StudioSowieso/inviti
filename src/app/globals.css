@@ -91,3 +91,34 @@ body {
 summary::-webkit-details-marker {
   display: none;
 }
+
+/* Tailwind v4 zet knoppen standaard op cursor: default; herstel de pointer op alles wat klikbaar is. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  [role="switch"],
+  summary,
+  select:not(:disabled),
+  label:has(input[type="checkbox"], input[type="radio"]),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="color"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  input[type="date"]:not(:disabled)::-webkit-calendar-picker-indicator,
+  input[type="time"]:not(:disabled)::-webkit-calendar-picker-indicator,
+  a[href] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"],
+  input:disabled,
+  select:disabled {
+    cursor: not-allowed;
+  }
+
+  li[draggable="true"] {
+    cursor: grab;
+  }
+}
