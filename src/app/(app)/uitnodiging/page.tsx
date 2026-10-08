@@ -17,7 +17,7 @@ export default async function InvitationPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: invitation }, { themes, source }] = await Promise.all([
+  const [{ data: profile }, { data: invitation }, { themes, source, reason }] = await Promise.all([
     supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
     supabase.from("invitations").select("theme_slug, config").maybeSingle(),
     getThemes(),
@@ -35,7 +35,7 @@ export default async function InvitationPage() {
 
   if (!invitation) {
     return (
-      <div className="space-y-8" data-themes-source={source}>
+      <div className="space-y-8" data-themes-source={source} data-themes-reason={reason}>
         {header}
         <section>
           <p className="eyebrow flex items-center gap-2 text-clay">
@@ -69,7 +69,7 @@ export default async function InvitationPage() {
 
   const theme = pickTheme(themes, invitation.theme_slug);
   return (
-    <div className="space-y-7" data-themes-source={source}>
+    <div className="space-y-7" data-themes-source={source} data-themes-reason={reason}>
       {header}
       <Configurator
         themes={themes}

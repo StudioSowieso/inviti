@@ -54,7 +54,12 @@ function normalizeTheme(raw: unknown): InvitationTheme | null {
   };
 }
 
-export type ThemeResult = { themes: InvitationTheme[]; source: "sanity" | "fallback" };
+export type ThemeResult = {
+  themes: InvitationTheme[];
+  source: "sanity" | "fallback";
+  /** Korte reden waarom de fallback is gebruikt (bevat geen geheimen). */
+  reason?: string;
+};
 
 /**
  * Haalt de thema's op uit Sanity, los van releases van Inviti.
@@ -64,7 +69,7 @@ export type ThemeResult = { themes: InvitationTheme[]; source: "sanity" | "fallb
  */
 export async function getThemes(): Promise<ThemeResult> {
   const cfg = sanityConfig();
-  if (!cfg) return { themes: FALLBACK_THEMES, source: "fallback" };
+  if (!cfg) return { themes: FALLBACK_THEMES, source: "fallback", reason: "SANITY_PROJECT_ID ontbreekt in deze omgeving" };
 
   const host = cfg.perspective === "drafts" || cfg.token ? "api" : "apicdn";
   const url =
@@ -86,7 +91,8 @@ export async function getThemes(): Promise<ThemeResult> {
     return { themes, source: "sanity" };
   } catch (err) {
     console.error("[themes] Sanity niet beschikbaar, fallback-thema's gebruikt:", err);
-    return { themes: FALLBACK_THEMES, source: "fallback" };
+    const reason = err instanceof Error ? err.message : "onbekende fout";
+    return { themes: FALLBACK_THEMES, source: "fallback", reason: reason.slice(0, 120) };
   }
 }
 
