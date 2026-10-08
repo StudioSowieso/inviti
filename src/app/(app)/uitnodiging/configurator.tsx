@@ -522,7 +522,7 @@ function BlockFields({ block, onChange }: { block: Block; onChange: (p: Record<s
           <div className="space-y-3">
             {block.items.map((it, i) => (
               <div key={i} className="rounded-2xl border border-line bg-paper p-3">
-                <div className="grid grid-cols-[6rem_1fr] gap-3">
+                <div className="grid grid-cols-[8rem_1fr] gap-3">
                   <Input label="Tijd" type="time" value={it.time} onChange={(v) => setItem(i, { time: v })} />
                   <Input label="Onderdeel" value={it.title} onChange={(v) => setItem(i, { title: v })} />
                 </div>
