@@ -16,20 +16,21 @@ Sanity Studio (inviti.sanity.studio)  ──►  Sanity dataset  ──►  Invi
 - Zonder Sanity-instellingen gebruikt Inviti 2 ingebouwde thema's (`src/lib/invitation/fallback-themes.ts`).
   Ook als Sanity tijdelijk onbereikbaar is werkt alles gewoon door.
 
-## 1. Sanity-project aanmaken
+## 1. Sanity-project (al aangemaakt)
 
-1. Maak een account op <https://www.sanity.io> en kies **Create new project** op <https://www.sanity.io/manage>.
-2. Naam: `Inviti`, dataset: `production`. Noteer het **Project ID**.
+- Project: **Inviti**, Project ID `98wj3rgp`, dataset `production` (publiek leesbaar).
+- De 2 startthema's (*Crème & Taupe* en *Bosgroen & Blush*) zijn al aangemaakt en gepubliceerd.
+  Draai daarom **niet** `npm run import-themes` op deze dataset: dat maakt dubbele thema's.
+  (`seed/themes.ndjson` is alleen bedoeld voor een nieuwe, lege dataset.)
 
-## 2. Studio starten en thema's importeren
+## 2. Studio starten
 
 ```bash
 cd sanity
-cp .env.example .env          # vul SANITY_STUDIO_PROJECT_ID in
+cp .env.example .env          # zet SANITY_STUDIO_PROJECT_ID=98wj3rgp
 npm install
 npx sanity login
 npm run dev                   # Studio op http://localhost:3333
-npm run import-themes         # importeert de 2 startthema's uit seed/themes.ndjson
 ```
 
 ## 3. Studio publiceren (zodat je er zonder code bij kunt)
@@ -50,7 +51,7 @@ rol **Viewer**. Zet daarna in Vercel (Project -> Settings -> Environment Variabl
 | `SANITY_PROJECT_ID`        | je Project ID         | je Project ID       |
 | `SANITY_DATASET`           | `production`          | `production`        |
 | `SANITY_PERSPECTIVE`       | `drafts`              | `published`         |
-| `SANITY_API_READ_TOKEN`    | het Viewer-token      | alleen nodig bij een privé-dataset |
+| `SANITY_API_READ_TOKEN`    | het Viewer-token (nodig voor `drafts`) | niet nodig zolang de dataset publiek is |
 | `SANITY_REVALIDATE_SECRET` | n.v.t.                | zelfbedacht geheim (lang, willekeurig) |
 
 Redeploy daarna (Deployments -> ... -> Redeploy) zodat de waarden worden gebruikt.
