@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/page-header";
+import { FlowHeader } from "@/components/flow-header";
 import { ThemeThumb } from "@/components/invitation/theme-thumb";
 import { Sparkle } from "@/components/icons";
 import { normalizeConfig } from "@/lib/invitation/defaults";
 import { getThemes, pickTheme } from "@/lib/invitation/themes";
-import { firstName, greeting, initials } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 import { createInvitation } from "./actions";
 import { Configurator } from "./configurator";
@@ -13,31 +12,16 @@ export const metadata: Metadata = { title: "Uitnodiging — Inviti" };
 
 export default async function InvitationPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const [{ data: profile }, { data: invitation }, { themes, source, reason }] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
+  const [{ data: invitation }, { themes, source, reason }] = await Promise.all([
     supabase.from("invitations").select("theme_slug, config").maybeSingle(),
     getThemes(),
   ]);
 
-  const name = profile?.full_name ?? user?.user_metadata?.full_name ?? "";
-  const header = (
-    <PageHeader
-      greetingText={`${greeting()}, ${firstName(name)}`}
-      title="Uitnodiging maken"
-      initials={initials(name)}
-      backHref="/dashboard"
-    />
-  );
-
   if (!invitation) {
     return (
-      <div className="space-y-8" data-themes-source={source} data-themes-reason={reason}>
-        {header}
-        <section>
+      <div data-themes-source={source} data-themes-reason={reason}>
+        <FlowHeader title="Uitnodiging maken" />
+        <section className="mx-auto w-full max-w-[90rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
           <p className="eyebrow flex items-center gap-2 text-clay">
             Stap 1 <Sparkle width={9} height={9} />
           </p>
@@ -69,8 +53,7 @@ export default async function InvitationPage() {
 
   const theme = pickTheme(themes, invitation.theme_slug);
   return (
-    <div className="space-y-7" data-themes-source={source} data-themes-reason={reason}>
-      {header}
+    <div data-themes-source={source} data-themes-reason={reason}>
       <Configurator
         themes={themes}
         initialThemeSlug={theme.slug}

@@ -181,3 +181,37 @@ export function Botanical(p: P) {
     </svg>
   );
 }
+
+export const RefreshIcon = (p: P) => (
+  <Base {...p}>
+    <path d="M20 11a8 8 0 1 0-2.3 5.7" />
+    <path d="M20 4v7h-7" />
+  </Base>
+);
+export const ExpandIcon = (p: P) => (
+  <Base {...p}>
+    <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+  </Base>
+);
+export const CopyIcon = (p: P) => (
+  <Base {...p}>
+    <rect x="9" y="9" width="11" height="11" rx="2.5" />
+    <path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15" />
+  </Base>
+);
+export const ExternalIcon = (p: P) => (
+  <Base {...p}>
+    <path d="M14 4h6v6M20 4l-9 9" />
+    <path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" />
+  </Base>
+);
+export const GripIcon = (p: P) => (
+  <Base {...p} fill="currentColor" stroke="none">
+    <circle cx="9" cy="6" r="1.5" />
+    <circle cx="15" cy="6" r="1.5" />
+    <circle cx="9" cy="12" r="1.5" />
+    <circle cx="15" cy="12" r="1.5" />
+    <circle cx="9" cy="18" r="1.5" />
+    <circle cx="15" cy="18" r="1.5" />
+  </Base>
+);
