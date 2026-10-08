@@ -170,7 +170,7 @@ export function GuestList({ guests }: { guests: Guest[] }) {
       ) : filtered.length === 0 ? (
         <p className="card mt-4 p-6 text-center text-sm text-muted">Geen gasten gevonden met deze filters.</p>
       ) : (
-        <ul className={`mt-4 space-y-3 ${pending ? "opacity-70" : ""}`}>
+        <ul className={`mt-4 grid items-start gap-3 xl:grid-cols-2 2xl:grid-cols-3 ${pending ? "opacity-70" : ""}`}>
           {filtered.map((g) => {
             const open = openId === g.id;
             return (

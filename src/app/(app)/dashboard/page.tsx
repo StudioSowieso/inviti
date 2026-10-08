@@ -76,10 +76,10 @@ export default async function DashboardPage() {
         initials={initials(name)}
       />
 
-      <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr]">
+      <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] 2xl:grid-cols-[1.6fr_1fr] 2xl:gap-12">
         <div className="space-y-8">
           {/* RSVP-overzicht */}
-          <section className="relative overflow-hidden rounded-[1.5rem] bg-forest p-5 text-paper sm:p-6">
+          <section className="relative overflow-hidden rounded-[1.5rem] bg-forest p-5 text-paper sm:p-6 xl:p-8">
             <div
               className="pointer-events-none absolute -top-24 -right-16 size-64 rounded-full opacity-20"
               style={{ background: "radial-gradient(circle, #f1ded4 0%, transparent 65%)" }}
@@ -117,7 +117,7 @@ export default async function DashboardPage() {
           {/* Snel starten */}
           <section>
             <h2 className="font-serif text-2xl font-medium">Snel starten</h2>
-            <ul className="mt-4 space-y-3">
+            <ul className="mt-4 grid gap-3 xl:grid-cols-2 2xl:grid-cols-3">
               {quick.map(({ title, text, icon: Icon, href }) => {
                 const inner = (
                   <>
