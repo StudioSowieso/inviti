@@ -137,9 +137,9 @@ export default function Home() {
           </div>
 
           {/* Boogvenster met uitnodiging-preview */}
-          <div className="relative mx-auto h-[26rem] w-72 overflow-hidden rounded-t-full border border-paper/25 bg-forest-deep/40 sm:h-[30rem] sm:w-80">
-            <Botanical className="absolute inset-x-0 bottom-0 mx-auto h-[70%] text-blush/45" />
-            <div className="absolute inset-x-8 top-16 text-center">
+          <div className="relative mx-auto h-[30rem] w-72 overflow-hidden rounded-t-full border border-paper/25 bg-forest-deep/40 sm:h-[34rem] sm:w-80">
+            <Botanical className="absolute inset-x-0 bottom-0 mx-auto h-[40%] text-blush/45" />
+            <div className="absolute inset-x-8 top-14 text-center">
               <p className="eyebrow text-blush/80">Wij gaan trouwen</p>
               <p className="mt-5 font-serif text-4xl leading-none font-medium">
                 Anna
