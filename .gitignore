@@ -5,3 +5,8 @@ out
 .env*.local
 *.tsbuildinfo
 .DS_Store
+
+# Sanity Studio
+sanity/.env
+sanity/dist
+sanity/.sanity

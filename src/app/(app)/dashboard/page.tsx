@@ -52,7 +52,7 @@ export default async function DashboardPage() {
       title: "Maak jouw bruiloftsuitnodiging",
       text: "Configureer helemaal naar jouw smaak",
       icon: PenIcon,
-      href: null,
+      href: "/uitnodiging",
     },
     {
       title: "Gastenlijst beheren",

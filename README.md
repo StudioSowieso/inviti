@@ -20,6 +20,7 @@ Werk altijd op `preview`; merge naar `main` via een pull request om naar product
 - `/dashboard`: RSVP-overzicht, snel starten en to-do's
 - `/gasten`: gastenlijst met filters, CSV-export en RSVP-status per gast
 - `/gasten/nieuw`: gast toevoegen (groepen worden automatisch aangemaakt)
+- `/uitnodiging`: thema kiezen en de uitnodiging samenstellen (details, blokken, animatie) met live voorbeeld. Thema's staan in Sanity: zie `sanity/README.md`
 
 ## Database
 
@@ -28,6 +29,7 @@ Tabellen in Supabase (`public`), allemaal met Row Level Security per gebruiker:
 - `profiles`: wordt automatisch aangemaakt bij registratie
 - `guest_groups`: groepen zoals "Daggasten" en "Avondgasten"
 - `guests`: gasten met `rsvp_status` (`pending` | `attending` | `declined`)
+- `invitations`: één uitnodiging per gebruiker (`theme_slug` + `config` als JSON)
 - `todos`: bij registratie gevuld met "Gastenlijst aanmaken" en "Uitnodigingen versturen". De eerste wordt automatisch afgevinkt zodra je je eerste gast toevoegt.
 
 ## Lokaal draaien

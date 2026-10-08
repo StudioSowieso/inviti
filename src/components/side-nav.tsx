@@ -7,7 +7,7 @@ import { HomeIcon, ListIcon, PenIcon, SendIcon, Sparkle, UsersIcon } from "./ico
 const ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: HomeIcon, ready: true },
   { href: "/gasten", label: "Gasten", icon: UsersIcon, ready: true },
-  { href: "#", label: "Uitnodiging", icon: PenIcon, ready: false },
+  { href: "/uitnodiging", label: "Uitnodiging", icon: PenIcon, ready: true },
   { href: "#", label: "Versturen", icon: SendIcon, ready: false },
   { href: "#", label: "To do", icon: ListIcon, ready: false },
 ];
