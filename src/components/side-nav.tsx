@@ -9,7 +9,7 @@ const ITEMS = [
   { href: "/gasten", label: "Gasten", icon: UsersIcon, ready: true },
   { href: "/uitnodiging", label: "Uitnodiging", icon: PenIcon, ready: true },
   { href: "#", label: "Versturen", icon: SendIcon, ready: false },
-  { href: "#", label: "To do", icon: ListIcon, ready: false },
+  { href: "/todo", label: "To do", icon: ListIcon, ready: true },
 ];
 
 export function SideNav() {

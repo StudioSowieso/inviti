@@ -14,6 +14,52 @@ export async function toggleTodo(id: string, done: boolean) {
   const supabase = await createClient();
   await supabase.from("todos").update({ done }).eq("id", id);
   revalidatePath("/dashboard");
+  revalidatePath("/todo");
+}
+
+export async function deleteTodo(id: string) {
+  const supabase = await createClient();
+  // Systeemitems (met system_key) blijven altijd staan.
+  await supabase.from("todos").delete().eq("id", id).is("system_key", null);
+  revalidatePath("/dashboard");
+  revalidatePath("/todo");
+}
+
+export type TodoFormState = { error: string | null; saved: number };
+
+export async function addTodo(
+  prev: TodoFormState,
+  formData: FormData,
+): Promise<TodoFormState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/inloggen");
+
+  const title = clean(formData.get("title"));
+  if (!title) return { error: "Geef je to-do een titel.", saved: prev.saved };
+  if (title.length > 160) {
+    return { error: "Houd de titel onder de 160 tekens.", saved: prev.saved };
+  }
+
+  const dueRaw = clean(formData.get("due_date"));
+  const dueDate = dueRaw && /^\d{4}-\d{2}-\d{2}$/.test(dueRaw) ? dueRaw : null;
+
+  const { error } = await supabase.from("todos").insert({
+    owner_id: user.id,
+    title,
+    due_date: dueDate,
+    assignee: clean(formData.get("assignee")),
+  });
+
+  if (error) {
+    return { error: "De to-do kon niet worden opgeslagen. Probeer het opnieuw.", saved: prev.saved };
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/todo");
+  return { error: null, saved: prev.saved + 1 };
 }
 
 export async function setGuestStatus(id: string, status: "pending" | "attending" | "declined") {

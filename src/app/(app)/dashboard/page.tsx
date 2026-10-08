@@ -160,9 +160,9 @@ export default async function DashboardPage() {
         <section>
           <div className="flex items-baseline justify-between">
             <h2 className="font-serif text-2xl font-medium">To Do</h2>
-            <span className="text-sm text-muted" title="Binnenkort beschikbaar">
+            <Link href="/todo" className="text-sm text-clay hover:underline">
               To Do lijst bewerken
-            </span>
+            </Link>
           </div>
 
           {todos && todos.length > 0 ? (
