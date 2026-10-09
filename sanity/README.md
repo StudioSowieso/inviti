@@ -92,6 +92,7 @@ Naast kleuren, lettertypes en knopvorm heeft elk thema een **stijl**:
   cijfers met kleurverloop.
 - **Lemon** (`lemon`): blauw-geel gestreept behang (strepen volgen de knopkleur), crèmekaarten met een gestreepte
   boven- en onderrand, getekende citroentakken met bloesem en een amberkleurig script.
+  Envelop: een citroen als zegel die wegrolt; Doorkijk: door de citroentakken heen.
 - **Modern** (`modern`): editorial zwart-wit op greige met witte kaarten, extra grote letters (de trouwdatum),
   handschrift voor koppen en rechthoekige knoppen.
 

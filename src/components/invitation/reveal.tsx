@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties, type ReactNode } from "react";
 import { monogram } from "@/lib/invitation/format";
 import type { InvitationConfig, InvitationTheme, ThemeColors } from "@/lib/invitation/types";
 import { BranchArt, makeBranch } from "./leaf";
+import { LemonReveal } from "./lemon-envelope";
 import { AbstractCouple } from "./modern";
 import { PAPER_NOISE, tearPaths } from "./nature";
 
@@ -11,6 +12,7 @@ import { PAPER_NOISE, tearPaths } from "./nature";
  * "Doorkijk": de animatie waarmee de uitnodiging opent. Elk thema heeft zijn eigen doorkijk:
  * - Leaf: je gaat door de takken heen.
  * - Nature: gescheurde pagina's gaan open.
+ * - Lemon: je gaat door de citroentakken heen.
  * - Overige thema's: deuren in de kleuren van het thema slaan open.
  * De echte uitnodiging staat de hele tijd achter de animatie, dus je ziet hem verschijnen.
  */
@@ -28,6 +30,7 @@ export function RevealOverlay({ theme, ...props }: RevealProps & { theme: Invita
   if (theme.style === "leaf") return <LeafReveal {...props} />;
   if (theme.style === "nature") return <PagesReveal {...props} />;
   if (theme.style === "modern") return <PhotoReveal {...props} />;
+  if (theme.style === "lemon") return <LemonReveal {...props} />;
   return <DoorsReveal {...props} />;
 }
 

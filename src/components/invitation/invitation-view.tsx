@@ -19,6 +19,7 @@ import type {
 import { LeafBlockSection } from "./leaf";
 import { ModernBlockSection } from "./modern";
 import { LEMON_STRIPES, LemonBlockSection } from "./lemon";
+import { LemonEnvelope } from "./lemon-envelope";
 import { SWEET_STRIPES, SweetBlockSection } from "./sweet";
 import { ModernEnvelope } from "./modern-envelope";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
@@ -257,6 +258,8 @@ export function InvitationView({
       {stage !== "open" &&
         (config.animation === "reveal" ? (
           <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : lemon ? (
+          <LemonEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : modern ? (
           <ModernEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : textured ? (

@@ -32,16 +32,18 @@ const MONTHS = [
   "december",
 ];
 
-/** Verticale brede strepen in blauw met een dun crème randje, op de achtergrondkleur. */
+/** Verticale brede strepen in blauw met een dun crème randje; het patroon is gecentreerd, zodat beide randen gelijk zijn. */
 export const LEMON_STRIPES: CSSProperties = {
   backgroundColor: col("background"),
   backgroundImage: `linear-gradient(90deg,
-    ${BLUE} 0 1rem,
-    ${col("surface")} 1rem 1.08rem,
-    transparent 1.08rem 2.12rem,
-    ${col("surface")} 2.12rem 2.2rem)`,
+    transparent 0 0.52rem,
+    ${col("surface")} 0.52rem 0.6rem,
+    ${BLUE} 0.6rem 1.6rem,
+    ${col("surface")} 1.6rem 1.68rem,
+    transparent 1.68rem 100%)`,
   backgroundSize: "2.2rem 100%",
   backgroundPosition: "center top",
+  backgroundRepeat: "repeat-x",
 };
 
 /** Smalle strepen voor de boven- en onderrand van een kaart. */
@@ -149,6 +151,20 @@ export function LemonBranch({ className = "", style, flip = false }: { className
   );
 }
 
+/** Eén grote citroen met twee blaadjes, bijvoorbeeld als zegel op de envelop. */
+export function BigLemon({ className = "", style }: { className?: string; style?: CSSProperties }) {
+  const id = useId();
+  return (
+    <svg viewBox="-46 -36 100 72" aria-hidden="true" className={className} style={style}>
+      <Defs id={id} />
+      <Leaf id={id} x={4} y={-16} r={-128} s={1.15} />
+      <Leaf id={id} x={8} y={-14} r={-52} s={1.3} />
+      <Fruit id={id} x={0} y={2} r={-14} s={1.5} />
+      <Blossom x={26} y={-24} s={0.9} />
+    </svg>
+  );
+}
+
 /** Een kleine citroen met twee blaadjes en bloesem, als sierelement bij kopjes. */
 export function LemonSprig({ className = "", width = 76 }: { className?: string; width?: number }) {
   const id = useId();
@@ -170,7 +186,7 @@ export function LemonSprig({ className = "", width = 76 }: { className?: string;
 const SECTION = "relative mx-5 mt-10";
 
 /** Crèmekaart met gestreepte boven- en onderrand, dunne zijlijnen en een fijn binnenkader. */
-function Frame({
+export function Frame({
   children,
   className = "",
   padding = "px-9 pt-14 pb-14",
