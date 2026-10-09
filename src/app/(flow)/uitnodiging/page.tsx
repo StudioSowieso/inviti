@@ -33,16 +33,32 @@ export default async function InvitationPage() {
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {themes.map((t) => (
-              <form key={t.slug} action={createInvitation}>
+              <form key={t.slug} action={createInvitation} className="card p-3 transition hover:border-clay/50">
                 <input type="hidden" name="theme" value={t.slug} />
-                <button
-                  type="submit"
-                  className="card w-full p-3 text-left transition hover:border-clay/50 hover:shadow-[0_8px_30px_-16px_rgb(31_36_32/0.3)]"
-                >
+                <button type="submit" className="block w-full text-left">
                   <ThemeThumb theme={t} />
                   <span className="mt-3 block px-1 font-serif text-2xl font-medium">{t.title}</span>
                   {t.description && <span className="block px-1 pb-1 text-sm text-muted">{t.description}</span>}
                 </button>
+                <div className="mt-2 flex items-center gap-2 px-1 pb-1" role="group" aria-label={`Kleuren voor ${t.title}`}>
+                  <span className="mr-1 text-xs text-muted">Kies met kleur</span>
+                  {t.palettes.map((p) => (
+                    <button
+                      key={p.slug}
+                      type="submit"
+                      name="palette"
+                      value={p.slug}
+                      title={p.title}
+                      aria-label={`${t.title} in ${p.title}`}
+                      className="grid size-8 place-items-center rounded-full border border-line transition hover:border-clay/60"
+                    >
+                      <span className="relative block size-5 overflow-hidden rounded-full" style={{ background: p.colors.background }}>
+                        <span className="absolute inset-y-0 left-0 w-1/2" style={{ background: p.colors.accent }} />
+                        <span className="absolute inset-y-0 right-0 w-1/2" style={{ background: p.colors.buttonBackground }} />
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </form>
             ))}
           </div>

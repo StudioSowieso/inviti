@@ -16,7 +16,8 @@ export async function createInvitation(formData: FormData) {
 
   const slug = String(formData.get("theme") ?? "");
   const { themes } = await getThemes();
-  if (!themes.some((t) => t.slug === slug)) redirect("/uitnodiging");
+  const chosen = themes.find((t) => t.slug === slug);
+  if (!chosen) redirect("/uitnodiging");
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -32,6 +33,8 @@ export async function createInvitation(formData: FormData) {
       date: (profile?.wedding_date as string | null) ?? undefined,
     },
   );
+
+  config.palette = validPalette(chosen, String(formData.get("palette") ?? ""));
 
   // Eén uitnodiging per gebruiker: bestaat er al een, dan blijft die ongewijzigd.
   const { error } = await supabase.from("invitations").insert({ owner_id: user.id, theme_slug: slug, config });
