@@ -1,9 +1,9 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
 import type { Block, BlockType, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
-import { ChapelIcon, EnvelopeIcon, NatureCountdown, NaturePhoto, programIcon } from "./nature";
+import { ChapelIcon, EnvelopeIcon, NatureCountdown, programIcon } from "./nature";
 
 /**
  * Stijl "leaf": rustig en elegant. Gladde vlakken zonder gescheurde randen, een boogvormige foto,
@@ -45,15 +45,55 @@ const BRANCH = (() => {
 
 const LEAF = "M0 0C3.4-3.4 9.8-3.4 13.5 0C9.8 3.4 3.4 3.4 0 0Z";
 
-function BranchShape() {
+function BranchShape({ leafFill = 22 }: { leafFill?: number }) {
+  const fill = { fill: `color-mix(in srgb, currentColor ${leafFill}%, transparent)` };
   return (
     <>
       <path d={BRANCH.stem} />
       {BRANCH.leaves.map((l, i) => (
-        <path key={i} d={LEAF} transform={l.transform} style={{ fill: "color-mix(in srgb, currentColor 22%, transparent)" }} />
+        <path key={i} d={LEAF} transform={l.transform} style={fill} />
       ))}
-      <path d={LEAF} transform={BRANCH.tipLeaf.transform} style={{ fill: "color-mix(in srgb, currentColor 22%, transparent)" }} />
+      <path d={LEAF} transform={BRANCH.tipLeaf.transform} style={fill} />
     </>
+  );
+}
+
+/**
+ * Fotovervanger voor Leaf: een zachte, getinte vlakte met grote olijftakken. Net als de rest van het
+ * thema bevat hij alleen takken en bladeren, geen landschap. Kleuren volgen het gekozen palet.
+ */
+export function LeafPhoto({ className = "" }: { className?: string }) {
+  const id = useId().replace(/:/g, "");
+  const bg = "var(--inv-background)";
+  const acc = "var(--inv-accent)";
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 300 400"
+      preserveAspectRatio="xMidYMid slice"
+      className={`absolute inset-0 h-full w-full ${className}`}
+    >
+      <defs>
+        <linearGradient id={`lp${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style={{ stopColor: `color-mix(in srgb, ${bg} 80%, ${acc} 20%)` }} />
+          <stop offset="1" style={{ stopColor: `color-mix(in srgb, ${bg} 52%, ${acc} 48%)` }} />
+        </linearGradient>
+        <radialGradient id={`lg${id}`} cx=".5" cy=".3" r=".6">
+          <stop offset="0" stopColor="#fff" stopOpacity=".55" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="300" height="400" fill={`url(#lp${id})`} />
+      <rect width="300" height="400" fill={`url(#lg${id})`} />
+      <g fill="none" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" style={{ color: `color-mix(in srgb, ${acc} 80%, black)`, stroke: "currentColor" }}>
+        <g transform="translate(104 414) rotate(-104) scale(2.9)" opacity=".85">
+          <BranchShape leafFill={34} />
+        </g>
+        <g transform="translate(196 414) scale(-1 1) rotate(-104) scale(2.9)" opacity=".85">
+          <BranchShape leafFill={34} />
+        </g>
+      </g>
+    </svg>
   );
 }
 
@@ -184,7 +224,7 @@ export function LeafBlockSection({ block, config }: { block: Block; config: Invi
               }}
             />
             <div className="relative h-[20rem] overflow-hidden" style={{ borderRadius: "999px 999px 0.4rem 0.4rem" }}>
-              <NaturePhoto tone="warm" />
+              <LeafPhoto />
             </div>
           </div>
           <div className="mt-9">
@@ -233,7 +273,7 @@ export function LeafBlockSection({ block, config }: { block: Block; config: Invi
               style={{ border: "1px solid color-mix(in srgb, var(--inv-accent) 50%, transparent)" }}
             />
             <div className="relative h-[13rem] overflow-hidden rounded-[1.1rem]">
-              <NaturePhoto tone="soft" />
+              <LeafPhoto />
             </div>
           </div>
           <p className={`mt-9 text-center ${body}`} style={{ color: col("muted") }}>
