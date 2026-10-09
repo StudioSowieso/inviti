@@ -1,3 +1,5 @@
+import type { Block } from "./types";
+
 /** Hulpfuncties voor datums in de uitnodiging. Datums zijn 'YYYY-MM-DD' en tijdzone-onafhankelijk. */
 
 function parts(date: string) {
@@ -92,4 +94,9 @@ export function mapsHref(mapsUrl: string | undefined, title: string, city: strin
   const own = normalizeMapsUrl(mapsUrl);
   if (own) return own;
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([title, city].filter(Boolean).join(" "))}`;
+}
+
+/** Unieke sleutel van een blok: het type, of bij een tekstblok "text:<id>" (er kunnen er meerdere zijn). */
+export function blockKey(b: Block): string {
+  return b.type === "text" ? `text:${b.id}` : b.type;
 }

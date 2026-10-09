@@ -5,7 +5,7 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
 import type { Block, BlockType, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { ChapelIcon, EnvelopeIcon, NatureCountdown, programIcon } from "./nature";
-import { mapsHref } from "@/lib/invitation/format";
+import { blockKey, mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "leaf": rustig en elegant. Gladde vlakken zonder gescheurde randen, een boogvormige foto,
@@ -296,7 +296,7 @@ function LSection({
   className = "",
   children,
 }: {
-  type: BlockType;
+  type: string;
   bg: keyof ThemeColors;
   className?: string;
   children: ReactNode;
@@ -369,6 +369,18 @@ export function LeafBlockSection({ block, config }: { block: Block; config: Invi
           <p className={`mt-9 text-center ${body}`} style={{ color: col("muted") }}>
             {block.text}
           </p>
+        </LSection>
+      );
+
+    case "text":
+      return (
+        <LSection type={blockKey(block)} bg="surface">
+          {block.title && <SectionHead eyebrow="" title={block.title} />}
+          {block.text && (
+            <p className={`mt-9 text-center ${body}`} style={{ color: col("muted") }}>
+              {block.text}
+            </p>
+          )}
         </LSection>
       );
 

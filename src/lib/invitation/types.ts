@@ -89,6 +89,8 @@ export type RsvpBlock = {
   text: string;
   buttonLabel: string;
 };
+/** Een extra tekstblok met alleen een titel en een beschrijving. Er kunnen er meerdere zijn; `id` onderscheidt ze. */
+export type TextBlock = { type: "text"; id: string; enabled: boolean; title: string; text: string };
 export type FooterBlock = { type: "footer"; enabled: boolean; closing: string; contactEmail: string };
 
 export type Block =
@@ -99,6 +101,7 @@ export type Block =
   | LocationBlock
   | DresscodeBlock
   | RsvpBlock
+  | TextBlock
   | FooterBlock;
 
 export type BlockType = Block["type"];

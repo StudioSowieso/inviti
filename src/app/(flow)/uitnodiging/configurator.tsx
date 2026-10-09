@@ -33,8 +33,8 @@ import type {
   InvitationTheme,
   ProgramItem,
 } from "@/lib/invitation/types";
-import { PHOTO_BUCKET } from "@/lib/invitation/defaults";
-import { normalizeMapsUrl } from "@/lib/invitation/format";
+import { MAX_TEXT_BLOCKS, newTextBlock, PHOTO_BUCKET } from "@/lib/invitation/defaults";
+import { blockKey, normalizeMapsUrl } from "@/lib/invitation/format";
 import { applyPalette, validPalette } from "@/lib/invitation/palettes";
 import { createClient } from "@/lib/supabase/client";
 import { saveInvitation } from "./actions";
@@ -49,10 +49,11 @@ const BLOCK_META: Record<BlockType, { label: string; hint: string; icon: (p: { w
   location: { label: "Locatie", hint: "Waar en hoe kom je er", icon: (p) => <HomeIcon {...p} /> },
   dresscode: { label: "Dresscode", hint: "Kledingwens met kleurenpalet", icon: (p) => <SlidersIcon {...p} /> },
   rsvp: { label: "RSVP", hint: "Oproep om te reageren", icon: (p) => <SendIcon {...p} /> },
+  text: { label: "Tekstblok", hint: "Een eigen titel met beschrijving", icon: (p) => <PenIcon {...p} /> },
   footer: { label: "Afsluiting", hint: "Groet en contactgegevens", icon: (p) => <MailIcon {...p} /> },
 };
 
-const FIXED: BlockType[] = ["hero", "footer"];
+const FIXED: string[] = ["hero", "footer"];
 
 export function Configurator({
   themes,
@@ -66,8 +67,8 @@ export function Configurator({
   const [themeSlug, setThemeSlug] = useState(initialThemeSlug);
   const [config, setConfig] = useState(initialConfig);
   const [tab, setTab] = useState<Tab>("thema");
-  const [openBlock, setOpenBlock] = useState<BlockType | null>(null);
-  const [dragging, setDragging] = useState<BlockType | null>(null);
+  const [openBlock, setOpenBlock] = useState<string | null>(null);
+  const [dragging, setDragging] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
   const [replayKey, setReplayKey] = useState(0);
   const [fullPreview, setFullPreview] = useState(false);
@@ -88,7 +89,8 @@ export function Configurator({
     setStatus({ kind: "idle" });
   }
   const activeBlocks = config.blocks.filter((b) => b.enabled);
-  const inactiveBlocks = config.blocks.filter((b) => !b.enabled);
+  const inactiveBlocks = config.blocks.filter((b) => !b.enabled && b.type !== "text");
+  const textCount = config.blocks.filter((b) => b.type === "text").length;
 
   const TABS: { id: Tab; label: string; badge?: number }[] = [
     { id: "thema", label: "Thema" },
@@ -118,17 +120,36 @@ export function Configurator({
     setStatus({ kind: "idle" });
   }
 
-  function patchBlock(type: BlockType, p: Record<string, unknown>) {
-    setConfig((c) => ({ ...c, blocks: c.blocks.map((b) => (b.type === type ? ({ ...b, ...p } as Block) : b)) }));
+  function patchBlock(key: string, p: Record<string, unknown>) {
+    setConfig((c) => ({ ...c, blocks: c.blocks.map((b) => (blockKey(b) === key ? ({ ...b, ...p } as Block) : b)) }));
     setStatus({ kind: "idle" });
   }
 
-  /** Zet `type` op de plek van `target`; hero blijft eerst en afsluiting laatst. */
-  function moveTo(type: BlockType, target: BlockType) {
+  /** Voegt een extra tekstblok toe, vlak voor de afsluiting, en klapt het open. */
+  function addTextBlock() {
+    const block = newTextBlock();
     setConfig((c) => {
-      if (type === target || FIXED.includes(type) || FIXED.includes(target)) return c;
-      const from = c.blocks.findIndex((b) => b.type === type);
-      const to = c.blocks.findIndex((b) => b.type === target);
+      if (c.blocks.filter((b) => b.type === "text").length >= MAX_TEXT_BLOCKS) return c;
+      const footerAt = c.blocks.findIndex((b) => b.type === "footer");
+      const blocks = [...c.blocks];
+      blocks.splice(footerAt < 0 ? blocks.length : footerAt, 0, block);
+      return { ...c, blocks };
+    });
+    setOpenBlock(blockKey(block));
+    setStatus({ kind: "idle" });
+  }
+
+  function removeBlock(key: string) {
+    setConfig((c) => ({ ...c, blocks: c.blocks.filter((b) => blockKey(b) !== key) }));
+    setStatus({ kind: "idle" });
+  }
+
+  /** Zet het blok met sleutel `key` op de plek van `target`; hero blijft eerst en afsluiting laatst. */
+  function moveTo(key: string, target: string) {
+    setConfig((c) => {
+      if (key === target || FIXED.includes(key) || FIXED.includes(target)) return c;
+      const from = c.blocks.findIndex((b) => blockKey(b) === key);
+      const to = c.blocks.findIndex((b) => blockKey(b) === target);
       if (from < 0 || to < 0) return c;
       const blocks = [...c.blocks];
       const [item] = blocks.splice(from, 1);
@@ -138,11 +159,11 @@ export function Configurator({
     setStatus({ kind: "idle" });
   }
 
-  function nudge(type: BlockType, dir: -1 | 1) {
+  function nudge(key: string, dir: -1 | 1) {
     const movable = activeBlocks.filter((b) => !FIXED.includes(b.type));
-    const i = movable.findIndex((b) => b.type === type);
+    const i = movable.findIndex((b) => blockKey(b) === key);
     const other = movable[i + dir];
-    if (other) moveTo(type, other.type);
+    if (other) moveTo(key, blockKey(other));
   }
 
   function save() {
@@ -416,27 +437,29 @@ export function Configurator({
                     <p className="eyebrow text-clay">Actieve blokken ({activeBlocks.length})</p>
                     <ul className="mt-3 space-y-2.5">
                       {activeBlocks.map((b) => {
+                        const key = blockKey(b);
                         const fixed = FIXED.includes(b.type);
-                        const open = openBlock === b.type;
+                        const open = openBlock === key;
                         const meta = BLOCK_META[b.type];
+                        const isText = b.type === "text";
                         const movable = activeBlocks.filter((x) => !FIXED.includes(x.type));
-                        const idx = movable.findIndex((x) => x.type === b.type);
+                        const idx = movable.findIndex((x) => blockKey(x) === key);
                         return (
                           <li
-                            key={b.type}
+                            key={key}
                             draggable={!fixed && !open}
-                            onDragStart={() => !fixed && setDragging(b.type)}
+                            onDragStart={() => !fixed && setDragging(key)}
                             onDragOver={(e) => {
                               if (dragging && !fixed) e.preventDefault();
                             }}
                             onDrop={(e) => {
                               e.preventDefault();
-                              if (dragging) moveTo(dragging, b.type);
+                              if (dragging) moveTo(dragging, key);
                               setDragging(null);
                             }}
                             onDragEnd={() => setDragging(null)}
                             className={`overflow-hidden rounded-2xl border bg-paper transition ${
-                              dragging === b.type ? "border-clay opacity-50" : "border-line"
+                              dragging === key ? "border-clay opacity-50" : "border-line"
                             }`}
                           >
                             <div className="flex items-center gap-2 p-2.5 pr-3 sm:gap-3">
@@ -451,13 +474,15 @@ export function Configurator({
                               </span>
                               <button
                                 type="button"
-                                onClick={() => setOpenBlock(open ? null : b.type)}
+                                onClick={() => setOpenBlock(open ? null : key)}
                                 aria-expanded={open}
                                 className="flex min-w-0 flex-1 items-center gap-2 py-1 text-left"
                               >
                                 <span className="min-w-0 flex-1">
                                   <span className="block font-medium">{meta.label}</span>
-                                  <span className="block truncate text-sm text-muted">{meta.hint}</span>
+                                  <span className="block truncate text-sm text-muted">
+                                    {b.type === "text" ? b.title || meta.hint : meta.hint}
+                                  </span>
                                 </span>
                                 <ChevronDownIcon
                                   width={16}
@@ -468,13 +493,14 @@ export function Configurator({
                               {!fixed && (
                                 <>
                                   <span className="flex shrink-0 flex-col">
-                                    <MoveButton dir={-1} disabled={idx <= 0} onClick={() => nudge(b.type, -1)} />
-                                    <MoveButton dir={1} disabled={idx >= movable.length - 1} onClick={() => nudge(b.type, 1)} />
+                                    <MoveButton dir={-1} disabled={idx <= 0} onClick={() => nudge(key, -1)} />
+                                    <MoveButton dir={1} disabled={idx >= movable.length - 1} onClick={() => nudge(key, 1)} />
                                   </span>
                                   <button
                                     type="button"
                                     onClick={() => {
-                                      patchBlock(b.type, { enabled: false });
+                                      if (isText) removeBlock(key);
+                                      else patchBlock(key, { enabled: false });
                                       if (open) setOpenBlock(null);
                                     }}
                                     aria-label={`${meta.label} verwijderen`}
@@ -487,7 +513,7 @@ export function Configurator({
                             </div>
                             {open && (
                               <div className="space-y-4 border-t border-line bg-cream/50 p-4 sm:p-5">
-                                <BlockFields block={b} onChange={(p) => patchBlock(b.type, p)} />
+                                <BlockFields block={b} onChange={(p) => patchBlock(key, p)} />
                               </div>
                             )}
                           </li>
@@ -496,19 +522,38 @@ export function Configurator({
                     </ul>
                   </div>
 
-                  {inactiveBlocks.length > 0 && (
+                  {(inactiveBlocks.length > 0 || textCount < MAX_TEXT_BLOCKS) && (
                     <div>
                       <p className="eyebrow text-clay">Beschikbare blokken</p>
                       <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
+                        {textCount < MAX_TEXT_BLOCKS && (
+                          <li>
+                            <button
+                              type="button"
+                              onClick={addTextBlock}
+                              className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-muted/60 bg-cream/40 p-2.5 text-left transition hover:bg-cream"
+                            >
+                              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sage text-forest">
+                                {BLOCK_META.text.icon({ width: 18, height: 18 })}
+                              </span>
+                              <span className="min-w-0 flex-1">
+                                <span className="block font-medium">Tekstblok toevoegen</span>
+                                <span className="block truncate text-sm text-muted">{BLOCK_META.text.hint}</span>
+                              </span>
+                              <PlusIcon width={18} height={18} className="mr-1 shrink-0 text-forest" />
+                            </button>
+                          </li>
+                        )}
                         {inactiveBlocks.map((b) => {
                           const meta = BLOCK_META[b.type];
+                          const key = blockKey(b);
                           return (
-                            <li key={b.type}>
+                            <li key={key}>
                               <button
                                 type="button"
                                 onClick={() => {
-                                  patchBlock(b.type, { enabled: true });
-                                  setOpenBlock(b.type);
+                                  patchBlock(key, { enabled: true });
+                                  setOpenBlock(key);
                                 }}
                                 className="flex w-full items-center gap-3 rounded-2xl border border-dashed border-muted/60 bg-cream/40 p-2.5 text-left transition hover:bg-cream"
                               >
@@ -862,6 +907,14 @@ function BlockFields({ block, onChange }: { block: Block; onChange: (p: Record<s
           </Row>
           <TextArea label="Jullie verhaal" value={block.text} onChange={(v) => onChange({ text: v })} />
           <PhotoField value={block.photo ?? ""} onChange={(url) => onChange({ photo: url })} />
+        </>
+      );
+
+    case "text":
+      return (
+        <>
+          <Input label="Titel" value={block.title} onChange={(v) => onChange({ title: v })} />
+          <TextArea label="Beschrijving" value={block.text} onChange={(v) => onChange({ text: v })} rows={5} />
         </>
       );
 

@@ -15,6 +15,23 @@ export function photoUrl(value: unknown): string {
   return typeof value === "string" && value.startsWith(PHOTO_PREFIX) && value.length < 400 && !/[\s"'<>]/.test(value) ? value : "";
 }
 
+export const MAX_TEXT_BLOCKS = 10;
+
+/** Een willekeurig id voor een nieuw tekstblok. */
+export function makeBlockId() {
+  return Math.random().toString(36).slice(2, 8).padEnd(6, "x");
+}
+
+export function newTextBlock(id = makeBlockId()): Block {
+  return {
+    type: "text",
+    id,
+    enabled: true,
+    title: "Goed om te weten",
+    text: "Schrijf hier wat je met jullie gasten wilt delen.",
+  };
+}
+
 export const MOVABLE_TYPES = ["countdown", "story", "program", "location", "dresscode", "rsvp"] as const;
 
 export type Prefill = { partner1?: string; partner2?: string; date?: string };
@@ -156,6 +173,8 @@ function normalizeBlock(base: Block, raw: Record<string, unknown>): Block {
         text: str(raw.text, base.text),
         buttonLabel: str(raw.buttonLabel, base.buttonLabel, 40),
       };
+    case "text":
+      return base;
     case "footer":
       return { ...base, enabled, closing: str(raw.closing, base.closing, 40), contactEmail: str(raw.contactEmail, base.contactEmail, 120) };
   }
@@ -177,7 +196,22 @@ export function normalizeConfig(raw: unknown, prefill: Prefill = {}): Invitation
   const seen = new Set<string>();
   const ordered: Block[] = [];
 
+  const textIds = new Set<string>();
   for (const rb of rawBlocks) {
+    if (rb.type === "text") {
+      if (textIds.size >= MAX_TEXT_BLOCKS) continue;
+      let id = typeof rb.id === "string" && /^[a-z0-9]{4,12}$/.test(rb.id) && !textIds.has(rb.id) ? rb.id : "";
+      for (let n = textIds.size + 1; !id; n++) if (!textIds.has(`t${n}x`)) id = `t${n}x`;
+      textIds.add(id);
+      ordered.push({
+        type: "text",
+        id,
+        enabled: typeof rb.enabled === "boolean" ? rb.enabled : true,
+        title: str(rb.title, "", 120),
+        text: str(rb.text, ""),
+      });
+      continue;
+    }
     const def = typeof rb.type === "string" ? defaults.get(rb.type as Block["type"]) : undefined;
     if (!def || seen.has(def.type)) continue;
     seen.add(def.type);

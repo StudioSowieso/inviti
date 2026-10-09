@@ -5,7 +5,7 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots } from "@/lib/invitation/format";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { useCountdown } from "./use-countdown";
-import { mapsHref } from "@/lib/invitation/format";
+import { blockKey, mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "modern": editorial zwart-wit. Witte kaarten met afgeronde hoeken op een greige achtergrond,
@@ -147,7 +147,7 @@ function Card({
   last = false,
   children,
 }: {
-  type: Block["type"];
+  type: string;
   className?: string;
   bg?: keyof ThemeColors;
   last?: boolean;
@@ -328,6 +328,14 @@ export function ModernBlockSection({ block, config }: { block: Block; config: In
           </div>
           <Script>{block.title}</Script>
           <Muted className="mx-auto mt-5 max-w-[17rem] text-center">{block.text}</Muted>
+        </Card>
+      );
+
+    case "text":
+      return (
+        <Card type={blockKey(block)}>
+          {block.title && <Script className="text-center">{block.title}</Script>}
+          {block.text && <Muted className="mx-auto mt-5 max-w-[17rem] text-center">{block.text}</Muted>}
         </Card>
       );
 

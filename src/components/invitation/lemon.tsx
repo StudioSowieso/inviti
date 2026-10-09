@@ -4,7 +4,7 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
-import { mapsHref } from "@/lib/invitation/format";
+import { blockKey, mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "lemon": blauw-geel gestreept behang, crèmekaarten met een gestreepte rand (boven en onder),
@@ -227,7 +227,7 @@ export function Frame({
   );
 }
 
-function Card({ type, children, className = "" }: { type: Block["type"]; children: ReactNode; className?: string }) {
+function Card({ type, children, className = "" }: { type: string; children: ReactNode; className?: string }) {
   return (
     <section data-block={type} className={SECTION}>
       <Frame className={className}>{children}</Frame>
@@ -367,6 +367,14 @@ export function LemonBlockSection({ block, config }: { block: Block; config: Inv
           <Head eyebrow={block.eyebrow} title={block.title} />
           <LemonPhoto src={block.photo} />
           <Body className="mt-8">{block.text}</Body>
+        </Card>
+      );
+
+    case "text":
+      return (
+        <Card type={blockKey(block)}>
+          {block.title ? <Head title={block.title} /> : <LemonSprig className="mx-auto" />}
+          {block.text && <Body className="mt-5">{block.text}</Body>}
         </Card>
       );
 

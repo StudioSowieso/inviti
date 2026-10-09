@@ -5,6 +5,7 @@ import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import {
   formatDateDots,
   formatDateLong,
+  blockKey,
   formatDateUpper,
   mapsHref,
   monogram,
@@ -52,7 +53,7 @@ export type InvitationViewProps = {
   startOpen?: boolean;
   replayKey?: number;
   /** Scrollt naar dit blok (bijvoorbeeld het blok dat je net bewerkt). */
-  focusBlock?: BlockType | null;
+  focusBlock?: string | null;
   className?: string;
 };
 
@@ -110,15 +111,18 @@ export function InvitationView({
   const chapters = useMemo(
     () =>
       config.blocks
-        .filter((b) => b.enabled && CHAPTER_LABEL[b.type])
-        .map((b) => ({ type: b.type, label: CHAPTER_LABEL[b.type] as string })),
+        .filter((b) => b.enabled && (b.type === "text" || CHAPTER_LABEL[b.type]))
+        .map((b) => ({
+          key: blockKey(b),
+          label: b.type === "text" ? b.title.trim() || "Tekst" : (CHAPTER_LABEL[b.type] as string),
+        })),
     [config.blocks],
   );
-  const [active, setActive] = useState<BlockType>("hero");
+  const [active, setActive] = useState<string>("hero");
   const [navOpen, setNavOpen] = useState(false);
 
-  const sectionTop = useCallback((type: BlockType) => {
-    const el = scrollRef.current?.querySelector<HTMLElement>(`[data-block="${type}"]`);
+  const sectionTop = useCallback((key: string) => {
+    const el = scrollRef.current?.querySelector<HTMLElement>(`[data-block="${key}"]`);
     return el ? el.offsetTop : null;
   }, []);
 
@@ -126,10 +130,10 @@ export function InvitationView({
     const el = scrollRef.current;
     if (!el || chapters.length === 0) return;
     const y = el.scrollTop + el.clientHeight * 0.35;
-    let current = chapters[0].type;
+    let current = chapters[0].key;
     for (const ch of chapters) {
-      const top = sectionTop(ch.type);
-      if (top !== null && top <= y) current = ch.type;
+      const top = sectionTop(ch.key);
+      if (top !== null && top <= y) current = ch.key;
     }
     setActive(current);
   }, [chapters, sectionTop]);
@@ -150,8 +154,8 @@ export function InvitationView({
     };
   }, [updateActive, config.blocks]);
 
-  function goTo(type: BlockType) {
-    const top = sectionTop(type);
+  function goTo(key: string) {
+    const top = sectionTop(key);
     if (top !== null) scrollRef.current?.scrollTo({ top, behavior: "smooth" });
     setNavOpen(false);
   }
@@ -163,7 +167,7 @@ export function InvitationView({
   }, [focusBlock, stage, sectionTop]);
 
   const fontsHref = googleFontsHref(...themeFonts(theme));
-  const activeLabel = chapters.find((c) => c.type === active)?.label ?? "Welkom";
+  const activeLabel = chapters.find((c) => c.key === active)?.label ?? "Welkom";
   const leaf = theme.style === "leaf";
   const modern = theme.style === "modern";
   const sweet = theme.style === "sweet";
@@ -191,17 +195,17 @@ export function InvitationView({
           {lemon && <div aria-hidden="true" className="absolute inset-0" style={LEMON_STRIPES} />}
           {visibleBlocks.map((b, i) =>
             lemon ? (
-              <LemonBlockSection key={b.type} block={b} config={config} />
+              <LemonBlockSection key={blockKey(b)} block={b} config={config} />
             ) : sweet ? (
-              <SweetBlockSection key={b.type} block={b} config={config} />
+              <SweetBlockSection key={blockKey(b)} block={b} config={config} />
             ) : modern ? (
-              <ModernBlockSection key={b.type} block={b} config={config} />
+              <ModernBlockSection key={blockKey(b)} block={b} config={config} />
             ) : leaf ? (
-              <LeafBlockSection key={b.type} block={b} config={config} index={i} />
+              <LeafBlockSection key={blockKey(b)} block={b} config={config} index={i} />
             ) : nature ? (
-              <NatureBlockSection key={b.type} block={b} config={config} index={i} />
+              <NatureBlockSection key={blockKey(b)} block={b} config={config} index={i} />
             ) : (
-              <BlockSection key={b.type} block={b} config={config} />
+              <BlockSection key={blockKey(b)} block={b} config={config} />
             ),
           )}
           {textured && (
@@ -227,15 +231,15 @@ export function InvitationView({
               </p>
               {chapters.map((c) => (
                 <button
-                  key={c.type}
+                  key={c.key}
                   type="button"
                   role="menuitem"
-                  onClick={() => goTo(c.type)}
+                  onClick={() => goTo(c.key)}
                   className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-xs"
-                  style={{ background: c.type === active ? "rgb(255 255 255 / 0.12)" : undefined }}
+                  style={{ background: c.key === active ? "rgb(255 255 255 / 0.12)" : undefined }}
                 >
                   {c.label}
-                  {c.type === active && <span className="text-[0.5rem] tracking-[0.18em] uppercase opacity-70">Actief</span>}
+                  {c.key === active && <span className="text-[0.5rem] tracking-[0.18em] uppercase opacity-70">Actief</span>}
                 </button>
               ))}
             </div>
@@ -426,7 +430,7 @@ function Section({
   children,
   className = "",
 }: {
-  type: BlockType;
+  type: string;
   bg: keyof ThemeColors;
   children: ReactNode;
   className?: string;
@@ -491,6 +495,18 @@ function BlockSection({ block, config }: { block: Block; config: InvitationConfi
           <p className="mt-5 text-center text-[0.68rem] leading-relaxed whitespace-pre-line" style={{ color: col("muted") }}>
             {block.text}
           </p>
+        </Section>
+      );
+
+    case "text":
+      return (
+        <Section type={blockKey(block)} bg="surface">
+          {block.title && <SectionHead eyebrow="" title={block.title} />}
+          {block.text && (
+            <p className="mt-5 text-center text-[0.68rem] leading-relaxed whitespace-pre-line" style={{ color: col("muted") }}>
+              {block.text}
+            </p>
+          )}
         </Section>
       );
 

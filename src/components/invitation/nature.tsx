@@ -5,7 +5,7 @@ import { useId, useMemo, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
 import { useCountdown } from "./use-countdown";
 import type { Block, BlockType, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
-import { mapsHref } from "@/lib/invitation/format";
+import { blockKey, mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "nature": papieren textuur, gescheurde randen tussen de secties, botanische
@@ -338,7 +338,7 @@ function NSection({
   className = "",
   children,
 }: {
-  type: BlockType;
+  type: string;
   bg: keyof ThemeColors;
   index: number;
   className?: string;
@@ -453,6 +453,19 @@ export function NatureBlockSection({
           <p className={`mt-7 text-center ${body}`} style={{ color: col("muted") }}>
             {block.text}
           </p>
+        </NSection>
+      );
+
+    case "text":
+      return (
+        <NSection type={blockKey(block)} bg="background" index={index}>
+          {block.title && <SectionHead eyebrow="" title={block.title} />}
+          {block.text && (
+            <p className={`mt-7 text-center ${body}`} style={{ color: col("muted") }}>
+              {block.text}
+            </p>
+          )}
+          <SprigDivider className="mt-9" />
         </NSection>
       );
 

@@ -4,7 +4,7 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
-import { mapsHref } from "@/lib/invitation/format";
+import { blockKey, mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "sweet": een gestreept behang in twee kleuren met witte boogkaarten, een dubbele rand, een
@@ -91,7 +91,7 @@ function ArchCard({
   className = "",
   arch = true,
 }: {
-  type: Block["type"];
+  type: string;
   children: ReactNode;
   className?: string;
   arch?: boolean;
@@ -258,6 +258,14 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
           <Head eyebrow={block.eyebrow} title={block.title} />
           <SweetPhoto src={block.photo} />
           <Body className="mt-8">{block.text}</Body>
+        </ArchCard>
+      );
+
+    case "text":
+      return (
+        <ArchCard type={blockKey(block)} arch={false}>
+          {block.title && <Head title={block.title} />}
+          {block.text && <Body className="mt-5">{block.text}</Body>}
         </ArchCard>
       );
 
