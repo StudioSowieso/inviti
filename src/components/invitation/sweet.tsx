@@ -4,6 +4,7 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
+import { mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "sweet": een gestreept behang in twee kleuren met witte boogkaarten, een dubbele rand, een
@@ -291,13 +292,12 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
       );
 
     case "location": {
-      const query = encodeURIComponent([block.title, config.city].filter(Boolean).join(" "));
       return (
         <ArchCard type="location" arch={false}>
           <Head eyebrow={block.eyebrow} title={block.title} />
           <Body className="mt-5">{block.address}</Body>
           <div className="mt-6">
-            <PillButton href={`https://www.google.com/maps/search/?api=1&query=${query}`}>Bekijk route</PillButton>
+            <PillButton href={mapsHref(block.mapsUrl, block.title, config.city)}>Bekijk route</PillButton>
           </div>
         </ArchCard>
       );

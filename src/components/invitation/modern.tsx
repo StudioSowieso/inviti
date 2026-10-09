@@ -5,6 +5,7 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots } from "@/lib/invitation/format";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { useCountdown } from "./use-countdown";
+import { mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "modern": editorial zwart-wit. Witte kaarten met afgeronde hoeken op een greige achtergrond,
@@ -364,7 +365,6 @@ export function ModernBlockSection({ block, config }: { block: Block; config: In
       );
 
     case "location": {
-      const query = encodeURIComponent([block.title, config.city].filter(Boolean).join(" "));
       return (
         <Card type="location" className="text-center">
           <Script>{block.title}</Script>
@@ -373,7 +373,7 @@ export function ModernBlockSection({ block, config }: { block: Block; config: In
             <Venue />
           </div>
           <div className="mt-5">
-            <SquareButton href={`https://www.google.com/maps/search/?api=1&query=${query}`}>Open kaart</SquareButton>
+            <SquareButton href={mapsHref(block.mapsUrl, block.title, config.city)}>Open kaart</SquareButton>
           </div>
         </Card>
       );

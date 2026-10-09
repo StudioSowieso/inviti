@@ -1,4 +1,5 @@
 import { SUPABASE_URL } from "@/lib/supabase/config";
+import { normalizeMapsUrl } from "./format";
 import type {
   Block,
   DresscodeBlock,
@@ -131,6 +132,7 @@ function normalizeBlock(base: Block, raw: Record<string, unknown>): Block {
         eyebrow: str(raw.eyebrow, base.eyebrow, 80),
         title: str(raw.title, base.title, 120),
         address: str(raw.address, base.address),
+        mapsUrl: normalizeMapsUrl(raw.mapsUrl),
       };
     case "dresscode": {
       const colors = Array.isArray(raw.colors)

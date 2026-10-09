@@ -5,6 +5,7 @@ import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
 import type { Block, BlockType, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { ChapelIcon, EnvelopeIcon, NatureCountdown, programIcon } from "./nature";
+import { mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "leaf": rustig en elegant. Gladde vlakken zonder gescheurde randen, een boogvormige foto,
@@ -410,7 +411,6 @@ export function LeafBlockSection({ block, config }: { block: Block; config: Invi
       );
 
     case "location": {
-      const query = encodeURIComponent([block.title, config.city].filter(Boolean).join(" "));
       return (
         <LSection type="location" bg="surface" className="text-center">
           <div className="flex justify-center" style={{ color: col("accent") }}>
@@ -423,7 +423,7 @@ export function LeafBlockSection({ block, config }: { block: Block; config: Invi
             {block.address}
           </p>
           <div className="mt-6">
-            <PillButton href={`https://www.google.com/maps/search/?api=1&query=${query}`}>Bekijk route</PillButton>
+            <PillButton href={mapsHref(block.mapsUrl, block.title, config.city)}>Bekijk route</PillButton>
           </div>
         </LSection>
       );

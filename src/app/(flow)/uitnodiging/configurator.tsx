@@ -34,6 +34,7 @@ import type {
   ProgramItem,
 } from "@/lib/invitation/types";
 import { PHOTO_BUCKET } from "@/lib/invitation/defaults";
+import { normalizeMapsUrl } from "@/lib/invitation/format";
 import { applyPalette, validPalette } from "@/lib/invitation/palettes";
 import { createClient } from "@/lib/supabase/client";
 import { saveInvitation } from "./actions";
@@ -921,7 +922,25 @@ function BlockFields({ block, onChange }: { block: Block; onChange: (p: Record<s
             value={block.address}
             onChange={(v) => onChange({ address: v })}
           />
-          <p className="text-xs text-muted">De knop &ldquo;Bekijk route&rdquo; opent Google Maps met de locatienaam en plaats.</p>
+          <div>
+            <Input
+              label="Google Maps-link"
+              type="url"
+              hint="Optioneel"
+              value={block.mapsUrl ?? ""}
+              onChange={(v) => onChange({ mapsUrl: v })}
+            />
+            <p className="mt-2 text-xs text-muted">
+              Open de locatie in Google Maps, kies Delen en plak de link hier. Een gast die op &ldquo;Bekijk route&rdquo;
+              tikt, gaat dan direct naar die plek in Google Maps. Laat je dit leeg, dan zoekt de knop op de naam van de
+              locatie en de plaats.
+            </p>
+            {block.mapsUrl && !normalizeMapsUrl(block.mapsUrl) && (
+              <p role="alert" className="mt-2 text-xs text-clay">
+                Dit lijkt geen Google Maps-link. Gebruik een link die begint met google.com/maps of maps.app.goo.gl.
+              </p>
+            )}
+          </div>
         </>
       );
 

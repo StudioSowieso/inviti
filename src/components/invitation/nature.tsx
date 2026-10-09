@@ -5,6 +5,7 @@ import { useId, useMemo, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
 import { useCountdown } from "./use-countdown";
 import type { Block, BlockType, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
+import { mapsHref } from "@/lib/invitation/format";
 
 /**
  * Stijl "nature": papieren textuur, gescheurde randen tussen de secties, botanische
@@ -492,7 +493,6 @@ export function NatureBlockSection({
       );
 
     case "location": {
-      const query = encodeURIComponent([block.title, config.city].filter(Boolean).join(" "));
       return (
         <NSection type="location" bg="background" index={index} className="text-center">
           <div className="flex justify-center" style={{ color: col("accent") }}>
@@ -505,7 +505,7 @@ export function NatureBlockSection({
             {block.address}
           </p>
           <div className="mt-6">
-            <PillButton href={`https://www.google.com/maps/search/?api=1&query=${query}`}>Bekijk route</PillButton>
+            <PillButton href={mapsHref(block.mapsUrl, block.title, config.city)}>Bekijk route</PillButton>
           </div>
         </NSection>
       );

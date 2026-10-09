@@ -70,6 +70,8 @@ export type LocationBlock = {
   eyebrow: string;
   title: string;
   address: string;
+  /** Google Maps-link voor de knop "Bekijk route"; leeg = zoeken op naam en plaats. */
+  mapsUrl?: string;
 };
 export type DresscodeBlock = {
   type: "dresscode";

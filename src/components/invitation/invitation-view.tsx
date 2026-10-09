@@ -6,6 +6,7 @@ import {
   formatDateDots,
   formatDateLong,
   formatDateUpper,
+  mapsHref,
   monogram,
   targetTimestamp,
 } from "@/lib/invitation/format";
@@ -522,7 +523,6 @@ function BlockSection({ block, config }: { block: Block; config: InvitationConfi
       );
 
     case "location": {
-      const query = encodeURIComponent([block.title, config.city].filter(Boolean).join(" "));
       return (
         <Section type="location" bg="background" className="text-center">
           <SectionHead eyebrow={block.eyebrow} title={block.title} />
@@ -533,7 +533,7 @@ function BlockSection({ block, config }: { block: Block; config: InvitationConfi
             {block.address}
           </p>
           <a
-            href={`https://www.google.com/maps/search/?api=1&query=${query}`}
+            href={mapsHref(block.mapsUrl, block.title, config.city)}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-5 inline-flex items-center gap-1.5 border px-4 py-2 text-[0.58rem]"
