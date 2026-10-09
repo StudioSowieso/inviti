@@ -88,7 +88,7 @@ Naast kleuren, lettertypes en knopvorm heeft elk thema een **stijl**:
 - **Leaf** (`leaf`): elegant en rustig: boogvormige foto, dunne lijnen, olijftakken als scheiding en geen
   gescheurde randen; ook met het handschrift-lettertype voor de namen.
 
-- **Modern** (`modern`): editorial zwart-wit op greige met witte kaarten, extra grote letters (LOVE, datum),
+- **Modern** (`modern`): editorial zwart-wit op greige met witte kaarten, extra grote letters (de trouwdatum),
   handschrift voor koppen en rechthoekige knoppen.
 
 De stijlen zijn code (`src/components/invitation/nature.tsx`, `leaf.tsx` en `modern.tsx`); kleuren en lettertypes blijven in Sanity te kiezen.

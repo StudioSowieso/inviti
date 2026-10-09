@@ -209,25 +209,6 @@ function dateParts(date: string) {
   return m ? { y: m[1], m: m[2], d: m[3] } : { y: "----", m: "--", d: "--" };
 }
 
-/** Datum in drie grote, over elkaar vallende getallen (dag, maand, jaar). */
-function StackedDate({ date }: { date: string }) {
-  const { d, m, y } = dateParts(date);
-  const big = "block text-[7.4rem] leading-[0.82] tracking-[-0.02em]";
-  return (
-    <div className="mt-10 select-none" style={{ ...heading, color: col("text") }} aria-label={formatDateDots(date)}>
-      <span className={big} style={{ marginLeft: "2.2rem" }}>
-        {d}
-      </span>
-      <span className={big} style={{ marginLeft: "6.4rem", marginTop: "-1.5rem" }}>
-        {m}
-      </span>
-      <span className={big} style={{ marginLeft: "3.4rem", marginTop: "-1.5rem" }}>
-        {y.slice(2)}
-      </span>
-    </div>
-  );
-}
-
 function ModernCountdown({ date, time }: { date: string; time: string }) {
   const cells = useCountdown(date, time);
   return (
@@ -258,6 +239,7 @@ export function ModernBlockSection({ block, config }: { block: Block; config: In
 
   switch (block.type) {
     case "hero": {
+      const dp = dateParts(config.date);
       return (
         <section
           data-block="hero"
@@ -267,19 +249,31 @@ export function ModernBlockSection({ block, config }: { block: Block; config: In
           <p className="text-right text-[1.05rem] tracking-[0.04em]" style={heading}>
             {names}
           </p>
-          <div className="relative mt-3 h-[31rem]">
+          <div className="relative mt-3 h-[27.5rem]">
             <Vertical flip className="top-6 left-0 text-[2.3rem] leading-none" style={{ color: col("text") }}>
               {block.eyebrow}
             </Vertical>
             <div
               className="absolute top-0 right-3 flex flex-col items-start select-none"
               style={{ ...heading, color: col("text") }}
-              aria-hidden="true"
+              role="img"
+              aria-label={formatDateDots(config.date)}
             >
-              <span className="block text-[9.4rem] leading-[0.84]" style={{ marginLeft: "0.2rem" }}>L</span>
-              <span className="block text-[9rem] leading-[0.84]" style={{ marginLeft: "2.5rem", marginTop: "-0.4rem" }}>O</span>
-              <span className="block text-[9.2rem] leading-[0.84]" style={{ marginLeft: "-1.5rem", marginTop: "-0.4rem" }}>V</span>
-              <span className="block text-[8.6rem] leading-[0.84]" style={{ marginLeft: "3rem", marginTop: "-0.4rem" }}>E</span>
+              {[
+                { t: dp.d, size: "8.4rem", ml: "0.4rem", mt: "0rem" },
+                { t: dp.m, size: "8.2rem", ml: "3.2rem", mt: "-0.6rem" },
+                { t: dp.y.slice(0, 2), size: "8.4rem", ml: "1rem", mt: "-0.6rem" },
+                { t: dp.y.slice(2), size: "8rem", ml: "3.6rem", mt: "-0.6rem" },
+              ].map((r, i) => (
+                <span
+                  key={i}
+                  aria-hidden="true"
+                  className="block leading-[0.84] tracking-[-0.02em]"
+                  style={{ fontSize: r.size, marginLeft: r.ml, marginTop: r.mt }}
+                >
+                  {r.t}
+                </span>
+              ))}
             </div>
           </div>
           <p className="mt-2 text-[1.7rem] tracking-[0.01em]" style={{ ...heading, color: col("text") }}>
@@ -324,7 +318,6 @@ export function ModernBlockSection({ block, config }: { block: Block; config: In
           </div>
           <Script>{block.title}</Script>
           <Muted className="mx-auto mt-5 max-w-[17rem] text-center">{block.text}</Muted>
-          <StackedDate date={config.date} />
         </Card>
       );
 

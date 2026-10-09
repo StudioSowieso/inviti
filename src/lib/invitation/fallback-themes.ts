@@ -108,7 +108,7 @@ const THEMES: ThemeInput[] = [
     },
     headingFont: "Italiana",
     bodyFont: "Jost",
-    scriptFont: "Mrs Saint Delafield",
+    scriptFont: "Allura",
     buttonShape: "square",
     style: "modern",
   },

@@ -20,8 +20,8 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
             <p className="text-right text-[0.5rem] tracking-[0.05em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
               EMMA&amp;MATS
             </p>
-            <p className="mt-0.5 text-[2.6rem] leading-[0.95] tracking-[0.04em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
-              LOVE
+            <p className="mt-0.5 text-[2.3rem] leading-[0.95] tracking-[0.02em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+              12.09
             </p>
             <p className="text-[1.15rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
               Wij gaan trouwen
