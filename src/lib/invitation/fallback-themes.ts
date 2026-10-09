@@ -11,7 +11,7 @@ type ThemeInput = Omit<InvitationTheme, "palettes">;
 const THEMES: ThemeInput[] = [
   {
     slug: "creme-taupe",
-    title: "Crème & Taupe",
+    title: "Basic",
     description: "Rustig en editorial: warme crèmetinten met een donkere afsluiting.",
     colors: {
       background: "#f4f0ea",
@@ -32,31 +32,6 @@ const THEMES: ThemeInput[] = [
     bodyFont: "Inter",
     scriptFont: "Great Vibes",
     buttonShape: "pill",
-    style: "classic",
-  },
-  {
-    slug: "bosgroen-blush",
-    title: "Bosgroen & Blush",
-    description: "Botanisch en warm: saliegroen, bosgroen en een vleugje blush.",
-    colors: {
-      background: "#f7f2ec",
-      surface: "#fbf9f6",
-      surfaceAlt: "#dde1d6",
-      text: "#1f2420",
-      muted: "#6f776f",
-      line: "#cfd5c8",
-      accent: "#b57f6b",
-      buttonBackground: "#3a483c",
-      buttonText: "#fbf9f6",
-      footerBackground: "#2c382f",
-      footerText: "#f1ded4",
-      envelope: "#3a483c",
-      envelopeCard: "#f1ded4",
-    },
-    headingFont: "Playfair Display",
-    bodyFont: "DM Sans",
-    scriptFont: "Great Vibes",
-    buttonShape: "rounded",
     style: "classic",
   },
   {
