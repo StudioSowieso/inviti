@@ -49,7 +49,7 @@ export function ClassicEnvelope({
     >
       {/* Achterlaag: binnenkant van de envelop */}
       <div className="absolute inset-0 z-[1]" style={{
-          transform: opening ? "translateY(104%)" : "none",
+          transform: opening ? "translateY(165%)" : "none",
           transition: `transform 650ms ${EASE} ${opening ? "800ms" : "0ms"}`,
         }}>
         {/* Achterkant van de envelop */}
@@ -88,7 +88,7 @@ export function ClassicEnvelope({
 
       {/* Voorlaag: voorkant en klep, ligt boven de kaart */}
       <div className="absolute inset-0 z-[3]" style={{
-          transform: opening ? "translateY(104%)" : "none",
+          transform: opening ? "translateY(165%)" : "none",
           transition: `transform 650ms ${EASE} ${opening ? "800ms" : "0ms"}`,
         }}>
         {/* Voorkant: zijkleppen en onderklep met vouwlijnen */}

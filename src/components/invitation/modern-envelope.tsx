@@ -39,7 +39,7 @@ export function ModernEnvelope({
       <div
         className="absolute inset-0"
         style={{
-          transform: opening ? "translateY(104%)" : "none",
+          transform: opening ? "translateY(165%)" : "none",
           transition: `transform 720ms ${EASE} ${opening ? "480ms" : "0ms"}`,
         }}
       >

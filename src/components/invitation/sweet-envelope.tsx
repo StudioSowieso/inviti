@@ -77,7 +77,7 @@ export function SweetEnvelope({ config, opening, onOpen }: Props) {
       <div
         className="absolute inset-0"
         style={{
-          transform: opening ? "translateY(104%)" : "none",
+          transform: opening ? "translateY(165%)" : "none",
           transition: `transform 700ms ${EASE} ${opening ? "520ms" : "0ms"}`,
         }}
       >

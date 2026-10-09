@@ -63,7 +63,7 @@ export function LemonEnvelope({ config, opening, onOpen }: Props) {
       <div
         className="absolute inset-0"
         style={{
-          transform: opening ? "translateY(104%)" : "none",
+          transform: opening ? "translateY(165%)" : "none",
           transition: `transform 650ms ${EASE} ${opening ? "700ms" : "0ms"}`,
         }}
       >
