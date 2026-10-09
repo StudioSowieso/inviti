@@ -16,7 +16,8 @@ import type {
   InvitationTheme,
   ThemeColors,
 } from "@/lib/invitation/types";
-import { NatureBlockSection, PAPER_NOISE, Sprig } from "./nature";
+import { NatureBlockSection, PAPER_NOISE } from "./nature";
+import { NatureEnvelope } from "./nature-envelope";
 
 const RADIUS = { pill: "999px", rounded: "0.9rem", square: "0.15rem" } as const;
 
@@ -230,9 +231,12 @@ export function InvitationView({
         </div>
       )}
 
-      {stage !== "open" && (
-        <EnvelopeOverlay config={config} nature={nature} opening={stage === "opening"} onOpen={openEnvelope} />
-      )}
+      {stage !== "open" &&
+        (nature ? (
+          <NatureEnvelope config={config} opening={stage === "opening"} onOpen={openEnvelope} />
+        ) : (
+          <EnvelopeOverlay config={config} opening={stage === "opening"} onOpen={openEnvelope} />
+        ))}
     </div>
   );
 }
@@ -241,37 +245,29 @@ export function InvitationView({
 
 function EnvelopeOverlay({
   config,
-  nature,
   opening,
   onOpen,
 }: {
   config: InvitationConfig;
-  nature: boolean;
   opening: boolean;
   onOpen: () => void;
 }) {
   const initials = monogram(config.partner1, config.partner2, " & ");
   const short = monogram(config.partner1, config.partner2);
   const ease = "cubic-bezier(.6,0,.2,1)";
-  // In "nature" staan monogrammen in handschrift en heeft de envelop een papiertextuur.
-  const mono = nature ? ({ fontFamily: "var(--inv-script)" } satisfies CSSProperties) : heading;
 
   return (
     <div
       className="absolute inset-0 z-30 flex flex-col items-center px-6 py-10 text-center"
       style={{
         background: col("background"),
-        backgroundImage: nature ? PAPER_NOISE : undefined,
         opacity: opening ? 0 : 1,
         transition: `opacity 600ms ${ease} ${opening ? "850ms" : "0ms"}`,
         pointerEvents: opening ? "none" : "auto",
       }}
     >
       <div>
-        <p
-          className={nature ? "text-[1.5rem] leading-none" : "text-[0.8rem] tracking-[0.18em]"}
-          style={mono}
-        >
+        <p className="text-[0.8rem] tracking-[0.18em]" style={heading}>
           {initials}
         </p>
         <p className="mt-1.5 text-[0.5rem] tracking-[0.2em] uppercase" style={{ color: col("muted") }}>
@@ -323,10 +319,9 @@ function EnvelopeOverlay({
             transition: `transform 700ms ${ease} 150ms`,
           }}
         >
-          {nature && <Sprig size={26} className="mb-1" />}
           <span
-            className={`grid size-9 place-items-center rounded-full tracking-[0.1em] ${nature ? "text-[0.95rem]" : "text-[0.65rem]"}`}
-            style={{ background: col("buttonBackground"), color: col("buttonText"), ...mono }}
+            className="grid size-9 place-items-center rounded-full text-[0.65rem] tracking-[0.1em]"
+            style={{ background: col("buttonBackground"), color: col("buttonText"), ...heading }}
           >
             {short}
           </span>

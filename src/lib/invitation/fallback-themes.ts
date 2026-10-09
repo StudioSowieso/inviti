@@ -73,7 +73,7 @@ export const FALLBACK_THEMES: InvitationTheme[] = [
       buttonText: "#f8f4ec",
       footerBackground: "#e7e0d1",
       footerText: "#4a4f3d",
-      envelope: "#d8d1bd",
+      envelope: "#79835c",
       envelopeCard: "#f8f4ec",
     },
     headingFont: "Cormorant Garamond",
