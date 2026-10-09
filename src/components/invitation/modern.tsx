@@ -1,5 +1,6 @@
 "use client";
 
+import { StoryImg } from "./story-photo";
 import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots } from "@/lib/invitation/format";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
@@ -310,8 +311,16 @@ export function ModernBlockSection({ block, config }: { block: Block; config: In
       return (
         <Card type="story">
           <div className="relative -mx-6 mb-10 h-[23rem]">
-            <ModernPhoto className="absolute top-0 right-[3.6rem] h-[11.4rem] w-[9.4rem]" />
-            <ModernPhoto className="absolute top-[8.8rem] left-0 h-[10.8rem] w-[9.4rem]" />
+            {block.photo ? (
+              <div className="absolute top-0 left-[1.6rem] h-[21rem] w-[14.5rem] overflow-hidden">
+                <StoryImg src={block.photo} className="grayscale" />
+              </div>
+            ) : (
+              <>
+                <ModernPhoto className="absolute top-0 right-[3.6rem] h-[11.4rem] w-[9.4rem]" />
+                <ModernPhoto className="absolute top-[8.8rem] left-0 h-[10.8rem] w-[9.4rem]" />
+              </>
+            )}
             <Vertical className="top-1 right-3 text-[2.5rem] leading-none" style={{ color: col("text") }}>
               {block.eyebrow}
             </Vertical>

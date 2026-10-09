@@ -2,6 +2,7 @@
 
 import { useId, type CSSProperties, type ReactNode } from "react";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
+import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
 
 /**
@@ -156,23 +157,27 @@ function PillButton({ children, href }: { children: ReactNode; href?: string }) 
   );
 }
 
-/** Fotovervanger: een boog met het streeppatroon en een strikje. */
-function SweetPhoto() {
+/** Fotovervanger: een boog met het streeppatroon en een strikje; met een echte foto vult die de boog. */
+function SweetPhoto({ src }: { src?: string }) {
   return (
     <div
       className="relative mx-auto mt-7 aspect-[3/4] w-[68%] overflow-hidden"
       style={{
-        ...SWEET_STRIPES,
+        ...(src ? { background: col("surfaceAlt") } : SWEET_STRIPES),
         borderRadius: "50% 50% 0.8rem 0.8rem / 34cqw 34cqw 0.8rem 0.8rem",
         boxShadow: `0 0 0 0.3rem ${col("surface")}, 0 0 0 0.45rem ${col("surfaceAlt")}`,
       }}
-      aria-hidden="true"
+      aria-hidden={src ? undefined : true}
     >
-      <span className="absolute inset-0 grid place-items-center">
-        <span className="rounded-full p-3" style={{ background: col("surface") }}>
-          <Bow size={26} />
+      {src ? (
+        <StoryImg src={src} />
+      ) : (
+        <span className="absolute inset-0 grid place-items-center">
+          <span className="rounded-full p-3" style={{ background: col("surface") }}>
+            <Bow size={26} />
+          </span>
         </span>
-      </span>
+      )}
     </div>
   );
 }
@@ -250,7 +255,7 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
       return (
         <ArchCard type="story">
           <Head eyebrow={block.eyebrow} title={block.title} />
-          <SweetPhoto />
+          <SweetPhoto src={block.photo} />
           <Body className="mt-8">{block.text}</Body>
         </ArchCard>
       );

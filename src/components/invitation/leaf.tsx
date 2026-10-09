@@ -1,5 +1,6 @@
 "use client";
 
+import { StoryImg } from "./story-photo";
 import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
 import type { Block, BlockType, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
@@ -361,7 +362,7 @@ export function LeafBlockSection({ block, config }: { block: Block; config: Invi
               style={{ border: "1px solid color-mix(in srgb, var(--inv-accent) 50%, transparent)" }}
             />
             <div className="relative h-[13rem] overflow-hidden rounded-[1.1rem]">
-              <LeafPhoto />
+              {block.photo ? <StoryImg src={block.photo} /> : <LeafPhoto />}
             </div>
           </div>
           <p className={`mt-9 text-center ${body}`} style={{ color: col("muted") }}>

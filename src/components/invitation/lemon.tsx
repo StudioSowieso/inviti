@@ -2,6 +2,7 @@
 
 import { useId, type CSSProperties, type ReactNode } from "react";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
+import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
 
 /**
@@ -275,8 +276,8 @@ function PillButton({ children, href }: { children: ReactNode; href?: string }) 
   );
 }
 
-/** Fotovervanger: een waterverf-achtig vlak met een gestreepte rand en een citroentak. */
-function LemonPhoto() {
+/** Fotovervanger: een waterverf-achtig vlak met een gestreepte rand en een citroentak; met een echte foto vult die het kader. */
+function LemonPhoto({ src }: { src?: string }) {
   return (
     <div
       className="relative mx-auto mt-7 aspect-[4/5] w-[72%] overflow-hidden"
@@ -284,10 +285,16 @@ function LemonPhoto() {
         background: `radial-gradient(120% 90% at 30% 20%, color-mix(in srgb, ${col("background")} 70%, white), ${col("background")})`,
         boxShadow: `0 0 0 0.3rem ${col("surface")}, 0 0 0 0.4rem ${BLUE}`,
       }}
-      aria-hidden="true"
+      aria-hidden={src ? undefined : true}
     >
-      <LemonBranch className="absolute -top-[4%] -left-[6%] w-[118%]" />
-      <LemonBranch className="absolute -right-[8%] -bottom-[6%] w-[70%]" flip style={{ transform: "scale(-1,-1)" }} />
+      {src ? (
+        <StoryImg src={src} />
+      ) : (
+        <>
+          <LemonBranch className="absolute -top-[4%] -left-[6%] w-[118%]" />
+          <LemonBranch className="absolute -right-[8%] -bottom-[6%] w-[70%]" flip style={{ transform: "scale(-1,-1)" }} />
+        </>
+      )}
     </div>
   );
 }
@@ -357,7 +364,7 @@ export function LemonBlockSection({ block, config }: { block: Block; config: Inv
       return (
         <Card type="story">
           <Head eyebrow={block.eyebrow} title={block.title} />
-          <LemonPhoto />
+          <LemonPhoto src={block.photo} />
           <Body className="mt-8">{block.text}</Body>
         </Card>
       );

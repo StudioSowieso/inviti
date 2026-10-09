@@ -1,5 +1,6 @@
 "use client";
 
+import { StoryImg } from "./story-photo";
 import { useId, useMemo, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
 import { useCountdown } from "./use-countdown";
@@ -444,7 +445,7 @@ export function NatureBlockSection({
         <NSection type="story" bg="background" index={index}>
           <SectionHead eyebrow={block.eyebrow} title={block.title} />
           <div className="relative -mx-7 mt-8 h-[13.5rem] overflow-hidden">
-            <NaturePhoto tone="soft" />
+            {block.photo ? <StoryImg src={block.photo} /> : <NaturePhoto tone="soft" />}
             <TornEdge fill={col("background")} seed={index * 3 + 5} flip className="top-0" />
             <TornEdge fill={col("background")} seed={index * 3 + 7} className="bottom-0" />
           </div>

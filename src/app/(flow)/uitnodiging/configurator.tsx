@@ -33,7 +33,9 @@ import type {
   InvitationTheme,
   ProgramItem,
 } from "@/lib/invitation/types";
+import { PHOTO_BUCKET } from "@/lib/invitation/defaults";
 import { applyPalette, validPalette } from "@/lib/invitation/palettes";
+import { createClient } from "@/lib/supabase/client";
 import { saveInvitation } from "./actions";
 
 type Tab = "thema" | "animatie" | "details" | "blokken";
@@ -716,6 +718,125 @@ function Row({ children }: { children: ReactNode }) {
   return <div className="grid gap-4 sm:grid-cols-2">{children}</div>;
 }
 
+// ---------- Foto uploaden ----------
+
+const MAX_PHOTO_EDGE = 1600;
+
+/** Verkleint de foto in de browser (langste zijde max. 1600 px, JPEG), zodat uploaden snel gaat. */
+async function preparePhoto(file: File): Promise<Blob> {
+  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+  const scale = Math.min(1, MAX_PHOTO_EDGE / Math.max(bitmap.width, bitmap.height));
+  const w = Math.max(1, Math.round(bitmap.width * scale));
+  const h = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("canvas");
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close();
+  return new Promise((resolve, reject) =>
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("blob"))), "image/jpeg", 0.85),
+  );
+}
+
+function PhotoField({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  async function pick(file: File | undefined) {
+    if (!file) return;
+    setError(null);
+    if (!file.type.startsWith("image/")) {
+      setError("Kies een afbeelding (JPG, PNG of WebP).");
+      return;
+    }
+    if (file.size > 30 * 1024 * 1024) {
+      setError("Deze foto is te groot (maximaal 30 MB).");
+      return;
+    }
+    setBusy(true);
+    try {
+      const blob = await preparePhoto(file);
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("niet ingelogd");
+      const path = `${user.id}/story-${Date.now()}.jpg`;
+      const { error: uploadError } = await supabase.storage
+        .from(PHOTO_BUCKET)
+        .upload(path, blob, { contentType: "image/jpeg", cacheControl: "31536000", upsert: false });
+      if (uploadError) throw uploadError;
+      onChange(supabase.storage.from(PHOTO_BUCKET).getPublicUrl(path).data.publicUrl);
+    } catch (e) {
+      console.error("[photo upload]", e);
+      setError("Uploaden is niet gelukt. Probeer het opnieuw of kies een andere foto (JPG, PNG of WebP).");
+    } finally {
+      setBusy(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
+
+  return (
+    <div>
+      <span className="mb-2 block text-sm font-medium">Foto</span>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="sr-only"
+        onChange={(e) => pick(e.target.files?.[0])}
+        tabIndex={-1}
+      />
+      {value ? (
+        <div className="flex items-center gap-4 rounded-2xl border border-line bg-paper p-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={value} alt="Gekozen foto" className="h-20 w-28 shrink-0 rounded-xl object-cover" />
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => inputRef.current?.click()}
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-4 py-2 text-sm font-medium hover:bg-cream disabled:opacity-50"
+            >
+              {busy ? "Uploaden…" : "Andere foto"}
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => onChange("")}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-clay hover:bg-blush/60 disabled:opacity-50"
+            >
+              <TrashIcon width={16} height={16} /> Verwijderen
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          disabled={busy}
+          onClick={() => inputRef.current?.click()}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-line bg-paper px-4 py-6 text-sm font-medium text-muted transition hover:bg-cream hover:text-ink disabled:opacity-60"
+        >
+          <PlusIcon width={16} height={16} /> {busy ? "Uploaden…" : "Foto uploaden"}
+        </button>
+      )}
+      <p className="mt-2 text-xs text-muted">
+        Verschijnt in het blok "Ons verhaal". Vergeet niet op te slaan; een foto in liggend of staand formaat past zich aan.
+      </p>
+      {error && (
+        <p role="alert" className="mt-2 text-xs text-clay">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
 // ---------- Velden per blok ----------
 
 function BlockFields({ block, onChange }: { block: Block; onChange: (p: Record<string, unknown>) => void }) {
@@ -739,7 +860,7 @@ function BlockFields({ block, onChange }: { block: Block; onChange: (p: Record<s
             <Input label="Titel" value={block.title} onChange={(v) => onChange({ title: v })} />
           </Row>
           <TextArea label="Jullie verhaal" value={block.text} onChange={(v) => onChange({ text: v })} />
-          <p className="text-xs text-muted">Foto's toevoegen volgt binnenkort.</p>
+          <PhotoField value={block.photo ?? ""} onChange={(url) => onChange({ photo: url })} />
         </>
       );
 

@@ -1,9 +1,18 @@
+import { SUPABASE_URL } from "@/lib/supabase/config";
 import type {
   Block,
   DresscodeBlock,
   InvitationConfig,
   ProgramItem,
 } from "./types";
+
+export const PHOTO_BUCKET = "invitation-photos";
+const PHOTO_PREFIX = `${SUPABASE_URL}/storage/v1/object/public/${PHOTO_BUCKET}/`;
+
+/** Alleen foto's uit onze eigen bucket worden geaccepteerd; al het andere wordt leeg. */
+export function photoUrl(value: unknown): string {
+  return typeof value === "string" && value.startsWith(PHOTO_PREFIX) && value.length < 400 && !/[\s"'<>]/.test(value) ? value : "";
+}
 
 export const MOVABLE_TYPES = ["countdown", "story", "program", "location", "dresscode", "rsvp"] as const;
 
@@ -100,6 +109,7 @@ function normalizeBlock(base: Block, raw: Record<string, unknown>): Block {
         eyebrow: str(raw.eyebrow, base.eyebrow, 80),
         title: str(raw.title, base.title, 120),
         text: str(raw.text, base.text),
+        photo: photoUrl(raw.photo),
       };
     case "program": {
       const items = Array.isArray(raw.items)

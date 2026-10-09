@@ -18,6 +18,7 @@ import type {
 } from "@/lib/invitation/types";
 import { LeafBlockSection } from "./leaf";
 import { ModernBlockSection } from "./modern";
+import { StoryImg } from "./story-photo";
 import { LEMON_STRIPES, LemonBlockSection } from "./lemon";
 import { LemonEnvelope } from "./lemon-envelope";
 import { SWEET_STRIPES, SweetBlockSection } from "./sweet";
@@ -478,7 +479,13 @@ function BlockSection({ block, config }: { block: Block; config: InvitationConfi
         <Section type="story" bg="background">
           <SectionHead eyebrow={block.eyebrow} title={block.title} />
           <div className="mt-6">
-            <Photo label="Moment uit ons verhaal" ratio="1.46" />
+            {block.photo ? (
+              <div className="relative w-full overflow-hidden" style={{ aspectRatio: "1.46" }}>
+                <StoryImg src={block.photo} />
+              </div>
+            ) : (
+              <Photo label="Moment uit ons verhaal" ratio="1.46" />
+            )}
           </div>
           <p className="mt-5 text-center text-[0.68rem] leading-relaxed whitespace-pre-line" style={{ color: col("muted") }}>
             {block.text}
