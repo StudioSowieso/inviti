@@ -13,6 +13,17 @@ import type { InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 const col = (key: keyof ThemeColors) => `var(--inv-${key})`;
 const heading = { fontFamily: "var(--inv-heading)" } satisfies CSSProperties;
 
+/** De kaart komt uit de envelop (0-40%) en groeit daarna uit tot het hele scherm (40-100%), waarna hij vervaagt. */
+const CARD_KEYFRAMES = `
+@keyframes classic-card-out {
+  0% { top: 22%; left: 50%; width: min(66%, 22rem); height: 50%; opacity: 1; }
+  38% { top: 6%; left: 50%; width: min(66%, 22rem); height: 50%; opacity: 1; }
+  88% { top: 0%; left: 50%; width: 100%; height: 100%; opacity: 1; }
+  100% { top: 0%; left: 50%; width: 100%; height: 100%; opacity: 0; }
+}`;
+const CARD_MS = 1150;
+const CARD_DELAY = 250;
+
 const FLAP = 54; // hoogte van de klep in % van het scherm
 const EASE = "cubic-bezier(.6,0,.2,1)";
 
@@ -36,45 +47,50 @@ export function ClassicEnvelope({
       className="absolute inset-0 z-30 overflow-hidden"
       style={{ perspective: "1600px", pointerEvents: opening ? "none" : "auto" }}
     >
-      <div
-        className="absolute inset-0"
-        style={{
+      {/* Achterlaag: binnenkant van de envelop */}
+      <div className="absolute inset-0 z-[1]" style={{
           transform: opening ? "translateY(104%)" : "none",
           transition: `transform 650ms ${EASE} ${opening ? "800ms" : "0ms"}`,
-        }}
-      >
+        }}>
         {/* Achterkant van de envelop */}
         <div className="absolute inset-0" style={{ background: `color-mix(in srgb, ${base} 80%, black)` }} />
+      </div>
 
-        {/* De uitnodigingskaart in de envelop: schuift omhoog als de klep openklapt */}
-        <div
-          className="absolute left-1/2 z-[1] flex w-[66%] max-w-[22rem] flex-col items-center justify-center text-center"
-          style={{
-            top: "22%",
-            height: "50%",
-            background: paper,
-            boxShadow: "0 8px 22px -12px rgb(0 0 0 / .45)",
-            transform: `translate(-50%, ${opening ? "-18%" : "0"})`,
-            opacity: opening ? 0 : 1,
-            transition: `transform 600ms ${EASE} ${opening ? "260ms" : "0ms"}, opacity 300ms ease ${opening ? "950ms" : "0ms"}`,
-          }}
-        >
-          <p className="text-[0.5rem] tracking-[0.3em] uppercase" style={{ color: col("muted") }}>
-            Wij gaan trouwen
-          </p>
-          <p className="mt-3 text-[1.35rem] leading-tight tracking-[0.04em]" style={{ ...heading, color: col("text") }}>
-            {config.partner1}
-            <span className="block text-[0.9rem] italic" style={{ color: col("accent") }}>
-              &amp;
-            </span>
-            {config.partner2}
-          </p>
-          <span className="mt-4 block h-px w-8" style={{ background: col("accent") }} />
-          <p className="mt-3 text-[0.5rem] tracking-[0.22em] uppercase" style={{ color: col("muted") }}>
-            {formatDateUpper(config.date)}
-          </p>
-        </div>
+      {/* De uitnodigingskaart: zit eerst in de envelop, komt eruit en vergroot tot de landingspagina */}
+      <div
+        className="absolute z-[2] flex -translate-x-1/2 flex-col items-center justify-center overflow-hidden text-center"
+        style={{
+          top: "22%",
+          left: "50%",
+          width: "min(66%, 22rem)",
+          height: "50%",
+          background: paper,
+          boxShadow: "0 8px 22px -12px rgb(0 0 0 / .45)",
+          animation: opening ? `classic-card-out ${CARD_MS}ms ${EASE} ${CARD_DELAY}ms both` : undefined,
+        }}
+      >
+        <style>{CARD_KEYFRAMES}</style>
+        <p className="text-[0.5rem] tracking-[0.3em] uppercase" style={{ color: col("muted") }}>
+          Wij gaan trouwen
+        </p>
+        <p className="mt-3 text-[1.35rem] leading-tight tracking-[0.04em]" style={{ ...heading, color: col("text") }}>
+          {config.partner1}
+          <span className="block text-[0.9rem] italic" style={{ color: col("accent") }}>
+            &amp;
+          </span>
+          {config.partner2}
+        </p>
+        <span className="mt-4 block h-px w-8" style={{ background: col("accent") }} />
+        <p className="mt-3 text-[0.5rem] tracking-[0.22em] uppercase" style={{ color: col("muted") }}>
+          {formatDateUpper(config.date)}
+        </p>
+      </div>
 
+      {/* Voorlaag: voorkant en klep, ligt boven de kaart */}
+      <div className="absolute inset-0 z-[3]" style={{
+          transform: opening ? "translateY(104%)" : "none",
+          transition: `transform 650ms ${EASE} ${opening ? "800ms" : "0ms"}`,
+        }}>
         {/* Voorkant: zijkleppen en onderklep met vouwlijnen */}
         <div
           className="absolute inset-0 z-[2]"
