@@ -100,7 +100,7 @@ export function LemonEnvelope({ config, opening, onOpen }: Props) {
             {config.partner1} &amp; {config.partner2}
           </p>
           <p className="mt-3 text-[0.58rem] tracking-[0.3em] uppercase" style={{ color: col("text") }}>
-            Wij gaan trouwen · tik op de citroen
+            Tik op de citroen
           </p>
         </div>
 

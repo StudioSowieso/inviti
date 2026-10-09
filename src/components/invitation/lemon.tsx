@@ -32,18 +32,24 @@ const MONTHS = [
   "december",
 ];
 
-/** Verticale brede strepen in blauw met een dun crème randje; het patroon is gecentreerd, zodat beide randen gelijk zijn. */
+/** Verticale brede strepen in blauw met een dun crème randje; het patroon is gecentreerd en de buitenste randen zijn altijd geel, zodat het rustiger oogt. */
 export const LEMON_STRIPES: CSSProperties = {
   backgroundColor: col("background"),
   backgroundImage: `linear-gradient(90deg,
-    transparent 0 0.52rem,
-    ${col("surface")} 0.52rem 0.6rem,
-    ${BLUE} 0.6rem 1.6rem,
-    ${col("surface")} 1.6rem 1.68rem,
-    transparent 1.68rem 100%)`,
-  backgroundSize: "2.2rem 100%",
-  backgroundPosition: "center top",
-  backgroundRepeat: "repeat-x",
+      ${col("background")} 0 1.1rem,
+      ${col("surface")} 1.1rem 1.18rem,
+      transparent 1.18rem calc(100% - 1.18rem),
+      ${col("surface")} calc(100% - 1.18rem) calc(100% - 1.1rem),
+      ${col("background")} calc(100% - 1.1rem) 100%),
+    linear-gradient(90deg,
+      transparent 0 0.52rem,
+      ${col("surface")} 0.52rem 0.6rem,
+      ${BLUE} 0.6rem 1.6rem,
+      ${col("surface")} 1.6rem 1.68rem,
+      transparent 1.68rem 100%)`,
+  backgroundSize: "100% 100%, 2.2rem 100%",
+  backgroundPosition: "0 0, center top",
+  backgroundRepeat: "no-repeat, repeat-x",
 };
 
 /** Smalle strepen voor de boven- en onderrand van een kaart. */
