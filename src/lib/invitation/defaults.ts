@@ -65,6 +65,7 @@ export function defaultConfig(prefill: Prefill = {}): InvitationConfig {
     time: "15:00",
     city: "Utrecht",
     animation: "envelope",
+    palette: "standaard",
     blocks: defaultBlocks(),
   };
 }
@@ -187,6 +188,7 @@ export function normalizeConfig(raw: unknown, prefill: Prefill = {}): Invitation
     time,
     city: str(raw.city, base.city, 80),
     animation: raw.animation === "none" ? "none" : "envelope",
+    palette: typeof raw.palette === "string" && /^[a-z0-9-]{1,30}$/.test(raw.palette) ? raw.palette : "standaard",
     blocks: [...hero, ...middle, ...footer],
   };
 }

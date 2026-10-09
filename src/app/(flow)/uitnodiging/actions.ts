@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { normalizeConfig } from "@/lib/invitation/defaults";
+import { validPalette } from "@/lib/invitation/palettes";
 import { getThemes } from "@/lib/invitation/themes";
 import { createClient } from "@/lib/supabase/server";
 
@@ -57,6 +58,8 @@ export async function saveInvitation(themeSlug: string, rawConfig: unknown): Pro
   }
 
   const config = normalizeConfig(rawConfig);
+  const theme = themes.find((t) => t.slug === themeSlug)!;
+  config.palette = validPalette(theme, config.palette);
   const { data, error } = await supabase
     .from("invitations")
     .update({ theme_slug: themeSlug, config })

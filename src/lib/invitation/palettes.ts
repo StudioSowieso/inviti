@@ -1,0 +1,199 @@
+import type { InvitationTheme, ThemeColors, ThemePalette } from "./types";
+
+/** Slug van de originele kleuren van een thema. */
+export const DEFAULT_PALETTE = "standaard";
+
+type PaletteDef = { slug: string; title: string; colors: Partial<ThemeColors> };
+
+/**
+ * Handgekozen kleuropties per thema. De eerste optie ("Standaard") zijn altijd de kleuren van het
+ * thema zelf (uit Sanity); de andere twee overschrijven alleen de kleuren die hier staan.
+ * Elk palet is een complete set: achtergrond, vlakken, tekst, accent, knop, afsluiting en envelop
+ * horen bij elkaar, zodat een kleurkeuze het hele thema meeneemt.
+ */
+const EXTRA_PALETTES: Record<string, PaletteDef[]> = {
+  "creme-taupe": [
+    {
+      slug: "salie",
+      title: "Salie",
+      colors: {
+        background: "#f1f2ea",
+        surface: "#f8f9f3",
+        surfaceAlt: "#dfe4d6",
+        text: "#262b24",
+        muted: "#727a6c",
+        line: "#d3d9c8",
+        accent: "#8f9c78",
+        buttonBackground: "#3d4a38",
+        buttonText: "#f1f2ea",
+        footerBackground: "#3d4a38",
+        footerText: "#f1f2ea",
+        envelope: "#d9dfcb",
+        envelopeCard: "#f8f9f3",
+      },
+    },
+    {
+      slug: "terracotta",
+      title: "Terracotta",
+      colors: {
+        background: "#f6eee8",
+        surface: "#fbf6f1",
+        surfaceAlt: "#ecd8cb",
+        text: "#33261f",
+        muted: "#85705f",
+        line: "#e2cfc2",
+        accent: "#b9694a",
+        buttonBackground: "#6b3a28",
+        buttonText: "#f6eee8",
+        footerBackground: "#6b3a28",
+        footerText: "#f6eee8",
+        envelope: "#e8cdbc",
+        envelopeCard: "#fbf6f1",
+      },
+    },
+  ],
+  "bosgroen-blush": [
+    {
+      slug: "marine",
+      title: "Marine",
+      colors: {
+        background: "#f2f3f6",
+        surface: "#f8f9fb",
+        surfaceAlt: "#d9dfe8",
+        text: "#1c2230",
+        muted: "#6a7385",
+        line: "#cdd4e0",
+        accent: "#6f86ad",
+        buttonBackground: "#25365a",
+        buttonText: "#f8f9fb",
+        footerBackground: "#1d2a47",
+        footerText: "#dde4f0",
+        envelope: "#25365a",
+        envelopeCard: "#dde4f0",
+      },
+    },
+    {
+      slug: "bordeaux",
+      title: "Bordeaux",
+      colors: {
+        background: "#f8f1ee",
+        surface: "#fcf8f6",
+        surfaceAlt: "#ead6d3",
+        text: "#2b1c1e",
+        muted: "#7f6a6c",
+        line: "#e0cdca",
+        accent: "#a85a62",
+        buttonBackground: "#5e2330",
+        buttonText: "#fcf8f6",
+        footerBackground: "#4a1b26",
+        footerText: "#f1d9d6",
+        envelope: "#5e2330",
+        envelopeCard: "#f1d9d6",
+      },
+    },
+  ],
+  nature: [
+    {
+      slug: "blush",
+      title: "Blush",
+      colors: {
+        background: "#f6ede8",
+        surface: "#fbf5f0",
+        surfaceAlt: "#e6d3d2",
+        text: "#4f403d",
+        muted: "#8a7571",
+        line: "#e3d2c9",
+        accent: "#b48078",
+        buttonBackground: "#9a6a63",
+        buttonText: "#fbf5f0",
+        footerBackground: "#ecdcd2",
+        footerText: "#4f403d",
+        envelope: "#b08a82",
+        envelopeCard: "#fbf5f0",
+      },
+    },
+    {
+      slug: "blauw",
+      title: "Lucht",
+      colors: {
+        background: "#eff0ec",
+        surface: "#f5f6f2",
+        surfaceAlt: "#d3dde6",
+        text: "#3c4651",
+        muted: "#6f7b87",
+        line: "#d3d8d4",
+        accent: "#7b93a8",
+        buttonBackground: "#5f7890",
+        buttonText: "#f5f6f2",
+        footerBackground: "#dfe3e0",
+        footerText: "#3c4651",
+        envelope: "#7790a6",
+        envelopeCard: "#f5f6f2",
+      },
+    },
+  ],
+};
+
+// ---------- Automatische varianten voor thema's die geen handgekozen paletten hebben ----------
+
+function hexToRgb(hex: string): [number, number, number] {
+  let h = hex.replace("#", "");
+  if (h.length === 3) h = h.split("").map((c) => c + c).join("");
+  const n = parseInt(h, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+function rgbToHex(r: number, g: number, b: number) {
+  const to = (v: number) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+  return `#${to(r)}${to(g)}${to(b)}`;
+}
+
+function rotateHue(hex: string, degrees: number) {
+  const [r0, g0, b0] = hexToRgb(hex).map((v) => v / 255);
+  const max = Math.max(r0, g0, b0);
+  const min = Math.min(r0, g0, b0);
+  const l = (max + min) / 2;
+  const d = max - min;
+  if (d === 0) return hex;
+  const s = d / (1 - Math.abs(2 * l - 1));
+  let h =
+    max === r0 ? ((g0 - b0) / d) % 6 : max === g0 ? (b0 - r0) / d + 2 : (r0 - g0) / d + 4;
+  h = (h * 60 + degrees + 360) % 360;
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  const [r, g, b] =
+    h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+  return rgbToHex((r + m) * 255, (g + m) * 255, (b + m) * 255);
+}
+
+function shifted(colors: ThemeColors, degrees: number): ThemeColors {
+  const out = { ...colors };
+  for (const key of Object.keys(colors) as (keyof ThemeColors)[]) out[key] = rotateHue(colors[key], degrees);
+  return out;
+}
+
+/** De drie kleuropties van een thema; de eerste is altijd het thema zelf. */
+export function buildPalettes(slug: string, colors: ThemeColors): ThemePalette[] {
+  const base: ThemePalette = { slug: DEFAULT_PALETTE, title: "Standaard", colors };
+  const extra = EXTRA_PALETTES[slug];
+  if (extra) {
+    return [base, ...extra.map((p) => ({ slug: p.slug, title: p.title, colors: { ...colors, ...p.colors } }))];
+  }
+  return [
+    base,
+    { slug: "warm", title: "Warm", colors: shifted(colors, -45) },
+    { slug: "koel", title: "Koel", colors: shifted(colors, 60) },
+  ];
+}
+
+/** Het thema met de gekozen kleuroptie; een onbekende of lege keuze geeft de standaardkleuren. */
+export function applyPalette(theme: InvitationTheme, paletteSlug: string | null | undefined): InvitationTheme {
+  const palette = theme.palettes.find((p) => p.slug === paletteSlug) ?? theme.palettes[0];
+  return palette ? { ...theme, colors: palette.colors } : theme;
+}
+
+/** Houdt de keuze alleen als het thema die kleuroptie heeft. */
+export function validPalette(theme: InvitationTheme, paletteSlug: string | null | undefined) {
+  return theme.palettes.some((p) => p.slug === paletteSlug) ? (paletteSlug as string) : DEFAULT_PALETTE;
+}

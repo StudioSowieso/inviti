@@ -39,10 +39,10 @@ const HEART =
 /** Gipsachtige penseelstreken in crème en beige, met reliëf. */
 function PlasterBackground({ id }: { id: string }) {
   const strokes = [
-    { d: "M-30 128C80 68 190 158 350 78", w: 62, c: "#ece4d5" },
-    { d: "M-30 206C110 166 230 236 350 176", w: 44, c: "#fcfaf5" },
-    { d: "M-30 468C100 424 230 500 350 436", w: 70, c: "#e9e0d0" },
-    { d: "M-30 528C110 494 240 548 350 508", w: 40, c: "#fdfbf7" },
+    { d: "M-30 128C80 68 190 158 350 78", w: 62, c: "color-mix(in srgb, var(--inv-background) 90%, var(--inv-text) 10%)" },
+    { d: "M-30 206C110 166 230 236 350 176", w: 44, c: "color-mix(in srgb, var(--inv-background) 35%, white 65%)" },
+    { d: "M-30 468C100 424 230 500 350 436", w: 70, c: "color-mix(in srgb, var(--inv-background) 86%, var(--inv-text) 14%)" },
+    { d: "M-30 528C110 494 240 548 350 508", w: 40, c: "color-mix(in srgb, var(--inv-background) 25%, white 75%)" },
   ];
   return (
     <svg
@@ -68,7 +68,7 @@ function PlasterBackground({ id }: { id: string }) {
         {strokes.map((s, i) => (
           <g key={i}>
             <path d={s.d} stroke="#a89c86" strokeOpacity=".16" strokeWidth={s.w + 3} transform="translate(0 5)" />
-            <path d={s.d} stroke={s.c} strokeWidth={s.w} />
+            <path d={s.d} style={{ stroke: s.c }} strokeWidth={s.w} />
           </g>
         ))}
       </g>
@@ -93,7 +93,7 @@ function Lily({ id }: { id: string }) {
           <stop offset="1" stopColor="#e6dcc2" />
         </linearGradient>
       </defs>
-      <path d="M21 56C18 58 20 62 19 65" fill="none" stroke="#8b9267" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M21 56C18 58 20 62 19 65" fill="none" style={{ stroke: "var(--inv-accent)" }} strokeWidth="1.4" strokeLinecap="round" />
       <path
         d="M21 56C19 45 8 37 6 21C5 13 9 6 13 4C14 11 20 15 26 13C32 11 34 7 34 5C38 15 36 29 30 39C26 46 22 50 21 56Z"
         fill={`url(#lily${id})`}

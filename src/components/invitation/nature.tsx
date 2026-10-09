@@ -251,7 +251,15 @@ function programIcon(title: string) {
 /** Zolang er geen foto is: een zacht heuvellandschap in de kleuren van het thema. */
 export function NaturePhoto({ tone = "warm", className = "" }: { tone?: "warm" | "soft"; className?: string }) {
   const id = useId().replace(/:/g, "");
-  const sky = tone === "warm" ? ["#f0e3c9", "#d9c59c"] : ["#e6e8de", "#c8d0bd"];
+  // Alle kleuren volgen het gekozen kleurenpalet via de --inv-variabelen van de uitnodiging.
+  const bg = "var(--inv-background)";
+  const acc = "var(--inv-accent)";
+  const sky =
+    tone === "warm"
+      ? [`color-mix(in srgb, ${bg} 82%, ${acc} 18%)`, `color-mix(in srgb, ${bg} 55%, ${acc} 45%)`]
+      : [`color-mix(in srgb, ${bg} 90%, ${acc} 10%)`, `color-mix(in srgb, ${bg} 68%, ${acc} 32%)`];
+  const hill = (pct: number, dark = 0) =>
+    `color-mix(in srgb, color-mix(in srgb, ${acc} ${pct}%, white) ${100 - dark}%, black ${dark}%)`;
   return (
     <svg
       aria-hidden="true"
@@ -261,8 +269,8 @@ export function NaturePhoto({ tone = "warm", className = "" }: { tone?: "warm" |
     >
       <defs>
         <linearGradient id={`sky${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor={sky[0]} />
-          <stop offset="1" stopColor={sky[1]} />
+          <stop offset="0" style={{ stopColor: sky[0] }} />
+          <stop offset="1" style={{ stopColor: sky[1] }} />
         </linearGradient>
         <radialGradient id={`sun${id}`} cx=".7" cy=".36" r=".5">
           <stop offset="0" stopColor="#fff7dd" stopOpacity=".95" />
@@ -271,10 +279,10 @@ export function NaturePhoto({ tone = "warm", className = "" }: { tone?: "warm" |
       </defs>
       <rect width="400" height="300" fill={`url(#sky${id})`} />
       <rect width="400" height="300" fill={`url(#sun${id})`} />
-      <path d="M0 168C60 138 112 150 172 165S300 128 400 150V300H0Z" fill="#aab08c" />
-      <path d="M0 200C70 170 140 190 212 205S340 184 400 196V300H0Z" fill="#868f64" />
-      <path d="M0 246C80 220 160 240 250 250S360 232 400 240V300H0Z" fill="#646f48" />
-      <g fill="#566040" opacity=".85">
+      <path d="M0 168C60 138 112 150 172 165S300 128 400 150V300H0Z" style={{ fill: hill(70) }} />
+      <path d="M0 200C70 170 140 190 212 205S340 184 400 196V300H0Z" style={{ fill: hill(100) }} />
+      <path d="M0 246C80 220 160 240 250 250S360 232 400 240V300H0Z" style={{ fill: hill(100, 22) }} />
+      <g style={{ fill: hill(100, 38) }} opacity=".85">
         <ellipse cx="58" cy="222" rx="7" ry="17" />
         <ellipse cx="74" cy="226" rx="5" ry="12" />
         <ellipse cx="338" cy="214" rx="6" ry="15" />

@@ -1,4 +1,5 @@
 import { FALLBACK_THEMES } from "./fallback-themes";
+import { buildPalettes } from "./palettes";
 import { DEFAULT_BODY_FONT, DEFAULT_HEADING_FONT, DEFAULT_SCRIPT_FONT, resolveFont } from "./fonts";
 import type { ButtonShape, InvitationTheme, ThemeColors, ThemeStyle } from "./types";
 
@@ -51,6 +52,7 @@ function normalizeTheme(raw: unknown): InvitationTheme | null {
     title: typeof r.title === "string" && r.title ? r.title : r.slug,
     description: typeof r.description === "string" ? r.description : "",
     colors,
+    palettes: buildPalettes(r.slug, colors),
     headingFont: resolveFont(typeof r.headingFont === "string" ? r.headingFont : "", DEFAULT_HEADING_FONT),
     bodyFont: resolveFont(typeof r.bodyFont === "string" ? r.bodyFont : "", DEFAULT_BODY_FONT),
     scriptFont: resolveFont(typeof r.scriptFont === "string" ? r.scriptFont : "", DEFAULT_SCRIPT_FONT),

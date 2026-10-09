@@ -23,12 +23,22 @@ export type ThemeColors = {
   envelopeCard: string;
 };
 
+/** Een kleuroptie van een thema: een complete set kleuren die bij elkaar past. */
+export type ThemePalette = {
+  slug: string;
+  title: string;
+  colors: ThemeColors;
+};
+
 /** Een thema zoals het uit Sanity komt (of uit de ingebouwde fallback). */
 export type InvitationTheme = {
   slug: string;
   title: string;
   description: string;
+  /** Standaardkleuren; de gekozen kleuroptie (zie `palettes`) vervangt deze bij het renderen. */
   colors: ThemeColors;
+  /** Drie kleuropties, de eerste is "standaard" (= `colors`). */
+  palettes: ThemePalette[];
   headingFont: string;
   bodyFont: string;
   /** Sierlettertype voor namen en afsluiting (alleen zichtbaar bij style "nature"). */
@@ -98,6 +108,8 @@ export type InvitationConfig = {
   time: string;
   city: string;
   animation: InvitationAnimation;
+  /** Gekozen kleuroptie van het thema; "standaard" of onbekend geeft de basiskleuren. */
+  palette: string;
   /** Volgorde van de blokken; hero staat altijd eerst en footer altijd laatst. */
   blocks: Block[];
 };

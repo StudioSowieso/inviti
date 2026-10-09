@@ -33,6 +33,7 @@ import type {
   InvitationTheme,
   ProgramItem,
 } from "@/lib/invitation/types";
+import { applyPalette, validPalette } from "@/lib/invitation/palettes";
 import { saveInvitation } from "./actions";
 
 type Tab = "thema" | "animatie" | "details" | "blokken";
@@ -74,7 +75,15 @@ export function Configurator({
   const savedSnapshot = useRef(snapshot(initialThemeSlug, initialConfig));
   const dirty = snapshot(themeSlug, config) !== savedSnapshot.current;
 
-  const theme = useMemo(() => themes.find((t) => t.slug === themeSlug) ?? themes[0], [themes, themeSlug]);
+  const baseTheme = useMemo(() => themes.find((t) => t.slug === themeSlug) ?? themes[0], [themes, themeSlug]);
+  const theme = useMemo(() => applyPalette(baseTheme, config.palette), [baseTheme, config.palette]);
+
+  /** Kiest een thema met een kleuroptie; een eerder gekozen kleur blijft alleen als het thema die heeft. */
+  function chooseTheme(t: InvitationTheme, paletteSlug?: string) {
+    setThemeSlug(t.slug);
+    setConfig((c) => ({ ...c, palette: validPalette(t, paletteSlug ?? c.palette) }));
+    setStatus({ kind: "idle" });
+  }
   const activeBlocks = config.blocks.filter((b) => b.enabled);
   const inactiveBlocks = config.blocks.filter((b) => !b.enabled);
 
@@ -267,15 +276,10 @@ export function Configurator({
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                   {themes.map((t) => {
                     const selected = t.slug === themeSlug;
+                    const activePalette = selected ? validPalette(t, config.palette) : "standaard";
                     return (
-                      <button
+                      <div
                         key={t.slug}
-                        type="button"
-                        aria-pressed={selected}
-                        onClick={() => {
-                          setThemeSlug(t.slug);
-                          setStatus({ kind: "idle" });
-                        }}
                         className={`relative rounded-[1.4rem] border bg-paper p-3 text-left transition ${
                           selected ? "border-forest ring-2 ring-forest" : "border-line hover:border-clay/50"
                         }`}
@@ -285,10 +289,46 @@ export function Configurator({
                             <CheckIcon width={14} height={14} />
                           </span>
                         )}
-                        <ThemeThumb theme={t} />
-                        <span className="mt-3 block px-1 font-serif text-xl font-medium">{t.title}</span>
-                        {t.description && <span className="block px-1 pb-1 text-sm text-muted">{t.description}</span>}
-                      </button>
+                        <button
+                          type="button"
+                          aria-pressed={selected}
+                          onClick={() => chooseTheme(t)}
+                          className="block w-full text-left"
+                        >
+                          <ThemeThumb theme={applyPalette(t, activePalette)} />
+                          <span className="mt-3 block px-1 font-serif text-xl font-medium">{t.title}</span>
+                          {t.description && <span className="block px-1 pb-1 text-sm text-muted">{t.description}</span>}
+                        </button>
+                        <div className="mt-2 flex items-center gap-2 px-1 pb-1" role="group" aria-label={`Kleuren voor ${t.title}`}>
+                          <span className="mr-1 text-xs text-muted">Kleur</span>
+                          {t.palettes.map((p) => {
+                            const active = selected && activePalette === p.slug;
+                            return (
+                              <button
+                                key={p.slug}
+                                type="button"
+                                aria-pressed={active}
+                                aria-label={`${p.title} (${t.title})`}
+                                title={p.title}
+                                onClick={() => chooseTheme(t, p.slug)}
+                                className={`grid size-8 place-items-center rounded-full border transition ${
+                                  active ? "border-forest ring-2 ring-forest ring-offset-2 ring-offset-paper" : "border-line hover:border-clay/60"
+                                }`}
+                              >
+                                <span className="relative block size-5 overflow-hidden rounded-full" style={{ background: p.colors.background }}>
+                                  <span className="absolute inset-y-0 left-0 w-1/2" style={{ background: p.colors.accent }} />
+                                  <span className="absolute inset-y-0 right-0 w-1/2" style={{ background: p.colors.buttonBackground }} />
+                                </span>
+                              </button>
+                            );
+                          })}
+                          {selected && (
+                            <span className="ml-auto text-xs text-muted">
+                              {t.palettes.find((p) => p.slug === activePalette)?.title}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>

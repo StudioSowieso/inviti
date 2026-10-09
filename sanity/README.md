@@ -96,3 +96,11 @@ Een nieuwe stijl toevoegen vraagt dus een codewijziging, een nieuw thema met een
 - Kleuren zijn hex-codes (`#f4f0ea`). Lettertypes komen uit een vaste lijst; een nieuw lettertype toevoegen vraagt
   een kleine codewijziging in `src/lib/invitation/fonts.ts` én de lijst in `sanity/schemaTypes/invitationTheme.ts`.
 - Het bewerken van thema's raakt de gasten of uitnodigingsteksten van gebruikers niet.
+
+## Kleuropties per thema
+
+Elk thema heeft drie kleuropties: "Standaard" (de kleuren die je in Sanity instelt) en twee extra paletten.
+De extra paletten staan in `src/lib/invitation/palettes.ts` (per thema-slug). Een thema zonder eigen paletten
+krijgt automatisch een warme en een koele variant van de Sanity-kleuren. De gekozen optie wordt per uitnodiging
+opgeslagen in `config.palette`; er is dus geen Sanity-wijziging of databasemigratie nodig.
+

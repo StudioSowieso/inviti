@@ -1,3 +1,4 @@
+import { buildPalettes } from "./palettes";
 import type { InvitationTheme } from "./types";
 
 /**
@@ -5,7 +6,9 @@ import type { InvitationTheme } from "./types";
  * bereikbaar is. De slugs zijn gelijk aan de documenten in sanity/seed/themes.ndjson,
  * zodat een uitnodiging altijd naar hetzelfde thema blijft wijzen.
  */
-export const FALLBACK_THEMES: InvitationTheme[] = [
+type ThemeInput = Omit<InvitationTheme, "palettes">;
+
+const THEMES: ThemeInput[] = [
   {
     slug: "creme-taupe",
     title: "Crème & Taupe",
@@ -83,3 +86,8 @@ export const FALLBACK_THEMES: InvitationTheme[] = [
     style: "nature",
   },
 ];
+
+export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({
+  ...t,
+  palettes: buildPalettes(t.slug, t.colors),
+}));

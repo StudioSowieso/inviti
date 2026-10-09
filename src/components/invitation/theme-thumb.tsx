@@ -11,7 +11,13 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
     return (
       <div
         className="overflow-hidden rounded-xl border"
-        style={{ background: c.background, borderColor: c.line, color: c.text, ["--inv-accent" as string]: c.accent }}
+        style={{
+          background: c.background,
+          borderColor: c.line,
+          color: c.text,
+          ["--inv-accent" as string]: c.accent,
+          ["--inv-background" as string]: c.background,
+        }}
       >
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
         <div className="relative flex h-[5.75rem] flex-col items-center justify-end overflow-hidden pb-5 text-center text-white">
