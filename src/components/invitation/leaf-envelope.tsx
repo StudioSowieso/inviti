@@ -89,8 +89,8 @@ export function LeafEnvelope({ config, opening, onOpen }: Props) {
       <div
         className="absolute inset-0"
         style={{
-          transform: opening ? "translateY(104%)" : "none",
-          transition: `transform 650ms ${EASE} ${opening ? "800ms" : "0ms"}`,
+          transform: opening ? "translateY(165%)" : "none",
+          transition: `transform 800ms ${EASE} ${opening ? "800ms" : "0ms"}`,
         }}
       >
         {/* Achterkant */}
@@ -122,16 +122,25 @@ export function LeafEnvelope({ config, opening, onOpen }: Props) {
           <Edge x="r" y="b" data={EDGE_D} />
         </div>
 
-        {/* Namen op de voorkant */}
+        {/* Namen op de voorkant, op een effen kaartje zodat ze goed leesbaar zijn */}
         <div
           className="pointer-events-none absolute inset-x-0 z-[2] flex flex-col items-center px-6 text-center"
-          style={{ top: `${FLAP + 14}%`, opacity: opening ? 0 : 1, transition: "opacity 250ms ease" }}
+          style={{ top: `${FLAP + 12}%`, opacity: opening ? 0 : 1, transition: "opacity 250ms ease" }}
         >
-          <p className="text-[2.1rem] leading-none" style={{ ...script, color: col("text") }}>
-            {config.partner1} &amp; {config.partner2}
-          </p>
-          <div className="mt-6">
-            <Hint opening={opening} label="Tik om te openen" />
+          <div
+            className="flex w-full max-w-[17rem] flex-col items-center px-5 py-5"
+            style={{
+              background: col("surface"),
+              borderRadius: "1.25rem",
+              boxShadow: `0 0 0 1px ${hair}, 0 10px 24px rgb(0 0 0 / .16)`,
+            }}
+          >
+            <p className="text-[1.9rem] leading-tight" style={{ ...script, color: col("text") }}>
+              {config.partner1} &amp; {config.partner2}
+            </p>
+            <div className="mt-4">
+              <Hint opening={opening} label="Tik om te openen" />
+            </div>
           </div>
         </div>
 
