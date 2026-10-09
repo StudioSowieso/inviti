@@ -13,6 +13,7 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   "EB Garamond": { css2: "EB+Garamond:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
   Italiana: { css2: "Italiana", kind: "serif" },
   Inter: { css2: "Inter:wght@400;500;600", kind: "sans" },
+  "Josefin Sans": { css2: "Josefin+Sans:wght@300;400;600", kind: "sans" },
   Jost: { css2: "Jost:wght@400;500;600", kind: "sans" },
   "DM Sans": { css2: "DM+Sans:wght@400;500;600", kind: "sans" },
   Manrope: { css2: "Manrope:wght@400;500;600", kind: "sans" },
@@ -48,7 +49,7 @@ export function googleFontsHref(...names: string[]) {
   return `https://fonts.googleapis.com/css2?${families.join("&")}&display=swap`;
 }
 
-/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij style "nature", "leaf" en "modern"). */
+/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern" en "sweet"). */
 export function themeFonts(theme: InvitationTheme) {
   return [theme.headingFont, theme.bodyFont, ...(theme.style !== "classic" ? [theme.scriptFont] : [])];
 }

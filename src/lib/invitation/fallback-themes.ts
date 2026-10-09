@@ -112,6 +112,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "square",
     style: "modern",
   },
+  {
+    slug: "sweet",
+    title: "Sweet",
+    description:
+      "Lief en speels: gestreept behang in blauw en groen, witte boogkaarten, een strikje en cijfers met verloop.",
+    colors: {
+      background: "#cfdde0",
+      surface: "#ffffff",
+      surfaceAlt: "#d9e6e8",
+      text: "#3d5444",
+      muted: "#7b8c84",
+      line: "#d5e0e0",
+      accent: "#5e7d5e",
+      buttonBackground: "#587358",
+      buttonText: "#ffffff",
+      footerBackground: "#587358",
+      footerText: "#f2f6f0",
+      envelope: "#d3e0e3",
+      envelopeCard: "#ffffff",
+    },
+    headingFont: "DM Serif Display",
+    bodyFont: "Josefin Sans",
+    scriptFont: "Allura",
+    buttonShape: "pill",
+    style: "sweet",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

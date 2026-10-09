@@ -18,6 +18,7 @@ import type {
 } from "@/lib/invitation/types";
 import { LeafBlockSection } from "./leaf";
 import { ModernBlockSection } from "./modern";
+import { SWEET_STRIPES, SweetBlockSection } from "./sweet";
 import { ModernEnvelope } from "./modern-envelope";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
 import { NatureEnvelope } from "./nature-envelope";
@@ -160,6 +161,7 @@ export function InvitationView({
   const activeLabel = chapters.find((c) => c.type === active)?.label ?? "Welkom";
   const leaf = theme.style === "leaf";
   const modern = theme.style === "modern";
+  const sweet = theme.style === "sweet";
   // "nature" en "leaf" delen papiertextuur en de bijpassende envelop.
   const textured = theme.style === "nature" || leaf;
   // Alle stijlen behalve "classic" laten de navigatiebalk de knopkleuren van het thema volgen.
@@ -179,8 +181,11 @@ export function InvitationView({
 
       <div ref={scrollRef} className="relative h-full overflow-y-auto overscroll-contain">
         <div className="relative">
+          {sweet && <div aria-hidden="true" className="absolute inset-0" style={SWEET_STRIPES} />}
           {visibleBlocks.map((b, i) =>
-            modern ? (
+            sweet ? (
+              <SweetBlockSection key={b.type} block={b} config={config} />
+            ) : modern ? (
               <ModernBlockSection key={b.type} block={b} config={config} />
             ) : leaf ? (
               <LeafBlockSection key={b.type} block={b} config={config} index={i} />

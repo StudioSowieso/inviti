@@ -8,6 +8,67 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
 
+  if (theme.style === "sweet") {
+    const gradient = {
+      backgroundImage: `linear-gradient(180deg, ${c.accent}, color-mix(in srgb, ${c.accent} 55%, ${c.background}))`,
+      WebkitBackgroundClip: "text",
+      backgroundClip: "text",
+      color: "transparent",
+      WebkitTextFillColor: "transparent",
+    } as const;
+    return (
+      <div
+        className="overflow-hidden rounded-xl border"
+        style={{
+          background: `repeating-linear-gradient(90deg, ${c.background} 0 0.55rem, ${c.accent} 0.55rem 0.6rem, ${c.background} 0.6rem 0.7rem, ${c.accent} 0.7rem 0.75rem, ${c.background} 0.75rem 0.85rem, ${c.accent} 0.85rem 0.9rem, ${c.background} 0.9rem 1.45rem)`,
+          borderColor: c.line,
+          color: c.text,
+        }}
+      >
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="px-6 pt-3 pb-2">
+          <div
+            className="mx-auto w-[78%] p-[0.2rem]"
+            style={{ background: c.surface, borderRadius: "50% 50% 0.5rem 0.5rem / 2.6rem 2.6rem 0.5rem 0.5rem" }}
+          >
+            <div
+              className="px-2 pt-4 pb-2.5 text-center"
+              style={{
+                border: `0.12rem solid ${c.surfaceAlt}`,
+                borderRadius: "50% 50% 0.4rem 0.4rem / 2.5rem 2.5rem 0.4rem 0.4rem",
+              }}
+            >
+              <p className="text-[1.15rem] leading-[0.95]" style={{ fontFamily: fontStack(theme.headingFont), ...gradient }}>
+                27
+                <br />
+                JUN
+              </p>
+              <p className="mt-1 text-[0.4rem] tracking-[0.25em]" style={{ fontFamily: fontStack(theme.bodyFont) }}>
+                EMMA &amp; MATS
+              </p>
+              <p className="text-[0.85rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+                Wij gaan trouwen
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="px-4 pb-3 text-center">
+          <span
+            className="inline-block px-4 py-1.5 text-[0.45rem] tracking-[0.14em]"
+            style={{
+              background: c.buttonBackground,
+              color: c.buttonText,
+              borderRadius: radius,
+              fontFamily: fontStack(theme.bodyFont),
+            }}
+          >
+            RSVP invullen
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   if (theme.style === "modern") {
     return (
       <div

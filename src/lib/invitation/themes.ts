@@ -7,7 +7,7 @@ export const THEMES_TAG = "sanity-themes";
 
 const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
 const SHAPES: ButtonShape[] = ["pill", "rounded", "square"];
-const STYLES: ThemeStyle[] = ["classic", "nature", "leaf", "modern"];
+const STYLES: ThemeStyle[] = ["classic", "nature", "leaf", "modern", "sweet"];
 
 const QUERY = `*[_type == "invitationTheme" && active != false] | order(order asc, title asc){
   "slug": slug.current,
