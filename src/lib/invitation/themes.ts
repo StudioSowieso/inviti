@@ -1,11 +1,12 @@
 import { FALLBACK_THEMES } from "./fallback-themes";
-import { DEFAULT_BODY_FONT, DEFAULT_HEADING_FONT, resolveFont } from "./fonts";
-import type { ButtonShape, InvitationTheme, ThemeColors } from "./types";
+import { DEFAULT_BODY_FONT, DEFAULT_HEADING_FONT, DEFAULT_SCRIPT_FONT, resolveFont } from "./fonts";
+import type { ButtonShape, InvitationTheme, ThemeColors, ThemeStyle } from "./types";
 
 export const THEMES_TAG = "sanity-themes";
 
 const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
 const SHAPES: ButtonShape[] = ["pill", "rounded", "square"];
+const STYLES: ThemeStyle[] = ["classic", "nature"];
 
 const QUERY = `*[_type == "invitationTheme" && active != false] | order(order asc, title asc){
   "slug": slug.current,
@@ -14,7 +15,9 @@ const QUERY = `*[_type == "invitationTheme" && active != false] | order(order as
   colors,
   headingFont,
   bodyFont,
-  buttonShape
+  scriptFont,
+  buttonShape,
+  style
 }`;
 
 function sanityConfig() {
@@ -50,7 +53,10 @@ function normalizeTheme(raw: unknown): InvitationTheme | null {
     colors,
     headingFont: resolveFont(typeof r.headingFont === "string" ? r.headingFont : "", DEFAULT_HEADING_FONT),
     bodyFont: resolveFont(typeof r.bodyFont === "string" ? r.bodyFont : "", DEFAULT_BODY_FONT),
+    scriptFont: resolveFont(typeof r.scriptFont === "string" ? r.scriptFont : "", DEFAULT_SCRIPT_FONT),
     buttonShape: SHAPES.includes(r.buttonShape as ButtonShape) ? (r.buttonShape as ButtonShape) : "pill",
+    // Bestaande thema's in Sanity hebben nog geen stijl: die blijven "classic".
+    style: STYLES.includes(r.style as ThemeStyle) ? (r.style as ThemeStyle) : "classic",
   };
 }
 

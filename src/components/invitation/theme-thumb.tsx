@@ -1,17 +1,66 @@
-import { fontStack, googleFontsHref } from "@/lib/invitation/fonts";
+import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import type { InvitationTheme } from "@/lib/invitation/types";
+import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
-/** Kleine vooruitblik van een thema: kleuren, lettertypes en knopvorm. */
+/** Kleine vooruitblik van een thema: kleuren, lettertypes, knopvorm en (bij "nature") decor. */
 export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "nature") {
+    return (
+      <div
+        className="overflow-hidden rounded-xl border"
+        style={{ background: c.background, borderColor: c.line, color: c.text, ["--inv-accent" as string]: c.accent }}
+      >
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="relative flex h-[5.75rem] flex-col items-center justify-end overflow-hidden pb-5 text-center text-white">
+          <NaturePhoto tone="warm" />
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to top, rgb(34 38 22 / .6), transparent 70%)" }}
+          />
+          <p
+            className="relative text-[0.45rem] tracking-[0.3em] uppercase opacity-90"
+            style={{ fontFamily: fontStack(theme.bodyFont) }}
+          >
+            Wij gaan trouwen
+          </p>
+          <p className="relative text-[1.9rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+            Emma &amp; Mats
+          </p>
+        </div>
+        <div className="relative px-4 pt-5 pb-3 text-center" style={{ background: c.background }}>
+          <TornEdge fill={c.background} seed={4} style={{ bottom: "calc(100% - 1px)" }} />
+          <p className="text-[1rem] leading-tight italic" style={{ fontFamily: fontStack(theme.headingFont) }}>
+            Ben je erbij?
+          </p>
+          <SprigDivider className="mt-1.5" />
+          <span
+            className="mt-1.5 inline-block px-4 py-1.5 text-[0.45rem] tracking-[0.2em] uppercase"
+            style={{
+              background: c.buttonBackground,
+              color: c.buttonText,
+              borderRadius: radius,
+              fontFamily: fontStack(theme.bodyFont),
+            }}
+          >
+            RSVP invullen
+          </span>
+        </div>
+        <div className="relative h-3" style={{ background: c.footerBackground }}>
+          <TornEdge fill={c.footerBackground} seed={9} style={{ bottom: "calc(100% - 1px)" }} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       className="overflow-hidden rounded-xl border"
       style={{ background: c.background, borderColor: c.line, color: c.text }}
     >
-      <link rel="stylesheet" href={googleFontsHref(theme.headingFont, theme.bodyFont)} precedence="inviti-fonts" />
+      <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
       <div className="px-4 pt-5 pb-4 text-center">
         <p
           className="text-[0.5rem] tracking-[0.2em] uppercase"

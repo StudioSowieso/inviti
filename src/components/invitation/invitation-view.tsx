@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { fontStack, googleFontsHref } from "@/lib/invitation/fonts";
+import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import {
   formatDateDots,
   formatDateLong,
@@ -16,6 +16,7 @@ import type {
   InvitationTheme,
   ThemeColors,
 } from "@/lib/invitation/types";
+import { NatureBlockSection, PAPER_NOISE, Sprig } from "./nature";
 
 const RADIUS = { pill: "999px", rounded: "0.9rem", square: "0.15rem" } as const;
 
@@ -62,6 +63,7 @@ export function InvitationView({
     const vars: Record<string, string> = {
       "--inv-heading": fontStack(theme.headingFont),
       "--inv-body": fontStack(theme.bodyFont),
+      "--inv-script": fontStack(theme.scriptFont),
       "--inv-radius": RADIUS[theme.buttonShape],
     };
     for (const [k, v] of Object.entries(theme.colors)) vars[`--inv-${k}`] = v;
@@ -149,8 +151,14 @@ export function InvitationView({
     if (top !== null) scrollRef.current?.scrollTo({ top, behavior: "smooth" });
   }, [focusBlock, stage, sectionTop]);
 
-  const fontsHref = googleFontsHref(theme.headingFont, theme.bodyFont);
+  const fontsHref = googleFontsHref(...themeFonts(theme));
   const activeLabel = chapters.find((c) => c.type === active)?.label ?? "Welkom";
+  const nature = theme.style === "nature";
+  const visibleBlocks = config.blocks.filter((b) => b.enabled);
+  // De navigatiebalk volgt in "nature" de knopkleuren van het thema in plaats van donkerbruin.
+  const navBg = nature ? "color-mix(in srgb, var(--inv-buttonBackground) 94%, transparent)" : "rgb(58 55 51 / 0.92)";
+  const navMenuBg = nature ? "color-mix(in srgb, var(--inv-buttonBackground) 97%, black)" : "rgb(58 55 51 / 0.96)";
+  const navText = nature ? col("buttonText") : "#f4f0ea";
 
   return (
     <div
@@ -160,11 +168,22 @@ export function InvitationView({
       <link rel="stylesheet" href={fontsHref} precedence="inviti-fonts" />
 
       <div ref={scrollRef} className="relative h-full overflow-y-auto overscroll-contain">
-        {config.blocks
-          .filter((b) => b.enabled)
-          .map((b) => (
-            <BlockSection key={b.type} block={b} config={config} />
-          ))}
+        <div className="relative">
+          {visibleBlocks.map((b, i) =>
+            nature ? (
+              <NatureBlockSection key={b.type} block={b} config={config} index={i} />
+            ) : (
+              <BlockSection key={b.type} block={b} config={config} />
+            ),
+          )}
+          {nature && (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-10"
+              style={{ backgroundImage: PAPER_NOISE, mixBlendMode: "multiply" }}
+            />
+          )}
+        </div>
       </div>
 
       {stage === "open" && chapters.length > 1 && (
@@ -172,7 +191,7 @@ export function InvitationView({
           {navOpen && (
             <div
               className="pointer-events-auto mb-2 rounded-2xl p-2 shadow-xl"
-              style={{ background: "rgb(58 55 51 / 0.96)", color: "#f4f0ea" }}
+              style={{ background: navMenuBg, color: navText }}
               role="menu"
             >
               <p className="px-3 pt-2 pb-1.5 text-[0.55rem] tracking-[0.2em] uppercase opacity-60">
@@ -198,10 +217,10 @@ export function InvitationView({
             onClick={() => setNavOpen((o) => !o)}
             aria-expanded={navOpen}
             className="pointer-events-auto flex w-full items-center justify-between rounded-full px-4 py-2.5 text-xs shadow-lg backdrop-blur"
-            style={{ background: "rgb(58 55 51 / 0.92)", color: "#f4f0ea" }}
+            style={{ background: navBg, color: navText }}
           >
             <span className="flex items-center gap-2">
-              <span className="size-1.5 rounded-full" style={{ background: "#f4f0ea" }} />
+              <span className="size-1.5 rounded-full" style={{ background: navText }} />
               {activeLabel}
             </span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
@@ -211,7 +230,9 @@ export function InvitationView({
         </div>
       )}
 
-      {stage !== "open" && <EnvelopeOverlay config={config} opening={stage === "opening"} onOpen={openEnvelope} />}
+      {stage !== "open" && (
+        <EnvelopeOverlay config={config} nature={nature} opening={stage === "opening"} onOpen={openEnvelope} />
+      )}
     </div>
   );
 }
@@ -220,29 +241,37 @@ export function InvitationView({
 
 function EnvelopeOverlay({
   config,
+  nature,
   opening,
   onOpen,
 }: {
   config: InvitationConfig;
+  nature: boolean;
   opening: boolean;
   onOpen: () => void;
 }) {
   const initials = monogram(config.partner1, config.partner2, " & ");
   const short = monogram(config.partner1, config.partner2);
   const ease = "cubic-bezier(.6,0,.2,1)";
+  // In "nature" staan monogrammen in handschrift en heeft de envelop een papiertextuur.
+  const mono = nature ? ({ fontFamily: "var(--inv-script)" } satisfies CSSProperties) : heading;
 
   return (
     <div
       className="absolute inset-0 z-30 flex flex-col items-center px-6 py-10 text-center"
       style={{
         background: col("background"),
+        backgroundImage: nature ? PAPER_NOISE : undefined,
         opacity: opening ? 0 : 1,
         transition: `opacity 600ms ${ease} ${opening ? "850ms" : "0ms"}`,
         pointerEvents: opening ? "none" : "auto",
       }}
     >
       <div>
-        <p className="text-[0.8rem] tracking-[0.18em]" style={heading}>
+        <p
+          className={nature ? "text-[1.5rem] leading-none" : "text-[0.8rem] tracking-[0.18em]"}
+          style={mono}
+        >
           {initials}
         </p>
         <p className="mt-1.5 text-[0.5rem] tracking-[0.2em] uppercase" style={{ color: col("muted") }}>
@@ -294,9 +323,10 @@ function EnvelopeOverlay({
             transition: `transform 700ms ${ease} 150ms`,
           }}
         >
+          {nature && <Sprig size={26} className="mb-1" />}
           <span
-            className="grid size-9 place-items-center rounded-full text-[0.65rem] tracking-[0.1em]"
-            style={{ background: col("buttonBackground"), color: col("buttonText"), ...heading }}
+            className={`grid size-9 place-items-center rounded-full tracking-[0.1em] ${nature ? "text-[0.95rem]" : "text-[0.65rem]"}`}
+            style={{ background: col("buttonBackground"), color: col("buttonText"), ...mono }}
           >
             {short}
           </span>

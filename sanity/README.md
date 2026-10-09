@@ -13,13 +13,16 @@ Sanity Studio (inviti.sanity.studio)  ──►  Sanity dataset  ──►  Invi
   direct, nog voordat je op *Publish* klikt.
 - **Productie** (`main`) leest alleen **gepubliceerde** thema's. Na *Publish* ververst een webhook de
   cache direct (anders na uiterlijk 1 uur).
-- Zonder Sanity-instellingen gebruikt Inviti 2 ingebouwde thema's (`src/lib/invitation/fallback-themes.ts`).
+- Zonder Sanity-instellingen gebruikt Inviti 3 ingebouwde thema's (`src/lib/invitation/fallback-themes.ts`).
   Ook als Sanity tijdelijk onbereikbaar is werkt alles gewoon door.
 
 ## 1. Sanity-project (al aangemaakt)
 
 - Project: **Inviti**, Project ID `98wj3rgp`, dataset `production` (publiek leesbaar).
-- De 2 startthema's (*Crème & Taupe* en *Bosgroen & Blush*) zijn al aangemaakt en gepubliceerd.
+- De startthema's *Crème & Taupe* en *Bosgroen & Blush* zijn al aangemaakt en gepubliceerd.
+- Het thema *Nature* (slug `nature`, stijl **Natuur**) staat als **concept** in de dataset, zodat de preview-omgeving
+  het al toont. Publiceer het pas nadat de code van `preview` naar `main` is gegaan; anders zou productie het
+  thema nog zonder de nieuwe vormgeving laten zien.
   Draai daarom **niet** `npm run import-themes` op deze dataset: dat maakt dubbele thema's.
   (`seed/themes.ndjson` is alleen bedoeld voor een nieuwe, lege dataset.)
 
@@ -73,6 +76,17 @@ Op <https://www.sanity.io/manage> -> project -> *API* -> *Webhooks* -> *Create w
 1. Open de Studio -> *Uitnodigingsthema* -> pas een thema aan (of maak een nieuw thema).
 2. De preview-omgeving toont de wijziging meteen (ververs de pagina).
 3. Klik op **Publish** -> productie toont de wijziging binnen enkele seconden.
+
+## Stijl van een thema
+
+Naast kleuren, lettertypes en knopvorm heeft elk thema een **stijl**:
+
+- **Standaard** (`classic`): vlakke secties.
+- **Natuur** (`nature`): papieren textuur, gescheurde randen tussen de secties, botanische lijnicoontjes,
+  een tijdlijn in het programma en de namen in het handschrift-lettertype (*Lettertype namen*).
+
+De stijlen zijn code (`src/components/invitation/nature.tsx`); kleuren en lettertypes blijven in Sanity te kiezen.
+Een nieuwe stijl toevoegen vraagt dus een codewijziging, een nieuw thema met een bestaande stijl niet.
 
 ## Regels om te onthouden
 

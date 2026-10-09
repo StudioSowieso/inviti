@@ -1,5 +1,12 @@
 export type ButtonShape = "pill" | "rounded" | "square";
 
+/**
+ * Visuele stijl van een thema, boven op kleuren en lettertypes:
+ * - classic: vlakke secties zoals in het basisontwerp
+ * - nature: papieren textuur, gescheurde randen, botanische lijntekeningen en een scriptlettertype
+ */
+export type ThemeStyle = "classic" | "nature";
+
 export type ThemeColors = {
   background: string;
   surface: string;
@@ -24,7 +31,10 @@ export type InvitationTheme = {
   colors: ThemeColors;
   headingFont: string;
   bodyFont: string;
+  /** Sierlettertype voor namen en afsluiting (alleen zichtbaar bij style "nature"). */
+  scriptFont: string;
   buttonShape: ButtonShape;
+  style: ThemeStyle;
 };
 
 export type ProgramItem = { time: string; title: string; subtitle: string };

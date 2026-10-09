@@ -6,11 +6,15 @@ const FONTS = [
   "Playfair Display",
   "Lora",
   "DM Serif Display",
+  "EB Garamond",
   "Inter",
   "Jost",
   "DM Sans",
   "Manrope",
 ];
+
+// Sierlettertypes voor namen en afsluiting (alleen zichtbaar bij stijl "Natuur").
+const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura"];
 
 const colorField = (name: string, title: string, description: string) =>
   defineField({
@@ -80,6 +84,30 @@ export const invitationTheme = defineType({
       type: "string",
       options: { list: FONTS },
       initialValue: "Inter",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "scriptFont",
+      title: "Lettertype namen (handschrift)",
+      description: "Alleen in gebruik bij de stijl 'Natuur': namen in de hero, de afsluiting en de envelop.",
+      type: "string",
+      options: { list: SCRIPT_FONTS },
+      initialValue: "Great Vibes",
+    }),
+    defineField({
+      name: "style",
+      title: "Stijl",
+      description:
+        "Standaard: vlakke secties. Natuur: papieren textuur, gescheurde randen tussen de secties, botanische lijntekeningen en handschrift.",
+      type: "string",
+      options: {
+        list: [
+          { title: "Standaard", value: "classic" },
+          { title: "Natuur (papier, gescheurde randen, botanisch)", value: "nature" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "classic",
       validation: (rule) => rule.required(),
     }),
     defineField({
