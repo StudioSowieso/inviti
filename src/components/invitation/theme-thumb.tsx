@@ -1,12 +1,64 @@
 import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import type { InvitationTheme } from "@/lib/invitation/types";
 import { Branch, BranchPair, HeroBranch } from "./leaf";
+import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
 /** Kleine vooruitblik van een thema: kleuren, lettertypes, knopvorm en (bij "nature") decor. */
 export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "lemon") {
+    const blue = `color-mix(in srgb, ${c.buttonBackground} 78%, white)`;
+    return (
+      <div
+        className="overflow-hidden rounded-xl border"
+        style={{
+          background: `repeating-linear-gradient(90deg, ${blue} 0 0.5rem, ${c.surface} 0.5rem 0.54rem, ${c.background} 0.54rem 1.06rem, ${c.surface} 1.06rem 1.1rem)`,
+          borderColor: c.line,
+          color: c.text,
+        }}
+      >
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="px-5 pt-3 pb-2">
+          <div className="relative overflow-hidden text-center" style={{ background: c.surface }}>
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-1"
+              style={{ backgroundImage: `repeating-linear-gradient(90deg, ${blue} 0 0.16rem, ${c.surface} 0.16rem 0.26rem)` }}
+            />
+            <LemonBranch className="absolute -top-1 -left-2 w-[36%]" />
+            <div className="relative px-3 pt-7 pb-5">
+              <p className="text-[0.95rem] leading-none tracking-[0.14em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+                LUCIA
+              </p>
+              <p className="text-[1.1rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont), color: c.accent }}>
+                &amp;
+              </p>
+              <p className="text-[0.95rem] leading-none tracking-[0.14em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+                JUAN
+              </p>
+              <LemonSprig width={34} className="mx-auto mt-1.5" />
+            </div>
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-1"
+              style={{ backgroundImage: `repeating-linear-gradient(90deg, ${blue} 0 0.16rem, ${c.surface} 0.16rem 0.26rem)` }}
+            />
+          </div>
+        </div>
+        <div className="px-4 pb-3 text-center">
+          <span
+            className="inline-block px-4 py-1.5 text-[0.45rem] tracking-[0.14em]"
+            style={{ background: c.buttonBackground, color: c.buttonText, borderRadius: radius, fontFamily: fontStack(theme.bodyFont) }}
+          >
+            RSVP invullen
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   if (theme.style === "sweet") {
     const gradient = {

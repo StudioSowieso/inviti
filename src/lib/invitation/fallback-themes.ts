@@ -138,6 +138,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "pill",
     style: "sweet",
   },
+  {
+    slug: "lemon",
+    title: "Lemon",
+    description:
+      "Zonnig en Italiaans: blauw-geel gestreept behang, crèmekaarten met gestreepte rand en getekende citroentakken met bloesem.",
+    colors: {
+      background: "#f8efc6",
+      surface: "#fcf9ee",
+      surfaceAlt: "#eef2f6",
+      text: "#43505f",
+      muted: "#8a909a",
+      line: "#d5dde8",
+      accent: "#dd9318",
+      buttonBackground: "#4f84c6",
+      buttonText: "#ffffff",
+      footerBackground: "#4f84c6",
+      footerText: "#fdf8e4",
+      envelope: "#f4e8b0",
+      envelopeCard: "#fcf9ee",
+    },
+    headingFont: "Cormorant Garamond",
+    bodyFont: "Jost",
+    scriptFont: "Allura",
+    buttonShape: "rounded",
+    style: "lemon",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

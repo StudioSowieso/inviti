@@ -16,7 +16,7 @@ const FONTS = [
   "Manrope",
 ];
 
-// Sierlettertypes voor namen en afsluiting (alleen zichtbaar bij de stijlen "Natuur", "Leaf", "Modern" en "Sweet").
+// Sierlettertypes voor namen en afsluiting (alleen zichtbaar bij de stijlen "Natuur", "Leaf", "Modern", "Sweet" en "Lemon").
 const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura", "Mrs Saint Delafield"];
 
 const colorField = (name: string, title: string, description: string) =>
@@ -110,6 +110,7 @@ export const invitationTheme = defineType({
           { title: "Leaf (elegant, boogfoto, olijftakken)", value: "leaf" },
           { title: "Modern (zwart-wit, grote letters, handschrift)", value: "modern" },
           { title: "Sweet (strepen, boogkaarten, strikje)", value: "sweet" },
+          { title: "Lemon (blauw-geel gestreept, citroentakken)", value: "lemon" },
         ],
         layout: "radio",
       },
