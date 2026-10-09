@@ -5,6 +5,7 @@ import { monogram } from "@/lib/invitation/format";
 import type { InvitationConfig, InvitationTheme, ThemeColors } from "@/lib/invitation/types";
 import { BranchArt, makeBranch } from "./leaf";
 import { LemonReveal } from "./lemon-envelope";
+import { SweetReveal } from "./sweet-envelope";
 import { AbstractCouple } from "./modern";
 import { PAPER_NOISE, tearPaths } from "./nature";
 
@@ -13,6 +14,7 @@ import { PAPER_NOISE, tearPaths } from "./nature";
  * - Leaf: je gaat door de takken heen.
  * - Nature: gescheurde pagina's gaan open.
  * - Lemon: je gaat door de citroentakken heen.
+ * - Sweet: de strepen van het behang schuiven open.
  * - Overige thema's: deuren in de kleuren van het thema slaan open.
  * De echte uitnodiging staat de hele tijd achter de animatie, dus je ziet hem verschijnen.
  */
@@ -31,6 +33,7 @@ export function RevealOverlay({ theme, ...props }: RevealProps & { theme: Invita
   if (theme.style === "nature") return <PagesReveal {...props} />;
   if (theme.style === "modern") return <PhotoReveal {...props} />;
   if (theme.style === "lemon") return <LemonReveal {...props} />;
+  if (theme.style === "sweet") return <SweetReveal {...props} />;
   return <DoorsReveal {...props} />;
 }
 

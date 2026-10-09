@@ -21,6 +21,7 @@ import { ModernBlockSection } from "./modern";
 import { LEMON_STRIPES, LemonBlockSection } from "./lemon";
 import { LemonEnvelope } from "./lemon-envelope";
 import { SWEET_STRIPES, SweetBlockSection } from "./sweet";
+import { SweetEnvelope } from "./sweet-envelope";
 import { ModernEnvelope } from "./modern-envelope";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
 import { NatureEnvelope } from "./nature-envelope";
@@ -258,6 +259,8 @@ export function InvitationView({
       {stage !== "open" &&
         (config.animation === "reveal" ? (
           <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : sweet ? (
+          <SweetEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : lemon ? (
           <LemonEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : modern ? (

@@ -29,7 +29,8 @@ export const SWEET_STRIPES: CSSProperties = {
     ${col("surface")} 1.98rem 2.06rem,
     transparent 2.06rem 100%)`,
   backgroundSize: "3.1rem 100%",
-  backgroundPosition: "center top",
+  backgroundPosition: "0 0",
+  backgroundRepeat: "round no-repeat",
 };
 
 /** Tekstvulling met een verloop van donker naar licht accent, zoals het gesatineerde cijferwerk in het ontwerp. */
