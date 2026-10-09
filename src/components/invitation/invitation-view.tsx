@@ -180,7 +180,7 @@ export function InvitationView({
       <link rel="stylesheet" href={fontsHref} precedence="inviti-fonts" />
 
       <div ref={scrollRef} className="relative h-full overflow-y-auto overscroll-contain">
-        <div className="relative">
+        <div className="relative flow-root">
           {sweet && <div aria-hidden="true" className="absolute inset-0" style={SWEET_STRIPES} />}
           {visibleBlocks.map((b, i) =>
             sweet ? (

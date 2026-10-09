@@ -19,16 +19,17 @@ const MONTHS = ["JAN", "FEB", "MRT", "APR", "MEI", "JUN", "JUL", "AUG", "SEP", "
 export const SWEET_STRIPES: CSSProperties = {
   backgroundColor: col("background"),
   backgroundImage: `linear-gradient(90deg,
-    transparent 0 0.75rem,
-    ${col("surface")} 0.75rem 0.83rem,
-    ${col("accent")} 0.83rem 1.03rem,
-    ${col("surface")} 1.03rem 1.12rem,
-    ${col("accent")} 1.12rem 1.4rem,
-    ${col("surface")} 1.4rem 1.49rem,
-    ${col("accent")} 1.49rem 1.69rem,
-    ${col("surface")} 1.69rem 1.77rem,
-    transparent 1.77rem 100%)`,
+    transparent 0 1.04rem,
+    ${col("surface")} 1.04rem 1.12rem,
+    ${col("accent")} 1.12rem 1.32rem,
+    ${col("surface")} 1.32rem 1.41rem,
+    ${col("accent")} 1.41rem 1.69rem,
+    ${col("surface")} 1.69rem 1.78rem,
+    ${col("accent")} 1.78rem 1.98rem,
+    ${col("surface")} 1.98rem 2.06rem,
+    transparent 2.06rem 100%)`,
   backgroundSize: "3.1rem 100%",
+  backgroundPosition: "center top",
 };
 
 /** Tekstvulling met een verloop van donker naar licht accent, zoals het gesatineerde cijferwerk in het ontwerp. */
