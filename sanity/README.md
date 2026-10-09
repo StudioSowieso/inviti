@@ -85,7 +85,10 @@ Naast kleuren, lettertypes en knopvorm heeft elk thema een **stijl**:
 - **Natuur** (`nature`): papieren textuur, gescheurde randen tussen de secties, botanische lijnicoontjes,
   een tijdlijn in het programma en de namen in het handschrift-lettertype (*Lettertype namen*).
 
-De stijlen zijn code (`src/components/invitation/nature.tsx`); kleuren en lettertypes blijven in Sanity te kiezen.
+- **Leaf** (`leaf`): elegant en rustig: boogvormige foto, dunne lijnen, olijftakken als scheiding en geen
+  gescheurde randen; ook met het handschrift-lettertype voor de namen.
+
+De stijlen zijn code (`src/components/invitation/nature.tsx` en `leaf.tsx`); kleuren en lettertypes blijven in Sanity te kiezen.
 Een nieuwe stijl toevoegen vraagt dus een codewijziging, een nieuw thema met een bestaande stijl niet.
 
 ## Regels om te onthouden

@@ -4,8 +4,9 @@ export type ButtonShape = "pill" | "rounded" | "square";
  * Visuele stijl van een thema, boven op kleuren en lettertypes:
  * - classic: vlakke secties zoals in het basisontwerp
  * - nature: papieren textuur, gescheurde randen, botanische lijntekeningen en een scriptlettertype
+ * - leaf: elegant en gelijkmatig: boogvormige foto, dunne lijnen en olijftakken als scheiding
  */
-export type ThemeStyle = "classic" | "nature";
+export type ThemeStyle = "classic" | "nature" | "leaf";
 
 export type ThemeColors = {
   background: string;
@@ -41,7 +42,7 @@ export type InvitationTheme = {
   palettes: ThemePalette[];
   headingFont: string;
   bodyFont: string;
-  /** Sierlettertype voor namen en afsluiting (alleen zichtbaar bij style "nature"). */
+  /** Sierlettertype voor namen en afsluiting (alleen zichtbaar bij style "nature" en "leaf"). */
   scriptFont: string;
   buttonShape: ButtonShape;
   style: ThemeStyle;

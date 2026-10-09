@@ -1,11 +1,62 @@
 import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import type { InvitationTheme } from "@/lib/invitation/types";
+import { Branch, BranchPair } from "./leaf";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
 /** Kleine vooruitblik van een thema: kleuren, lettertypes, knopvorm en (bij "nature") decor. */
 export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "leaf") {
+    return (
+      <div
+        className="overflow-hidden rounded-xl border"
+        style={{
+          background: c.background,
+          borderColor: c.line,
+          color: c.text,
+          ["--inv-accent" as string]: c.accent,
+          ["--inv-background" as string]: c.background,
+        }}
+      >
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="px-4 pt-3.5 pb-3 text-center" style={{ background: c.surface }}>
+          <div className="mx-auto flex items-center justify-center gap-1.5">
+            <Branch size={22} flip />
+            <p className="text-[0.4rem] tracking-[0.28em] uppercase" style={{ color: c.muted, fontFamily: fontStack(theme.bodyFont) }}>
+              Wij gaan trouwen
+            </p>
+            <Branch size={22} />
+          </div>
+          <div
+            className="relative mx-auto mt-2 h-[3.5rem] w-[2.9rem] overflow-hidden"
+            style={{ borderRadius: "999px 999px 0.15rem 0.15rem", outline: `1px solid ${c.accent}`, outlineOffset: "2px" }}
+          >
+            <NaturePhoto tone="warm" />
+          </div>
+          <p className="mt-1.5 text-[1.45rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+            Emma &amp; Mats
+          </p>
+          <BranchPair size={70} className="mt-1" />
+        </div>
+        <div className="px-4 py-3 text-center" style={{ background: c.surfaceAlt }}>
+          <span
+            className="inline-block px-4 py-1.5 text-[0.45rem] tracking-[0.2em] uppercase"
+            style={{
+              background: c.buttonBackground,
+              color: c.buttonText,
+              borderRadius: radius,
+              fontFamily: fontStack(theme.bodyFont),
+            }}
+          >
+            RSVP invullen
+          </span>
+        </div>
+        <div className="h-3" style={{ background: c.footerBackground }} />
+      </div>
+    );
+  }
 
   if (theme.style === "nature") {
     return (

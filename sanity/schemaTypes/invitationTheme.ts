@@ -104,6 +104,7 @@ export const invitationTheme = defineType({
         list: [
           { title: "Standaard", value: "classic" },
           { title: "Natuur (papier, gescheurde randen, botanisch)", value: "nature" },
+          { title: "Leaf (elegant, boogfoto, olijftakken)", value: "leaf" },
         ],
         layout: "radio",
       },

@@ -16,6 +16,7 @@ import type {
   InvitationTheme,
   ThemeColors,
 } from "@/lib/invitation/types";
+import { LeafBlockSection } from "./leaf";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
 import { NatureEnvelope } from "./nature-envelope";
 
@@ -154,7 +155,9 @@ export function InvitationView({
 
   const fontsHref = googleFontsHref(...themeFonts(theme));
   const activeLabel = chapters.find((c) => c.type === active)?.label ?? "Welkom";
-  const nature = theme.style === "nature";
+  const leaf = theme.style === "leaf";
+  // "nature" en "leaf" delen papiertextuur, thema-gekleurde navigatie en de bijpassende envelop.
+  const nature = theme.style !== "classic";
   const visibleBlocks = config.blocks.filter((b) => b.enabled);
   // De navigatiebalk volgt in "nature" de knopkleuren van het thema in plaats van donkerbruin.
   const navBg = nature ? "color-mix(in srgb, var(--inv-buttonBackground) 94%, transparent)" : "rgb(58 55 51 / 0.92)";
@@ -171,7 +174,9 @@ export function InvitationView({
       <div ref={scrollRef} className="relative h-full overflow-y-auto overscroll-contain">
         <div className="relative">
           {visibleBlocks.map((b, i) =>
-            nature ? (
+            leaf ? (
+              <LeafBlockSection key={b.type} block={b} config={config} index={i} />
+            ) : nature ? (
               <NatureBlockSection key={b.type} block={b} config={config} index={i} />
             ) : (
               <BlockSection key={b.type} block={b} config={config} />

@@ -85,6 +85,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "pill",
     style: "nature",
   },
+  {
+    slug: "leaf",
+    title: "Leaf",
+    description:
+      "Elegant en rustig: ivoor met olijfgroen, een boogvormige foto, dunne lijnen en sierlijke takjes.",
+    colors: {
+      background: "#f7f3ec",
+      surface: "#fbf8f2",
+      surfaceAlt: "#dde3e2",
+      text: "#3f4635",
+      muted: "#7c8068",
+      line: "#ded7c8",
+      accent: "#7d8660",
+      buttonBackground: "#7b8460",
+      buttonText: "#fbf8f2",
+      footerBackground: "#ece6d8",
+      footerText: "#3f4635",
+      envelope: "#8c9774",
+      envelopeCard: "#fbf8f2",
+    },
+    headingFont: "Cormorant Garamond",
+    bodyFont: "EB Garamond",
+    scriptFont: "Pinyon Script",
+    buttonShape: "pill",
+    style: "leaf",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

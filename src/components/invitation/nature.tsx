@@ -155,7 +155,7 @@ function LineIcon({ children, size = 44, className = "" }: { children: ReactNode
   );
 }
 
-function ChapelIcon(p: { size?: number; className?: string }) {
+export function ChapelIcon(p: { size?: number; className?: string }) {
   return (
     <LineIcon {...p}>
       <path d="M24 3v7M21.5 5.5h5" />
@@ -226,7 +226,7 @@ function DiscoIcon(p: { size?: number; className?: string }) {
   );
 }
 
-function EnvelopeIcon(p: { size?: number; className?: string }) {
+export function EnvelopeIcon(p: { size?: number; className?: string }) {
   return (
     <LineIcon {...p}>
       <rect x="6" y="12" width="36" height="25" rx="2.5" />
@@ -237,7 +237,7 @@ function EnvelopeIcon(p: { size?: number; className?: string }) {
 }
 
 /** Kiest een lijnicoon bij een programma-onderdeel op basis van de titel. */
-function programIcon(title: string) {
+export function programIcon(title: string) {
   const t = title.toLowerCase();
   if (/(ceremon|huwelijk|trouw|jawoord|kerk|kapel)/.test(t)) return ChapelIcon;
   if (/(borrel|toast|proost|receptie|drink|bubbel|cocktail|taart)/.test(t)) return GlassesIcon;
@@ -349,7 +349,7 @@ function NSection({
   );
 }
 
-function NatureCountdown({ date, time }: { date: string; time: string }) {
+export function NatureCountdown({ date, time }: { date: string; time: string }) {
   const target = useMemo(() => targetTimestamp(date, time), [date, time]);
   const [now, setNow] = useState<number | null>(null);
 
