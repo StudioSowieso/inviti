@@ -11,6 +11,7 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   Lora: { css2: "Lora:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
   "DM Serif Display": { css2: "DM+Serif+Display:ital@0;1", kind: "serif" },
   "EB Garamond": { css2: "EB+Garamond:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
+  Italiana: { css2: "Italiana", kind: "serif" },
   Inter: { css2: "Inter:wght@400;500;600", kind: "sans" },
   Jost: { css2: "Jost:wght@400;500;600", kind: "sans" },
   "DM Sans": { css2: "DM+Sans:wght@400;500;600", kind: "sans" },
@@ -18,6 +19,7 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   "Great Vibes": { css2: "Great+Vibes", kind: "script" },
   "Pinyon Script": { css2: "Pinyon+Script", kind: "script" },
   Allura: { css2: "Allura", kind: "script" },
+  "Mrs Saint Delafield": { css2: "Mrs+Saint+Delafield", kind: "script" },
 };
 
 export const DEFAULT_HEADING_FONT = "Cormorant Garamond";
@@ -46,7 +48,7 @@ export function googleFontsHref(...names: string[]) {
   return `https://fonts.googleapis.com/css2?${families.join("&")}&display=swap`;
 }
 
-/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij style "nature" en "leaf"). */
+/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij style "nature", "leaf" en "modern"). */
 export function themeFonts(theme: InvitationTheme) {
   return [theme.headingFont, theme.bodyFont, ...(theme.style !== "classic" ? [theme.scriptFont] : [])];
 }

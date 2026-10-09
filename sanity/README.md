@@ -19,7 +19,7 @@ Sanity Studio (inviti.sanity.studio)  ──►  Sanity dataset  ──►  Invi
 ## 1. Sanity-project (al aangemaakt)
 
 - Project: **Inviti**, Project ID `98wj3rgp`, dataset `production` (publiek leesbaar).
-- De startthema's zijn *Basic* (slug `creme-taupe`), *Nature* en *Leaf*. *Bosgroen & Blush* is verwijderd (in Sanity op niet-actief gezet).
+- De startthema's zijn *Basic* (slug `creme-taupe`), *Nature*, *Leaf* en *Modern*. *Bosgroen & Blush* is verwijderd (in Sanity op niet-actief gezet).
 - Het thema *Nature* (slug `nature`, stijl **Natuur**) staat als **concept** in de dataset, zodat de preview-omgeving
   het al toont. Publiceer het pas nadat de code van `preview` naar `main` is gegaan; anders zou productie het
   thema nog zonder de nieuwe vormgeving laten zien.
@@ -88,7 +88,10 @@ Naast kleuren, lettertypes en knopvorm heeft elk thema een **stijl**:
 - **Leaf** (`leaf`): elegant en rustig: boogvormige foto, dunne lijnen, olijftakken als scheiding en geen
   gescheurde randen; ook met het handschrift-lettertype voor de namen.
 
-De stijlen zijn code (`src/components/invitation/nature.tsx` en `leaf.tsx`); kleuren en lettertypes blijven in Sanity te kiezen.
+- **Modern** (`modern`): editorial zwart-wit op greige met witte kaarten, extra grote letters (LOVE, datum),
+  handschrift voor koppen en rechthoekige knoppen.
+
+De stijlen zijn code (`src/components/invitation/nature.tsx`, `leaf.tsx` en `modern.tsx`); kleuren en lettertypes blijven in Sanity te kiezen.
 Een nieuwe stijl toevoegen vraagt dus een codewijziging, een nieuw thema met een bestaande stijl niet.
 
 ## Regels om te onthouden

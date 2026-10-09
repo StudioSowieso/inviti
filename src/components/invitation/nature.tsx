@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import { formatDateDots, formatDateLong, targetTimestamp } from "@/lib/invitation/format";
+import { useId, useMemo, type CSSProperties, type ReactNode } from "react";
+import { formatDateDots, formatDateLong } from "@/lib/invitation/format";
+import { useCountdown } from "./use-countdown";
 import type { Block, BlockType, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 
 /**
@@ -350,31 +351,7 @@ function NSection({
 }
 
 export function NatureCountdown({ date, time }: { date: string; time: string }) {
-  const target = useMemo(() => targetTimestamp(date, time), [date, time]);
-  const [now, setNow] = useState<number | null>(null);
-
-  useEffect(() => {
-    setNow(Date.now());
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  let cells: [string, string][] = [
-    ["--", "Dagen"],
-    ["--", "Uren"],
-    ["--", "Minuten"],
-    ["--", "Seconden"],
-  ];
-  if (target !== null && now !== null) {
-    const s = Math.floor(Math.max(0, target - now) / 1000);
-    const pad = (n: number) => String(n).padStart(2, "0");
-    cells = [
-      [String(Math.floor(s / 86400)), "Dagen"],
-      [pad(Math.floor((s % 86400) / 3600)), "Uren"],
-      [pad(Math.floor((s % 3600) / 60)), "Minuten"],
-      [pad(s % 60), "Seconden"],
-    ];
-  }
+  const cells = useCountdown(date, time);
 
   return (
     <div className="mt-7 grid grid-cols-4 text-center">

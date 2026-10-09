@@ -86,6 +86,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "pill",
     style: "leaf",
   },
+  {
+    slug: "modern",
+    title: "Modern",
+    description:
+      "Strak en editorial: zwart-wit op greige, extra grote letters, sierlijk handschrift en veel witruimte.",
+    colors: {
+      background: "#d5cfc4",
+      surface: "#ffffff",
+      surfaceAlt: "#ece8e0",
+      text: "#1d1d1b",
+      muted: "#7b776e",
+      line: "#dedad2",
+      accent: "#8f8575",
+      buttonBackground: "#1d1d1b",
+      buttonText: "#ffffff",
+      footerBackground: "#1d1d1b",
+      footerText: "#f3f0ea",
+      envelope: "#1d1d1b",
+      envelopeCard: "#ffffff",
+    },
+    headingFont: "Italiana",
+    bodyFont: "Jost",
+    scriptFont: "Mrs Saint Delafield",
+    buttonShape: "square",
+    style: "modern",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

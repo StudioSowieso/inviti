@@ -7,14 +7,15 @@ const FONTS = [
   "Lora",
   "DM Serif Display",
   "EB Garamond",
+  "Italiana",
   "Inter",
   "Jost",
   "DM Sans",
   "Manrope",
 ];
 
-// Sierlettertypes voor namen en afsluiting (alleen zichtbaar bij stijl "Natuur").
-const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura"];
+// Sierlettertypes voor namen en afsluiting (alleen zichtbaar bij de stijlen "Natuur", "Leaf" en "Modern").
+const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura", "Mrs Saint Delafield"];
 
 const colorField = (name: string, title: string, description: string) =>
   defineField({
@@ -105,6 +106,7 @@ export const invitationTheme = defineType({
           { title: "Standaard", value: "classic" },
           { title: "Natuur (papier, gescheurde randen, botanisch)", value: "nature" },
           { title: "Leaf (elegant, boogfoto, olijftakken)", value: "leaf" },
+          { title: "Modern (zwart-wit, grote letters, handschrift)", value: "modern" },
         ],
         layout: "radio",
       },

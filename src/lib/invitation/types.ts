@@ -5,8 +5,9 @@ export type ButtonShape = "pill" | "rounded" | "square";
  * - classic: vlakke secties zoals in het basisontwerp
  * - nature: papieren textuur, gescheurde randen, botanische lijntekeningen en een scriptlettertype
  * - leaf: elegant en gelijkmatig: boogvormige foto, dunne lijnen en olijftakken als scheiding
+ * - modern: editorial zwart-wit met greige, extra grote letters, handschrift en witte kaarten
  */
-export type ThemeStyle = "classic" | "nature" | "leaf";
+export type ThemeStyle = "classic" | "nature" | "leaf" | "modern";
 
 export type ThemeColors = {
   background: string;

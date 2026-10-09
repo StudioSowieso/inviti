@@ -17,6 +17,7 @@ import type {
   ThemeColors,
 } from "@/lib/invitation/types";
 import { LeafBlockSection } from "./leaf";
+import { ModernBlockSection } from "./modern";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
 import { NatureEnvelope } from "./nature-envelope";
 import { REVEAL_MS, RevealOverlay } from "./reveal";
@@ -157,7 +158,10 @@ export function InvitationView({
   const fontsHref = googleFontsHref(...themeFonts(theme));
   const activeLabel = chapters.find((c) => c.type === active)?.label ?? "Welkom";
   const leaf = theme.style === "leaf";
-  // "nature" en "leaf" delen papiertextuur en een thema-gekleurde navigatie.
+  const modern = theme.style === "modern";
+  // "nature" en "leaf" delen papiertextuur en de bijpassende envelop.
+  const textured = theme.style === "nature" || leaf;
+  // Alle stijlen behalve "classic" laten de navigatiebalk de knopkleuren van het thema volgen.
   const nature = theme.style !== "classic";
   const visibleBlocks = config.blocks.filter((b) => b.enabled);
   // De navigatiebalk volgt in "nature" de knopkleuren van het thema in plaats van donkerbruin.
@@ -175,7 +179,9 @@ export function InvitationView({
       <div ref={scrollRef} className="relative h-full overflow-y-auto overscroll-contain">
         <div className="relative">
           {visibleBlocks.map((b, i) =>
-            leaf ? (
+            modern ? (
+              <ModernBlockSection key={b.type} block={b} config={config} />
+            ) : leaf ? (
               <LeafBlockSection key={b.type} block={b} config={config} index={i} />
             ) : nature ? (
               <NatureBlockSection key={b.type} block={b} config={config} index={i} />
@@ -183,7 +189,7 @@ export function InvitationView({
               <BlockSection key={b.type} block={b} config={config} />
             ),
           )}
-          {nature && (
+          {textured && (
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 z-10"
@@ -240,7 +246,7 @@ export function InvitationView({
       {stage !== "open" &&
         (config.animation === "reveal" ? (
           <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
-        ) : nature ? (
+        ) : textured ? (
           <NatureEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : (
           <EnvelopeOverlay config={config} opening={stage === "opening"} onOpen={openReveal} />

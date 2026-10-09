@@ -8,6 +8,44 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
 
+  if (theme.style === "modern") {
+    return (
+      <div
+        className="overflow-hidden rounded-xl border"
+        style={{ background: c.background, borderColor: c.line, color: c.text }}
+      >
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="p-1.5">
+          <div className="relative overflow-hidden rounded-lg px-3.5 pt-3 pb-3 text-center" style={{ background: c.surface }}>
+            <p className="text-right text-[0.5rem] tracking-[0.05em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+              EMMA&amp;MATS
+            </p>
+            <p className="mt-0.5 text-[2.6rem] leading-[0.95] tracking-[0.04em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+              LOVE
+            </p>
+            <p className="text-[1.15rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+              Wij gaan trouwen
+            </p>
+          </div>
+        </div>
+        <div className="px-4 py-3 text-center">
+          <span
+            className="inline-block px-4 py-1.5 text-[0.45rem] tracking-[0.12em]"
+            style={{
+              background: c.buttonBackground,
+              color: c.buttonText,
+              borderRadius: radius,
+              fontFamily: fontStack(theme.bodyFont),
+            }}
+          >
+            RSVP invullen
+          </span>
+        </div>
+        <div className="h-3" style={{ background: c.footerBackground }} />
+      </div>
+    );
+  }
+
   if (theme.style === "leaf") {
     return (
       <div
