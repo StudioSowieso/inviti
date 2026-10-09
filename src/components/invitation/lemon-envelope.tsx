@@ -91,20 +91,16 @@ export function LemonEnvelope({ config, opening, onOpen }: Props) {
           <path d={`M0 100 L50 ${FLAP - 2} L100 100`} vectorEffect="non-scaling-stroke" />
         </svg>
 
-        {/* Takjes in de hoeken van de voorkant */}
-        <LemonBranch className="pointer-events-none absolute -bottom-3 -left-10 w-[62%] opacity-95" style={{ transform: "scale(1,-1)" }} />
-        <LemonBranch className="pointer-events-none absolute -right-10 -bottom-3 w-[50%] opacity-95" style={{ transform: "scale(-1,-1)" }} />
-
         {/* Namen op de voorkant */}
         <div
           className="pointer-events-none absolute inset-x-0 z-[2] flex flex-col items-center px-6 text-center"
-          style={{ top: `${FLAP + 12}%`, opacity: opening ? 0 : 1, transition: "opacity 250ms ease" }}
+          style={{ top: `${FLAP + 15}%`, opacity: opening ? 0 : 1, transition: "opacity 250ms ease" }}
         >
           <p className="text-[2.2rem] leading-none" style={{ ...script, color: col("accent") }}>
             {config.partner1} &amp; {config.partner2}
           </p>
           <p className="mt-3 text-[0.58rem] tracking-[0.3em] uppercase" style={{ color: col("text") }}>
-            Tik op de citroen
+            Wij gaan trouwen · tik op de citroen
           </p>
         </div>
 
@@ -139,12 +135,6 @@ export function LemonEnvelope({ config, opening, onOpen }: Props) {
           >
             <path d="M0 0 L50 100 L100 0" strokeWidth="1" vectorEffect="non-scaling-stroke" />
           </svg>
-          <p
-            className="absolute inset-x-0 text-center text-[0.58rem] tracking-[0.3em] uppercase"
-            style={{ top: "16%", color: col("text"), backfaceVisibility: "hidden" }}
-          >
-            Wij gaan trouwen
-          </p>
           {/* binnenkant van de klep: dezelfde strepen */}
           <div
             className="absolute inset-0"
@@ -158,21 +148,31 @@ export function LemonEnvelope({ config, opening, onOpen }: Props) {
         </div>
       </div>
 
+      {/* Takken bovenin, over de klep heen; ze verdwijnen zodra de envelop opent */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-[4]"
+        style={{ opacity: opening ? 0 : 1, transition: "opacity 300ms ease" }}
+      >
+        <LemonBranch className="absolute -top-3 -left-10 w-[64%]" />
+        <LemonBranch className="absolute -top-3 -right-10 w-[52%]" flip />
+      </div>
+
       {/* De citroen als zegel op de punt van de klep: rolt naar rechts weg zodra je tikt */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 z-[4]"
         style={{
-          top: `${FLAP - 4}%`,
-          width: "9.5rem",
-          marginLeft: "-4.75rem",
+          top: "50%",
+          width: "10rem",
+          marginLeft: "-5rem",
           marginTop: "-3.4rem",
           transform: opening ? "translateX(calc(50cqw + 7rem)) rotate(640deg)" : "none",
           transition: `transform 820ms cubic-bezier(.5,0,.8,.6)`,
           filter: "drop-shadow(0 10px 8px rgb(60 50 10 / .35))",
         }}
       >
-        <BigLemon className="w-full" />
+        <BigLemon className="w-full" leaves={false} />
       </div>
 
       <TapArea opening={opening} onOpen={onOpen} />

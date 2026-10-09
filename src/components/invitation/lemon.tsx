@@ -152,15 +152,15 @@ export function LemonBranch({ className = "", style, flip = false }: { className
 }
 
 /** Eén grote citroen met twee blaadjes, bijvoorbeeld als zegel op de envelop. */
-export function BigLemon({ className = "", style }: { className?: string; style?: CSSProperties }) {
+export function BigLemon({ className = "", style, leaves = true }: { className?: string; style?: CSSProperties; leaves?: boolean }) {
   const id = useId();
   return (
-    <svg viewBox="-46 -36 100 72" aria-hidden="true" className={className} style={style}>
+    <svg viewBox={leaves ? "-46 -36 100 72" : "-40 -30 90 62"} aria-hidden="true" className={className} style={style}>
       <Defs id={id} />
-      <Leaf id={id} x={4} y={-16} r={-128} s={1.15} />
-      <Leaf id={id} x={8} y={-14} r={-52} s={1.3} />
+      {leaves && <Leaf id={id} x={4} y={-16} r={-128} s={1.15} />}
+      {leaves && <Leaf id={id} x={8} y={-14} r={-52} s={1.3} />}
       <Fruit id={id} x={0} y={2} r={-14} s={1.5} />
-      <Blossom x={26} y={-24} s={0.9} />
+      {leaves && <Blossom x={26} y={-24} s={0.9} />}
     </svg>
   );
 }
