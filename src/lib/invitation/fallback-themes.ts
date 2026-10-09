@@ -11,7 +11,7 @@ type ThemeInput = Omit<InvitationTheme, "palettes">;
 const THEMES: ThemeInput[] = [
   {
     slug: "creme-taupe",
-    title: "Basic",
+    title: "In alle eenvoud",
     description: "Rustig en editorial: warme crèmetinten met een donkere afsluiting.",
     colors: {
       background: "#f4f0ea",

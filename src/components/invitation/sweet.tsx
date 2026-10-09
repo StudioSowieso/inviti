@@ -80,18 +80,34 @@ const SECTION = "relative mx-[9%] mt-9";
 
 const CONTAINER: CSSProperties = { containerType: "inline-size" };
 
-/** Witte boogkaart met dubbele rand. */
-function ArchCard({ type, children, className = "" }: { type: Block["type"]; children: ReactNode; className?: string }) {
+/** Witte kaart: met `arch` een boog met dubbele rand, anders een rustig wit vlak met zachte hoeken. */
+function ArchCard({
+  type,
+  children,
+  className = "",
+  arch = true,
+}: {
+  type: Block["type"];
+  children: ReactNode;
+  className?: string;
+  arch?: boolean;
+}) {
   return (
     <section data-block={type} className={SECTION} style={CONTAINER}>
-      <div style={{ background: col("surface"), padding: CARD_PAD, borderRadius: archOuter }}>
-        <div
-          className={`px-5 pt-16 pb-10 text-center ${className}`}
-          style={{ border: `0.4rem solid ${col("surfaceAlt")}`, borderRadius: archInner(CARD_PAD), background: col("surface") }}
-        >
+      {arch ? (
+        <div style={{ background: col("surface"), padding: CARD_PAD, borderRadius: archOuter }}>
+          <div
+            className={`px-5 pt-16 pb-10 text-center ${className}`}
+            style={{ border: `0.4rem solid ${col("surfaceAlt")}`, borderRadius: archInner(CARD_PAD), background: col("surface") }}
+          >
+            {children}
+          </div>
+        </div>
+      ) : (
+        <div className={`px-6 py-10 text-center ${className}`} style={{ background: col("surface"), borderRadius: "0.9rem" }}>
           {children}
         </div>
-      </div>
+      )}
     </section>
   );
 }
@@ -222,7 +238,7 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
 
     case "countdown":
       return (
-        <ArchCard type="countdown">
+        <ArchCard type="countdown" arch={false}>
           <Head eyebrow={block.eyebrow} title={block.title} />
           <SweetCountdown date={config.date} time={config.time} />
         </ArchCard>
@@ -239,7 +255,7 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
 
     case "program":
       return (
-        <ArchCard type="program">
+        <ArchCard type="program" arch={false}>
           <Head eyebrow={block.eyebrow} title={block.title} />
           <ul className="mx-auto mt-7 max-w-[17rem] text-left">
             {block.items.map((item, i) => (
@@ -270,7 +286,7 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
     case "location": {
       const query = encodeURIComponent([block.title, config.city].filter(Boolean).join(" "));
       return (
-        <ArchCard type="location">
+        <ArchCard type="location" arch={false}>
           <Head eyebrow={block.eyebrow} title={block.title} />
           <Body className="mt-5">{block.address}</Body>
           <div className="mt-6">
@@ -282,7 +298,7 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
 
     case "dresscode":
       return (
-        <ArchCard type="dresscode">
+        <ArchCard type="dresscode" arch={false}>
           <Head eyebrow={block.eyebrow} title={block.title} />
           <Body className="mt-5">{block.text}</Body>
           {block.colors.length > 0 && (

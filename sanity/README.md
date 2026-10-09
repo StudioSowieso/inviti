@@ -19,7 +19,7 @@ Sanity Studio (inviti.sanity.studio)  ──►  Sanity dataset  ──►  Invi
 ## 1. Sanity-project (al aangemaakt)
 
 - Project: **Inviti**, Project ID `98wj3rgp`, dataset `production` (publiek leesbaar).
-- De startthema's zijn *Basic* (slug `creme-taupe`), *Nature*, *Leaf*, *Modern* en *Sweet*. *Bosgroen & Blush* is verwijderd (in Sanity op niet-actief gezet).
+- De startthema's zijn *In alle eenvoud* (slug `creme-taupe`), *Nature*, *Leaf*, *Modern* en *Sweet*. *Bosgroen & Blush* is verwijderd (in Sanity op niet-actief gezet).
 - Het thema *Nature* (slug `nature`, stijl **Natuur**) staat als **concept** in de dataset, zodat de preview-omgeving
   het al toont. Publiceer het pas nadat de code van `preview` naar `main` is gegaan; anders zou productie het
   thema nog zonder de nieuwe vormgeving laten zien.
