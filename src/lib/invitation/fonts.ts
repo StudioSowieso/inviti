@@ -12,6 +12,7 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   "DM Serif Display": { css2: "DM+Serif+Display:ital@0;1", kind: "serif" },
   "EB Garamond": { css2: "EB+Garamond:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
   Italiana: { css2: "Italiana", kind: "serif" },
+  Gloock: { css2: "Gloock", kind: "serif" },
   Inter: { css2: "Inter:wght@400;500;600", kind: "sans" },
   "Josefin Sans": { css2: "Josefin+Sans:wght@300;400;600", kind: "sans" },
   Jost: { css2: "Jost:wght@400;500;600", kind: "sans" },

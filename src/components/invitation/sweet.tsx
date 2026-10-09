@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { useCountdown } from "./use-countdown";
 
@@ -15,20 +15,20 @@ const script = { fontFamily: "var(--inv-script)" } satisfies CSSProperties;
 
 const MONTHS = ["JAN", "FEB", "MRT", "APR", "MEI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV", "DEC"];
 
-/** Verticale strepen: groepen van drie lijnen in het accent met crème ertussen, op de achtergrondkleur. */
+/** Verticale strepen: groepen van drie groene lijnen met crème ertussen, op de achtergrondkleur. */
 export const SWEET_STRIPES: CSSProperties = {
   backgroundColor: col("background"),
   backgroundImage: `linear-gradient(90deg,
-    transparent 0 1.3rem,
-    ${col("surface")} 1.3rem 1.42rem,
-    ${col("accent")} 1.42rem 1.7rem,
-    ${col("surface")} 1.7rem 1.82rem,
-    ${col("accent")} 1.82rem 2.2rem,
-    ${col("surface")} 2.2rem 2.32rem,
-    ${col("accent")} 2.32rem 2.6rem,
-    ${col("surface")} 2.6rem 2.72rem,
-    transparent 2.72rem 100%)`,
-  backgroundSize: "3.9rem 100%",
+    transparent 0 0.75rem,
+    ${col("surface")} 0.75rem 0.83rem,
+    ${col("accent")} 0.83rem 1.03rem,
+    ${col("surface")} 1.03rem 1.12rem,
+    ${col("accent")} 1.12rem 1.4rem,
+    ${col("surface")} 1.4rem 1.49rem,
+    ${col("accent")} 1.49rem 1.69rem,
+    ${col("surface")} 1.69rem 1.77rem,
+    transparent 1.77rem 100%)`,
+  backgroundSize: "3.1rem 100%",
 };
 
 /** Tekstvulling met een verloop van donker naar licht accent, zoals het gesatineerde cijferwerk in het ontwerp. */
@@ -39,35 +39,55 @@ const GRADIENT: CSSProperties = {
   color: "transparent",
 };
 
-/** Een strikje. Kleur via `currentColor`. */
+/** Een los gestrikt lint met twee lussen en twee staarten. Kleur via het accent, met een verloop. */
 export function Bow({ size = 44, className = "" }: { size?: number; className?: string }) {
+  const id = useId();
   return (
-    <svg viewBox="0 0 60 56" width={size} height={(size * 56) / 60} aria-hidden="true" className={className} style={{ color: col("accent") }}>
-      <g fill="currentColor" stroke="currentColor" strokeWidth=".8" strokeLinejoin="round" strokeLinecap="round">
-        <path d="M30 22C21 7 5 5 3.5 15.5C2.2 26.5 19 28.5 30 22Z" fillOpacity=".9" />
-        <path d="M30 22C39 7 55 5 56.5 15.5C57.8 26.5 41 28.5 30 22Z" fillOpacity=".9" />
-        <path d="M28.5 26C25 36 23.5 43 17 53L23 49.5L26 55C28.5 45 30.5 35 31 27Z" fillOpacity=".8" />
-        <path d="M31.5 26C35 36 36.5 43 43 53L37 49.5L34 55C31.5 45 29.5 35 29 27Z" fillOpacity=".8" />
-        <ellipse cx="30" cy="22.5" rx="4.4" ry="5.4" />
+    <svg viewBox="0 0 60 80" width={size} height={(size * 80) / 60} aria-hidden="true" className={className}>
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="0.35" y2="1">
+          <stop offset="0" style={{ stopColor: `color-mix(in srgb, ${col("accent")} 80%, black)` }} />
+          <stop offset="0.5" style={{ stopColor: `color-mix(in srgb, ${col("accent")} 60%, white)` }} />
+          <stop offset="1" style={{ stopColor: `color-mix(in srgb, ${col("accent")} 85%, black)` }} />
+        </linearGradient>
+      </defs>
+      <g stroke={`url(#${id})`} fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <g strokeWidth="2.8">
+          <path d="M29 28C21 8 8 0.5 3.5 7C-0.5 14 9 27 29 29.5" />
+          <path d="M31 28C39 8 52 0.5 56.5 7C60.5 14 51 27 31 29.5" />
+        </g>
+        <g strokeWidth="1.3" opacity=".8">
+          <path d="M27.5 25C21 16 13 10.5 8.5 11M32.5 25C39 16 47 10.5 51.5 11" />
+        </g>
       </g>
-      <g fill="none" stroke={col("surface")} strokeWidth=".6" strokeLinecap="round" opacity=".7">
-        <path d="M27 21C20 14 12 13 8 15.5M33 21C40 14 48 13 52 15.5" />
+      <g fill={`url(#${id})`}>
+        <path d="M29 30C26 42 18 52 7 73L17 68L19.5 78C26 62 31.5 46 32 31Z" />
+        <path d="M31 30C34 40 44 50 53 70L43.5 66L41.5 77C35 62 30 46 28 31Z" />
+        <ellipse cx="30" cy="29" rx="4.6" ry="5.6" />
       </g>
     </svg>
   );
 }
 
-const ARCH = "50% 50% 1.3rem 1.3rem / 9.5rem 9.5rem 1.3rem 1.3rem";
-const ARCH_IN = "50% 50% 1rem 1rem / 9rem 9rem 1rem 1rem";
+/**
+ * De boog is een echte halve cirkel: de verticale radius is de helft van de kaartbreedte (cqw refereert aan
+ * de sectie, die de container is). Onderaan zijn de hoeken licht afgerond.
+ */
+const archOuter = "50% 50% 0.7rem 0.7rem / 50cqw 50cqw 0.7rem 0.7rem";
+const archInner = (pad: string) => `50% 50% 0.3rem 0.3rem / calc(50cqw - ${pad}) calc(50cqw - ${pad}) 0.3rem 0.3rem`;
+const CARD_PAD = "0.7rem";
+const SECTION = "relative mx-[9%] mt-9";
+
+const CONTAINER: CSSProperties = { containerType: "inline-size" };
 
 /** Witte boogkaart met dubbele rand. */
 function ArchCard({ type, children, className = "" }: { type: Block["type"]; children: ReactNode; className?: string }) {
   return (
-    <section data-block={type} className="relative mx-4 mt-4">
-      <div style={{ background: col("surface"), padding: "0.5rem", borderRadius: ARCH }}>
+    <section data-block={type} className={SECTION} style={CONTAINER}>
+      <div style={{ background: col("surface"), padding: CARD_PAD, borderRadius: archOuter }}>
         <div
-          className={`px-5 pt-14 pb-10 text-center ${className}`}
-          style={{ border: `0.28rem solid ${col("surfaceAlt")}`, borderRadius: ARCH_IN, background: col("surface") }}
+          className={`px-5 pt-16 pb-10 text-center ${className}`}
+          style={{ border: `0.4rem solid ${col("surfaceAlt")}`, borderRadius: archInner(CARD_PAD), background: col("surface") }}
         >
           {children}
         </div>
@@ -87,7 +107,7 @@ function Caps({ children, className = "", style }: { children: ReactNode; classN
 function Head({ eyebrow, title }: { eyebrow?: string; title: string }) {
   return (
     <header>
-      <Bow size={38} className="mx-auto" />
+      <Bow size={30} className="mx-auto" />
       {eyebrow && <Caps className="mt-4">{eyebrow}</Caps>}
       <h2 className="mt-2 text-[2.15rem] leading-[1.1]" style={{ ...heading, ...GRADIENT }}>
         {title}
@@ -122,17 +142,17 @@ function PillButton({ children, href }: { children: ReactNode; href?: string }) 
 function SweetPhoto() {
   return (
     <div
-      className="relative mx-auto mt-7 aspect-[4/5] w-[68%] overflow-hidden"
+      className="relative mx-auto mt-7 aspect-[3/4] w-[68%] overflow-hidden"
       style={{
         ...SWEET_STRIPES,
-        borderRadius: "999px 999px 0.8rem 0.8rem / 100% 100% 0.8rem 0.8rem",
+        borderRadius: "50% 50% 0.8rem 0.8rem / 34cqw 34cqw 0.8rem 0.8rem",
         boxShadow: `0 0 0 0.3rem ${col("surface")}, 0 0 0 0.45rem ${col("surfaceAlt")}`,
       }}
       aria-hidden="true"
     >
       <span className="absolute inset-0 grid place-items-center">
         <span className="rounded-full p-3" style={{ background: col("surface") }}>
-          <Bow size={34} />
+          <Bow size={26} />
         </span>
       </span>
     </div>
@@ -167,26 +187,31 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
   switch (block.type) {
     case "hero":
       return (
-        <section data-block="hero" className="relative mx-4 mt-4">
-          <div style={{ background: col("surface"), padding: "0.55rem", borderRadius: ARCH }}>
+        <section data-block="hero" className={SECTION} style={CONTAINER}>
+          <div style={{ background: col("surface"), padding: CARD_PAD, borderRadius: archOuter }}>
             <div
-              className="px-5 pt-[4.6rem] pb-10 text-center"
-              style={{ border: `0.3rem solid ${col("surfaceAlt")}`, borderRadius: ARCH_IN, background: col("surface") }}
+              className="flex flex-col items-center justify-center px-4 pt-[18cqw] pb-9 text-center"
+              style={{
+                minHeight: `calc(150cqw - 2 * ${CARD_PAD})`,
+                border: `0.4rem solid ${col("surfaceAlt")}`,
+                borderRadius: archInner(CARD_PAD),
+                background: col("surface"),
+              }}
             >
-              <h1 className="select-none" style={{ ...heading, ...GRADIENT }} aria-label={`${day} ${month} ${yy}`}>
-                <span className="block text-[4.6rem] leading-[0.98]">{day}</span>
-                <span className="block text-[4.6rem] leading-[0.98] tracking-[0.02em]">{month}</span>
-                <span className="block text-[4.6rem] leading-[0.98]">{yy}</span>
+              <h1 className="select-none" style={{ ...heading, ...GRADIENT, fontSize: "min(22cqw, 5.4rem)" }} aria-label={`${day} ${month} ${yy}`}>
+                <span className="block leading-[0.98]">{day}</span>
+                <span className="block leading-[0.98]">{month}</span>
+                <span className="block leading-[0.98]">{yy}</span>
               </h1>
-              <Bow size={52} className="mx-auto mt-5" />
-              <p className="mt-6 text-[0.85rem] tracking-[0.3em]" style={{ color: col("text") }}>
+              <Bow size={46} className="mx-auto mt-4" />
+              <p className="mt-4 text-[0.82rem] tracking-[0.3em]" style={{ color: col("text") }}>
                 {names}
               </p>
-              <p className="mt-1 text-[2rem] leading-none" style={{ ...script, color: col("text") }}>
+              <p className="-mt-1 text-[2.3rem] leading-none" style={{ ...script, color: col("text") }}>
                 {block.eyebrow}
               </p>
               {config.city && (
-                <p className="mt-4 text-[0.58rem] tracking-[0.3em] uppercase" style={{ color: col("muted") }}>
+                <p className="mt-5 text-[0.58rem] tracking-[0.3em] uppercase" style={{ color: col("muted") }}>
                   {config.city}
                 </p>
               )}
@@ -287,20 +312,21 @@ export function SweetBlockSection({ block, config }: { block: Block; config: Inv
 
     case "footer":
       return (
-        <section
-          data-block="footer"
-          className="relative mx-4 mt-4 mb-4 px-6 pt-16 pb-24 text-center"
-          style={{ background: col("footerBackground"), color: col("footerText"), borderRadius: ARCH }}
-        >
-          <Bow size={44} className="mx-auto" />
-          <p className="mt-5 text-[2.3rem] leading-[1.15]" style={script}>
-            {block.closing || "Tot dan"}
-          </p>
-          <p className="mt-3 text-[0.8rem] tracking-[0.3em]">{names}</p>
-          {block.contactEmail && <p className="mt-5 text-[0.7rem] opacity-75">Vragen? mail naar {block.contactEmail}</p>}
-          <p className="mt-3 text-[0.58rem] tracking-[0.24em] uppercase opacity-60">
-            {[`${day} ${month} ${yy}`, config.city].filter(Boolean).join(" · ")}
-          </p>
+        <section data-block="footer" className="relative mx-[9%] mt-9 mb-9" style={CONTAINER}>
+          <div
+            className="px-6 pt-[16cqw] pb-14 text-center"
+            style={{ background: col("footerBackground"), color: col("footerText"), borderRadius: archOuter }}
+          >
+            <Bow size={36} className="mx-auto" />
+            <p className="mt-4 text-[2.6rem] leading-[1.1]" style={script}>
+              {block.closing || "Tot dan"}
+            </p>
+            <p className="mt-3 text-[0.8rem] tracking-[0.3em]">{names}</p>
+            {block.contactEmail && <p className="mt-5 text-[0.7rem] opacity-75">Vragen? mail naar {block.contactEmail}</p>}
+            <p className="mt-3 text-[0.58rem] tracking-[0.24em] uppercase opacity-60">
+              {[`${day} ${month} ${yy}`, config.city].filter(Boolean).join(" · ")}
+            </p>
+          </div>
         </section>
       );
   }

@@ -20,7 +20,7 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
       <div
         className="overflow-hidden rounded-xl border"
         style={{
-          background: `repeating-linear-gradient(90deg, ${c.background} 0 0.55rem, ${c.accent} 0.55rem 0.6rem, ${c.background} 0.6rem 0.7rem, ${c.accent} 0.7rem 0.75rem, ${c.background} 0.75rem 0.85rem, ${c.accent} 0.85rem 0.9rem, ${c.background} 0.9rem 1.45rem)`,
+          background: `repeating-linear-gradient(90deg, ${c.background} 0 0.45rem, ${c.surface} 0.45rem 0.5rem, ${c.accent} 0.5rem 0.62rem, ${c.surface} 0.62rem 0.67rem, ${c.accent} 0.67rem 0.84rem, ${c.surface} 0.84rem 0.89rem, ${c.accent} 0.89rem 1.01rem, ${c.surface} 1.01rem 1.06rem, ${c.background} 1.06rem 1.9rem)`,
           borderColor: c.line,
           color: c.text,
         }}
@@ -29,13 +29,13 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
         <div className="px-6 pt-3 pb-2">
           <div
             className="mx-auto w-[78%] p-[0.2rem]"
-            style={{ background: c.surface, borderRadius: "50% 50% 0.5rem 0.5rem / 2.6rem 2.6rem 0.5rem 0.5rem" }}
+            style={{ background: c.surface, borderRadius: "50% 50% 0.4rem 0.4rem / 3.4rem 3.4rem 0.4rem 0.4rem" }}
           >
             <div
               className="px-2 pt-4 pb-2.5 text-center"
               style={{
                 border: `0.12rem solid ${c.surfaceAlt}`,
-                borderRadius: "50% 50% 0.4rem 0.4rem / 2.5rem 2.5rem 0.4rem 0.4rem",
+                borderRadius: "50% 50% 0.3rem 0.3rem / 3.2rem 3.2rem 0.3rem 0.3rem",
               }}
             >
               <p className="text-[1.15rem] leading-[0.95]" style={{ fontFamily: fontStack(theme.headingFont), ...gradient }}>

@@ -8,6 +8,7 @@ const FONTS = [
   "DM Serif Display",
   "EB Garamond",
   "Italiana",
+  "Gloock",
   "Inter",
   "Jost",
   "Josefin Sans",
