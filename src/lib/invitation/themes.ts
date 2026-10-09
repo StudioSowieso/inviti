@@ -90,7 +90,11 @@ export async function getThemes(): Promise<ThemeResult> {
       signal: AbortSignal.timeout(5000),
       ...(cfg.perspective === "drafts"
         ? { cache: "no-store" as const }
-        : { next: { revalidate: 3600, tags: [THEMES_TAG] } }),
+        : {
+            // Productie: 1 uur (of direct via de webhook). Preview en lokaal: 10 seconden, zodat nieuwe
+            // of aangepaste thema's in Sanity vrijwel meteen zichtbaar zijn.
+            next: { revalidate: process.env.VERCEL_ENV === "production" ? 3600 : 10, tags: [THEMES_TAG] },
+          }),
     });
     if (!res.ok) throw new Error(`Sanity antwoordde met ${res.status}`);
     const json = (await res.json()) as { result?: unknown[] };
