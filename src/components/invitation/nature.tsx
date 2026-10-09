@@ -23,7 +23,7 @@ export const PAPER_NOISE = `url("data:image/svg+xml;utf8,${encodeURIComponent(
 const TEAR_W = 400;
 const TEAR_H = 28;
 
-function tearPaths(seed: number) {
+export function tearPaths(seed: number) {
   let s = (seed * 9301 + 49297) % 4294967296;
   const rand = () => {
     s = (s * 1664525 + 1013904223) % 4294967296;

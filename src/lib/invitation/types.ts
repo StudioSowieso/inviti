@@ -97,7 +97,8 @@ export type Block =
 
 export type BlockType = Block["type"];
 
-export type InvitationAnimation = "envelope" | "none";
+/** "reveal" = de doorkijk van het thema (takken, pagina's of deuren); "none" opent direct. */
+export type InvitationAnimation = "reveal" | "none";
 
 export type InvitationConfig = {
   version: 1;

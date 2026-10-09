@@ -5,8 +5,6 @@ import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import {
   formatDateDots,
   formatDateLong,
-  formatDateUpper,
-  monogram,
   targetTimestamp,
 } from "@/lib/invitation/format";
 import type {
@@ -18,7 +16,7 @@ import type {
 } from "@/lib/invitation/types";
 import { LeafBlockSection } from "./leaf";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
-import { NatureEnvelope } from "./nature-envelope";
+import { REVEAL_MS, RevealOverlay } from "./reveal";
 
 const RADIUS = { pill: "999px", rounded: "0.9rem", square: "0.15rem" } as const;
 
@@ -39,7 +37,7 @@ type Stage = "closed" | "opening" | "open";
 export type InvitationViewProps = {
   config: InvitationConfig;
   theme: InvitationTheme;
-  /** In de configurator tonen we direct de inhoud; de envelop speel je af met replayKey. */
+  /** In de configurator tonen we direct de inhoud; de doorkijk speel je af met replayKey. */
   startOpen?: boolean;
   replayKey?: number;
   /** Scrollt naar dit blok (bijvoorbeeld het blok dat je net bewerkt). */
@@ -56,8 +54,8 @@ export function InvitationView({
   className = "",
 }: InvitationViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const useEnvelope = config.animation === "envelope";
-  const [stage, setStage] = useState<Stage>(useEnvelope && !startOpen ? "closed" : "open");
+  const useReveal = config.animation === "reveal";
+  const [stage, setStage] = useState<Stage>(useReveal && !startOpen ? "closed" : "open");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handledReplay = useRef(replayKey);
 
@@ -73,28 +71,28 @@ export function InvitationView({
   }, [theme]);
 
   useEffect(() => {
-    if (!useEnvelope) setStage("open");
-  }, [useEnvelope]);
+    if (!useReveal) setStage("open");
+  }, [useReveal]);
 
   useEffect(() => {
     if (replayKey !== handledReplay.current) {
       handledReplay.current = replayKey;
-      if (useEnvelope) {
+      if (useReveal) {
         if (timer.current) clearTimeout(timer.current);
         setStage("closed");
         scrollRef.current?.scrollTo({ top: 0 });
       }
     }
-  }, [replayKey, useEnvelope]);
+  }, [replayKey, useReveal]);
 
   useEffect(() => () => {
     if (timer.current) clearTimeout(timer.current);
   }, []);
 
-  function openEnvelope() {
+  function openReveal() {
     if (stage !== "closed") return;
     setStage("opening");
-    timer.current = setTimeout(() => setStage("open"), 1500);
+    timer.current = setTimeout(() => setStage("open"), REVEAL_MS);
   }
 
   // ---------- Hoofdstuknavigatie ----------
@@ -156,7 +154,7 @@ export function InvitationView({
   const fontsHref = googleFontsHref(...themeFonts(theme));
   const activeLabel = chapters.find((c) => c.type === active)?.label ?? "Welkom";
   const leaf = theme.style === "leaf";
-  // "nature" en "leaf" delen papiertextuur, thema-gekleurde navigatie en de bijpassende envelop.
+  // "nature" en "leaf" delen papiertextuur en een thema-gekleurde navigatie.
   const nature = theme.style !== "classic";
   const visibleBlocks = config.blocks.filter((b) => b.enabled);
   // De navigatiebalk volgt in "nature" de knopkleuren van het thema in plaats van donkerbruin.
@@ -236,119 +234,9 @@ export function InvitationView({
         </div>
       )}
 
-      {stage !== "open" &&
-        (nature ? (
-          <NatureEnvelope config={config} opening={stage === "opening"} onOpen={openEnvelope} />
-        ) : (
-          <EnvelopeOverlay config={config} opening={stage === "opening"} onOpen={openEnvelope} />
-        ))}
-    </div>
-  );
-}
-
-// ---------- Envelop ----------
-
-function EnvelopeOverlay({
-  config,
-  opening,
-  onOpen,
-}: {
-  config: InvitationConfig;
-  opening: boolean;
-  onOpen: () => void;
-}) {
-  const initials = monogram(config.partner1, config.partner2, " & ");
-  const short = monogram(config.partner1, config.partner2);
-  const ease = "cubic-bezier(.6,0,.2,1)";
-
-  return (
-    <div
-      className="absolute inset-0 z-30 flex flex-col items-center px-6 py-10 text-center"
-      style={{
-        background: col("background"),
-        opacity: opening ? 0 : 1,
-        transition: `opacity 600ms ${ease} ${opening ? "850ms" : "0ms"}`,
-        pointerEvents: opening ? "none" : "auto",
-      }}
-    >
-      <div>
-        <p className="text-[0.8rem] tracking-[0.18em]" style={heading}>
-          {initials}
-        </p>
-        <p className="mt-1.5 text-[0.5rem] tracking-[0.2em] uppercase" style={{ color: col("muted") }}>
-          {formatDateUpper(config.date)}
-        </p>
-      </div>
-
-      <button
-        type="button"
-        onClick={onOpen}
-        aria-label="Open de uitnodiging"
-        className="relative my-auto w-[78%] max-w-sm"
-        style={{ perspective: "900px", aspectRatio: "1.55" }}
-      >
-        <span
-          className="absolute inset-0"
-          style={{ background: col("envelope"), borderRadius: "3px", boxShadow: "0 22px 40px -22px rgb(0 0 0 / 0.45)" }}
-        />
-        <svg
-          className="absolute inset-0 h-full w-full"
-          viewBox="0 0 100 64"
-          preserveAspectRatio="none"
-          fill="none"
-          stroke="rgb(0 0 0 / 0.09)"
-          strokeWidth="0.4"
-          aria-hidden="true"
-        >
-          <path d="M0 64 L42 30 M100 64 L58 30" />
-        </svg>
-        <span
-          className="absolute inset-x-0 top-0"
-          style={{
-            height: "58%",
-            background: `color-mix(in srgb, ${col("envelope")} 90%, black)`,
-            clipPath: "polygon(0 0, 100% 0, 50% 100%)",
-            transformOrigin: "top",
-            transform: opening ? "rotateX(180deg)" : "rotateX(0deg)",
-            transition: `transform 700ms ${ease}`,
-            zIndex: 2,
-          }}
-        />
-        <span
-          className="absolute top-1/2 left-1/2 z-[3] grid w-[46%] place-items-center py-4"
-          style={{
-            background: col("envelopeCard"),
-            borderRadius: "2px",
-            boxShadow: "0 6px 14px -8px rgb(0 0 0 / 0.35)",
-            transform: `translate(-50%, ${opening ? "-90%" : "-50%"}) scale(${opening ? 1.08 : 1})`,
-            transition: `transform 700ms ${ease} 150ms`,
-          }}
-        >
-          <span
-            className="grid size-9 place-items-center rounded-full text-[0.65rem] tracking-[0.1em]"
-            style={{ background: col("buttonBackground"), color: col("buttonText"), ...heading }}
-          >
-            {short}
-          </span>
-        </span>
-      </button>
-
-      <div>
-        <button
-          type="button"
-          onClick={onOpen}
-          className="inline-flex items-center gap-2 px-6 py-3 text-[0.6rem] font-medium tracking-[0.16em] uppercase"
-          style={{ background: col("buttonBackground"), color: col("buttonText"), borderRadius: "var(--inv-radius)" }}
-        >
-          Tik om te openen
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-            <path d="M12 5v14m0 0-5-5m5 5 5-5" />
-          </svg>
-        </button>
-        <p className="mt-3 text-[0.55rem]" style={{ color: col("muted") }}>
-          Klik of tik op de envelop
-        </p>
-      </div>
+      {stage !== "open" && (
+        <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
+      )}
     </div>
   );
 }

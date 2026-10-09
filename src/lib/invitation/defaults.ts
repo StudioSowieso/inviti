@@ -64,7 +64,7 @@ export function defaultConfig(prefill: Prefill = {}): InvitationConfig {
     date: prefill.date || "2027-09-12",
     time: "15:00",
     city: "Utrecht",
-    animation: "envelope",
+    animation: "reveal",
     palette: "standaard",
     blocks: defaultBlocks(),
   };
@@ -187,7 +187,8 @@ export function normalizeConfig(raw: unknown, prefill: Prefill = {}): Invitation
     date,
     time,
     city: str(raw.city, base.city, 80),
-    animation: raw.animation === "none" ? "none" : "envelope",
+    // Oudere uitnodigingen hebben "envelope"; die gebruiken nu de doorkijk van het thema.
+    animation: raw.animation === "none" ? "none" : "reveal",
     palette: typeof raw.palette === "string" && /^[a-z0-9-]{1,30}$/.test(raw.palette) ? raw.palette : "standaard",
     blocks: [...hero, ...middle, ...footer],
   };

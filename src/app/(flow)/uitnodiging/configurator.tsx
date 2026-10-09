@@ -162,6 +162,13 @@ export function Configurator({
         ? "Niet-opgeslagen wijzigingen"
         : "Alles is opgeslagen";
 
+  const revealText =
+    theme.style === "leaf"
+      ? "Gasten gaan door de takken heen en zien dan de uitnodiging."
+      : theme.style === "nature"
+        ? "Gescheurde pagina's gaan open en onthullen de uitnodiging."
+        : "Deuren in de kleuren van het thema slaan open.";
+
   function replay() {
     setReplayKey((k) => k + 1);
     setMobileView("preview");
@@ -339,7 +346,7 @@ export function Configurator({
                   <div className="grid gap-4 sm:grid-cols-2">
                     {(
                       [
-                        { id: "envelope", title: "Envelop", text: "Gasten tikken om de envelop te openen." },
+                        { id: "reveal", title: "Doorkijk", text: revealText },
                         { id: "none", title: "Direct openen", text: "De uitnodiging staat meteen open." },
                       ] as { id: InvitationAnimation; title: string; text: string }[]
                     ).map((o) => {
@@ -351,7 +358,7 @@ export function Configurator({
                           aria-pressed={selected}
                           onClick={() => {
                             patch({ animation: o.id });
-                            if (o.id === "envelope") replay();
+                            if (o.id === "reveal") replay();
                           }}
                           className={`relative rounded-[1.4rem] border bg-paper p-5 text-left transition ${
                             selected ? "border-forest ring-2 ring-forest" : "border-line hover:border-clay/50"
@@ -370,7 +377,7 @@ export function Configurator({
                   </div>
                   <button
                     type="button"
-                    disabled={config.animation !== "envelope"}
+                    disabled={config.animation !== "reveal"}
                     onClick={replay}
                     className="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-paper px-5 py-2.5 text-sm font-medium transition hover:bg-cream disabled:opacity-50"
                   >
@@ -546,7 +553,7 @@ export function Configurator({
               <div className="flex items-center justify-between border-b border-line px-5 py-3">
                 <p className="eyebrow text-clay">Live voorbeeld</p>
                 <div className="flex items-center gap-0.5">
-                  <ToolButton label="Envelop opnieuw afspelen" disabled={config.animation !== "envelope"} onClick={() => setReplayKey((k) => k + 1)}>
+                  <ToolButton label="Doorkijk opnieuw afspelen" disabled={config.animation !== "reveal"} onClick={() => setReplayKey((k) => k + 1)}>
                     <RefreshIcon width={17} height={17} />
                   </ToolButton>
                   <ToolButton label="Volledig voorbeeld" onClick={() => setFullPreview(true)}>

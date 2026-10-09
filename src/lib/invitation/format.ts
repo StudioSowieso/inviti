@@ -25,7 +25,7 @@ export function formatDateLong(date: string) {
   }).format(new Date(Date.UTC(p.y, p.m - 1, p.d)));
 }
 
-/** "12 SEPTEMBER 2027" voor de envelop */
+/** "12 SEPTEMBER 2027" */
 export function formatDateUpper(date: string) {
   return formatDateLong(date).toUpperCase();
 }

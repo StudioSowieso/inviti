@@ -22,8 +22,8 @@ const script = { fontFamily: "var(--inv-script)" } satisfies CSSProperties;
  * `seed`, dus server en browser tekenen exact hetzelfde.
  */
 
-type BranchOpts = { len: number; bow: number; leaves: number; leafLen: number; olives?: number };
-type BranchArtData = {
+export type BranchOpts = { len: number; bow: number; leaves: number; leafLen: number; olives?: number };
+export type BranchArtData = {
   stem: string;
   leaves: { transform: string; d: string; vein: string }[];
   olives: { stalk: string; cx: number; cy: number; rot: number }[];
@@ -31,7 +31,7 @@ type BranchArtData = {
 
 const r1 = (n: number) => Math.round(n * 10) / 10;
 
-function makeBranch(seed: number, { len, bow, leaves, leafLen, olives = 0 }: BranchOpts): BranchArtData {
+export function makeBranch(seed: number, { len, bow, leaves, leafLen, olives = 0 }: BranchOpts): BranchArtData {
   let st = (seed * 9301 + 49297) % 233280;
   const rand = () => {
     st = (st * 9301 + 49297) % 233280;
@@ -108,7 +108,7 @@ const PHOTO_A = makeBranch(21, { len: 310, bow: 44, leaves: 14, leafLen: 32 });
 const PHOTO_B = makeBranch(34, { len: 280, bow: 38, leaves: 12, leafLen: 30, olives: 2 });
 
 /** Tekent een tak; kleur en bladvulling volgen `currentColor`. */
-function BranchArt({
+export function BranchArt({
   data,
   stemWidth = 1,
   leafWidth = 0.7,
