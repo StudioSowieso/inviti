@@ -23,6 +23,7 @@ import { ModernBlockSection } from "./modern";
 import { StoryImg } from "./story-photo";
 import { ClassicEnvelope } from "./classic-envelope";
 import { LEMON_STRIPES, LemonBlockSection } from "./lemon";
+import { LeafEnvelope } from "./leaf-envelope";
 import { LemonEnvelope } from "./lemon-envelope";
 import { SWEET_STRIPES, SweetBlockSection } from "./sweet";
 import { SweetEnvelope } from "./sweet-envelope";
@@ -270,6 +271,8 @@ export function InvitationView({
           <SweetEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : lemon ? (
           <LemonEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : leaf ? (
+          <LeafEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : modern ? (
           <ModernEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : textured ? (
