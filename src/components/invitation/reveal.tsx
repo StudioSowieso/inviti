@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties, type ReactNode } from "react";
 import { monogram } from "@/lib/invitation/format";
 import type { InvitationConfig, InvitationTheme, ThemeColors } from "@/lib/invitation/types";
 import { BranchArt, makeBranch } from "./leaf";
+import { AbstractCouple } from "./modern";
 import { PAPER_NOISE, tearPaths } from "./nature";
 
 /**
@@ -26,6 +27,7 @@ type RevealProps = { config: InvitationConfig; opening: boolean; onOpen: () => v
 export function RevealOverlay({ theme, ...props }: RevealProps & { theme: InvitationTheme }) {
   if (theme.style === "leaf") return <LeafReveal {...props} />;
   if (theme.style === "nature") return <PagesReveal {...props} />;
+  if (theme.style === "modern") return <PhotoReveal {...props} />;
   return <DoorsReveal {...props} />;
 }
 
@@ -403,6 +405,54 @@ function DoorsReveal({ config, opening, onOpen }: RevealProps) {
         style={{ bottom: "13%" }}
       >
         <OpenHint opening={opening} light />
+      </div>
+    </Root>
+  );
+}
+
+// ---------- Modern: een grote foto die openklapt ----------
+
+function PhotoReveal({ config, opening, onOpen }: RevealProps) {
+  return (
+    <Root opening={opening} onOpen={onOpen}>
+      <div className="absolute inset-0" style={{ perspective: "1700px", pointerEvents: "none" }}>
+        <div
+          className="absolute inset-0"
+          style={{
+            transformOrigin: "0% 50%",
+            transform: opening ? "rotateY(-104deg)" : "rotateY(0deg)",
+            transition: "transform 1300ms cubic-bezier(.6,0,.2,1)",
+            backfaceVisibility: "hidden",
+            boxShadow: "0 0 40px rgb(0 0 0 / .25)",
+            overflow: "hidden",
+          }}
+        >
+          <AbstractCouple className="absolute inset-0 h-full w-full" />
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to top, rgb(0 0 0 / .55), rgb(0 0 0 / 0) 45%)" }}
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-14 text-center"
+            style={{ color: "#fff", opacity: opening ? 0 : 1, transition: "opacity 300ms ease" }}
+          >
+            <p className="text-[0.6rem] tracking-[0.3em] uppercase opacity-85">Wij gaan trouwen</p>
+            <div className="mt-2 flex flex-wrap items-baseline justify-center gap-x-2">
+              <span className="text-[3rem] leading-[1.1]" style={script}>
+                {config.partner1}
+              </span>
+              <span className="text-[1.4rem]" style={heading}>
+                &amp;
+              </span>
+              <span className="text-[3rem] leading-[1.1]" style={script}>
+                {config.partner2}
+              </span>
+            </div>
+            <div className="mt-6">
+              <OpenHint opening={opening} light />
+            </div>
+          </div>
+        </div>
       </div>
     </Root>
   );

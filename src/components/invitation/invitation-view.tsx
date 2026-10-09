@@ -18,6 +18,7 @@ import type {
 } from "@/lib/invitation/types";
 import { LeafBlockSection } from "./leaf";
 import { ModernBlockSection } from "./modern";
+import { ModernEnvelope } from "./modern-envelope";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
 import { NatureEnvelope } from "./nature-envelope";
 import { REVEAL_MS, RevealOverlay } from "./reveal";
@@ -246,6 +247,8 @@ export function InvitationView({
       {stage !== "open" &&
         (config.animation === "reveal" ? (
           <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : modern ? (
+          <ModernEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : textured ? (
           <NatureEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : (

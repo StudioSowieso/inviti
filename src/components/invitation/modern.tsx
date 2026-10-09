@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatDateDots } from "@/lib/invitation/format";
 import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/types";
 import { useCountdown } from "./use-countdown";
@@ -39,6 +39,67 @@ export function ModernPhoto({ className = "", style }: { className?: string; sty
         />
       </svg>
     </div>
+  );
+}
+
+/**
+ * Abstracte zwart-witfoto van een stel dat voorhoofd tegen voorhoofd staat, als vervanger voor een
+ * echte trouwfoto. Alleen tinten uit het thema; met een fijne korrel en een zachte lichtval.
+ */
+export function AbstractCouple({ className = "", style }: { className?: string; style?: CSSProperties }) {
+  const id = "ac" + useId().replace(/:/g, "");
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 300 560"
+      preserveAspectRatio="xMidYMid slice"
+      className={className}
+      style={style}
+    >
+      <defs>
+        <linearGradient id={`${id}bg`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style={{ stopColor: `color-mix(in srgb, ${col("surfaceAlt")} 70%, white)` }} />
+          <stop offset="1" style={{ stopColor: `color-mix(in srgb, ${col("muted")} 62%, ${col("surfaceAlt")})` }} />
+        </linearGradient>
+        <radialGradient id={`${id}sun`} cx=".72" cy=".24" r=".55">
+          <stop offset="0" stopColor="#fff" stopOpacity=".95" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id={`${id}fade`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset=".55" stopColor="#000" stopOpacity="0" />
+          <stop offset="1" stopColor="#000" stopOpacity=".5" />
+        </linearGradient>
+        <filter id={`${id}soft`} x="-5%" y="-5%" width="110%" height="110%">
+          <feGaussianBlur stdDeviation="1.4" />
+        </filter>
+        <filter id={`${id}grain`} x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" />
+          <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0" />
+        </filter>
+      </defs>
+      <rect width="300" height="560" fill={`url(#${id}bg)`} />
+      <rect width="300" height="560" fill={`url(#${id}sun)`} />
+      <g filter={`url(#${id}soft)`}>
+        {/* zij met de lange haren */}
+        <path
+          d="M-30 560C-18 430 20 356 86 326C70 300 66 262 72 228C80 176 112 150 148 154C176 158 190 184 188 224C186 262 176 296 160 326C226 350 262 430 270 560Z"
+          style={{ fill: `color-mix(in srgb, ${col("text")} 78%, transparent)` }}
+        />
+        {/* partner met het gezicht naar links */}
+        <path
+          d="M330 560C322 440 292 372 238 342C252 316 258 286 254 252C250 212 226 186 196 188C172 190 160 212 164 246C168 282 182 310 198 338C150 358 110 430 96 560Z"
+          style={{ fill: `color-mix(in srgb, ${col("text")} 52%, transparent)` }}
+        />
+        {/* haar dat tussen hen valt */}
+        <path
+          d="M118 160C90 190 82 250 96 330C112 400 100 470 70 560L108 560C146 470 150 380 140 300C132 240 138 196 164 162Z"
+          style={{ fill: `color-mix(in srgb, ${col("text")} 88%, transparent)` }}
+          opacity=".85"
+        />
+      </g>
+      <rect width="300" height="560" fill={`url(#${id}fade)`} />
+      <rect width="300" height="560" filter={`url(#${id}grain)`} style={{ mixBlendMode: "multiply" }} />
+    </svg>
   );
 }
 
