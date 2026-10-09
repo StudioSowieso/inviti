@@ -32,9 +32,9 @@ export function defaultBlocks(): Block[] {
       type: "location",
       enabled: true,
       eyebrow: "Waar",
-      title: "Oranjerie Hydepark",
+      title: "Landgoed de Liefde",
       address:
-        "Driebergsestraatweg 50, Doorn. Parkeren kan op het landgoed; vanaf station Driebergen-Zeist rijdt een shuttle.",
+        "Liefdeslaan 1\n1234 JA Hartenburg",
     },
     {
       type: "dresscode",
@@ -63,7 +63,7 @@ export function defaultConfig(prefill: Prefill = {}): InvitationConfig {
     partner2: prefill.partner2?.trim() || "Mats",
     date: prefill.date || "2027-09-12",
     time: "15:00",
-    city: "Utrecht",
+    city: "Hartenburg",
     animation: "envelope",
     palette: "standaard",
     blocks: defaultBlocks(),
