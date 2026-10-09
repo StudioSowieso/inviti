@@ -1,6 +1,6 @@
 import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import type { InvitationTheme } from "@/lib/invitation/types";
-import { Branch, BranchPair, LeafPhoto } from "./leaf";
+import { Branch, BranchPair, HeroBranch } from "./leaf";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
 /** Kleine vooruitblik van een thema: kleuren, lettertypes, knopvorm en (bij "nature") decor. */
@@ -29,13 +29,8 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
             </p>
             <Branch size={22} />
           </div>
-          <div
-            className="relative mx-auto mt-2 h-[3.5rem] w-[2.9rem] overflow-hidden"
-            style={{ borderRadius: "999px 999px 0.15rem 0.15rem", outline: `1px solid ${c.accent}`, outlineOffset: "2px" }}
-          >
-            <LeafPhoto />
-          </div>
-          <p className="mt-1.5 text-[1.45rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+          <HeroBranch className="mx-auto mt-1" style={{ width: "50%", color: c.accent }} />
+          <p className="-mt-1 text-[1.45rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
             Emma &amp; Mats
           </p>
           <BranchPair size={70} className="mt-1" />
