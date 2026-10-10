@@ -47,13 +47,13 @@ const STEPS: Step[] = [
     chip: { icon: <CheckIcon {...ICON} />, title: "Programma & locatie", sub: "Alles voor je gasten op één plek" },
   },
   {
-    slug: "lemon",
+    slug: "gastenlijst",
     glow: "#e8c764",
     n: "03",
     eyebrow: "Gastenlijst",
     title: "Makkelijk gasten beheren",
     text: "Voeg gasten toe of importeer ze, deel ze in groepen in en zie wie komt. Plus-één en dieetwensen staan bij de juiste persoon.",
-    backdrop: "Lemon",
+    backdrop: "Gasten",
     chip: { icon: <UsersIcon {...ICON} />, title: "Familie · 8 gasten", sub: "Vrienden · 11 gasten" },
   },
   {

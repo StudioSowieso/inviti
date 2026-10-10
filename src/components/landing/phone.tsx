@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { InvitationView } from "@/components/invitation/invitation-view";
 import { defaultConfig } from "@/lib/invitation/defaults";
 import { FALLBACK_THEMES } from "@/lib/invitation/fallback-themes";
+import { GuestMock } from "./guest-mock";
 import { applyPalette } from "@/lib/invitation/palettes";
 
 const SCREEN_W = 340;
@@ -36,7 +37,7 @@ function PhoneScreen({ slug }: { slug: string }) {
     <div ref={box} className="absolute inset-0 overflow-hidden">
       {size && (
         <div style={{ width: SCREEN_W, height: size.h, transform: `scale(${size.k})`, transformOrigin: "top left" }}>
-          <InvitationView config={config} theme={theme} startOpen className="h-full" />
+          {slug === "gastenlijst" ? <GuestMock /> : <InvitationView config={config} theme={theme} startOpen className="h-full" />}
         </div>
       )}
     </div>
