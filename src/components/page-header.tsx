@@ -51,6 +51,9 @@ export function PageHeader({
           <Link href="/todo" className="block px-4 py-2.5 text-sm hover:bg-cream">
             To do lijst
           </Link>
+          <Link href="/instellingen" className="block px-4 py-2.5 text-sm hover:bg-cream">
+            Account
+          </Link>
           <form action={signOut} className="border-t border-line">
             <button
               type="submit"
