@@ -105,6 +105,7 @@ export function PhoneHero() {
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
+          refreshPriority: 10,
           invalidateOnRefresh: true,
         },
       });
@@ -139,6 +140,7 @@ export function PhoneHero() {
       tl.fromTo(arch, { scale: 1 }, { scale: 1.12, duration: (STEPS.length - 1) * T + 2.5 }, 0);
       tl.to({}, { duration: 0.3 });
 
+      ScrollTrigger.sort();
       requestAnimationFrame(() => ScrollTrigger.refresh());
     },
     { scope: root, dependencies: [mounted, reduced], revertOnUpdate: true },
