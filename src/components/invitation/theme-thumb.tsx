@@ -22,7 +22,7 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
     const blue = `color-mix(in srgb, ${c.buttonBackground} 78%, white)`;
     return (
       <div
-        className="overflow-hidden rounded-xl border"
+        className="flex flex-col overflow-hidden rounded-xl border"
         style={{
           background: `repeating-linear-gradient(90deg, ${blue} 0 0.5rem, ${c.surface} 0.5rem 0.54rem, ${c.background} 0.54rem 1.06rem, ${c.surface} 1.06rem 1.1rem)`,
           borderColor: c.line,
@@ -30,15 +30,15 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
         }}
       >
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
-        <div className="px-5 pt-3 pb-2">
-          <div className="relative overflow-hidden text-center" style={{ background: c.surface }}>
+        <div className="flex flex-1 flex-col px-5 pt-3 pb-2">
+          <div className="relative flex flex-1 flex-col justify-center overflow-hidden text-center" style={{ background: c.surface }}>
             <span
               aria-hidden="true"
               className="absolute inset-x-0 top-0 h-1"
               style={{ backgroundImage: `repeating-linear-gradient(90deg, ${blue} 0 0.16rem, ${c.surface} 0.16rem 0.26rem)` }}
             />
             <LemonBranch className="absolute -top-1 -left-2 w-[36%]" />
-            <div className="relative px-3 pt-7 pb-5">
+            <div className="relative px-3 pt-8 pb-6">
               <p className="text-[0.95rem] leading-none tracking-[0.14em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
                 LUCIA
               </p>
@@ -79,7 +79,7 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
     } as const;
     return (
       <div
-        className="overflow-hidden rounded-xl border"
+        className="flex flex-col overflow-hidden rounded-xl border"
         style={{
           background: `repeating-linear-gradient(90deg, ${c.background} 0 0.45rem, ${c.surface} 0.45rem 0.5rem, ${c.accent} 0.5rem 0.62rem, ${c.surface} 0.62rem 0.67rem, ${c.accent} 0.67rem 0.84rem, ${c.surface} 0.84rem 0.89rem, ${c.accent} 0.89rem 1.01rem, ${c.surface} 1.01rem 1.06rem, ${c.background} 1.06rem 1.9rem)`,
           borderColor: c.line,
@@ -87,13 +87,13 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
         }}
       >
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
-        <div className="px-6 pt-3 pb-2">
+        <div className="flex flex-1 flex-col px-6 pt-3 pb-2">
           <div
-            className="mx-auto w-[78%] p-[0.2rem]"
+            className="mx-auto flex w-[78%] flex-1 flex-col p-[0.2rem]"
             style={{ background: c.surface, borderRadius: "50% 50% 0.4rem 0.4rem / 3.4rem 3.4rem 0.4rem 0.4rem" }}
           >
             <div
-              className="px-2 pt-4 pb-2.5 text-center"
+              className="flex flex-1 flex-col justify-center px-2 pt-4 pb-2.5 text-center"
               style={{
                 border: `0.12rem solid ${c.surfaceAlt}`,
                 borderRadius: "50% 50% 0.3rem 0.3rem / 3.2rem 3.2rem 0.3rem 0.3rem",
@@ -133,12 +133,12 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   if (theme.style === "modern") {
     return (
       <div
-        className="overflow-hidden rounded-xl border"
+        className="flex flex-col overflow-hidden rounded-xl border"
         style={{ background: c.background, borderColor: c.line, color: c.text }}
       >
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
-        <div className="p-1.5">
-          <div className="relative overflow-hidden rounded-lg px-3.5 pt-3 pb-3 text-center" style={{ background: c.surface }}>
+        <div className="flex flex-1 flex-col p-1.5">
+          <div className="relative flex flex-1 flex-col justify-center overflow-hidden rounded-lg px-3.5 pt-3 pb-3 text-center" style={{ background: c.surface }}>
             <p className="text-right text-[0.5rem] tracking-[0.05em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
               EMMA&amp;MATS
             </p>
