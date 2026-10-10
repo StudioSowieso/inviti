@@ -26,6 +26,7 @@ function Field({
   autoComplete,
   list,
   hint,
+  help,
   defaultValue,
 }: {
   label: string;
@@ -36,6 +37,7 @@ function Field({
   autoComplete?: string;
   list?: string;
   hint?: string;
+  help?: string;
   defaultValue?: string;
 }) {
   return (
@@ -55,6 +57,7 @@ function Field({
         defaultValue={defaultValue}
         className="field"
       />
+      {help && <p className="mt-1.5 text-xs text-muted">{help}</p>}
     </div>
   );
 }
@@ -109,7 +112,7 @@ export function GuestForm({ groups, guest }: { groups: string[]; guest?: GuestDe
       </div>
       <Field label="E-mailadres" name="email" defaultValue={guest?.email} type="email" placeholder="jasmijn@voorbeeld.nl" autoComplete="off" />
       <Field label="Mobiel nummer" name="phone" defaultValue={guest?.phone} type="tel" placeholder="06 12345678" autoComplete="off" />
-      <Field label="Introducée" name="plus_one_name" defaultValue={guest?.plusOne} placeholder="Joost" hint="Optioneel" />
+      <Field label="Introducée" name="plus_one_name" defaultValue={guest?.plusOne} placeholder="Joost" hint="Optioneel" help="Degene die de gast mag meenemen" />
       <GroupField groups={groups} initial={guest?.group ?? ""} />
       <Field label="Dieetwensen" name="dietary" defaultValue={guest?.dietary} placeholder="Geen" />
 
