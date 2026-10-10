@@ -83,16 +83,11 @@ function clean(value: FormDataEntryValue | null) {
   return v.length ? v : null;
 }
 
-export async function addGuest(
-  _prev: GuestFormState,
+async function readGuestForm(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  ownerId: string,
   formData: FormData,
-): Promise<GuestFormState> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/inloggen");
-
+): Promise<{ error: string } | { values: Record<string, string | null> }> {
   const firstName = clean(formData.get("first_name"));
   if (!firstName) return { error: "Vul in elk geval een voornaam in." };
 
@@ -116,7 +111,7 @@ export async function addGuest(
     } else {
       const { data: created, error } = await supabase
         .from("guest_groups")
-        .insert({ name: groupName, owner_id: user.id })
+        .insert({ name: groupName, owner_id: ownerId })
         .select("id")
         .single();
       if (error) return { error: "De groep kon niet worden opgeslagen. Probeer het opnieuw." };
@@ -124,20 +119,58 @@ export async function addGuest(
     }
   }
 
-  const { error } = await supabase.from("guests").insert({
-    owner_id: user.id,
-    first_name: firstName,
-    last_name: clean(formData.get("last_name")),
-    email,
-    phone: clean(formData.get("phone")),
-    plus_one_name: clean(formData.get("plus_one_name")),
-    dietary: clean(formData.get("dietary")),
-    group_id: groupId,
-  });
+  return {
+    values: {
+      first_name: firstName,
+      last_name: clean(formData.get("last_name")),
+      email,
+      phone: clean(formData.get("phone")),
+      plus_one_name: clean(formData.get("plus_one_name")),
+      dietary: clean(formData.get("dietary")),
+      group_id: groupId,
+    },
+  };
+}
 
+export async function addGuest(
+  _prev: GuestFormState,
+  formData: FormData,
+): Promise<GuestFormState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/inloggen");
+
+  const parsed = await readGuestForm(supabase, user.id, formData);
+  if ("error" in parsed) return { error: parsed.error };
+
+  const { error } = await supabase.from("guests").insert({ owner_id: user.id, ...parsed.values });
   if (error) return { error: "De gast kon niet worden opgeslagen. Probeer het opnieuw." };
 
   revalidatePath("/gasten");
   revalidatePath("/dashboard");
   redirect("/gasten?toegevoegd=1");
+}
+
+export async function updateGuest(
+  id: string,
+  _prev: GuestFormState,
+  formData: FormData,
+): Promise<GuestFormState> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/inloggen");
+
+  const parsed = await readGuestForm(supabase, user.id, formData);
+  if ("error" in parsed) return { error: parsed.error };
+
+  const { error } = await supabase.from("guests").update(parsed.values).eq("id", id);
+  if (error) return { error: "De wijzigingen konden niet worden opgeslagen. Probeer het opnieuw." };
+
+  revalidatePath("/gasten");
+  revalidatePath("/dashboard");
+  redirect("/gasten?bewerkt=1");
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
-import { ChevronDownIcon, DownloadIcon, SlidersIcon, Sparkle, TrashIcon } from "@/components/icons";
+import { ChevronDownIcon, DownloadIcon, PenIcon, SlidersIcon, Sparkle, TrashIcon } from "@/components/icons";
 import { RSVP_LABEL, type RsvpStatus } from "@/lib/format";
 import { deleteGuest, setGuestStatus } from "../actions";
 
@@ -241,6 +241,12 @@ export function GuestList({ guests }: { guests: Guest[] }) {
                           {RSVP_LABEL[s]}
                         </button>
                       ))}
+                      <Link
+                        href={`/gasten/${g.id}/bewerken`}
+                        className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-ink hover:bg-sage/60"
+                      >
+                        <PenIcon width={14} height={14} /> Bewerken
+                      </Link>
                       <button
                         type="button"
                         disabled={pending}
@@ -249,7 +255,7 @@ export function GuestList({ guests }: { guests: Guest[] }) {
                             startTransition(() => deleteGuest(g.id));
                           }
                         }}
-                        className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1 text-xs text-clay hover:bg-blush/60"
+                        className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs text-clay hover:bg-blush/60"
                       >
                         <TrashIcon width={14} height={14} /> Verwijderen
                       </button>

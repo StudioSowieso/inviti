@@ -2,7 +2,18 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { addGuest, type GuestFormState } from "../../actions";
+import { addGuest, updateGuest, type GuestFormState } from "../../actions";
+
+export type GuestDefaults = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  plusOne: string;
+  group: string;
+  dietary: string;
+};
 
 const initialState: GuestFormState = { error: null };
 
@@ -15,6 +26,7 @@ function Field({
   autoComplete,
   list,
   hint,
+  defaultValue,
 }: {
   label: string;
   name: string;
@@ -24,6 +36,7 @@ function Field({
   autoComplete?: string;
   list?: string;
   hint?: string;
+  defaultValue?: string;
 }) {
   return (
     <div>
@@ -39,28 +52,30 @@ function Field({
         placeholder={placeholder}
         autoComplete={autoComplete}
         list={list}
+        defaultValue={defaultValue}
         className="field"
       />
     </div>
   );
 }
 
-export function GuestForm({ groups }: { groups: string[] }) {
-  const [state, formAction, pending] = useActionState(addGuest, initialState);
+export function GuestForm({ groups, guest }: { groups: string[]; guest?: GuestDefaults }) {
+  const [state, formAction, pending] = useActionState(guest ? updateGuest.bind(null, guest.id) : addGuest, initialState);
 
   return (
     <form action={formAction} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field label="Voornaam" name="first_name" placeholder="Jasmijn" required autoComplete="off" />
-        <Field label="Achternaam" name="last_name" placeholder="Smit" autoComplete="off" />
+        <Field label="Voornaam" name="first_name" defaultValue={guest?.firstName} placeholder="Jasmijn" required autoComplete="off" />
+        <Field label="Achternaam" name="last_name" defaultValue={guest?.lastName} placeholder="Smit" autoComplete="off" />
       </div>
-      <Field label="E-mailadres" name="email" type="email" placeholder="jasmijn@voorbeeld.nl" autoComplete="off" />
-      <Field label="Mobiel nummer" name="phone" type="tel" placeholder="06 12345678" autoComplete="off" />
-      <Field label="Introducée" name="plus_one_name" placeholder="Joost" hint="Optioneel" />
+      <Field label="E-mailadres" name="email" defaultValue={guest?.email} type="email" placeholder="jasmijn@voorbeeld.nl" autoComplete="off" />
+      <Field label="Mobiel nummer" name="phone" defaultValue={guest?.phone} type="tel" placeholder="06 12345678" autoComplete="off" />
+      <Field label="Introducée" name="plus_one_name" defaultValue={guest?.plusOne} placeholder="Joost" hint="Optioneel" />
       <div>
         <Field
           label="Gasten groep"
           name="group"
+          defaultValue={guest?.group}
           placeholder="Avondgasten"
           list="group-options"
           hint={groups.length ? "Kies of typ een nieuwe" : "Typ een groepsnaam"}
@@ -71,7 +86,7 @@ export function GuestForm({ groups }: { groups: string[] }) {
           ))}
         </datalist>
       </div>
-      <Field label="Dieetwensen" name="dietary" placeholder="Geen" />
+      <Field label="Dieetwensen" name="dietary" defaultValue={guest?.dietary} placeholder="Geen" />
 
       {state.error && (
         <p role="alert" className="rounded-xl bg-blush px-4 py-3 text-sm text-[#7a3f2c]">
@@ -87,7 +102,7 @@ export function GuestForm({ groups }: { groups: string[] }) {
           Annuleren
         </Link>
         <button type="submit" className="btn-primary flex-1" disabled={pending}>
-          {pending ? "Opslaan…" : "Gast opslaan"}
+          {pending ? "Opslaan…" : guest ? "Wijzigingen opslaan" : "Gast opslaan"}
         </button>
       </div>
     </form>
