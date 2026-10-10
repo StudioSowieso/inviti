@@ -15,6 +15,8 @@ import { PhoneHero } from "@/components/landing/phone-hero";
 import { ScrollFx } from "@/components/landing/scroll-fx";
 import { SmoothScroll } from "@/components/landing/smooth-scroll";
 import { Logo } from "@/components/logo";
+import { PhoneFrame } from "@/components/landing/phone";
+import { FALLBACK_THEMES } from "@/lib/invitation/fallback-themes";
 
 export const metadata: Metadata = {
   title: "Inviti — Digitale bruiloftsuitnodigingen en RSVP",
@@ -73,7 +75,16 @@ const features = [
   },
 ];
 
-const THEMES = ["Leaf", "Lemon", "Sweet", "Modern", "Nature", "In alle eenvoud"];
+const USPS = [
+  "Gepersonaliseerde uitnodiging",
+  "Eigen bruiloftswebsite",
+  "Gastenlijst met groepen",
+  "Persoonlijk versturen",
+  "Import uit spreadsheet",
+  "RSVP-overzicht",
+  "To-do met deadlines",
+  "Zes thema's",
+];
 
 function Eyebrow({ children, className = "text-clay" }: { children: React.ReactNode; className?: string }) {
   return (
@@ -113,13 +124,48 @@ export default function Home() {
           <div data-marquee className="flex w-max items-center whitespace-nowrap">
             {[0, 1].map((k) => (
               <div key={k} aria-hidden={k === 1} className="flex items-center">
-                {THEMES.map((t) => (
-                  <span key={t + k} className="flex items-center font-serif text-5xl font-medium text-forest italic sm:text-7xl">
+                {USPS.map((t) => (
+                  <span key={t + k} className="flex items-center font-serif text-4xl font-medium text-forest italic sm:text-6xl">
                     <span className="px-8 sm:px-12">{t}</span>
                     <Sparkle width={18} height={18} className="text-clay" />
                   </span>
                 ))}
               </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Thema's */}
+        <section id="themas" className="scroll-mt-8 py-28 lg:py-40">
+          <div className="mx-auto max-w-6xl px-6 lg:px-10">
+            <Eyebrow>Thema&apos;s</Eyebrow>
+            <h2 data-split className="mt-5 max-w-2xl font-serif text-4xl leading-[1.06] font-medium sm:text-6xl">
+              Zes sfeervolle thema&apos;s, elk met een eigen openingsanimatie
+            </h2>
+            <p data-reveal className="mt-6 max-w-md leading-relaxed text-ink/70">
+              Dit zijn echte voorbeelden. Kies je favoriet en maak hem helemaal van jullie met eigen kleuren en lettertypes.
+            </p>
+          </div>
+          <div
+            tabIndex={0}
+            role="region"
+            aria-label="Voorbeelden van de thema's, scroll horizontaal"
+            className="mt-14 flex snap-x gap-6 overflow-x-auto px-6 pt-4 pb-10 focus-visible:outline-2 focus-visible:outline-clay lg:gap-8 lg:px-[max(2.5rem,calc((100vw-72rem)/2+2.5rem))]"
+          >
+            {FALLBACK_THEMES.map((t, i) => (
+              <figure
+                key={t.slug}
+                data-card
+                className={`w-[15rem] shrink-0 snap-center sm:w-[17rem] ${i % 2 ? "mt-12" : ""}`}
+              >
+                <div aria-hidden>
+                  <PhoneFrame slugs={[t.slug]} className="w-full" />
+                </div>
+                <figcaption className="mt-5">
+                  <span className="block font-serif text-2xl font-medium">{t.title}</span>
+                  <span className="mt-1 block text-sm leading-snug text-ink/65">{t.description}</span>
+                </figcaption>
+              </figure>
             ))}
           </div>
         </section>
