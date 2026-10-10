@@ -179,11 +179,11 @@ export function GuestList({ guests }: { guests: Guest[] }) {
                   type="button"
                   onClick={() => setOpenId(open ? null : g.id)}
                   aria-expanded={open}
-                  className="flex w-full items-center gap-3 p-4 text-left"
+                  className="flex h-[4.75rem] w-full items-center gap-3 px-4 text-left"
                 >
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-medium">{fullName(g)}</span>
-                    {g.plusOne && <span className="block truncate text-sm text-muted">+ {g.plusOne}</span>}
+                    <span className="block truncate text-sm text-muted">{g.plusOne ? `+ ${g.plusOne}` : "Zonder introducée"}</span>
                   </span>
                   <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${BADGE[g.status]}`}>
                     {RSVP_LABEL[g.status]}
