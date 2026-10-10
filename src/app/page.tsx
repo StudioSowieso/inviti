@@ -11,6 +11,7 @@ import {
   Sparkle,
   UsersIcon,
 } from "@/components/icons";
+import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
   title: "Inviti — Digitale bruiloftsuitnodigingen en RSVP",
@@ -75,9 +76,8 @@ export default function Home() {
       {/* Navigatie */}
       <header className="absolute inset-x-0 top-0 z-10">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 lg:px-10">
-          <Link href="/" className="flex items-center gap-3 text-paper">
-            <span className="font-serif text-2xl leading-none tracking-wide">Inviti</span>
-            <Sparkle className="text-blush" width={10} height={10} />
+          <Link href="/" className="block text-paper" aria-label="Inviti">
+            <Logo className="w-28 sm:w-32" />
           </Link>
           <nav className="flex items-center gap-2 text-sm">
             <Link
@@ -253,9 +253,7 @@ export default function Home() {
 
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-muted sm:flex-row lg:px-10">
-          <span className="flex items-center gap-2 font-serif text-lg text-ink">
-            Inviti <Sparkle className="text-clay" width={8} height={8} />
-          </span>
+          <Logo className="w-28 text-ink" />
           <p>© {new Date().getFullYear()} Inviti. Jullie dag, mooi geregeld.</p>
         </div>
       </footer>

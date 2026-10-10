@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ChevronLeftIcon, Sparkle } from "./icons";
+import { ChevronLeftIcon } from "./icons";
+import { Logo } from "./logo";
 
 export function FlowHeader({ title, backHref = "/dashboard", children }: { title: string; backHref?: string; children?: ReactNode }) {
   return (
@@ -15,9 +16,7 @@ export function FlowHeader({ title, backHref = "/dashboard", children }: { title
           <span className="sm:hidden">Terug</span>
         </Link>
         <div className="flex min-w-0 flex-1 items-center gap-2.5 pl-1">
-          <span className="hidden items-center gap-1.5 font-serif text-xl sm:flex">
-            Inviti <Sparkle className="text-clay" width={8} height={8} />
-          </span>
+          <Logo className="hidden w-24 text-forest sm:block" />
           <span className="hidden h-5 w-px bg-line sm:block" />
           <h1 className="truncate font-serif text-xl font-medium">{title}</h1>
         </div>

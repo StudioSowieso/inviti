@@ -38,6 +38,7 @@ import { blockKey, normalizeMapsUrl } from "@/lib/invitation/format";
 import { applyPalette, validPalette } from "@/lib/invitation/palettes";
 import { createClient } from "@/lib/supabase/client";
 import { saveInvitation } from "./actions";
+import { Logo } from "@/components/logo";
 
 type Tab = "thema" | "animatie" | "details" | "blokken";
 
@@ -220,9 +221,7 @@ export function Configurator({
             <span className="sm:hidden">Terug</span>
           </Link>
           <div className="flex min-w-0 flex-1 items-center gap-2.5 pl-1">
-            <span className="hidden items-center gap-1.5 font-serif text-xl sm:flex">
-              Inviti <Sparkle className="text-clay" width={8} height={8} />
-            </span>
+            <Logo className="hidden w-24 text-forest sm:block" />
             <span className="hidden h-5 w-px bg-line sm:block" />
             <h1 className="truncate font-serif text-xl font-medium">Uitnodiging maken</h1>
           </div>

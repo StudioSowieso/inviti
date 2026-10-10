@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, ListIcon, PenIcon, SendIcon, Sparkle, UsersIcon } from "./icons";
+import { HomeIcon, ListIcon, PenIcon, SendIcon, UsersIcon } from "./icons";
+import { Logo } from "./logo";
 
 const ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: HomeIcon, ready: true },
@@ -22,8 +23,7 @@ export function SideNav() {
         className="flex flex-col items-center gap-1 text-forest"
         aria-label="Inviti"
       >
-        <span className="font-serif text-2xl leading-none">In</span>
-        <Sparkle width={8} height={8} className="text-clay" />
+        <Logo className="w-[4.4rem]" />
       </Link>
 
       <ul className="mt-10 flex flex-col gap-2">

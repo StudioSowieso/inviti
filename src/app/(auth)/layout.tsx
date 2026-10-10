@@ -1,4 +1,5 @@
-import { Botanical, Sparkle } from "@/components/icons";
+import { Botanical } from "@/components/icons";
+import { Logo } from "@/components/logo";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,10 +14,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <div className="relative flex h-56 items-end justify-between px-6 pb-6 sm:h-64 lg:h-full lg:flex-col lg:items-start lg:justify-between lg:p-14">
-          <div className="flex items-center gap-3">
-            <span className="font-serif text-2xl leading-none tracking-wide">Inviti</span>
-            <Sparkle className="text-blush" width={10} height={10} />
-          </div>
+          <Logo className="w-32 lg:w-60" tagline />
 
           <div className="hidden lg:block">
             <p className="eyebrow text-blush/80">Wedding planner</p>
