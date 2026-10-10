@@ -174,3 +174,69 @@ export async function updateGuest(
   revalidatePath("/dashboard");
   redirect("/gasten?bewerkt=1");
 }
+
+export type ImportRow = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  plus_one_name: string;
+  dietary: string;
+  group: string;
+};
+
+const MAX_IMPORT = 500;
+
+/** Importeert gasten uit een gecontroleerde spreadsheet. Geeft het aantal toegevoegde gasten of een foutmelding. */
+export async function importGuests(rows: ImportRow[]): Promise<{ error: string } | { count: number }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/inloggen");
+
+  if (!Array.isArray(rows) || rows.length === 0) return { error: "Er zijn geen gasten om te importeren." };
+  if (rows.length > MAX_IMPORT) return { error: `Importeer maximaal ${MAX_IMPORT} gasten per keer.` };
+
+  const cut = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+  const cleaned = rows.map((r) => ({
+    first_name: cut(r.first_name, 80),
+    last_name: cut(r.last_name, 80) || null,
+    email: cut(r.email, 160) || null,
+    phone: cut(r.phone, 40) || null,
+    plus_one_name: cut(r.plus_one_name, 120) || null,
+    dietary: cut(r.dietary, 300) || null,
+    group: cut(r.group, 60),
+  }));
+  if (cleaned.some((r) => !r.first_name)) return { error: "Elke gast heeft een voornaam nodig." };
+  if (cleaned.some((r) => r.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.email))) {
+    return { error: "Een of meer e-mailadressen kloppen niet." };
+  }
+
+  // Groepen: bestaande hergebruiken, ontbrekende aanmaken.
+  const names = Array.from(new Set(cleaned.map((r) => r.group).filter(Boolean)));
+  const groupIds = new Map<string, string>();
+  if (names.length) {
+    const { data: existing } = await supabase.from("guest_groups").select("id, name").in("name", names);
+    (existing ?? []).forEach((g) => groupIds.set(g.name as string, g.id as string));
+    const missing = names.filter((n) => !groupIds.has(n));
+    if (missing.length) {
+      const { data: created, error } = await supabase
+        .from("guest_groups")
+        .insert(missing.map((name) => ({ name, owner_id: user.id })))
+        .select("id, name");
+      if (error) return { error: "De groepen konden niet worden aangemaakt. Probeer het opnieuw." };
+      (created ?? []).forEach((g) => groupIds.set(g.name as string, g.id as string));
+    }
+  }
+
+  const { error } = await supabase.from("guests").insert(
+    cleaned.map(({ group, ...r }) => ({ owner_id: user.id, ...r, group_id: group ? (groupIds.get(group) ?? null) : null })),
+  );
+  if (error) return { error: "De gasten konden niet worden opgeslagen. Probeer het opnieuw." };
+
+  revalidatePath("/gasten");
+  revalidatePath("/dashboard");
+  revalidatePath("/versturen");
+  return { count: cleaned.length };
+}

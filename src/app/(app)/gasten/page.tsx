@@ -23,9 +23,9 @@ function formatResponded(iso: string) {
 export default async function GuestsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ toegevoegd?: string; bewerkt?: string }>;
+  searchParams: Promise<{ toegevoegd?: string; bewerkt?: string; geimporteerd?: string }>;
 }) {
-  const { toegevoegd, bewerkt } = await searchParams;
+  const { toegevoegd, bewerkt, geimporteerd } = await searchParams;
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: rows }] = await Promise.all([
@@ -79,6 +79,12 @@ export default async function GuestsPage({
         </span>
         <ChevronRightIcon className="text-muted" />
       </Link>
+
+      {geimporteerd && (
+        <p className="rounded-xl bg-paper px-4 py-3 text-sm text-forest ring-1 ring-sage">
+          {Number(geimporteerd) || 0} gasten geïmporteerd.
+        </p>
+      )}
 
       {bewerkt && (
         <p className="rounded-xl bg-paper px-4 py-3 text-sm text-forest ring-1 ring-sage">

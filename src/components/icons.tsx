@@ -125,6 +125,11 @@ export const DownloadIcon = (p: P) => (
     <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
   </Base>
 );
+export const UploadIcon = (p: P) => (
+  <Base {...p}>
+    <path d="M12 15V4M7 9l5-5 5 5M5 20h14" />
+  </Base>
+);
 export const SettingsIcon = (p: P) => (
   <Base {...p}>
     <circle cx="12" cy="12" r="3" />

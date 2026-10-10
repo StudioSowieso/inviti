@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
-import { ChevronDownIcon, DownloadIcon, PenIcon, SlidersIcon, Sparkle, TrashIcon } from "@/components/icons";
+import { ChevronDownIcon, DownloadIcon, PenIcon, SlidersIcon, Sparkle, TrashIcon, UploadIcon } from "@/components/icons";
 import { RSVP_LABEL, type RsvpStatus } from "@/lib/format";
 import { deleteGuest, setGuestStatus } from "../actions";
 
@@ -100,6 +100,13 @@ export function GuestList({ guests }: { guests: Guest[] }) {
           <SlidersIcon width={16} height={16} />
           Filters{activeFilters ? ` (${activeFilters})` : ""}
         </button>
+        <Link
+          href="/gasten/importeren"
+          className="flex items-center gap-2 rounded-full border border-line bg-paper px-4 py-2 text-sm font-medium transition hover:bg-cream"
+        >
+          <UploadIcon width={16} height={16} />
+          Importeren
+        </Link>
         <button
           type="button"
           onClick={() => exportCsv(filtered)}
