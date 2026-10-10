@@ -26,6 +26,27 @@ export function ScrollFx() {
         });
       });
 
+      // Thema's schuiven vanzelf zijwaarts terwijl je naar beneden scrolt
+      all("[data-hscroll]").forEach((box) => {
+        const track = box.querySelector<HTMLElement>("[data-hscroll-track]");
+        if (!track) return;
+        gsap.set(box, { overflowX: "hidden" });
+        const dist = () => Math.max(0, track.scrollWidth - box.clientWidth);
+        gsap.to(track, {
+          x: () => -dist(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: box,
+            start: "top 14%",
+            end: () => `+=${dist()}`,
+            pin: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+
       // Kaarten verschijnen in groepjes
       const cards = all("[data-card]");
       if (cards.length) {

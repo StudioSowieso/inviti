@@ -136,7 +136,7 @@ export default function Home() {
         </section>
 
         {/* Thema's */}
-        <section id="themas" className="scroll-mt-8 py-28 lg:py-40">
+        <section id="themas" className="scroll-mt-8 pt-28 pb-16 lg:pt-40 lg:pb-24">
           <div className="mx-auto max-w-6xl px-6 lg:px-10">
             <Eyebrow>Thema&apos;s</Eyebrow>
             <h2 data-split className="mt-5 max-w-2xl font-serif text-4xl leading-[1.06] font-medium sm:text-6xl">
@@ -147,26 +147,32 @@ export default function Home() {
             </p>
           </div>
           <div
+            data-hscroll
             tabIndex={0}
             role="region"
             aria-label="Voorbeelden van de thema's, scroll horizontaal"
-            className="mt-14 flex snap-x gap-6 overflow-x-auto px-6 pt-4 pb-10 focus-visible:outline-2 focus-visible:outline-clay lg:gap-8 lg:px-[max(2.5rem,calc((100vw-72rem)/2+2.5rem))]"
+            className="mt-12 overflow-x-auto pb-6 focus-visible:outline-2 focus-visible:outline-clay"
           >
-            {FALLBACK_THEMES.map((t, i) => (
-              <figure
-                key={t.slug}
-                data-card
-                className={`w-[15rem] shrink-0 snap-center sm:w-[17rem] ${i % 2 ? "mt-12" : ""}`}
-              >
-                <div aria-hidden>
-                  <PhoneFrame slugs={[t.slug]} className="w-full" />
-                </div>
-                <figcaption className="mt-5">
-                  <span className="block font-serif text-2xl font-medium">{t.title}</span>
-                  <span className="mt-1 block text-sm leading-snug text-ink/65">{t.description}</span>
-                </figcaption>
-              </figure>
-            ))}
+            <div
+              data-hscroll-track
+              className="flex w-max gap-6 px-6 pt-2 lg:gap-8 lg:px-[max(2.5rem,calc((100vw-72rem)/2+2.5rem))]"
+            >
+              {FALLBACK_THEMES.map((t, i) => (
+                <figure
+                  key={t.slug}
+                  data-card
+                  className={`w-[min(17rem,calc((100svh-15rem)*0.47))] shrink-0 ${i % 2 ? "mt-8" : ""}`}
+                >
+                  <div aria-hidden>
+                    <PhoneFrame slugs={[t.slug]} className="w-full" />
+                  </div>
+                  <figcaption className="mt-4">
+                    <span className="block font-serif text-2xl font-medium">{t.title}</span>
+                    <span className="mt-1 block text-sm leading-snug text-ink/65">{t.description}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </section>
 
