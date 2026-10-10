@@ -159,7 +159,7 @@ export function LemonBranch({ className = "", style, flip = false }: { className
 export function BigLemon({ className = "", style, leaves = true }: { className?: string; style?: CSSProperties; leaves?: boolean }) {
   const id = useId();
   return (
-    <svg viewBox={leaves ? "-46 -36 100 72" : "-40 -30 90 62"} aria-hidden="true" className={className} style={style}>
+    <svg viewBox={leaves ? "-46 -36 100 72" : "-40 -30 90 62"} aria-hidden="true" className={className} style={{ overflow: "visible", ...style }}>
       <Defs id={id} />
       {leaves && <Leaf id={id} x={4} y={-16} r={-128} s={1.15} />}
       {leaves && <Leaf id={id} x={8} y={-14} r={-52} s={1.3} />}
@@ -173,7 +173,7 @@ export function BigLemon({ className = "", style, leaves = true }: { className?:
 export function LemonSprig({ className = "", width = 76 }: { className?: string; width?: number }) {
   const id = useId();
   return (
-    <svg viewBox="0 0 100 52" width={width} height={(width * 52) / 100} aria-hidden="true" className={className}>
+    <svg viewBox="6 -15 97 74" width={width} height={(width * 74) / 97} aria-hidden="true" className={className} style={{ overflow: "visible" }}>
       <Defs id={id} />
       <path d="M14 30C34 22 52 24 66 30" fill="none" stroke="#7a6a3a" strokeWidth="1.6" strokeLinecap="round" />
       <Leaf id={id} x={14} y={30} r={-32} s={0.8} />
