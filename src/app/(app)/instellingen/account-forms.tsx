@@ -55,10 +55,6 @@ export function AccountForms({
   );
   const [emailBusy, setEmailBusy] = useState(false);
 
-  const [password, setPassword] = useState("");
-  const [repeat, setRepeat] = useState("");
-  const [pwNotice, setPwNotice] = useState<Notice>(null);
-  const [pwBusy, setPwBusy] = useState(false);
 
   async function saveName(e: FormEvent) {
     e.preventDefault();
@@ -116,36 +112,6 @@ export function AccountForms({
       kind: "ok",
       text: `We hebben een bevestigingslink gestuurd naar ${value}. Je e-mailadres verandert zodra je daarop klikt (mogelijk ook op je huidige adres).`,
     });
-  }
-
-  async function savePassword(e: FormEvent) {
-    e.preventDefault();
-    setPwNotice(null);
-    if (password.length < 8) {
-      setPwNotice({ kind: "error", text: "Kies een wachtwoord van minstens 8 tekens." });
-      return;
-    }
-    if (password !== repeat) {
-      setPwNotice({ kind: "error", text: "De twee wachtwoorden zijn niet hetzelfde." });
-      return;
-    }
-    setPwBusy(true);
-    const { error } = await supabase.auth.updateUser({ password });
-    setPwBusy(false);
-    if (error) {
-      setPwNotice({
-        kind: "error",
-        text: /same|different/i.test(error.message)
-          ? "Kies een wachtwoord dat verschilt van je huidige."
-          : /weak|short|least/i.test(error.message)
-            ? "Dit wachtwoord is te zwak. Kies een langer of lastiger wachtwoord."
-            : "Het wachtwoord kon niet worden opgeslagen. Probeer het opnieuw.",
-      });
-      return;
-    }
-    setPassword("");
-    setRepeat("");
-    setPwNotice({ kind: "ok", text: "Je wachtwoord is opgeslagen. Je kunt nu ook met e-mail en wachtwoord inloggen." });
   }
 
   return (
@@ -216,46 +182,6 @@ export function AccountForms({
         </form>
       </Card>
 
-      <Card
-        title="Wachtwoord"
-        text="Inloggen kan altijd met een link per e-mail. Stel hier ook een wachtwoord in als je liever met e-mail en wachtwoord inlogt."
-      >
-        <form onSubmit={savePassword} className="max-w-xl space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label htmlFor="pw" className="mb-2 block text-sm font-medium">
-                Nieuw wachtwoord
-              </label>
-              <input
-                id="pw"
-                type="password"
-                autoComplete="new-password"
-                minLength={8}
-                className="field"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="pw2" className="mb-2 block text-sm font-medium">
-                Herhaal wachtwoord
-              </label>
-              <input
-                id="pw2"
-                type="password"
-                autoComplete="new-password"
-                className="field"
-                value={repeat}
-                onChange={(e) => setRepeat(e.target.value)}
-              />
-            </div>
-          </div>
-          <Message notice={pwNotice} />
-          <button type="submit" className="btn-primary sm:w-auto" disabled={pwBusy}>
-            {pwBusy ? "Bezig met opslaan…" : "Wachtwoord opslaan"}
-          </button>
-        </form>
-      </Card>
     </div>
   );
 }

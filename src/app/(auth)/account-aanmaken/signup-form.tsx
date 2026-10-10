@@ -1,63 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { EyeIcon, EyeOffIcon, LockIcon, MailIcon, Sparkle, UserIcon } from "@/components/icons";
-
-function PasswordField({
-  id,
-  label,
-  value,
-  onChange,
-  autoComplete,
-}: {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  autoComplete: string;
-}) {
-  const [visible, setVisible] = useState(false);
-  return (
-    <div>
-      <label htmlFor={id} className="mb-2 block text-sm font-medium">
-        {label}
-      </label>
-      <div className="relative">
-        <LockIcon className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted" />
-        <input
-          id={id}
-          type={visible ? "text" : "password"}
-          required
-          minLength={8}
-          autoComplete={autoComplete}
-          placeholder="••••••••"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="field pr-12 pl-12"
-        />
-        <button
-          type="button"
-          onClick={() => setVisible((v) => !v)}
-          aria-label={visible ? "Verberg wachtwoord" : "Toon wachtwoord"}
-          className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full p-1.5 text-muted hover:text-ink"
-        >
-          {visible ? <EyeOffIcon /> : <EyeIcon />}
-        </button>
-      </div>
-    </div>
-  );
-}
+import { MailIcon, Sparkle, UserIcon } from "@/components/icons";
 
 export function SignupForm() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [partner, setPartner] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "saving" | "confirm">("idle");
 
@@ -65,21 +16,12 @@ export function SignupForm() {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 8) {
-      setError("Kies een wachtwoord van minimaal 8 tekens.");
-      return;
-    }
-    if (password !== confirm) {
-      setError("De wachtwoorden komen niet overeen.");
-      return;
-    }
-
     setStatus("saving");
     const supabase = createClient();
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      password,
       options: {
+        shouldCreateUser: true,
         data: { full_name: name.trim(), partner_name: partner.trim() },
         emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
       },
@@ -89,8 +31,6 @@ export function SignupForm() {
       setStatus("idle");
       if (/already registered|already exists/i.test(error.message)) {
         setError("Er bestaat al een account met dit e-mailadres. Log in.");
-      } else if (/password/i.test(error.message)) {
-        setError("Dit wachtwoord is niet sterk genoeg. Probeer een langer wachtwoord.");
       } else if (/rate limit/i.test(error.message)) {
         setError("Te veel pogingen achter elkaar. Probeer het later opnieuw.");
       } else {
@@ -99,11 +39,6 @@ export function SignupForm() {
       return;
     }
 
-    if (data.session) {
-      router.push("/dashboard");
-      router.refresh();
-      return;
-    }
     setStatus("confirm");
   }
 
@@ -113,9 +48,9 @@ export function SignupForm() {
         <p className="eyebrow flex items-center gap-2 text-clay">
           Nog één stap <Sparkle width={9} height={9} />
         </p>
-        <h1 className="mt-4 font-serif text-5xl leading-none font-medium">Bevestig je e-mail</h1>
+        <h1 className="mt-4 font-serif text-5xl leading-none font-medium">Check je inbox</h1>
         <p className="mt-4 text-[0.95rem] leading-relaxed text-muted">
-          We hebben een bevestigingslink gestuurd naar{" "}
+          We hebben een inloglink gestuurd naar{" "}
           <strong className="text-ink">{email}</strong>. Klik erop en je komt direct in je
           dashboard terecht.
         </p>
@@ -196,20 +131,9 @@ export function SignupForm() {
           </div>
         </div>
 
-        <PasswordField
-          id="password"
-          label="Wachtwoord"
-          value={password}
-          onChange={setPassword}
-          autoComplete="new-password"
-        />
-        <PasswordField
-          id="confirm"
-          label="Wachtwoord bevestigen"
-          value={confirm}
-          onChange={setConfirm}
-          autoComplete="new-password"
-        />
+        <p className="text-sm leading-relaxed text-muted">
+          Je hebt geen wachtwoord nodig. We sturen je een link waarmee je direct inlogt, nu en bij elke volgende keer.
+        </p>
 
         {error && (
           <p role="alert" className="rounded-xl bg-blush px-4 py-3 text-sm text-[#7a3f2c]">

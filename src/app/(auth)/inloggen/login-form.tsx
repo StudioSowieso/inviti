@@ -10,8 +10,6 @@ import { MailIcon, Sparkle } from "@/components/icons";
 export function LoginForm({ linkError }: { linkError: boolean }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [usePassword, setUsePassword] = useState(false);
-  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [error, setError] = useState<string | null>(
     linkError ? "Deze inloglink is verlopen of al gebruikt. Vraag een nieuwe aan." : null,
@@ -32,21 +30,6 @@ export function LoginForm({ linkError }: { linkError: boolean }) {
 
     const supabase = createClient();
 
-    if (usePassword) {
-      const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-      if (error) {
-        setStatus("idle");
-        setError(
-          /invalid login|credentials/i.test(error.message)
-            ? "E-mailadres of wachtwoord klopt niet. Heb je nog geen wachtwoord ingesteld? Log dan met een link in."
-            : "Inloggen is niet gelukt. Probeer het opnieuw.",
-        );
-        return;
-      }
-      router.replace("/dashboard");
-      router.refresh();
-      return;
-    }
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: {
@@ -121,26 +104,9 @@ export function LoginForm({ linkError }: { linkError: boolean }) {
           </div>
         </div>
 
-        {usePassword ? (
-          <div>
-            <label htmlFor="password" className="mb-2 block text-sm font-medium">
-              Wachtwoord
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="field"
-            />
-          </div>
-        ) : (
-          <p className="text-sm leading-relaxed text-muted">
-            We sturen een veilige inloglink naar je e-mailadres. Je hebt geen wachtwoord nodig.
-          </p>
-        )}
+        <p className="text-sm leading-relaxed text-muted">
+          We sturen een veilige inloglink naar je e-mailadres. Je hebt geen wachtwoord nodig.
+        </p>
 
         {error && (
           <p role="alert" className="rounded-xl bg-blush px-4 py-3 text-sm text-[#7a3f2c]">
@@ -149,23 +115,7 @@ export function LoginForm({ linkError }: { linkError: boolean }) {
         )}
 
         <button type="submit" className="btn-primary" disabled={status === "sending"}>
-          {status === "sending"
-            ? usePassword
-              ? "Bezig met inloggen…"
-              : "Bezig met versturen…"
-            : usePassword
-              ? "Inloggen"
-              : "Stuur mij een inloglink"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setUsePassword((v) => !v);
-            setError(null);
-          }}
-          className="block w-full text-center text-sm font-medium text-forest underline-offset-4 hover:underline"
-        >
-          {usePassword ? "Liever een inloglink per e-mail" : "Liever inloggen met wachtwoord"}
+          {status === "sending" ? "Bezig met versturen…" : "Stuur mij een inloglink"}
         </button>
       </form>
 
