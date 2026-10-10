@@ -15,6 +15,9 @@ export type Guest = {
   plusOne: string | null;
   dietary: string | null;
   status: RsvpStatus;
+  /** Wat de gast zelf via het RSVP-formulier heeft ingevuld (null = nog niet gereageerd). */
+  response: "attending" | "declined" | null;
+  respondedAt: string | null;
   group: string | null;
 };
 
@@ -210,6 +213,18 @@ export function GuestList({ guests }: { guests: Guest[] }) {
                         </div>
                       ))}
                     </dl>
+
+                    {g.response && (
+                      <p className="mt-3 rounded-xl bg-cream px-3.5 py-2.5 text-xs leading-relaxed text-muted">
+                        <span className="font-medium text-ink">
+                          Via RSVP-formulier: {g.response === "attending" ? "aangemeld" : "afgemeld"}
+                        </span>
+                        {g.respondedAt ? ` op ${g.respondedAt}` : ""}
+                        {g.status !== g.response && (
+                          <span className="text-clay"> · status is handmatig aangepast naar {RSVP_LABEL[g.status].toLowerCase()}</span>
+                        )}
+                      </p>
+                    )}
 
                     <div className="mt-3 flex flex-wrap items-center gap-2">
                       <span className="mr-1 text-xs text-muted">RSVP:</span>

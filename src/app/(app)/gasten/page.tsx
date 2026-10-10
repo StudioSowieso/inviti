@@ -8,6 +8,18 @@ import { GuestList, type Guest } from "./guest-list";
 
 export const metadata: Metadata = { title: "Gastenlijst — Inviti" };
 
+// Op de server opgemaakt in Nederlandse tijd, zodat server en browser hetzelfde tonen.
+function formatResponded(iso: string) {
+  return new Intl.DateTimeFormat("nl-NL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Amsterdam",
+  }).format(new Date(iso));
+}
+
 export default async function GuestsPage({
   searchParams,
 }: {
@@ -21,7 +33,7 @@ export default async function GuestsPage({
     supabase
       .from("guests")
       .select(
-        "id, first_name, last_name, email, phone, plus_one_name, dietary, rsvp_status, created_at, guest_groups(name)",
+        "id, first_name, last_name, email, phone, plus_one_name, dietary, rsvp_status, rsvp_response, rsvp_responded_at, created_at, guest_groups(name)",
       )
       .order("created_at", { ascending: false }),
   ]);
@@ -40,6 +52,8 @@ export default async function GuestsPage({
       plusOne: r.plus_one_name as string | null,
       dietary: r.dietary as string | null,
       status: r.rsvp_status as RsvpStatus,
+      response: (r.rsvp_response as "attending" | "declined" | null) ?? null,
+      respondedAt: r.rsvp_responded_at ? formatResponded(r.rsvp_responded_at as string) : null,
       group: groupName,
     };
   });
