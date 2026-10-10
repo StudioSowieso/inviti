@@ -13,7 +13,6 @@ type Step = {
   eyebrow: string;
   title: string;
   text: string;
-  backdrop: ReactNode;
   chip: { icon: ReactNode; title: string; sub: string };
 };
 
@@ -24,16 +23,9 @@ const STEPS: Step[] = [
     slug: "leaf",
     glow: "#8c9b78",
     n: "01",
-    eyebrow: "Uitnodiging",
-    title: "Gepersonaliseerde digitale uitnodiging",
-    text: "Kies een thema, een openingsanimatie en jullie eigen lettertype en kleuren. Jullie uitnodiging voelt als jullie, niet als een template.",
-    backdrop: (
-      <>
-        Jullie dag,
-        <br />
-        mooi geregeld.
-      </>
-    ),
+    eyebrow: "Digitale bruiloftsuitnodigingen",
+    title: "Jullie dag, mooi geregeld.",
+    text: "Ontwerp een persoonlijke digitale uitnodiging, beheer jullie gastenlijst en houd alle RSVP's bij op één rustige plek. Zodat jullie aandacht naar elkaar kan gaan.",
     chip: { icon: <Sparkle {...ICON} />, title: "Opent met een animatie", sub: "Per thema een eigen envelop" },
   },
   {
@@ -43,7 +35,6 @@ const STEPS: Step[] = [
     eyebrow: "Website",
     title: "Eigen bruiloftswebsite",
     text: "Elke uitnodiging is meteen een website met jullie verhaal, programma, locatie en dresscode. Eén link, alles erop.",
-    backdrop: "Sweet",
     chip: { icon: <CheckIcon {...ICON} />, title: "Programma & locatie", sub: "Alles voor je gasten op één plek" },
   },
   {
@@ -53,7 +44,6 @@ const STEPS: Step[] = [
     eyebrow: "Gastenlijst",
     title: "Makkelijk gasten beheren",
     text: "Voeg gasten toe of importeer ze, deel ze in groepen in en zie wie komt. Plus-één en dieetwensen staan bij de juiste persoon.",
-    backdrop: "Gasten",
     chip: { icon: <UsersIcon {...ICON} />, title: "Familie · 8 gasten", sub: "Vrienden · 11 gasten" },
   },
   {
@@ -63,11 +53,11 @@ const STEPS: Step[] = [
     eyebrow: "Versturen",
     title: "Uitnodigingen versturen",
     text: "Stuur elke gast een persoonlijke link via WhatsApp of mail, of maak één link per groep die je zelf deelt.",
-    backdrop: "Modern",
     chip: { icon: <SendIcon {...ICON} />, title: "Via WhatsApp, mail of link", sub: "Persoonlijk per gast" },
   },
 ];
 
+const H = "mt-3 font-serif text-[1.9rem] leading-[1.04] font-medium sm:text-4xl md:mt-5 md:text-5xl";
 const T = 3; // tijdseenheden per stap
 
 const CTA_PRIMARY =
@@ -97,15 +87,14 @@ export function PhoneHero() {
       const texts = q("[data-text]");
       const chips = q("[data-chip]");
       const glows = q("[data-glow]");
-      const bgs = q("[data-bg]");
       const fills = q("[data-fill]");
 
-      gsap.set([...texts.slice(1), ...chips.slice(1), ...bgs.slice(1)], { autoAlpha: 0 });
+      gsap.set([...texts.slice(1), ...chips.slice(1)], { autoAlpha: 0 });
       gsap.set(glows.slice(1), { autoAlpha: 0 });
 
       // Intro bij het laden
       gsap.from(wrap, { y: 70, autoAlpha: 0, duration: 1.4, ease: "power3.out", delay: 0.1 });
-      gsap.from([texts[0], chips[0], bgs[0]], { y: 26, autoAlpha: 0, duration: 1.2, ease: "power3.out", stagger: 0.12, delay: 0.3 });
+      gsap.from([texts[0], chips[0]], { y: 26, autoAlpha: 0, duration: 1.2, ease: "power3.out", stagger: 0.12, delay: 0.3 });
 
       const tl = gsap.timeline({
         defaults: { ease: "none" },
@@ -127,7 +116,6 @@ export function PhoneHero() {
         const out = { autoAlpha: 0, y: -30, duration: 0.4, ease: "power2.in" };
         tl.to(texts[s], out, t0);
         tl.to(chips[s], out, t0);
-        tl.to(bgs[s], { autoAlpha: 0, y: -50, duration: 0.5, ease: "power2.in" }, t0);
         tl.to(glows[s], { autoAlpha: 0, duration: 1 }, t0);
         tl.to(glows[s + 1], { autoAlpha: 1, duration: 1 }, t0);
 
@@ -145,7 +133,6 @@ export function PhoneHero() {
         const into = { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", immediateRender: false };
         tl.fromTo(texts[s + 1], { autoAlpha: 0, y: 40 }, into, t0 + 0.55);
         tl.fromTo(chips[s + 1], { autoAlpha: 0, y: 30 }, into, t0 + 0.65);
-        tl.fromTo(bgs[s + 1], { autoAlpha: 0, y: 60 }, { ...into, duration: 0.7 }, t0 + 0.5);
       });
 
       tl.to(hint, { autoAlpha: 0, duration: 0.5 }, 0.2);
@@ -161,7 +148,6 @@ export function PhoneHero() {
 
   return (
     <section id="hero" ref={root} aria-label="Inviti in vier stappen">
-      <h1 className="sr-only">Inviti — jullie dag, mooi geregeld</h1>
       <div data-stage className="relative h-svh overflow-hidden bg-forest-deep text-paper">
         {STEPS.map((s, i) => (
           <div
@@ -178,20 +164,6 @@ export function PhoneHero() {
           aria-hidden
           className="pointer-events-none absolute bottom-0 left-1/2 hidden h-[92svh] w-[min(44vw,34rem)] -translate-x-1/2 rounded-t-full border border-b-0 border-paper/15 md:block"
         />
-
-        {/* Grote achtergrondtekst */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-center">
-          {STEPS.map((s, i) => (
-            <div
-              key={s.slug}
-              data-bg
-              className="col-start-1 row-start-1 text-center font-serif leading-[0.92] font-medium text-paper/[0.07]"
-              style={{ fontSize: i === 0 ? "clamp(3.4rem, 12.5vw, 13rem)" : "clamp(5rem, 22vw, 24rem)", opacity: i === 0 ? 1 : 0 }}
-            >
-              {s.backdrop}
-            </div>
-          ))}
-        </div>
 
         {/* Telefoon */}
         <div
@@ -217,9 +189,9 @@ export function PhoneHero() {
             >
               <div data-text className="text-center md:text-left">
                 <p className="eyebrow flex items-center justify-center gap-2 text-blush/80 md:justify-start">
-                  {s.n} · {s.eyebrow} <Sparkle width={9} height={9} />
+                  {i === 0 ? s.eyebrow : `${s.n} · ${s.eyebrow}`} <Sparkle width={9} height={9} />
                 </p>
-                <h2 className="mt-3 font-serif text-[1.9rem] leading-[1.04] font-medium sm:text-4xl md:mt-5 md:text-5xl">{s.title}</h2>
+                {i === 0 ? <h1 className={H}>{s.title}</h1> : <h2 className={H}>{s.title}</h2>}
                 <p className="mx-auto mt-3 max-w-md text-[0.95rem] leading-relaxed text-paper/75 md:mx-0 md:mt-5">{s.text}</p>
                 {i === 0 && (
                   <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 md:mt-8 md:justify-start">
