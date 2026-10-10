@@ -33,6 +33,7 @@ export default async function EditGuestPage({ params }: { params: Promise<{ id: 
         title="Gast bewerken"
         initials={initials(name)}
         backHref="/gasten"
+        hideSettings
       />
       <GuestForm
         groups={(groups ?? []).map((g) => g.name as string)}

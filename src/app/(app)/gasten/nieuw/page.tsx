@@ -23,6 +23,7 @@ export default async function NewGuestPage() {
         title="Gast toevoegen"
         initials={initials(name)}
         backHref="/gasten"
+        hideSettings
       />
       <GuestForm groups={(groups ?? []).map((g) => g.name as string)} />
     </div>

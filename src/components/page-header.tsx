@@ -7,11 +7,13 @@ export function PageHeader({
   title,
   initials,
   backHref,
+  hideSettings = false,
 }: {
   greetingText: string;
   title: string;
   initials: string;
   backHref?: string;
+  hideSettings?: boolean;
 }) {
   return (
     <header className="flex items-center gap-3.5">
@@ -34,6 +36,7 @@ export function PageHeader({
         <h1 className="truncate font-serif text-[1.75rem] leading-tight font-medium">{title}</h1>
       </div>
 
+      {!hideSettings && (
       <details className="relative">
         <summary
           aria-label="Instellingen"
@@ -67,6 +70,7 @@ export function PageHeader({
           </form>
         </div>
       </details>
+      )}
     </header>
   );
 }
