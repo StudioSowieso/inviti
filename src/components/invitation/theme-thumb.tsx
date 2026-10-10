@@ -5,7 +5,16 @@ import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
 /** Kleine vooruitblik van een thema: kleuren, lettertypes, knopvorm en (bij "nature") decor. */
+/** Alle thumbnails krijgen dezelfde hoogte; wat niet past wordt aan de onderkant afgesneden. */
 export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
+  return (
+    <div className="h-56 overflow-hidden rounded-xl [&>div]:h-full">
+      <ThemeThumbInner theme={theme} />
+    </div>
+  );
+}
+
+function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
 
