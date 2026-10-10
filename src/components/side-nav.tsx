@@ -9,7 +9,7 @@ const ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: HomeIcon, ready: true },
   { href: "/gasten", label: "Gasten", icon: UsersIcon, ready: true },
   { href: "/uitnodiging", label: "Uitnodiging", icon: PenIcon, ready: true },
-  { href: "#", label: "Versturen", icon: SendIcon, ready: false },
+  { href: "/versturen", label: "Versturen", icon: SendIcon, ready: true },
   { href: "/todo", label: "To do", icon: ListIcon, ready: true },
 ];
 

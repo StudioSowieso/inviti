@@ -61,7 +61,7 @@ export default async function DashboardPage() {
       title: "Uitnodigingen versturen",
       text: "Stuur via mail, link of WhatsApp",
       icon: SendIcon,
-      href: null,
+      href: "/versturen",
     },
   ];
 

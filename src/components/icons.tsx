@@ -27,6 +27,12 @@ export const MailIcon = (p: P) => (
     <path d="m4 7 8 6 8-6" />
   </Base>
 );
+export const LinkIcon = (p: P) => (
+  <Base {...p}>
+    <path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1" />
+    <path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1" />
+  </Base>
+);
 export const LockIcon = (p: P) => (
   <Base {...p}>
     <rect x="5" y="11" width="14" height="9" rx="2" />

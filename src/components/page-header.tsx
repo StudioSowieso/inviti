@@ -48,6 +48,9 @@ export function PageHeader({
           <Link href="/gasten" className="block px-4 py-2.5 text-sm hover:bg-cream">
             Gastenlijst
           </Link>
+          <Link href="/versturen" className="block px-4 py-2.5 text-sm hover:bg-cream">
+            Versturen
+          </Link>
           <Link href="/todo" className="block px-4 py-2.5 text-sm hover:bg-cream">
             To do lijst
           </Link>
