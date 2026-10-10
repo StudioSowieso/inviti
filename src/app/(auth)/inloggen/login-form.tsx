@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { tryTestLogin } from "./actions";
 import { MailIcon, Sparkle } from "@/components/icons";
 
 export function LoginForm({ linkError }: { linkError: boolean }) {
@@ -20,6 +21,14 @@ export function LoginForm({ linkError }: { linkError: boolean }) {
     e.preventDefault();
     setError(null);
     setStatus("sending");
+
+    // Testomgeving: het testadres logt direct in (alleen als dat server-side is ingesteld).
+    const test = await tryTestLogin(email);
+    if (test.ok) {
+      router.replace("/dashboard");
+      router.refresh();
+      return;
+    }
 
     const supabase = createClient();
 
