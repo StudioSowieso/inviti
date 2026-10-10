@@ -12,16 +12,13 @@ import {
 } from "@/components/icons";
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, initials } from "@/lib/format";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getUser } from "@/lib/supabase/server";
 import { TodoItem } from "./todo-item";
 
 export const metadata: Metadata = { title: "Dashboard — Inviti" };
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: guests }, { data: todos }] = await Promise.all([
     supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),

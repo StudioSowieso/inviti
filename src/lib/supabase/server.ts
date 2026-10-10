@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { SUPABASE_KEY, SUPABASE_URL } from "./config";
 
 export async function createClient() {
@@ -22,3 +23,15 @@ export async function createClient() {
     },
   });
 }
+
+/**
+ * De ingelogde gebruiker, één keer per request opgehaald: layout en pagina delen het resultaat
+ * in plaats van elk apart bij Supabase te controleren.
+ */
+export const getUser = cache(async () => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+});

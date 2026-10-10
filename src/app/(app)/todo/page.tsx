@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, initials } from "@/lib/format";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getUser } from "@/lib/supabase/server";
 import { TodoBoard, type Todo } from "./todo-board";
 
 export const metadata: Metadata = { title: "To do — Inviti" };
 
 export default async function TodoPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: rows }] = await Promise.all([
     supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),

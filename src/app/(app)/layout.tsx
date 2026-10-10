@@ -1,12 +1,9 @@
 import { redirect } from "next/navigation";
 import { SideNav } from "@/components/side-nav";
-import { createClient } from "@/lib/supabase/server";
+import { getUser } from "@/lib/supabase/server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
   if (!user) redirect("/inloggen");
 
   return (

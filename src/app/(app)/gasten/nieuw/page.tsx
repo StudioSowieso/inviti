@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, initials } from "@/lib/format";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, getUser } from "@/lib/supabase/server";
 import { GuestForm } from "./guest-form";
 
 export const metadata: Metadata = { title: "Gast toevoegen — Inviti" };
 
 export default async function NewGuestPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: groups }] = await Promise.all([
     supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
