@@ -38,6 +38,12 @@ export default async function DashboardPage() {
   const no = list.filter((g) => g.rsvp_status === "declined").length;
   const pending = total - yes - no;
 
+  const todoList = todos ?? [];
+  const todoTotal = todoList.length;
+  const doneCount = todoList.filter((t) => t.done).length;
+  const openCount = todoTotal - doneCount;
+  const todoPct = todoTotal ? Math.round((doneCount / todoTotal) * 100) : 0;
+
   const stats = [
     { label: "Ja", value: yes, hint: "gasten komen", icon: CheckIcon, tone: "bg-sage text-forest" },
     { label: "Nog niet", value: pending, hint: "wachten nog", icon: ClockIcon, tone: "bg-paper/15 text-paper" },
@@ -153,28 +159,50 @@ export default async function DashboardPage() {
           </section>
         </div>
 
-        {/* To Do */}
-        <section>
-          <div className="flex items-baseline justify-between">
-            <h2 className="font-serif text-2xl font-medium">To Do</h2>
-            <Link href="/todo" className="text-sm text-clay hover:underline">
-              To Do lijst bewerken
-            </Link>
+        {/* To Do: een echt lijstje, bewust anders dan de kaarten bij Snel starten */}
+        <section className="self-start overflow-hidden rounded-[1.5rem] border border-line bg-paper shadow-[0_10px_40px_-24px_rgb(31_36_32/0.35)]">
+          <div className="border-b border-line bg-cream/70 px-5 pt-5 pb-4">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-serif text-2xl font-medium">To Do</h2>
+              <span className="rounded-full bg-forest px-3 py-1 text-xs font-medium text-paper">
+                {openCount} open
+              </span>
+            </div>
+            <div
+              className="mt-3 h-1.5 overflow-hidden rounded-full bg-line"
+              role="progressbar"
+              aria-valuenow={todoPct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <div className="h-full rounded-full bg-forest" style={{ width: `${todoPct}%` }} />
+            </div>
+            <p className="mt-2 text-xs text-muted">
+              {doneCount} van {todoTotal} afgevinkt
+            </p>
           </div>
 
           {todos && todos.length > 0 ? (
-            <ul className="mt-4 space-y-3">
-              {todos.map((t) => (
+            <ul>
+              {todos.slice(0, 8).map((t) => (
                 <TodoItem key={t.id} id={t.id} title={t.title} dueDate={t.due_date} done={t.done} />
               ))}
             </ul>
           ) : (
-            <div className="card mt-4 flex flex-col items-center p-8 text-center">
+            <div className="flex flex-col items-center px-6 py-10 text-center">
               <Sparkle className="text-clay" />
               <p className="mt-3 font-serif text-xl">Alles is afgevinkt</p>
               <p className="mt-1 text-sm text-muted">Geniet even van het moment.</p>
             </div>
           )}
+
+          <Link
+            href="/todo"
+            className="flex items-center justify-between border-t border-line bg-cream/70 px-5 py-3 text-sm font-medium text-forest transition hover:bg-sage/50"
+          >
+            Hele lijst bekijken{todoTotal > 8 ? ` (${todoTotal - 8} meer)` : ""}
+            <ChevronRightIcon width={16} height={16} />
+          </Link>
         </section>
       </div>
     </div>

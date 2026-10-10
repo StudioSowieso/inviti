@@ -5,6 +5,7 @@ import { CheckIcon } from "@/components/icons";
 import { dueLabel } from "@/lib/format";
 import { toggleTodo } from "../actions";
 
+/** Eén regel van het to-dolijstje op het dashboard: vierkant vakje om af te vinken. */
 export function TodoItem({
   id,
   title,
@@ -17,7 +18,7 @@ export function TodoItem({
   done: boolean;
 }) {
   const [optimisticDone, setOptimisticDone] = useOptimistic(done);
-  const [, startTransition] = useTransition();
+  const [pending, startTransition] = useTransition();
 
   function onToggle() {
     startTransition(async () => {
@@ -27,31 +28,31 @@ export function TodoItem({
   }
 
   return (
-    <li>
+    <li className="border-b border-line/80 last:border-b-0">
       <button
         type="button"
         onClick={onToggle}
         aria-pressed={optimisticDone}
-        className="card flex w-full items-center gap-4 p-4 text-left transition hover:border-clay/40"
+        className={`group flex w-full items-start gap-3.5 px-5 py-3.5 text-left transition hover:bg-cream/70 ${pending ? "opacity-60" : ""}`}
       >
         <span
-          className={`grid size-7 shrink-0 place-items-center rounded-full border transition ${
+          className={`mt-0.5 grid size-6 shrink-0 place-items-center rounded-md border-2 transition ${
             optimisticDone
               ? "border-forest bg-forest text-paper"
-              : "border-line bg-cream text-muted/60"
+              : "border-muted/40 bg-paper text-transparent group-hover:border-forest group-hover:text-forest/40"
           }`}
         >
-          <CheckIcon width={14} height={14} />
+          <CheckIcon width={15} height={15} strokeWidth={3} />
         </span>
         <span className="min-w-0 flex-1">
           <span
-            className={`block font-medium ${optimisticDone ? "text-muted line-through decoration-clay/60" : ""}`}
+            className={`block leading-snug font-medium transition ${
+              optimisticDone ? "text-muted line-through decoration-forest/50 decoration-2" : ""
+            }`}
           >
             {title}
           </span>
-          <span className="block text-sm text-muted">
-            {optimisticDone ? "Afgerond" : dueLabel(dueDate)}
-          </span>
+          <span className="mt-0.5 block text-xs text-muted">{optimisticDone ? "Afgerond" : dueLabel(dueDate)}</span>
         </span>
       </button>
     </li>
