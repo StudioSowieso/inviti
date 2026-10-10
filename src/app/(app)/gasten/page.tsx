@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRightIcon, PlusIcon } from "@/components/icons";
 import { PageHeader } from "@/components/page-header";
-import { firstName, greeting, initials, type RsvpStatus } from "@/lib/format";
+import { firstName, greeting, coupleInitials, type RsvpStatus } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { GuestList, type Guest } from "./guest-list";
 
@@ -29,7 +29,7 @@ export default async function GuestsPage({
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: rows }] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
+    supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
     supabase
       .from("guests")
       .select(
@@ -63,7 +63,7 @@ export default async function GuestsPage({
       <PageHeader
         greetingText={`${greeting()}, ${firstName(name)}`}
         title="Gastenlijst beheren"
-        initials={initials(name)}
+        initials={coupleInitials(name, profile?.partner_name)}
       />
 
       <Link

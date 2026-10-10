@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
-import { firstName, greeting, initials } from "@/lib/format";
+import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { ImportView } from "./import-view";
 
@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Gasten importeren — Inviti" };
 
 export default async function ImportPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
-  const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle();
+  const { data: profile } = await supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle();
   const name = profile?.full_name ?? user?.user_metadata?.full_name ?? "";
 
   return (
@@ -16,7 +16,7 @@ export default async function ImportPage() {
       <PageHeader
         greetingText={`${greeting()}, ${firstName(name)}`}
         title="Gasten importeren"
-        initials={initials(name)}
+        initials={coupleInitials(name, profile?.partner_name)}
         backHref="/gasten"
         hideSettings
       />

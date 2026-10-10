@@ -22,6 +22,14 @@ export function initials(fullName: string | null | undefined) {
   return (first + last).toUpperCase();
 }
 
+/** Initialen van het stel, bijvoorbeeld "A&M". Zonder partner vallen we terug op de eigen initialen. */
+export function coupleInitials(name: string | null | undefined, partner: string | null | undefined) {
+  const a = (name ?? "").trim()[0];
+  const b = (partner ?? "").trim()[0];
+  if (a && b) return `${a}&${b}`.toUpperCase();
+  return initials(name);
+}
+
 function todayIso() {
   // en-CA geeft YYYY-MM-DD
   return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date());

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { PageHeader } from "@/components/page-header";
-import { firstName, greeting, initials } from "@/lib/format";
+import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { normalizeConfig } from "@/lib/invitation/defaults";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { SendView, type SendGroup, type SendGuest } from "./send-view";
@@ -16,7 +16,7 @@ export default async function SendPage() {
   const origin = `${proto}://${host}`;
 
   const [{ data: profile }, { data: invitation }, { data: guestRows }, { data: groupRows }] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
+    supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
     supabase.from("invitations").select("config").maybeSingle(),
     supabase
       .from("guests")
@@ -53,7 +53,7 @@ export default async function SendPage() {
       <PageHeader
         greetingText={`${greeting()}, ${firstName(name)}`}
         title="Uitnodiging versturen"
-        initials={initials(name)}
+        initials={coupleInitials(name, profile?.partner_name)}
       />
       <SendView
         origin={origin}

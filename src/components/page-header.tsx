@@ -26,7 +26,7 @@ export function PageHeader({
           <ChevronLeftIcon />
         </Link>
       ) : (
-        <div className="grid size-12 shrink-0 place-items-center rounded-full bg-blush font-serif text-lg font-semibold text-clay">
+        <div className={`grid size-12 shrink-0 place-items-center rounded-full bg-blush font-serif font-semibold text-clay ${initials.length > 2 ? "text-[0.95rem] tracking-tight" : "text-lg"}`}>
           {initials}
         </div>
       )}

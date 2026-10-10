@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHeader } from "@/components/page-header";
-import { firstName, greeting, initials } from "@/lib/format";
+import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { GuestForm } from "../../nieuw/guest-form";
 
@@ -12,7 +12,7 @@ export default async function EditGuestPage({ params }: { params: Promise<{ id: 
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: groups }, { data: guest }] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
+    supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
     supabase.from("guest_groups").select("name").order("name"),
     supabase
       .from("guests")
@@ -31,7 +31,7 @@ export default async function EditGuestPage({ params }: { params: Promise<{ id: 
       <PageHeader
         greetingText={`${greeting()}, ${firstName(name)}`}
         title="Gast bewerken"
-        initials={initials(name)}
+        initials={coupleInitials(name, profile?.partner_name)}
         backHref="/gasten"
         hideSettings
       />

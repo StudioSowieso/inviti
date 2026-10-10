@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
-import { firstName, greeting, initials } from "@/lib/format";
+import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { TodoBoard, type Todo } from "./todo-board";
 
@@ -10,7 +10,7 @@ export default async function TodoPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: rows }] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
+    supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
     supabase
       .from("todos")
       .select("id, title, due_date, assignee, done, system_key, created_at")
@@ -35,7 +35,7 @@ export default async function TodoPage() {
       <PageHeader
         greetingText={`${greeting()}, ${firstName(name)}`}
         title="To do lijst"
-        initials={initials(name)}
+        initials={coupleInitials(name, profile?.partner_name)}
       />
       <TodoBoard todos={todos} />
     </div>

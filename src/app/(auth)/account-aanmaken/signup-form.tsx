@@ -54,6 +54,7 @@ function PasswordField({
 export function SignupForm() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [partner, setPartner] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -79,7 +80,7 @@ export function SignupForm() {
       email: email.trim(),
       password,
       options: {
-        data: { full_name: name.trim() },
+        data: { full_name: name.trim(), partner_name: partner.trim() },
         emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
       },
     });
@@ -153,6 +154,24 @@ export function SignupForm() {
               placeholder="Je volledige naam"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="field pl-12"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="partner" className="mb-2 block text-sm font-medium">
+            Naam van degene met wie je gaat trouwen
+          </label>
+          <div className="relative">
+            <UserIcon className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted" />
+            <input
+              id="partner"
+              required
+              autoComplete="off"
+              placeholder="Naam van je partner"
+              value={partner}
+              onChange={(e) => setPartner(e.target.value)}
               className="field pl-12"
             />
           </div>

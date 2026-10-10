@@ -11,7 +11,7 @@ import {
   XIcon,
 } from "@/components/icons";
 import { PageHeader } from "@/components/page-header";
-import { firstName, greeting, initials } from "@/lib/format";
+import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { TodoItem } from "./todo-item";
 
@@ -21,7 +21,7 @@ export default async function DashboardPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: guests }, { data: todos }] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user!.id).maybeSingle(),
+    supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
     supabase.from("guests").select("rsvp_status"),
     supabase
       .from("todos")
@@ -76,7 +76,7 @@ export default async function DashboardPage() {
       <PageHeader
         greetingText={`${greeting()}, ${firstName(name)}`}
         title="Welkom terug"
-        initials={initials(name)}
+        initials={coupleInitials(name, profile?.partner_name)}
       />
 
       <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] 2xl:grid-cols-[1.6fr_1fr] 2xl:gap-12">

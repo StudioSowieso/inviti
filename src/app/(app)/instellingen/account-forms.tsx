@@ -30,11 +30,13 @@ function Message({ notice }: { notice: Notice }) {
 
 export function AccountForms({
   name,
+  partner,
   email,
   pendingEmail,
   created,
 }: {
   name: string;
+  partner: string;
   email: string;
   pendingEmail: string | null;
   created: string;
@@ -43,6 +45,7 @@ export function AccountForms({
   const supabase = createClient();
 
   const [fullName, setFullName] = useState(name);
+  const [partnerName, setPartnerName] = useState(partner);
   const [nameNotice, setNameNotice] = useState<Notice>(null);
   const [nameBusy, setNameBusy] = useState(false);
 
@@ -60,21 +63,22 @@ export function AccountForms({
   async function saveName(e: FormEvent) {
     e.preventDefault();
     const value = fullName.trim().slice(0, 80);
+    const partnerValue = partnerName.trim().slice(0, 80);
     setNameNotice(null);
     setNameBusy(true);
     const {
       data: { user },
     } = await supabase.auth.getUser();
     const [{ error: profileError }, { error: metaError }] = await Promise.all([
-      user ? supabase.from("profiles").update({ full_name: value }).eq("id", user.id) : Promise.resolve({ error: new Error("geen gebruiker") }),
-      supabase.auth.updateUser({ data: { full_name: value } }),
+      user ? supabase.from("profiles").update({ full_name: value, partner_name: partnerValue || null }).eq("id", user.id) : Promise.resolve({ error: new Error("geen gebruiker") }),
+      supabase.auth.updateUser({ data: { full_name: value, partner_name: partnerValue } }),
     ]);
     setNameBusy(false);
     if (profileError || metaError) {
-      setNameNotice({ kind: "error", text: "Je naam kon niet worden opgeslagen. Probeer het opnieuw." });
+      setNameNotice({ kind: "error", text: "Je gegevens konden niet worden opgeslagen. Probeer het opnieuw." });
       return;
     }
-    setNameNotice({ kind: "ok", text: "Je naam is opgeslagen." });
+    setNameNotice({ kind: "ok", text: "Je gegevens zijn opgeslagen." });
     router.refresh();
   }
 
@@ -162,6 +166,20 @@ export function AccountForms({
             />
           </div>
           <div>
+            <label htmlFor="acc-partner" className="mb-2 block text-sm font-medium">
+              Naam van je partner
+            </label>
+            <input
+              id="acc-partner"
+              className="field"
+              value={partnerName}
+              maxLength={80}
+              autoComplete="off"
+              placeholder="Met wie ga je trouwen?"
+              onChange={(e) => setPartnerName(e.target.value)}
+            />
+          </div>
+          <div>
             <label htmlFor="acc-email" className="mb-2 block text-sm font-medium">
               E-mailadres
             </label>
@@ -169,7 +187,7 @@ export function AccountForms({
           </div>
           <Message notice={nameNotice} />
           <button type="submit" className="btn-primary" disabled={nameBusy}>
-            {nameBusy ? "Bezig met opslaan…" : "Naam opslaan"}
+            {nameBusy ? "Bezig met opslaan…" : "Gegevens opslaan"}
           </button>
         </form>
       </Card>
