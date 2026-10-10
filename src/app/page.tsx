@@ -5,12 +5,15 @@ import {
   CheckIcon,
   ChevronRightIcon,
   ListIcon,
-  MailIcon,
   PenIcon,
   SendIcon,
   Sparkle,
   UsersIcon,
 } from "@/components/icons";
+import { LandingNav } from "@/components/landing/landing-nav";
+import { PhoneHero } from "@/components/landing/phone-hero";
+import { ScrollFx } from "@/components/landing/scroll-fx";
+import { SmoothScroll } from "@/components/landing/smooth-scroll";
 import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
@@ -70,190 +73,152 @@ const features = [
   },
 ];
 
+const THEMES = ["Leaf", "Lemon", "Sweet", "Modern", "Nature", "In alle eenvoud"];
+
+function Eyebrow({ children, className = "text-clay" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <p className={`eyebrow flex items-center gap-2 ${className}`}>
+      {children} <Sparkle width={9} height={9} />
+    </p>
+  );
+}
+
 export default function Home() {
   return (
-    <div className="min-h-dvh">
-      {/* Navigatie */}
-      <header className="absolute inset-x-0 top-0 z-10">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 lg:px-10">
-          <Link href="/" className="block text-paper" aria-label="Inviti">
-            <Logo className="w-28 sm:w-32" />
-          </Link>
-          <nav className="flex items-center gap-2 text-sm">
-            <Link
-              href="/inloggen"
-              className="rounded-full px-4 py-2 font-medium text-paper/85 transition hover:text-paper"
-            >
-              Inloggen
-            </Link>
-            <Link
-              href="/account-aanmaken"
-              className="rounded-full bg-paper px-5 py-2.5 font-medium text-forest transition hover:bg-blush"
-            >
-              Aan de slag
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div className="min-h-dvh overflow-x-clip">
+      <SmoothScroll />
+      <ScrollFx />
+      <LandingNav />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-forest text-paper">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 15%, #fff 0, transparent 40%), radial-gradient(circle at 85% 90%, #fff 0, transparent 35%)",
-          }}
-        />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pt-32 pb-20 lg:grid-cols-[1.2fr_1fr] lg:gap-8 lg:px-10 lg:pt-40 lg:pb-28">
-          <div>
-            <p className="eyebrow flex items-center gap-2 text-blush/80">
-              Digitale bruiloftsuitnodigingen <Sparkle width={9} height={9} />
-            </p>
-            <h1 className="mt-6 max-w-xl font-serif text-5xl leading-[1.02] font-medium sm:text-6xl lg:text-7xl">
-              Jullie dag,
-              <br />
-              mooi geregeld.
-            </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-paper/75">
-              Ontwerp een persoonlijke digitale uitnodiging, beheer jullie gastenlijst en
-              houd alle RSVP&apos;s bij op één rustige plek. Zodat jullie aandacht naar elkaar
-              kan gaan.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              <Link
-                href="/account-aanmaken"
-                className="inline-flex items-center gap-2 rounded-full bg-paper px-7 py-3.5 font-medium text-forest transition hover:bg-blush"
-              >
-                Begin met jullie uitnodiging <ChevronRightIcon width={16} height={16} />
-              </Link>
-              <Link
-                href="#zo-werkt-het"
-                className="text-sm font-medium text-paper/80 underline-offset-4 hover:text-paper hover:underline"
-              >
-                Zo werkt het
-              </Link>
-            </div>
-          </div>
+      <main>
+        <PhoneHero />
 
-          {/* Boogvenster met uitnodiging-preview */}
-          <div className="relative mx-auto h-[30rem] w-72 overflow-hidden rounded-t-full border border-paper/25 bg-forest-deep/40 sm:h-[34rem] sm:w-80">
-            <Botanical className="absolute inset-x-0 bottom-0 mx-auto h-[40%] text-blush/45" />
-            <div className="absolute inset-x-8 top-14 text-center">
-              <p className="eyebrow text-blush/80">Wij gaan trouwen</p>
-              <p className="mt-5 font-serif text-4xl leading-none font-medium">
-                Anna
-                <span className="mx-2 text-blush">&amp;</span>
-                Tom
-              </p>
-              <p className="eyebrow mt-5 text-paper/60">14 · 06 · 2027</p>
-              <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-paper/30 px-4 py-2 text-xs text-paper/85">
-                <MailIcon width={14} height={14} /> Open de uitnodiging
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Concept */}
-      <section className="mx-auto max-w-3xl px-6 py-20 text-center lg:py-28">
-        <p className="eyebrow flex items-center justify-center gap-2 text-clay">
-          Het idee <Sparkle width={9} height={9} />
-        </p>
-        <h2 className="mt-5 font-serif text-4xl leading-[1.08] font-medium sm:text-5xl">
-          Een uitnodiging die voelt als een begin van het feest
-        </h2>
-        <p className="mt-6 text-[1.02rem] leading-relaxed text-muted">
-          Papieren kaarten zijn mooi, maar het bijhouden van reacties, adressen en dieetwensen
-          is veel werk. Met Inviti verstuur je een digitale uitnodiging die opent met een
-          animatie naar keuze, en reageren gasten met één klik. Alles komt automatisch
-          samen in jullie eigen dashboard.
-        </p>
-      </section>
-
-      {/* Zo werkt het */}
-      <section id="zo-werkt-het" className="scroll-mt-8 bg-sage/60">
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-10 lg:py-28">
-          <p className="eyebrow flex items-center gap-2 text-clay">
-            Zo werkt het <Sparkle width={9} height={9} />
+        {/* Het idee */}
+        <section className="mx-auto max-w-4xl px-6 py-28 text-center lg:py-40">
+          <Eyebrow className="justify-center text-clay">Het idee</Eyebrow>
+          <p
+            data-words
+            className="mt-8 font-serif text-4xl leading-[1.12] font-medium sm:text-5xl lg:text-6xl"
+          >
+            Een uitnodiging die voelt als het begin van het feest. Mooi om te ontvangen, makkelijk om te beheren.
           </p>
-          <h2 className="mt-5 max-w-xl font-serif text-4xl leading-[1.08] font-medium sm:text-5xl">
-            In drie stappen van idee naar RSVP
-          </h2>
-          <ol className="mt-12 grid gap-6 md:grid-cols-3">
-            {steps.map((s) => (
-              <li key={s.n} className="card p-7">
-                <span className="font-serif text-4xl text-clay">{s.n}</span>
-                <h3 className="mt-4 font-serif text-2xl leading-tight font-medium">{s.title}</h3>
-                <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">{s.text}</p>
-              </li>
+          <p data-reveal className="mx-auto mt-10 max-w-lg leading-relaxed text-ink/70">
+            Papieren kaarten zijn mooi, maar adressen, reacties en dieetwensen bijhouden is veel werk. Met Inviti
+            komt alles samen in jullie eigen dashboard.
+          </p>
+        </section>
+
+        {/* Thema's */}
+        <section aria-label="Thema's" className="overflow-hidden border-y border-forest/15 bg-sage/60 py-8 sm:py-10">
+          <div data-marquee className="flex w-max items-center whitespace-nowrap">
+            {[0, 1].map((k) => (
+              <div key={k} aria-hidden={k === 1} className="flex items-center">
+                {THEMES.map((t) => (
+                  <span key={t + k} className="flex items-center font-serif text-5xl font-medium text-forest italic sm:text-7xl">
+                    <span className="px-8 sm:px-12">{t}</span>
+                    <Sparkle width={18} height={18} className="text-clay" />
+                  </span>
+                ))}
+              </div>
             ))}
-          </ol>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Features */}
-      <section className="mx-auto max-w-6xl px-6 py-20 lg:px-10 lg:py-28">
-        <p className="eyebrow flex items-center gap-2 text-clay">
-          Alles wat je nodig hebt <Sparkle width={9} height={9} />
-        </p>
-        <h2 className="mt-5 max-w-xl font-serif text-4xl leading-[1.08] font-medium sm:text-5xl">
-          Eén plek voor je hele bruiloftscommunicatie
-        </h2>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
-            <article key={f.title} className="card p-7">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-blush text-clay">
-                <f.icon width={20} height={20} />
-              </span>
-              <h3 className="mt-5 font-serif text-2xl leading-tight font-medium">{f.title}</h3>
-              <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">{f.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+        {/* Zo werkt het */}
+        <section id="zo-werkt-het" className="scroll-mt-8">
+          <div className="mx-auto grid max-w-6xl gap-14 px-6 py-28 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-10 lg:py-40">
+            <div className="lg:sticky lg:top-32 lg:self-start">
+              <Eyebrow>Zo werkt het</Eyebrow>
+              <h2 data-split className="mt-5 font-serif text-4xl leading-[1.06] font-medium sm:text-6xl">
+                In drie stappen van idee naar RSVP
+              </h2>
+              <p data-reveal className="mt-6 max-w-sm leading-relaxed text-ink/70">
+                Geen ingewikkelde tools. Jullie doen wat bij jullie past, Inviti houdt het overzicht.
+              </p>
+            </div>
+            <ol className="relative pl-10 sm:pl-14">
+              <span aria-hidden className="absolute top-3 bottom-3 left-0 w-px bg-line" />
+              <span data-line aria-hidden className="absolute top-3 bottom-3 left-0 w-px bg-clay" />
+              {steps.map((s) => (
+                <li key={s.n} data-reveal className="relative pb-16 last:pb-0">
+                  <span aria-hidden className="absolute top-3 -left-10 size-2.5 -translate-x-1/2 rounded-full bg-clay sm:-left-14" />
+                  <span className="font-serif text-6xl leading-none text-clay/80 sm:text-7xl">{s.n}</span>
+                  <h3 className="mt-4 font-serif text-3xl leading-tight font-medium sm:text-4xl">{s.title}</h3>
+                  <p className="mt-3 max-w-md leading-relaxed text-ink/70">{s.text}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
-      {/* Slotsectie */}
-      <section className="px-6 pb-20 lg:px-10 lg:pb-28">
-        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-forest px-8 py-16 text-center text-paper sm:px-16 lg:py-24">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.07]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 15% 20%, #fff 0, transparent 40%), radial-gradient(circle at 90% 90%, #fff 0, transparent 35%)",
-            }}
-          />
-          <div className="relative">
-            <p className="eyebrow flex items-center justify-center gap-2 text-blush/80">
-              Een nieuw hoofdstuk begint <Sparkle width={9} height={9} />
-            </p>
-            <h2 className="mx-auto mt-5 max-w-2xl font-serif text-4xl leading-[1.05] font-medium sm:text-6xl">
-              Klaar om jullie gasten uit te nodigen?
+        {/* Features */}
+        <section className="relative bg-sage/60">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+            <Botanical
+              data-parallax="0.12"
+              className="absolute -right-10 bottom-0 h-[26rem] text-forest/10 sm:right-10 sm:h-[34rem]"
+            />
+          </div>
+          <div className="relative mx-auto max-w-6xl px-6 py-28 lg:px-10 lg:py-40">
+            <Eyebrow>Alles wat je nodig hebt</Eyebrow>
+            <h2 data-split className="mt-5 max-w-2xl font-serif text-4xl leading-[1.06] font-medium sm:text-6xl">
+              Eén plek voor je hele bruiloftscommunicatie
             </h2>
-            <p className="mx-auto mt-5 max-w-md text-paper/70">
-              Maak een account aan en begin direct met jullie gastenlijst en uitnodiging.
-            </p>
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/account-aanmaken"
-                className="inline-flex items-center gap-2 rounded-full bg-paper px-7 py-3.5 font-medium text-forest transition hover:bg-blush"
-              >
-                Account aanmaken <ChevronRightIcon width={16} height={16} />
-              </Link>
-              <Link
-                href="/inloggen"
-                className="text-sm font-medium text-paper/80 underline-offset-4 hover:text-paper hover:underline"
-              >
-                Ik heb al een account
-              </Link>
+            <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {features.map((f) => (
+                <article key={f.title} data-card className="card p-7">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-blush text-clay">
+                    <f.icon width={20} height={20} />
+                  </span>
+                  <h3 className="mt-5 font-serif text-2xl leading-tight font-medium">{f.title}</h3>
+                  <p className="mt-3 text-[0.95rem] leading-relaxed text-ink/70">{f.text}</p>
+                </article>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-muted sm:flex-row lg:px-10">
-          <Logo className="w-28 text-ink" />
+        {/* Slot */}
+        <section className="bg-sage/60">
+          <div data-arch className="relative overflow-hidden bg-forest px-6 py-32 text-center text-paper sm:py-44">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.07]"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle at 15% 20%, #fff 0, transparent 40%), radial-gradient(circle at 90% 90%, #fff 0, transparent 35%)",
+              }}
+            />
+            <div data-arch-content className="relative">
+              <Eyebrow className="justify-center text-blush/80">Een nieuw hoofdstuk begint</Eyebrow>
+              <h2 className="mx-auto mt-6 max-w-3xl font-serif text-5xl leading-[1.02] font-medium sm:text-7xl">
+                Klaar om jullie gasten uit te nodigen?
+              </h2>
+              <p className="mx-auto mt-6 max-w-md text-paper/75">
+                Maak een account aan en begin direct met jullie gastenlijst en uitnodiging.
+              </p>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
+                <Link
+                  href="/account-aanmaken"
+                  className="inline-flex items-center gap-2 rounded-full bg-paper px-7 py-3.5 font-medium text-forest transition hover:bg-blush"
+                >
+                  Account aanmaken <ChevronRightIcon width={16} height={16} />
+                </Link>
+                <Link
+                  href="/inloggen"
+                  className="text-sm font-medium text-paper/80 underline-offset-4 hover:text-paper hover:underline"
+                >
+                  Ik heb al een account
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-forest text-paper/80">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-paper/15 px-6 py-8 text-sm sm:flex-row lg:px-10">
+          <Logo className="w-28 text-paper" />
           <p>© {new Date().getFullYear()} Inviti. Jullie dag, mooi geregeld.</p>
         </div>
       </footer>
