@@ -293,7 +293,7 @@ function LemonPhoto({ src }: { src?: string }) {
       ) : (
         <>
           <LemonBranch className="absolute -top-[4%] -left-[6%] w-[118%]" />
-          <LemonBranch className="absolute -right-[8%] -bottom-[6%] w-[70%]" flip style={{ transform: "scale(-1,-1)" }} />
+          <LemonBranch className="absolute -right-[8%] -bottom-[6%] w-[70%]" flip />
         </>
       )}
     </div>
@@ -328,7 +328,7 @@ export function LemonBlockSection({ block, config }: { block: Block; config: Inv
         <section data-block="hero" className={SECTION}>
           <Frame clip padding="px-9 pt-[11.5rem] pb-[10.5rem]">
             <LemonBranch className="absolute -top-4 -left-9 w-[60%]" />
-            <LemonBranch className="absolute -right-9 -bottom-4 w-[56%]" style={{ transform: "scale(-1,-1)" }} />
+            <LemonBranch className="absolute -right-9 -bottom-4 w-[56%]" flip />
             <Caps className="relative" color={col("muted")}>
               {block.eyebrow}
             </Caps>

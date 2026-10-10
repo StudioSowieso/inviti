@@ -182,17 +182,17 @@ export function LemonEnvelope({ config, opening, onOpen }: Props) {
 
 // ---------- Doorkijk: door de citroenen heen ----------
 
-type Layer = { side: "left" | "right"; style: CSSProperties; move: number; scale: number; delay: number; z: number; flipY?: boolean };
+type Layer = { side: "left" | "right"; style: CSSProperties; move: number; scale: number; delay: number; z: number };
 
 const LAYERS: Layer[] = [
   { side: "left", style: { top: "-7%", left: "-30%", width: "104%" }, move: -95, scale: 1.9, delay: 0, z: 3 },
-  { side: "right", style: { bottom: "-8%", right: "-32%", width: "100%" }, move: 95, scale: 1.9, delay: 0, z: 3, flipY: true },
+  { side: "right", style: { bottom: "-8%", right: "-32%", width: "100%" }, move: 95, scale: 1.9, delay: 0, z: 3 },
   { side: "right", style: { top: "6%", right: "-34%", width: "70%" }, move: 60, scale: 1.5, delay: 120, z: 2 },
-  { side: "left", style: { bottom: "4%", left: "-34%", width: "72%" }, move: -60, scale: 1.5, delay: 120, z: 2, flipY: true },
+  { side: "left", style: { bottom: "4%", left: "-34%", width: "72%" }, move: -60, scale: 1.5, delay: 120, z: 2 },
 ];
 
 function BranchLayer({ layer, opening }: { layer: Layer; opening: boolean }) {
-  const { side, style, move, scale, delay, z, flipY } = layer;
+  const { side, style, move, scale, delay, z } = layer;
   return (
     <div
       aria-hidden="true"
@@ -209,7 +209,6 @@ function BranchLayer({ layer, opening }: { layer: Layer; opening: boolean }) {
       <LemonBranch
         className="w-full"
         flip={side === "right"}
-        style={flipY ? { transform: `scale(${side === "right" ? -1 : 1},-1)` } : undefined}
       />
     </div>
   );
