@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { addGuest, updateGuest, type GuestFormState } from "../../actions";
 
 export type GuestDefaults = {
@@ -59,6 +59,45 @@ function Field({
   );
 }
 
+const NEW = "__new__";
+
+/** Kies een bestaande groep, geen groep, of maak een nieuwe aan. */
+function GroupField({ groups, initial }: { groups: string[]; initial: string }) {
+  const [choice, setChoice] = useState(initial === "" ? "" : groups.includes(initial) ? initial : NEW);
+  const [newName, setNewName] = useState(initial !== "" && !groups.includes(initial) ? initial : "");
+  const value = choice === NEW ? newName.trim() : choice;
+
+  return (
+    <div>
+      <label htmlFor="group-choice" className="mb-2 flex items-baseline justify-between text-sm font-medium">
+        Gasten groep
+        <span className="text-xs font-normal text-muted">Optioneel</span>
+      </label>
+      <select id="group-choice" className="field" value={choice} onChange={(e) => setChoice(e.target.value)}>
+        <option value="">Geen groep</option>
+        {groups.map((g) => (
+          <option key={g} value={g}>
+            {g}
+          </option>
+        ))}
+        <option value={NEW}>+ Nieuwe groep maken…</option>
+      </select>
+      {choice === NEW && (
+        <input
+          aria-label="Naam van de nieuwe groep"
+          className="field mt-3"
+          placeholder="Bijvoorbeeld Avondgasten"
+          maxLength={60}
+          autoFocus
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+      )}
+      <input type="hidden" name="group" value={value} />
+    </div>
+  );
+}
+
 export function GuestForm({ groups, guest }: { groups: string[]; guest?: GuestDefaults }) {
   const [state, formAction, pending] = useActionState(guest ? updateGuest.bind(null, guest.id) : addGuest, initialState);
 
@@ -71,21 +110,7 @@ export function GuestForm({ groups, guest }: { groups: string[]; guest?: GuestDe
       <Field label="E-mailadres" name="email" defaultValue={guest?.email} type="email" placeholder="jasmijn@voorbeeld.nl" autoComplete="off" />
       <Field label="Mobiel nummer" name="phone" defaultValue={guest?.phone} type="tel" placeholder="06 12345678" autoComplete="off" />
       <Field label="Introducée" name="plus_one_name" defaultValue={guest?.plusOne} placeholder="Joost" hint="Optioneel" />
-      <div>
-        <Field
-          label="Gasten groep"
-          name="group"
-          defaultValue={guest?.group}
-          placeholder="Avondgasten"
-          list="group-options"
-          hint={groups.length ? "Kies of typ een nieuwe" : "Typ een groepsnaam"}
-        />
-        <datalist id="group-options">
-          {groups.map((g) => (
-            <option key={g} value={g} />
-          ))}
-        </datalist>
-      </div>
+      <GroupField groups={groups} initial={guest?.group ?? ""} />
       <Field label="Dieetwensen" name="dietary" defaultValue={guest?.dietary} placeholder="Geen" />
 
       {state.error && (
