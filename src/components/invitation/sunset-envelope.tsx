@@ -147,13 +147,13 @@ export function SunsetEnvelope({ config, opening, onOpen }: Props) {
           }}
         >
           <div className="h-[2px] w-full" style={{ background: "rgb(255 255 255 / .92)", boxShadow: "0 1px 2px rgb(60 20 5 / .35)" }} />
-          <div className="absolute top-0 left-[48%] w-[8.6rem] -translate-x-1/2 -translate-y-1/2" style={{ filter: "drop-shadow(0 6px 6px rgb(60 20 5 / .35))" }}>
+          <div className="absolute top-0 left-[48%] w-[9.4rem] -translate-x-1/2 -translate-y-1/2" style={{ filter: "drop-shadow(0 6px 6px rgb(60 20 5 / .35))" }}>
             <svg viewBox="0 0 100 100" aria-hidden="true" className="block w-full">
               <path d={TAG_PATH} fill="#fffaf2" />
               <path d={TAG_INNER} fill="none" stroke={`color-mix(in srgb, ${col("accent")} 80%, white)`} strokeWidth="0.8" />
             </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
-              <span className="text-[0.4rem] tracking-[0.22em] uppercase" style={{ color: col("text") }}>
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <span className="text-[0.38rem] tracking-[0.12em] whitespace-nowrap uppercase" style={{ color: col("text") }}>
                 Wij gaan trouwen
               </span>
               <span className="mt-1 text-[1.35rem] leading-[0.95]" style={{ ...script, color: col("accent") }}>
