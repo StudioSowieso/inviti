@@ -45,18 +45,6 @@ export function PageHeader({
           <SettingsIcon width={19} height={19} />
         </summary>
         <div className="absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-2xl border border-line bg-paper py-1.5 shadow-[0_12px_40px_-12px_rgb(31_36_32/0.25)]">
-          <Link href="/dashboard" className="block px-4 py-2.5 text-sm hover:bg-cream">
-            Dashboard
-          </Link>
-          <Link href="/gasten" className="block px-4 py-2.5 text-sm hover:bg-cream">
-            Gastenlijst
-          </Link>
-          <Link href="/versturen" className="block px-4 py-2.5 text-sm hover:bg-cream">
-            Versturen
-          </Link>
-          <Link href="/todo" className="block px-4 py-2.5 text-sm hover:bg-cream">
-            To do lijst
-          </Link>
           <Link href="/instellingen" className="block px-4 py-2.5 text-sm hover:bg-cream">
             Account
           </Link>
