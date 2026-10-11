@@ -76,7 +76,7 @@ function HeroDate({ date, city }: { date: string; city: string }) {
   );
 }
 
-type Stage = "closed" | "opening" | "open";
+export type Stage = "closed" | "opening" | "open";
 
 export type InvitationViewProps = {
   config: InvitationConfig;
@@ -84,6 +84,10 @@ export type InvitationViewProps = {
   /** In de configurator tonen we direct de inhoud; de animatie speel je af met replayKey. */
   startOpen?: boolean;
   replayKey?: number;
+  /** Elke verhoging speelt de animatie af als de uitnodiging op het beginscherm staat. */
+  playKey?: number;
+  /** Meldt of de uitnodiging op het beginscherm (closed), aan het openen of open is. */
+  onStageChange?: (stage: Stage) => void;
   /** Scrollt naar dit blok (bijvoorbeeld het blok dat je net bewerkt). */
   focusBlock?: string | null;
   className?: string;
@@ -94,6 +98,8 @@ export function InvitationView({
   theme,
   startOpen = false,
   replayKey = 0,
+  playKey = 0,
+  onStageChange,
   focusBlock = null,
   className = "",
 }: InvitationViewProps) {
@@ -102,6 +108,7 @@ export function InvitationView({
   const [stage, setStage] = useState<Stage>(hasAnimation && !startOpen ? "closed" : "open");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handledReplay = useRef(replayKey);
+  const handledPlay = useRef(playKey);
 
   const cssVars = useMemo(() => {
     const vars: Record<string, string> = {
@@ -138,6 +145,19 @@ export function InvitationView({
     setStage("opening");
     timer.current = setTimeout(() => setStage("open"), config.animation === "reveal" ? REVEAL_MS : 1500);
   }
+
+  useEffect(() => {
+    onStageChange?.(stage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage]);
+
+  useEffect(() => {
+    if (playKey !== handledPlay.current) {
+      handledPlay.current = playKey;
+      openReveal();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playKey]);
 
   // ---------- Hoofdstuknavigatie ----------
   const chapters = useMemo(

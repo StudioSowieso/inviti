@@ -81,6 +81,8 @@ export function Configurator({
   const [dragging, setDragging] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
   const [replayKey, setReplayKey] = useState(0);
+  const [playKey, setPlayKey] = useState(0);
+  const [viewStage, setViewStage] = useState<"closed" | "opening" | "open">("open");
   const [fullPreview, setFullPreview] = useState(false);
   const [pending, startTransition] = useTransition();
   const [status, setStatus] = useState<{ kind: "idle" | "saved" | "error"; message?: string }>({ kind: "idle" });
@@ -218,9 +220,17 @@ export function Configurator({
         ? "Gescheurde pagina's gaan open en onthullen de uitnodiging."
         : "Deuren in de kleuren van het thema slaan open.";
 
-  function replay() {
+  /** Terug naar het beginscherm van de uitnodiging, zonder af te spelen. */
+  function resetPreview() {
     setReplayKey((k) => k + 1);
     setMobileView("preview");
+  }
+
+  /** Staat het voorbeeld al op het beginscherm, dan speelt de animatie af; anders gaan we eerst daarheen. */
+  function replay() {
+    setMobileView("preview");
+    if (viewStage === "closed") setPlayKey((k) => k + 1);
+    else setReplayKey((k) => k + 1);
   }
 
   const stepNumber = TABS.findIndex((t) => t.id === tab) + 1;
@@ -406,7 +416,7 @@ export function Configurator({
                           aria-pressed={selected}
                           onClick={() => {
                             patch({ animation: o.id });
-                            if (o.id !== "none") replay();
+                            if (o.id !== "none") resetPreview();
                           }}
                           className={`relative rounded-[1.4rem] border bg-paper p-5 text-left transition ${
                             selected ? "border-forest ring-2 ring-forest" : "border-line hover:border-clay/50"
@@ -626,7 +636,7 @@ export function Configurator({
               <div className="flex items-center justify-between border-b border-line px-5 py-3">
                 <p className="eyebrow text-clay">Live voorbeeld{activeVariant ? ` · ${activeVariant.name}` : ""}</p>
                 <div className="flex items-center gap-0.5">
-                  <ToolButton label="Animatie opnieuw afspelen" disabled={config.animation === "none"} onClick={() => setReplayKey((k) => k + 1)}>
+                  <ToolButton label="Animatie opnieuw afspelen" disabled={config.animation === "none"} onClick={replay}>
                     <RefreshIcon width={17} height={17} />
                   </ToolButton>
                   <ToolButton label="Volledig voorbeeld" onClick={() => setFullPreview(true)}>
@@ -647,6 +657,8 @@ export function Configurator({
                     theme={theme}
                     startOpen
                     replayKey={replayKey}
+                    playKey={playKey}
+                    onStageChange={setViewStage}
                     focusBlock={tab === "blokken" ? openBlock : null}
                     className="h-full"
                   />
