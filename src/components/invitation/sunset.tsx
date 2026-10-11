@@ -65,11 +65,11 @@ export function WavyCard({ children, tone = "surface", className = "" }: { child
   );
 }
 
-function Card({ children, tone = "surface", className = "", rot = 0 }: { children: ReactNode; tone?: keyof ThemeColors; className?: string; rot?: number }) {
+function Card({ children, tone = "surface", bg, className = "", rot = 0 }: { children: ReactNode; tone?: keyof ThemeColors; bg?: string; className?: string; rot?: number }) {
   return (
     <div
       className={`relative rounded-[1.35rem] ${className}`}
-      style={{ background: col(tone), transform: rot ? `rotate(${rot}deg)` : undefined, boxShadow: "0 14px 24px -14px rgb(60 20 5 / .55)" }}
+      style={{ background: bg ?? col(tone), transform: rot ? `rotate(${rot}deg)` : undefined, boxShadow: "0 14px 24px -14px rgb(60 20 5 / .55)" }}
     >
       {children}
     </div>
@@ -223,7 +223,7 @@ export function SunsetBlockSection({ block, config, index }: { block: Block; con
     case "program":
       return (
         <section data-block="program" className={wrap} style={{ background: col("background") }}>
-          <Card tone="envelope" className="px-6 py-8" rot={rot}>
+          <Card bg={`color-mix(in srgb, ${col("accent")} 70%, black)`} className="px-6 py-8" rot={rot}>
             <div style={{ color: col("buttonText") }}>
               <div className="text-center">
                 {block.eyebrow && <p className={`text-[0.5rem] ${CAPS} opacity-80`}>{block.eyebrow}</p>}
