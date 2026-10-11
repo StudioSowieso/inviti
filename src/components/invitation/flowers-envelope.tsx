@@ -36,7 +36,7 @@ function TapArea({ opening, onOpen }: { opening: boolean; onOpen: () => void }) 
 /** Zegel: één grote bloem met twee lagen bloemblaadjes, zonder rand eromheen. */
 function FlowerSeal({ size = 104 }: { size?: number }) {
   return (
-    <svg viewBox="-34 -34 68 68" width={size} height={size} aria-hidden="true" style={{ filter: "drop-shadow(0 8px 7px rgb(30 30 20 / .3))" }}>
+    <svg viewBox="-48 -48 96 96" width={size} height={size} aria-hidden="true" overflow="visible" style={{ filter: "drop-shadow(0 8px 7px rgb(30 30 20 / .3))" }}>
       <Blossom x={0} y={0} r={31} rot={0} petal={`color-mix(in srgb, ${col("accent")} 80%, black)`} />
       <Blossom x={0} y={0} r={27} rot={36} petal={col("accent")} />
       <Blossom x={0} y={0} r={17} rot={18} petal={`color-mix(in srgb, ${col("accent")} 55%, white)`} />
