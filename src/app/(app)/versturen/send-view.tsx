@@ -316,7 +316,7 @@ function MessageEditor({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="font-serif text-2xl font-medium">Voorbeeldbericht</h2>
-          <p className="mt-0.5 text-sm text-muted">Dit bericht gaat mee met elke WhatsApp en mail. Per gast vullen we de naam en link in. Met {je/jullie} wordt het "je" bij een enkele gast en "jullie" bij een gast met invitee.</p>
+          <p className="mt-0.5 text-sm text-muted">Dit bericht gaat mee met elke WhatsApp en mail. Per gast vullen we de naam en link in. Met {"{je/jullie}"} wordt het &ldquo;je&rdquo; bij een enkele gast en &ldquo;jullie&rdquo; bij een gast met invitee.</p>
         </div>
         {!editing && (
           <button type="button" onClick={() => setEditing(true)} className={ACTION}>
