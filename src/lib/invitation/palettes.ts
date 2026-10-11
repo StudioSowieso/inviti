@@ -12,6 +12,46 @@ type PaletteDef = { slug: string; title: string; colors: Partial<ThemeColors> };
  * horen bij elkaar, zodat een kleurkeuze het hele thema meeneemt.
  */
 const EXTRA_PALETTES: Record<string, PaletteDef[]> = {
+  flowers: [
+    {
+      slug: "boterbloem",
+      title: "Boterbloem",
+      colors: {
+        background: "#f8f2de",
+        surface: "#fcf9ee",
+        surfaceAlt: "#f0e6c6",
+        text: "#5e5a30",
+        muted: "#8f8a5c",
+        line: "#e8dcb4",
+        accent: "#d4a52c",
+        buttonBackground: "#7a7234",
+        buttonText: "#fcf9ee",
+        footerBackground: "#efe4c2",
+        footerText: "#5e5a30",
+        envelope: "#b2aa6c",
+        envelopeCard: "#fcf9ee",
+      },
+    },
+    {
+      slug: "eucalyptus",
+      title: "Eucalyptus",
+      colors: {
+        background: "#f3f4ea",
+        surface: "#f9faf3",
+        surfaceAlt: "#e2e8d6",
+        text: "#46503d",
+        muted: "#76806a",
+        line: "#d7ddc8",
+        accent: "#6f9a82",
+        buttonBackground: "#51684f",
+        buttonText: "#f9faf3",
+        footerBackground: "#dfe6d2",
+        footerText: "#46503d",
+        envelope: "#9db592",
+        envelopeCard: "#f9faf3",
+      },
+    },
+  ],
   "creme-taupe": [
     {
       slug: "salie",

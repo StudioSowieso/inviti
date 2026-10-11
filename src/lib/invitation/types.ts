@@ -7,9 +7,10 @@ export type ButtonShape = "pill" | "rounded" | "square";
  * - leaf: elegant en gelijkmatig: boogvormige foto, dunne lijnen en olijftakken als scheiding
  * - sweet: gestreept behang, witte boogkaarten met dubbele rand en een strikje
  * - lemon: blauw-geel gestreept behang, crèmekaarten met gestreepte rand en getekende citroentakken
+ * - flowers: crèmepapier met aquarel-wildbloemtakken in de hoeken en gespatieerde hoofdletters
  * - modern: editorial zwart-wit met greige, extra grote letters, handschrift en witte kaarten
  */
-export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon";
+export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers";
 
 export type ThemeColors = {
   background: string;

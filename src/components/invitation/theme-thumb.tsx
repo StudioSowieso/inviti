@@ -1,6 +1,8 @@
+import type { CSSProperties } from "react";
 import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import type { InvitationTheme } from "@/lib/invitation/types";
 import { Branch, BranchPair, HeroBranch } from "./leaf";
+import { CornerSprigs } from "./flowers";
 import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
@@ -17,6 +19,43 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
 function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "flowers") {
+    const vars = {
+      "--inv-accent": c.accent,
+      "--inv-envelope": c.envelope,
+      "--inv-text": c.text,
+    } as CSSProperties;
+    return (
+      <div
+        className="relative flex flex-col items-center justify-center overflow-hidden rounded-xl border px-4 text-center"
+        style={{ ...vars, background: c.background, borderColor: c.line, color: c.text }}
+      >
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <CornerSprigs corner="tl" seed={7} size="6.5rem" />
+        <CornerSprigs corner="br" seed={13} size="6.5rem" />
+        <p className="relative text-[0.4rem] tracking-[0.2em] uppercase" style={{ fontFamily: fontStack(theme.bodyFont), color: c.muted }}>
+          Wij gaan trouwen
+        </p>
+        <p className="relative mt-2 text-[1.05rem] leading-[1.15] tracking-[0.16em] uppercase" style={{ fontFamily: fontStack(theme.headingFont) }}>
+          Emma
+          <span className="block text-[1rem] tracking-normal normal-case italic" style={{ fontFamily: fontStack(theme.scriptFont), color: c.accent }}>
+            en
+          </span>
+          Mats
+        </p>
+        <div className="relative mt-3 flex items-center gap-2 text-[0.4rem] tracking-[0.2em] uppercase" style={{ fontFamily: fontStack(theme.bodyFont) }}>
+          <span>Sep</span>
+          <span className="h-4 w-px" style={{ background: c.line }} />
+          <span className="text-[1.1rem] tracking-normal" style={{ fontFamily: fontStack(theme.headingFont) }}>
+            12
+          </span>
+          <span className="h-4 w-px" style={{ background: c.line }} />
+          <span>2027</span>
+        </div>
+      </div>
+    );
+  }
 
   if (theme.style === "lemon") {
     const blue = `color-mix(in srgb, ${c.buttonBackground} 78%, white)`;

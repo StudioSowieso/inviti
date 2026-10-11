@@ -164,6 +164,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "rounded",
     style: "lemon",
   },
+  {
+    slug: "flowers",
+    title: "Flowers",
+    description:
+      "Romantisch en luchtig: crèmekleurig papier met aquarel-wildbloemen in de hoeken, spatieuze hoofdletters en een zachte, olijfkleurige toon.",
+    colors: {
+      background: "#f7f2e8",
+      surface: "#fbf8f1",
+      surfaceAlt: "#efe8d8",
+      text: "#5c5a3a",
+      muted: "#8a8666",
+      line: "#e4dcc6",
+      accent: "#7f94c6",
+      buttonBackground: "#6b6d45",
+      buttonText: "#fbf8f1",
+      footerBackground: "#ebe4d2",
+      footerText: "#5c5a3a",
+      envelope: "#9aa67b",
+      envelopeCard: "#fbf8f1",
+    },
+    headingFont: "Cormorant Garamond",
+    bodyFont: "EB Garamond",
+    scriptFont: "Great Vibes",
+    buttonShape: "pill",
+    style: "flowers",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

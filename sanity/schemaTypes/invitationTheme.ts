@@ -111,6 +111,7 @@ export const invitationTheme = defineType({
           { title: "Modern (zwart-wit, grote letters, handschrift)", value: "modern" },
           { title: "Sweet (strepen, boogkaarten, strikje)", value: "sweet" },
           { title: "Lemon (blauw-geel gestreept, citroentakken)", value: "lemon" },
+          { title: "Flowers (crèmepapier, aquarel-wildbloemen in de hoeken)", value: "flowers" },
         ],
         layout: "radio",
       },

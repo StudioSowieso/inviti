@@ -30,7 +30,7 @@ type RevealProps = { config: InvitationConfig; opening: boolean; onOpen: () => v
 
 export function RevealOverlay({ theme, ...props }: RevealProps & { theme: InvitationTheme }) {
   if (theme.style === "leaf") return <LeafReveal {...props} />;
-  if (theme.style === "nature") return <PagesReveal {...props} />;
+  if (theme.style === "nature" || theme.style === "flowers") return <PagesReveal {...props} />;
   if (theme.style === "modern") return <PhotoReveal {...props} />;
   if (theme.style === "lemon") return <LemonReveal {...props} />;
   if (theme.style === "sweet") return <SweetReveal {...props} />;

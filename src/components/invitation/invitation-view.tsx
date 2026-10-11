@@ -27,6 +27,7 @@ import { LemonEnvelope } from "./lemon-envelope";
 import { SWEET_STRIPES, SweetBlockSection } from "./sweet";
 import { SweetEnvelope } from "./sweet-envelope";
 import { ModernEnvelope } from "./modern-envelope";
+import { FlowersBlockSection } from "./flowers";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
 import { NatureEnvelope } from "./nature-envelope";
 import { REVEAL_MS, RevealOverlay } from "./reveal";
@@ -202,8 +203,9 @@ export function InvitationView({
   const modern = theme.style === "modern";
   const sweet = theme.style === "sweet";
   const lemon = theme.style === "lemon";
+  const flowers = theme.style === "flowers";
   // "nature" en "leaf" delen papiertextuur en de bijpassende envelop.
-  const textured = theme.style === "nature" || leaf;
+  const textured = theme.style === "nature" || leaf || flowers;
   // Alle stijlen behalve "classic" laten de navigatiebalk de knopkleuren van het thema volgen.
   const nature = theme.style !== "classic";
   const visibleBlocks = config.blocks.filter((b) => b.enabled);
@@ -230,6 +232,8 @@ export function InvitationView({
               <SweetBlockSection key={blockKey(b)} block={b} config={config} />
             ) : modern ? (
               <ModernBlockSection key={blockKey(b)} block={b} config={config} />
+            ) : flowers ? (
+              <FlowersBlockSection key={blockKey(b)} block={b} config={config} index={i} />
             ) : leaf ? (
               <LeafBlockSection key={blockKey(b)} block={b} config={config} index={i} />
             ) : nature ? (
