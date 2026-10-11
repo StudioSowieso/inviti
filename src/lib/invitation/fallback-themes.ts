@@ -190,6 +190,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "pill",
     style: "flowers",
   },
+  {
+    slug: "sunset",
+    title: "Sunset",
+    description:
+      "Speels en warm: een oranje tafel met gestapelde kaartjes in perzik, rood en roze, golvende randen, halfronde kaartjes met paperclip en een vrolijk handschrift.",
+    colors: {
+      background: "#e8631d",
+      surface: "#fbd6c3",
+      surfaceAlt: "#f3b3c0",
+      text: "#c0391f",
+      muted: "#b5654a",
+      line: "#f0b69b",
+      accent: "#d63a22",
+      buttonBackground: "#d63a22",
+      buttonText: "#fff1e8",
+      footerBackground: "#d63a22",
+      footerText: "#ffe9df",
+      envelope: "#e8571a",
+      envelopeCard: "#fbd6c3",
+    },
+    headingFont: "DM Serif Display",
+    bodyFont: "Jost",
+    scriptFont: "Yellowtail",
+    buttonShape: "rounded",
+    style: "sunset",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

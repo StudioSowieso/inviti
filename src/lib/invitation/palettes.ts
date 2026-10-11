@@ -12,6 +12,46 @@ type PaletteDef = { slug: string; title: string; colors: Partial<ThemeColors> };
  * horen bij elkaar, zodat een kleurkeuze het hele thema meeneemt.
  */
 const EXTRA_PALETTES: Record<string, PaletteDef[]> = {
+  sunset: [
+    {
+      slug: "roze",
+      title: "Roze",
+      colors: {
+        background: "#f2a9b8",
+        surface: "#fde3dc",
+        surfaceAlt: "#fbd0a5",
+        text: "#b32a3a",
+        muted: "#b9707a",
+        line: "#f0c0c3",
+        accent: "#c8283c",
+        buttonBackground: "#c8283c",
+        buttonText: "#fff3ee",
+        footerBackground: "#c8283c",
+        footerText: "#ffe8e4",
+        envelope: "#ee8aa0",
+        envelopeCard: "#fde3dc",
+      },
+    },
+    {
+      slug: "terracotta",
+      title: "Terracotta",
+      colors: {
+        background: "#c9653d",
+        surface: "#f2d8c6",
+        surfaceAlt: "#e8b49a",
+        text: "#8d3a22",
+        muted: "#a86a52",
+        line: "#dcb69c",
+        accent: "#9e3b22",
+        buttonBackground: "#8d3a22",
+        buttonText: "#f8e9de",
+        footerBackground: "#8d3a22",
+        footerText: "#f4e1d4",
+        envelope: "#b4562f",
+        envelopeCard: "#f2d8c6",
+      },
+    },
+  ],
   flowers: [
     {
       slug: "boterbloem",

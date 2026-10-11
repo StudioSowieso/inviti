@@ -17,7 +17,7 @@ const FONTS = [
 ];
 
 // Sierlettertypes voor namen en afsluiting (alleen zichtbaar bij de stijlen "Natuur", "Leaf", "Modern", "Sweet" en "Lemon").
-const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura", "Mrs Saint Delafield"];
+const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura", "Mrs Saint Delafield", "Yellowtail"];
 
 const colorField = (name: string, title: string, description: string) =>
   defineField({
@@ -112,6 +112,7 @@ export const invitationTheme = defineType({
           { title: "Sweet (strepen, boogkaarten, strikje)", value: "sweet" },
           { title: "Lemon (blauw-geel gestreept, citroentakken)", value: "lemon" },
           { title: "Flowers (crèmepapier, aquarel-wildbloemen in de hoeken)", value: "flowers" },
+          { title: "Sunset (oranje, gestapelde kaartjes, golfranden, paperclip)", value: "sunset" },
         ],
         layout: "radio",
       },

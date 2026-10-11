@@ -83,7 +83,7 @@ const USPS = [
   "Import uit spreadsheet",
   "RSVP-overzicht",
   "To-do met deadlines",
-  "Zeven thema's",
+  "Acht thema's",
 ];
 
 function Eyebrow({ children, className = "text-clay" }: { children: React.ReactNode; className?: string }) {
@@ -140,7 +140,7 @@ export default function Home() {
           <div className="mx-auto max-w-6xl px-6 lg:px-10">
             <Eyebrow>Thema&apos;s</Eyebrow>
             <h2 data-split className="mt-5 max-w-2xl font-serif text-4xl leading-[1.06] font-medium sm:text-6xl">
-              Zeven sfeervolle thema&apos;s, elk met een eigen openingsanimatie
+              Acht sfeervolle thema&apos;s, elk met een eigen openingsanimatie
             </h2>
             <p data-reveal className="mt-6 max-w-md leading-relaxed text-ink/70">
               Dit zijn echte voorbeelden. Kies je favoriet en maak hem helemaal van jullie met eigen kleuren en lettertypes.

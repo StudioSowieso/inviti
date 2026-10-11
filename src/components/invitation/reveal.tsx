@@ -6,6 +6,7 @@ import type { InvitationConfig, InvitationTheme, ThemeColors } from "@/lib/invit
 import { BranchArt, makeBranch } from "./leaf";
 import { FlowersReveal } from "./flowers-envelope";
 import { LemonReveal } from "./lemon-envelope";
+import { SunsetReveal } from "./sunset-envelope";
 import { SweetReveal } from "./sweet-envelope";
 import { AbstractCouple } from "./modern";
 import { PAPER_NOISE, tearPaths } from "./nature";
@@ -16,6 +17,7 @@ import { PAPER_NOISE, tearPaths } from "./nature";
  * - Nature: gescheurde pagina's gaan open.
  * - Lemon: je gaat door de citroentakken heen.
  * - Flowers: je gaat door de bloemtakken heen.
+ * - Sunset: gestapelde kaartjes waaieren weg.
  * - Sweet: de strepen van het behang schuiven open.
  * - Overige thema's: deuren in de kleuren van het thema slaan open.
  * De echte uitnodiging staat de hele tijd achter de animatie, dus je ziet hem verschijnen.
@@ -33,6 +35,7 @@ type RevealProps = { config: InvitationConfig; opening: boolean; onOpen: () => v
 export function RevealOverlay({ theme, ...props }: RevealProps & { theme: InvitationTheme }) {
   if (theme.style === "leaf") return <LeafReveal {...props} />;
   if (theme.style === "nature") return <PagesReveal {...props} />;
+  if (theme.style === "sunset") return <SunsetReveal {...props} />;
   if (theme.style === "flowers") return <FlowersReveal {...props} />;
   if (theme.style === "modern") return <PhotoReveal {...props} />;
   if (theme.style === "lemon") return <LemonReveal {...props} />;

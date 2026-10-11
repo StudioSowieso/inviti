@@ -3,6 +3,7 @@ import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import type { InvitationTheme } from "@/lib/invitation/types";
 import { Branch, BranchPair, HeroBranch } from "./leaf";
 import { CornerSprigs } from "./flowers";
+import { Paperclip } from "./sunset";
 import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
@@ -19,6 +20,30 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
 function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "sunset") {
+    const vars = { "--inv-accent": c.accent, "--inv-text": c.text, "--inv-surfaceAlt": c.surfaceAlt, "--inv-surface": c.surface } as CSSProperties;
+    return (
+      <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-xl px-5" style={{ ...vars, background: c.background }}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="relative w-full rounded-2xl px-4 pt-4 pb-11 text-center" style={{ background: c.surface, transform: "rotate(-1.5deg)" }}>
+          <p className="text-[1.25rem] leading-[0.95] tracking-tight uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.accent }}>
+            Emma
+            <span className="block text-[0.95rem] normal-case" style={{ fontFamily: fontStack(theme.scriptFont), color: c.text }}>
+              &amp;
+            </span>
+            Mats
+          </p>
+        </div>
+        <div className="relative -mt-8 w-[62%] px-2 pt-6 pb-2 text-center" style={{ background: c.surfaceAlt, borderRadius: "999px 999px 0.3rem 0.3rem / 100% 100% 0.3rem 0.3rem" }}>
+          <p className="text-[0.9rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont), color: c.accent }}>
+            12 september
+          </p>
+          <Paperclip className="absolute -bottom-1.5 left-[62%] scale-[0.55]" />
+        </div>
+      </div>
+    );
+  }
 
   if (theme.style === "flowers") {
     const vars = {

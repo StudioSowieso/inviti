@@ -22,6 +22,7 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   "Pinyon Script": { css2: "Pinyon+Script", kind: "script" },
   Allura: { css2: "Allura", kind: "script" },
   "Mrs Saint Delafield": { css2: "Mrs+Saint+Delafield", kind: "script" },
+  Yellowtail: { css2: "Yellowtail", kind: "script" },
 };
 
 export const DEFAULT_HEADING_FONT = "Cormorant Garamond";
@@ -50,7 +51,7 @@ export function googleFontsHref(...names: string[]) {
   return `https://fonts.googleapis.com/css2?${families.join("&")}&display=swap`;
 }
 
-/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon" en "flowers"). */
+/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon", "flowers" en "sunset"). */
 export function themeFonts(theme: InvitationTheme) {
   return [theme.headingFont, theme.bodyFont, ...(theme.style !== "classic" ? [theme.scriptFont] : [])];
 }
