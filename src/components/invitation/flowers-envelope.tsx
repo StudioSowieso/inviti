@@ -33,21 +33,17 @@ function TapArea({ opening, onOpen }: { opening: boolean; onOpen: () => void }) 
   );
 }
 
-/** Zegel: een schijf in het accent met een bloem en een rand van kleine bloemetjes. */
-function FlowerSeal({ size = 88 }: { size?: number }) {
-  const ring = Array.from({ length: 10 }, (_, i) => {
-    const a = (i / 10) * Math.PI * 2;
-    return { x: Math.cos(a) * 33, y: Math.sin(a) * 33, r: 3.6, rot: i * 20 };
-  });
+/** Zegel: één grote bloem met twee lagen bloemblaadjes, zonder rand eromheen. */
+function FlowerSeal({ size = 104 }: { size?: number }) {
   return (
-    <svg viewBox="-42 -42 84 84" width={size} height={size} aria-hidden="true" style={{ filter: "drop-shadow(0 8px 8px rgb(30 30 20 / .3))" }}>
-      <circle r="40" style={{ fill: `color-mix(in srgb, ${col("accent")} 82%, black)` }} />
-      <circle r="37" style={{ fill: col("accent") }} />
-      <circle r="27" fill="none" style={{ stroke: `color-mix(in srgb, ${col("accent")} 60%, white)` }} strokeWidth="0.8" />
-      {ring.map((b, i) => (
-        <Blossom key={i} {...b} petal={`color-mix(in srgb, ${col("accent")} 45%, white)`} />
+    <svg viewBox="-34 -34 68 68" width={size} height={size} aria-hidden="true" style={{ filter: "drop-shadow(0 8px 7px rgb(30 30 20 / .3))" }}>
+      <Blossom x={0} y={0} r={31} rot={0} petal={`color-mix(in srgb, ${col("accent")} 80%, black)`} />
+      <Blossom x={0} y={0} r={27} rot={36} petal={col("accent")} />
+      <Blossom x={0} y={0} r={17} rot={18} petal={`color-mix(in srgb, ${col("accent")} 55%, white)`} />
+      <circle r="5.2" fill="#e9c75f" />
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <circle key={i} cx={Math.cos((i / 6) * Math.PI * 2) * 7.6} cy={Math.sin((i / 6) * Math.PI * 2) * 7.6} r="1.2" fill="#f6e7a8" />
       ))}
-      <Blossom x={0} y={0} r={17} rot={18} petal={col("surface")} />
     </svg>
   );
 }
@@ -137,7 +133,7 @@ export function FlowersEnvelope({ config, opening, onOpen }: Props) {
           </div>
           <span
             className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{ top: "calc(100% - 2rem)", backfaceVisibility: "hidden" }}
+            style={{ top: "calc(100% - 2.6rem)", backfaceVisibility: "hidden" }}
           >
             <FlowerSeal />
           </span>
