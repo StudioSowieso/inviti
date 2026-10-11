@@ -308,8 +308,7 @@ function MessageEditor({
   const [editing, setEditing] = useState(false);
   const [pending, start] = useTransition();
   const [status, setStatus] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
-  const [withPlusOne, setWithPlusOne] = useState(!!samplePlusOne.trim());
-  const shownPlusOne = withPlusOne ? samplePlusOne.trim() || "Sam" : "";
+  const shownPlusOne = samplePlusOne.trim();
   const dirty = template !== saved;
 
   function save() {
@@ -348,23 +347,10 @@ function MessageEditor({
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <div>
-          <div className="mb-2 flex w-fit rounded-full border border-line bg-paper p-0.5 text-xs" role="group" aria-label="Voorbeeld voor">
-            {([[false, "Enkele gast"], [true, "Gast met invitee"]] as const).map(([v, label]) => (
-              <button
-                key={label}
-                type="button"
-                aria-pressed={withPlusOne === v}
-                onClick={() => setWithPlusOne(v)}
-                className={`rounded-full px-3 py-1 font-medium transition ${withPlusOne === v ? "bg-forest text-paper" : "text-muted"}`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
           <div className="rounded-2xl rounded-tl-md bg-sage/60 px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap">
             {messageParts(template, addressee(sampleFirst, shownPlusOne), sampleLink, couple, !!shownPlusOne).map((p, i) =>
               p.auto ? (
-                <span key={i} className="rounded-md border border-forest/25 bg-paper px-1.5 py-0.5 font-medium break-all text-forest">
+                <span key={i} className="rounded bg-forest/10 px-1 break-all">
                   {p.text}
                 </span>
               ) : (
