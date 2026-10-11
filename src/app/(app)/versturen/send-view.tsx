@@ -37,9 +37,9 @@ function whatsappNumber(phone: string) {
 }
 
 export const DEFAULT_MESSAGE =
-  "Hoi {voornaam},\n\nWe gaan trouwen op {datum}! Wij nodigen je graag uit voor onze bruiloft. Bekijk hier je persoonlijke uitnodiging:\n{link}\n\nLiefs,\n{namen}";
+  "Hoi {voornaam},\n\nWe gaan trouwen op {datum}! Wij nodigen {je/jullie} graag uit voor onze bruiloft. Bekijk hier {je/jullie} persoonlijke uitnodiging:\n{link}\n\nLiefs,\n{namen}";
 
-const PLACEHOLDERS = ["{voornaam}", "{namen}", "{datum}", "{link}"] as const;
+const PLACEHOLDERS = ["{voornaam}", "{je/jullie}", "{jou/jullie}", "{namen}", "{datum}", "{link}"] as const;
 
 /** Vult de invulvelden in. Staat {link} er niet in, dan wordt de link onderaan toegevoegd. */
 /** "Anna" of, met invitee, "Anna en Piet". */
@@ -48,11 +48,13 @@ function addressee(first: string, plusOne: string) {
   return p ? `${first} en ${p}` : first;
 }
 
-function message(template: string, first: string, link: string, couple: Couple | null) {
+function message(template: string, first: string, link: string, couple: Couple | null, plural: boolean) {
   const names = couple ? `${couple.partner1} & ${couple.partner2}` : "wij";
   const date = couple?.date ? longDate(couple.date) : "binnenkort";
   const filled = template
     .replaceAll("{voornaam}", first)
+    .replaceAll("{je/jullie}", plural ? "jullie" : "je")
+    .replaceAll("{jou/jullie}", plural ? "jullie" : "jou")
     .replaceAll("{namen}", names)
     .replaceAll("{datum}", date)
     .replaceAll("{link}", link);
@@ -127,7 +129,8 @@ export function SendView({
         template={template}
         onChange={setTemplate}
         saved={savedMessage ?? DEFAULT_MESSAGE}
-        sampleName={guests[0] ? addressee(guests[0].firstName, guests[0].plusOne) : "Emma"}
+        sampleFirst={guests[0]?.firstName ?? "Emma"}
+        samplePlusOne={guests[0]?.plusOne ?? ""}
         sampleLink={url(guests[0]?.token ?? "voorbeeld")}
         couple={couple}
       />
@@ -173,7 +176,7 @@ export function SendView({
           <ul className="grid gap-3 xl:grid-cols-2">
             {guests.map((g) => {
               const link = url(g.token);
-              const text = message(template, addressee(g.firstName, g.plusOne), link, couple);
+              const text = message(template, addressee(g.firstName, g.plusOne), link, couple, !!g.plusOne.trim());
               const subject = couple ? `Uitnodiging bruiloft ${couple.partner1} & ${couple.partner2}` : "Uitnodiging bruiloft";
               const wa = g.phone ? `https://wa.me/${whatsappNumber(g.phone)}?text=${encodeURIComponent(text)}` : null;
               const mail = g.email ? `mailto:${g.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}` : null;
@@ -268,20 +271,24 @@ function MessageEditor({
   template,
   onChange,
   saved,
-  sampleName,
+  sampleFirst,
+  samplePlusOne,
   sampleLink,
   couple,
 }: {
   template: string;
   onChange: (v: string) => void;
   saved: string;
-  sampleName: string;
+  sampleFirst: string;
+  samplePlusOne: string;
   sampleLink: string;
   couple: Couple | null;
 }) {
   const [editing, setEditing] = useState(false);
   const [pending, start] = useTransition();
   const [status, setStatus] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
+  const [withPlusOne, setWithPlusOne] = useState(!!samplePlusOne.trim());
+  const shownPlusOne = withPlusOne ? samplePlusOne.trim() || "Sam" : "";
   const dirty = template !== saved;
 
   function save() {
@@ -309,7 +316,7 @@ function MessageEditor({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="font-serif text-2xl font-medium">Voorbeeldbericht</h2>
-          <p className="mt-0.5 text-sm text-muted">Dit bericht gaat mee met elke WhatsApp en mail. Per gast vullen we de naam en link in.</p>
+          <p className="mt-0.5 text-sm text-muted">Dit bericht gaat mee met elke WhatsApp en mail. Per gast vullen we de naam en link in. Met {je/jullie} wordt het "je" bij een enkele gast en "jullie" bij een gast met invitee.</p>
         </div>
         {!editing && (
           <button type="button" onClick={() => setEditing(true)} className={ACTION}>
@@ -319,8 +326,23 @@ function MessageEditor({
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl rounded-tl-md bg-sage/60 px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap">
-          {message(template, sampleName, sampleLink, couple)}
+        <div>
+          <div className="mb-2 flex w-fit rounded-full border border-line bg-paper p-0.5 text-xs" role="group" aria-label="Voorbeeld voor">
+            {([[false, "Enkele gast"], [true, "Gast met invitee"]] as const).map(([v, label]) => (
+              <button
+                key={label}
+                type="button"
+                aria-pressed={withPlusOne === v}
+                onClick={() => setWithPlusOne(v)}
+                className={`rounded-full px-3 py-1 font-medium transition ${withPlusOne === v ? "bg-forest text-paper" : "text-muted"}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="rounded-2xl rounded-tl-md bg-sage/60 px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap">
+            {message(template, addressee(sampleFirst, shownPlusOne), sampleLink, couple, !!shownPlusOne)}
+          </div>
         </div>
 
         {editing && (
