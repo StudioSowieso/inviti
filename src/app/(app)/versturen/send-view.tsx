@@ -48,17 +48,38 @@ function addressee(first: string, plusOne: string) {
   return p ? `${first} en ${p}` : first;
 }
 
-function message(template: string, first: string, link: string, couple: Couple | null, plural: boolean) {
+type Part = { text: string; auto: boolean };
+
+/** Het bericht in stukjes: `auto` zijn de delen die per gast automatisch worden ingevuld. */
+function messageParts(template: string, first: string, link: string, couple: Couple | null, plural: boolean): Part[] {
   const names = couple ? `${couple.partner1} & ${couple.partner2}` : "wij";
   const date = couple?.date ? longDate(couple.date) : "binnenkort";
-  const filled = template
-    .replaceAll("{voornaam}", first)
-    .replaceAll("{je/jullie}", plural ? "jullie" : "je")
-    .replaceAll("{jou/jullie}", plural ? "jullie" : "jou")
-    .replaceAll("{namen}", names)
-    .replaceAll("{datum}", date)
-    .replaceAll("{link}", link);
-  return template.includes("{link}") ? filled : `${filled}\n\n${link}`;
+  const values: Record<string, string> = {
+    voornaam: first,
+    "je/jullie": plural ? "jullie" : "je",
+    "jou/jullie": plural ? "jullie" : "jou",
+    namen: names,
+    datum: date,
+    link,
+  };
+  const parts: Part[] = [];
+  let last = 0;
+  for (const m of template.matchAll(/\{(voornaam|je\/jullie|jou\/jullie|namen|datum|link)\}/g)) {
+    if (m.index > last) parts.push({ text: template.slice(last, m.index), auto: false });
+    parts.push({ text: values[m[1]], auto: true });
+    last = m.index + m[0].length;
+  }
+  if (last < template.length) parts.push({ text: template.slice(last), auto: false });
+  // Staat {link} er niet in, dan wordt de link onderaan toegevoegd.
+  if (!template.includes("{link}")) parts.push({ text: "\n\n", auto: false }, { text: link, auto: true });
+  return parts;
+}
+
+/** Platte tekst voor WhatsApp en mail. */
+function message(template: string, first: string, link: string, couple: Couple | null, plural: boolean) {
+  return messageParts(template, first, link, couple, plural)
+    .map((p) => p.text)
+    .join("");
 }
 
 function WhatsAppIcon() {
@@ -341,8 +362,17 @@ function MessageEditor({
             ))}
           </div>
           <div className="rounded-2xl rounded-tl-md bg-sage/60 px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap">
-            {message(template, addressee(sampleFirst, shownPlusOne), sampleLink, couple, !!shownPlusOne)}
+            {messageParts(template, addressee(sampleFirst, shownPlusOne), sampleLink, couple, !!shownPlusOne).map((p, i) =>
+              p.auto ? (
+                <span key={i} className="rounded-md border border-forest/25 bg-paper px-1.5 py-0.5 font-medium break-all text-forest">
+                  {p.text}
+                </span>
+              ) : (
+                <span key={i}>{p.text}</span>
+              ),
+            )}
           </div>
+          <p className="mt-2 text-xs text-muted">De woorden in een blokje worden per gast automatisch ingevuld.</p>
         </div>
 
         {editing && (
