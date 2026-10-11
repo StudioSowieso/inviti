@@ -195,7 +195,7 @@ export function SendView({
         ) : (
           <>
           <p className="text-sm text-muted">
-            {sentCount} van {guests.length} uitnodigingen verstuurd. Vink zelf af wie je de uitnodiging al hebt gestuurd.
+            <strong className="font-medium text-ink">{sentCount} van {guests.length} verstuurd.</strong> Inviti kan niet zien of je een uitnodiging echt hebt verstuurd, dus vink dit zelf handmatig af per gast.
           </p>
           <ul className="grid gap-3 xl:grid-cols-2">
             {guests.map((g) => {
@@ -234,7 +234,7 @@ export function SendView({
                       <MailIcon width={15} height={15} /> Mail
                     </a>
                     <CopyButton text={link} label="Link" />
-                    <label className="ml-auto inline-flex cursor-pointer items-center gap-2 text-xs font-medium">
+                    <label title="Handmatige checkbox: vink af zodra je de uitnodiging zelf hebt verstuurd" className="ml-auto inline-flex cursor-pointer items-center gap-2 text-xs font-medium">
                       <input
                         type="checkbox"
                         checked={!!sent[g.id]}
@@ -242,6 +242,7 @@ export function SendView({
                         className="size-4 accent-[var(--color-forest)]"
                       />
                       Verstuurd
+                      <span className="font-normal text-muted">(zelf afvinken)</span>
                     </label>
                   </div>
                 </li>
