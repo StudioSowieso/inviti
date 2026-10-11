@@ -76,6 +76,28 @@ export async function saveInvitation(id: string, themeSlug: string, rawConfig: u
     return { ok: false, error: "Opslaan is niet gelukt. Probeer het opnieuw." };
   }
 
+  // Thema, kleuren, animatie en details gelden voor alle uitnodigingen; alleen de blokken verschillen per groep.
+  const { data: others } = await supabase.from("invitations").select("id, config").neq("id", id);
+  for (const o of others ?? []) {
+    const oc = normalizeConfig(o.config);
+    await supabase
+      .from("invitations")
+      .update({
+        theme_slug: themeSlug,
+        config: {
+          ...oc,
+          partner1: config.partner1,
+          partner2: config.partner2,
+          date: config.date,
+          time: config.time,
+          city: config.city,
+          animation: config.animation,
+          palette: config.palette,
+        },
+      })
+      .eq("id", o.id as string);
+  }
+
   revalidatePath("/uitnodiging");
   return { ok: true, savedAt: data.updated_at as string };
 }

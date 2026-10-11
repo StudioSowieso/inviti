@@ -60,12 +60,14 @@ const FIXED: string[] = ["hero", "footer"];
 
 export function Configurator({
   invitationId,
+  initialTab = "thema",
   variants,
   themes,
   initialThemeSlug,
   initialConfig,
 }: {
   invitationId: string;
+  initialTab?: Tab;
   variants: VariantItem[];
   themes: InvitationTheme[];
   initialThemeSlug: string;
@@ -74,7 +76,7 @@ export function Configurator({
   const router = useRouter();
   const [themeSlug, setThemeSlug] = useState(initialThemeSlug);
   const [config, setConfig] = useState(initialConfig);
-  const [tab, setTab] = useState<Tab>("thema");
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [openBlock, setOpenBlock] = useState<string | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
@@ -195,7 +197,7 @@ export function Configurator({
         if (!res.ok) return setStatus({ kind: "error", message: res.error });
         savedSnapshot.current = snapshot(themeSlug, config);
       }
-      router.push(`/uitnodiging?v=${id}`);
+      router.push(`/uitnodiging?v=${id}&tab=${tab}`);
     });
   }
 

@@ -46,7 +46,7 @@ export function VariantSwitcher({
     startTransition(async () => {
       const res = await deleteVariant(activeId);
       if (!res.ok) return setError(res.error);
-      router.push("/uitnodiging");
+      router.push("/uitnodiging?tab=blokken");
     });
   }
 

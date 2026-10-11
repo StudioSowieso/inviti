@@ -11,8 +11,9 @@ import { Configurator } from "./configurator";
 
 export const metadata: Metadata = { title: "Uitnodiging — Inviti" };
 
-export default async function InvitationPage({ searchParams }: { searchParams: Promise<{ v?: string }> }) {
-  const { v } = await searchParams;
+export default async function InvitationPage({ searchParams }: { searchParams: Promise<{ v?: string; tab?: string }> }) {
+  const { v, tab } = await searchParams;
+  const initialTab = tab === "animatie" || tab === "details" || tab === "blokken" ? tab : "thema";
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
   const [{ variants, rows }, { themes, source, reason }] = await Promise.all([ensureVariants(supabase, user!.id), getThemes()]);
   const invitation = rows.find((r) => r.id === v) ?? rows.find((r) => r.id === variants[0]?.id) ?? rows[0] ?? null;
@@ -73,6 +74,7 @@ export default async function InvitationPage({ searchParams }: { searchParams: P
       <Configurator
         key={invitation.id}
         invitationId={invitation.id}
+        initialTab={initialTab}
         variants={variants}
         themes={themes}
         initialThemeSlug={theme.slug}
