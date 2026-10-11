@@ -63,47 +63,40 @@ function Defs({ id }: { id: string }) {
     <defs>
       <filter id={`${id}p`} x="-8%" y="-8%" width="116%" height="116%">
         <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="2" seed="4" result="n" />
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G" />
       </filter>
     </defs>
   );
 }
 
-/** Een geschilderd blad: egaal groen met een lichtere helft en een donkere hoofdnerf. */
+/** Een blad: egaal olijfgroen, de ene helft iets donkerder. */
 function Leaf({ x, y, r = 0, s = 1 }: { id?: string; x: number; y: number; r?: number; s?: number }) {
   return (
     <g transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}>
-      <path d="M0 0C8-12 28-14 44 -1C28 12 9 11 0 0Z" fill="#4f7d34" />
-      <path d="M2 -1C10-9 26-11 40 -1C26-3 12-2 2 -1Z" fill="#7aa648" opacity=".85" />
-      <path d="M3 0C16 .5 30-.5 41-1" stroke="#2f5a24" strokeWidth=".9" fill="none" strokeLinecap="round" opacity=".7" />
+      <path d="M0 0C8-12 28-14 44 -1C28 12 9 11 0 0Z" fill="#5f8240" />
+      <path d="M1 .5C9 11 28 12 44 -1C28 1 12 2 1 .5Z" fill="#456a2e" />
     </g>
   );
 }
 
-/** Een geschilderde citroen: egaal geel met penseelstreken, een puntje rechts en een nopje links. */
+/** Een citroen: egaal mosterdgeel, met een nopje links, een puntje rechts en een paar lichte stippen. */
 function Fruit({ x, y, r = 0, s = 1 }: { id?: string; x: number; y: number; r?: number; s?: number }) {
   return (
     <g transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}>
       <path
-        d="M-26 -1C-27-12-14-20 -1-19C11-19 20-14 26-5L33 -1L26 4C20 14 11 20 -1 19C-15 19-26 11-26 -1Z"
-        fill="#f4c60f"
+        d="M-26 -1C-27-12-14-20 -1-19C11-19 20-14 26-5L32 -1L26 4C20 14 11 20 -1 19C-15 19-26 11-26 -1Z"
+        fill="#e7bd2e"
       />
-      <path d="M-22 5C-17 15-6 18 4 17C14 16 22 10 26 3C18 11 6 12-4 11C-13 10-19 8-22 5Z" fill="#e0a30c" opacity=".7" />
-      <path d="M-18 -8C-12-15-3-16 6-15C-2-12-10-10-15-4C-17-3-19-5-18-8Z" fill="#ffe55a" opacity=".85" />
-      <path d="M6 -2C10 -4 15 -3 19 0" stroke="#e9b413" strokeWidth="1.6" fill="none" strokeLinecap="round" opacity=".6" />
-      <path d="M-26 -1C-29-1-30 2-27 3" stroke="#c98f12" strokeWidth="1.6" fill="none" strokeLinecap="round" opacity=".7" />
-    </g>
-  );
-}
-
-function Blossom({ x, y, s = 1 }: { x: number; y: number; s?: number }) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${s})`}>
-      {[0, 72, 144, 216, 288].map((a) => (
-        <ellipse key={a} cx="0" cy="-7" rx="4.8" ry="8" transform={`rotate(${a})`} fill="#fffaec" stroke="#e6dcb8" strokeWidth=".6" />
-      ))}
-      <circle r="3.3" fill="#f0b81a" />
-      <circle cx="-.8" cy="-.8" r="1.3" fill="#d98f12" opacity=".7" />
+      <path d="M-22 6C-16 15-6 18 4 17C14 16 22 10 26 3C18 11 6 12-4 11C-13 10-19 8-22 6Z" fill="#d6a81f" opacity=".6" />
+      <g fill="#fbe48a">
+        <circle cx="-8" cy="6" r=".9" />
+        <circle cx="-3" cy="9" r=".8" />
+        <circle cx="3" cy="5" r=".8" />
+        <circle cx="9" cy="8" r=".9" />
+        <circle cx="-13" cy="0" r=".7" />
+        <circle cx="6" cy="-9" r=".7" />
+      </g>
+      <path d="M-26 -1C-29-1-30 2-27 3" stroke="#d6a81f" strokeWidth="2" fill="none" strokeLinecap="round" />
     </g>
   );
 }
@@ -120,7 +113,7 @@ export function LemonBranch({ className = "", style, flip = false }: { className
     >
       <Defs id={id} />
       <g filter={`url(#${id}p)`}>
-      <g fill="none" stroke="#6b5a2f" strokeWidth="2.6" strokeLinecap="round">
+      <g fill="none" stroke="#4a6a35" strokeWidth="2" strokeLinecap="round">
         <path d="M2 24C52 30 104 48 150 100S206 160 224 176" />
         <path d="M92 50C108 36 128 28 150 32" strokeWidth="1.8" />
         <path d="M138 90C152 80 170 76 188 82" strokeWidth="1.6" />
@@ -136,10 +129,6 @@ export function LemonBranch({ className = "", style, flip = false }: { className
       <Fruit id={id} x={132} y={124} r={52} s={1.45} />
       <Fruit id={id} x={92} y={92} r={-24} s={1.05} />
       <Fruit id={id} x={192} y={150} r={30} s={1.1} />
-      <Blossom x={46} y={24} s={1.1} />
-      <Blossom x={118} y={52} s={0.95} />
-      <Blossom x={170} y={64} s={0.8} />
-      <Blossom x={62} y={64} s={0.7} />
       </g>
     </svg>
   );
@@ -155,7 +144,6 @@ export function BigLemon({ className = "", style, leaves = true }: { className?:
       {leaves && <Leaf id={id} x={4} y={-16} r={-128} s={1.15} />}
       {leaves && <Leaf id={id} x={8} y={-14} r={-52} s={1.3} />}
       <Fruit id={id} x={0} y={2} r={-14} s={1.5} />
-      {leaves && <Blossom x={26} y={-24} s={0.9} />}
       </g>
     </svg>
   );
@@ -168,11 +156,10 @@ export function LemonSprig({ className = "", width = 76 }: { className?: string;
     <svg viewBox="6 -15 97 74" width={width} height={(width * 74) / 97} aria-hidden="true" className={className} style={{ overflow: "visible" }}>
       <Defs id={id} />
       <g filter={`url(#${id}p)`}>
-      <path d="M14 30C34 22 52 24 66 30" fill="none" stroke="#6b5a2f" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M14 30C34 22 52 24 66 30" fill="none" stroke="#4a6a35" strokeWidth="1.8" strokeLinecap="round" />
       <Leaf id={id} x={14} y={30} r={-32} s={0.8} />
       <Leaf id={id} x={34} y={26} r={28} s={0.7} />
       <Fruit id={id} x={66} y={32} r={-14} s={0.95} />
-      <Blossom x={84} y={16} s={0.8} />
       <Leaf id={id} x={68} y={14} r={-60} s={0.6} />
       </g>
     </svg>
