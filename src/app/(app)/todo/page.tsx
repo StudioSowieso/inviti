@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
+import { syncSystemTodos } from "@/lib/system-todos";
 import { TodoBoard, type Todo } from "./todo-board";
 
 export const metadata: Metadata = { title: "To do — Inviti" };
 
 export default async function TodoPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
+
+  await syncSystemTodos(supabase, user!.id);
 
   const [{ data: profile }, { data: rows }] = await Promise.all([
     supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),

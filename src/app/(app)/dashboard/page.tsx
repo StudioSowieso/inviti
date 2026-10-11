@@ -13,12 +13,15 @@ import {
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
+import { syncSystemTodos } from "@/lib/system-todos";
 import { TodoItem } from "./todo-item";
 
 export const metadata: Metadata = { title: "Dashboard — Inviti" };
 
 export default async function DashboardPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
+
+  await syncSystemTodos(supabase, user!.id);
 
   const [{ data: profile }, { data: guests }, { data: todos }] = await Promise.all([
     supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
