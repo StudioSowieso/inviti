@@ -2,14 +2,14 @@
 
 import type { CSSProperties } from "react";
 import type { InvitationConfig, ThemeColors } from "@/lib/invitation/types";
-import { HalfCard, Paperclip } from "./sunset";
+import { HalfCard, Paperclip, WavyCard } from "./sunset";
 import { PAPER_NOISE } from "./nature";
 
 /**
  * Animaties voor het thema "sunset":
  * - SunsetEnvelope: een oranje envelop met een perzikkleurig kaartje en een roze halfrond kaartje met
  *   paperclip op de voorkant. De klep klapt open en de envelop schuift omlaag.
- * - SunsetReveal ("Doorkijk"): gestapelde kaartjes in rood, oranje en perzik waaieren weg.
+ * - SunsetReveal ("Doorkijk"): gestapelde kaartjes (envelop, golvend perzik, oranje, halfrond) schuiven naar beide zijkanten.
  */
 
 const col = (key: keyof ThemeColors) => `var(--inv-${key})`;
@@ -126,39 +126,55 @@ export function SunsetEnvelope({ config, opening, onOpen }: Props) {
   );
 }
 
-// ---------- Doorkijk: kaartjes waaieren weg ----------
+// ---------- Doorkijk: de gestapelde kaartjes schuiven naar beide zijkanten ----------
 
 export function SunsetReveal({ config, opening, onOpen }: Props) {
-  const panels: { tone: keyof ThemeColors; dir: [number, number]; rot: number; delay: number; tilt: number }[] = [
-    { tone: "accent", dir: [110, -4], rot: 14, delay: 260, tilt: 4 },
-    { tone: "envelope", dir: [-110, 6], rot: -12, delay: 140, tilt: -3 },
-    { tone: "surface", dir: [4, 112], rot: 6, delay: 0, tilt: 1.5 },
-  ];
+  const back = `color-mix(in srgb, ${col("envelope")} 84%, black)`;
+  const orange = `color-mix(in srgb, ${col("envelope")} 92%, white)`;
+  /** Elke laag schuift de zijkant uit; de voorste laag gaat als eerste. */
+  const layer = (dir: -1 | 1, tilt: number, delay: number, z: number): CSSProperties => ({
+    zIndex: z,
+    transform: opening ? `translateX(${dir * 135}%) rotate(${tilt + dir * 6}deg)` : `rotate(${tilt}deg)`,
+    transition: `transform 1100ms cubic-bezier(.6,0,.25,1) ${opening ? delay : 0}ms`,
+  });
   return (
     <div className="absolute inset-0 z-30 overflow-hidden" style={{ pointerEvents: opening ? "none" : "auto" }}>
       <div
         className="absolute inset-0"
-        style={{ background: col("background"), backgroundImage: PAPER_NOISE, opacity: opening ? 0 : 1, transition: `opacity 700ms ease ${opening ? "700ms" : "0ms"}` }}
+        style={{ background: col("background"), backgroundImage: PAPER_NOISE, opacity: opening ? 0 : 1, transition: `opacity 600ms ease ${opening ? "800ms" : "0ms"}` }}
       />
-      {panels.map((p, i) => (
+      <div className="absolute inset-x-[7%] top-[6%] bottom-[5%]" style={{ transform: "rotate(-3deg)" }}>
+        {/* oranje envelop achteraan */}
         <div
-          key={i}
-          className="absolute inset-x-[6%] top-[5%] bottom-[5%] rounded-[1.5rem]"
-          style={{
-            background: col(p.tone),
-            backgroundImage: PAPER_NOISE,
-            zIndex: 1 + (panels.length - i),
-            boxShadow: "0 18px 30px -18px rgb(60 20 5 / .6)",
-            transform: opening ? `translate(${p.dir[0]}%, ${p.dir[1]}%) rotate(${p.rot}deg)` : `rotate(${p.tilt}deg)`,
-            transition: `transform 1100ms cubic-bezier(.6,0,.25,1) ${opening ? p.delay : 0}ms`,
-          }}
+          aria-hidden="true"
+          className="absolute inset-x-[2%] top-0 bottom-[22%] rounded-[0.6rem]"
+          style={{ ...layer(-1, 0, 330, 1), background: back, backgroundImage: PAPER_NOISE, boxShadow: "0 18px 30px -18px rgb(60 20 5 / .6)" }}
         />
-      ))}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-[16%] z-[8] flex justify-center px-10"
-        style={{ opacity: opening ? 0 : 1, transform: opening ? "translateY(30px) scale(.96)" : "none", transition: "opacity 400ms ease, transform 600ms ease" }}
-      >
-        <div className="w-full max-w-[17rem]">
+        {/* perzikkleurig kaartje met golvende zijkanten */}
+        <div aria-hidden="true" className="absolute inset-x-[4%] top-[5%] h-[66%]" style={{ ...layer(1, 1.5, 220, 2), filter: "drop-shadow(0 14px 14px rgb(60 20 5 / .35))" }}>
+          <WavyCard tone="surface" className="h-full">
+            <div className="px-6 pt-6 text-center text-[0.55rem] leading-relaxed tracking-[0.12em] uppercase" style={{ color: col("accent") }}>
+              Wij nodigen jullie uit
+              <br />
+              om met ons te vieren
+            </div>
+          </WavyCard>
+        </div>
+        {/* oranje kaartje met afgeronde hoeken */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-[15%] top-[27%] h-[48%] rounded-[1.2rem] px-5 pt-6 text-center"
+          style={{ ...layer(-1, -1, 110, 3), background: orange, backgroundImage: PAPER_NOISE, boxShadow: "0 16px 24px -14px rgb(60 20 5 / .6)" }}
+        >
+          <p className="text-[2rem] leading-none" style={{ ...script, color: col("surface") }}>
+            Wij gaan trouwen
+          </p>
+          <p className="mt-3 text-[0.5rem] tracking-[0.2em] uppercase" style={{ color: col("surface") }}>
+            Een kaartje vol details
+          </p>
+        </div>
+        {/* halfrond kaartje met namen, voorop */}
+        <div className="absolute inset-x-[6%] bottom-0" style={layer(1, 1, 0, 4)}>
           <NamesCard config={config} opening={opening} label="Ga naar binnen" />
         </div>
       </div>

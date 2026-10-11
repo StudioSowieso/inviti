@@ -17,7 +17,7 @@ import { PAPER_NOISE, tearPaths } from "./nature";
  * - Nature: gescheurde pagina's gaan open.
  * - Lemon: je gaat door de citroentakken heen.
  * - Flowers: je gaat door de bloemtakken heen.
- * - Sunset: gestapelde kaartjes waaieren weg.
+ * - Sunset: gestapelde kaartjes schuiven naar beide zijkanten.
  * - Sweet: de strepen van het behang schuiven open.
  * - Overige thema's: deuren in de kleuren van het thema slaan open.
  * De echte uitnodiging staat de hele tijd achter de animatie, dus je ziet hem verschijnen.
