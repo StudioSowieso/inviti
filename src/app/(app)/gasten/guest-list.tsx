@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { ChevronDownIcon, DownloadIcon, PenIcon, SlidersIcon, Sparkle, TrashIcon, UploadIcon } from "@/components/icons";
 import { RSVP_LABEL, type RsvpStatus } from "@/lib/format";
-import { deleteGuest, setGuestStatus } from "../actions";
+import { useRouter } from "next/navigation";
+import { deleteGroup, deleteGuest, renameGroup, setGuestStatus } from "../actions";
 
 export type Guest = {
   id: string;
@@ -20,6 +21,151 @@ export type Guest = {
   respondedAt: string | null;
   group: string | null;
 };
+
+export type GroupInfo = { id: string; name: string; count: number; hasInvitation: boolean };
+
+function GroupManager({ groups }: { groups: GroupInfo[] }) {
+  const router = useRouter();
+  const box = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState<string | null>(null);
+  const [value, setValue] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => !box.current?.contains(e.target as Node) && setOpen(false);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  function run(action: () => Promise<{ ok: true } | { ok: false; error: string }>) {
+    startTransition(async () => {
+      const res = await action();
+      if (!res.ok) return setError(res.error);
+      setError(null);
+      setEditing(null);
+      setConfirming(null);
+      router.refresh();
+    });
+  }
+
+  return (
+    <div ref={box} className="relative">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen((v) => !v)}
+        className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition ${
+          open ? "border-forest/30 bg-sage/60" : "border-line bg-paper hover:bg-cream"
+        }`}
+      >
+        Groepen beheren
+        <ChevronDownIcon width={14} height={14} className={open ? "rotate-180" : ""} />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 z-20 mt-2 w-[min(21rem,calc(100vw-2rem))] rounded-2xl border border-line bg-paper p-2 shadow-[0_20px_50px_-20px_rgb(31_36_32/0.35)]">
+          {groups.length === 0 ? (
+            <p className="px-3 py-4 text-sm text-muted">Er zijn nog geen groepen. Geef een gast een groep om er een aan te maken.</p>
+          ) : (
+            <ul className="max-h-80 overflow-y-auto">
+              {groups.map((g) => (
+                <li key={g.id} className="rounded-xl px-3 py-2.5 hover:bg-cream/70">
+                  {editing === g.id ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        run(() => renameGroup(g.id, value));
+                      }}
+                      className="flex items-center gap-2"
+                    >
+                      <input
+                        autoFocus
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        maxLength={60}
+                        aria-label={`Nieuwe naam voor ${g.name}`}
+                        className="field min-w-0 flex-1 !py-1.5"
+                      />
+                      <button type="submit" disabled={busy || !value.trim()} className="text-sm font-medium text-forest underline-offset-4 hover:underline">
+                        Opslaan
+                      </button>
+                      <button type="button" onClick={() => setEditing(null)} className="text-sm text-muted underline-offset-4 hover:underline">
+                        Annuleren
+                      </button>
+                    </form>
+                  ) : confirming === g.id ? (
+                    <div className="text-sm">
+                      <p>
+                        &ldquo;{g.name}&rdquo; verwijderen?
+                        {g.count > 0 && ` De ${g.count} ${g.count === 1 ? "gast blijft" : "gasten blijven"} staan, zonder groep.`}
+                        {g.hasInvitation && " De uitnodiging voor deze groep wordt ook verwijderd."}
+                      </p>
+                      <div className="mt-2 flex gap-4">
+                        <button type="button" disabled={busy} onClick={() => run(() => deleteGroup(g.id))} className="font-medium text-clay underline-offset-4 hover:underline">
+                          Ja, verwijderen
+                        </button>
+                        <button type="button" onClick={() => setConfirming(null)} className="text-muted underline-offset-4 hover:underline">
+                          Annuleren
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-medium">{g.name}</span>
+                        <span className="block text-xs text-muted">
+                          {g.count} {g.count === 1 ? "gast" : "gasten"}
+                        </span>
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={`Naam van ${g.name} wijzigen`}
+                        onClick={() => {
+                          setEditing(g.id);
+                          setValue(g.name);
+                          setError(null);
+                        }}
+                        className="grid size-8 place-items-center rounded-full text-muted transition hover:bg-cream hover:text-ink"
+                      >
+                        <PenIcon width={15} height={15} />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={`${g.name} verwijderen`}
+                        onClick={() => {
+                          setConfirming(g.id);
+                          setError(null);
+                        }}
+                        className="grid size-8 place-items-center rounded-full text-muted transition hover:bg-blush hover:text-clay"
+                      >
+                        <TrashIcon width={15} height={15} />
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+          {error && (
+            <p role="alert" className="px-3 pt-1 pb-2 text-sm text-clay">
+              {error}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const BADGE: Record<RsvpStatus, string> = {
   attending: "bg-sage text-forest",
@@ -52,7 +198,7 @@ function exportCsv(guests: Guest[]) {
   URL.revokeObjectURL(url);
 }
 
-export function GuestList({ guests }: { guests: Guest[] }) {
+export function GuestList({ guests, groups: allGroups }: { guests: Guest[]; groups: GroupInfo[] }) {
   const [openId, setOpenId] = useState<string | null>(guests[0]?.id ?? null);
   const [showFilters, setShowFilters] = useState(false);
   const [status, setStatus] = useState<RsvpStatus | "all">("all");
@@ -116,6 +262,7 @@ export function GuestList({ guests }: { guests: Guest[] }) {
           <DownloadIcon width={16} height={16} />
           Exporteren
         </button>
+        <GroupManager groups={allGroups} />
       </div>
 
       {showFilters && (

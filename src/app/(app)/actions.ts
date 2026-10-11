@@ -243,3 +243,39 @@ export async function importGuests(rows: ImportRow[]): Promise<{ error: string }
   revalidatePath("/versturen");
   return { count: cleaned.length };
 }
+
+// ---------- Groepen beheren ----------
+
+export type GroupResult = { ok: true } | { ok: false; error: string };
+
+function revalidateGroups() {
+  revalidatePath("/gasten");
+  revalidatePath("/versturen");
+  revalidatePath("/uitnodiging");
+}
+
+export async function renameGroup(id: string, rawName: string): Promise<GroupResult> {
+  const name = rawName.trim().replace(/\s+/g, " ").slice(0, 60);
+  if (!name) return { ok: false, error: "Geef de groep een naam." };
+  const supabase = await createClient();
+  const { data: clash } = await supabase.from("guest_groups").select("id").eq("name", name).neq("id", id).maybeSingle();
+  if (clash) return { ok: false, error: "Er bestaat al een groep met deze naam." };
+  const { error } = await supabase.from("guest_groups").update({ name }).eq("id", id);
+  if (error) return { ok: false, error: "De naam kon niet worden gewijzigd." };
+  revalidateGroups();
+  return { ok: true };
+}
+
+/** Verwijdert een groep; de gasten blijven staan, zonder groep. Een bijbehorende uitnodiging verdwijnt mee. */
+export async function deleteGroup(id: string): Promise<GroupResult> {
+  const supabase = await createClient();
+  const { data: inv } = await supabase.from("invitations").select("id").eq("group_id", id).maybeSingle();
+  if (inv) {
+    const { count } = await supabase.from("invitations").select("id", { count: "exact", head: true });
+    if ((count ?? 0) <= 1) return { ok: false, error: "Dit is de enige uitnodiging; die kun je niet verwijderen." };
+  }
+  const { error } = await supabase.from("guest_groups").delete().eq("id", id);
+  if (error) return { ok: false, error: "De groep kon niet worden verwijderd." };
+  revalidateGroups();
+  return { ok: true };
+}

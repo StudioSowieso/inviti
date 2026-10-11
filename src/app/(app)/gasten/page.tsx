@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, coupleInitials, type RsvpStatus } from "@/lib/format";
 import { pruneEmptyGroups } from "@/lib/prune-groups";
 import { createClient, getUser } from "@/lib/supabase/server";
-import { GuestList, type Guest } from "./guest-list";
+import { GuestList, type Guest, type GroupInfo } from "./guest-list";
 
 export const metadata: Metadata = { title: "Gastenlijst — Inviti" };
 
@@ -30,6 +30,11 @@ export default async function GuestsPage({
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   await pruneEmptyGroups(supabase);
+
+  const [{ data: groupRows }, { data: invGroups }] = await Promise.all([
+    supabase.from("guest_groups").select("id, name").order("name"),
+    supabase.from("invitations").select("group_id").not("group_id", "is", null),
+  ]);
 
   const [{ data: profile }, { data: rows }] = await Promise.all([
     supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
@@ -60,6 +65,14 @@ export default async function GuestsPage({
       group: groupName,
     };
   });
+
+  const withInvitation = new Set((invGroups ?? []).map((i) => i.group_id as string));
+  const groups: GroupInfo[] = (groupRows ?? []).map((g) => ({
+    id: g.id as string,
+    name: g.name as string,
+    count: guests.filter((x) => x.group === g.name).length,
+    hasInvitation: withInvitation.has(g.id as string),
+  }));
 
   return (
     <div className="space-y-7">
@@ -101,7 +114,7 @@ export default async function GuestsPage({
         </p>
       )}
 
-      <GuestList guests={guests} />
+      <GuestList guests={guests} groups={groups} />
     </div>
   );
 }
