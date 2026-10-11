@@ -58,6 +58,8 @@ const STEPS: Step[] = [
 ];
 
 const H = "mt-3 font-serif text-[1.9rem] leading-[1.04] font-medium sm:text-4xl md:mt-5 md:text-5xl";
+/** Stap 2 t/m 4 zijn al verborgen in de server-HTML, zodat ze niet even over de eerste tekst heen flitsen. */
+const HIDDEN = { opacity: 0, visibility: "hidden" } as const;
 const T = 3; // tijdseenheden per stap
 
 const CTA_PRIMARY =
@@ -189,7 +191,7 @@ export function PhoneHero() {
                 i % 2 === 0 ? "md:left-[7vw]" : "md:right-[7vw]"
               }`}
             >
-              <div data-text className="text-center md:text-left">
+              <div data-text className="text-center md:text-left" style={i === 0 ? undefined : HIDDEN}>
                 <p className="eyebrow flex items-center justify-center gap-2 text-blush/80 md:justify-start">
                   {i === 0 ? s.eyebrow : `${s.n} · ${s.eyebrow}`} <Sparkle width={9} height={9} />
                 </p>
@@ -219,7 +221,7 @@ export function PhoneHero() {
               i % 2 === 0 ? "left-[calc(50%+9rem)]" : "right-[calc(50%+9rem)]"
             }`}
           >
-            <div data-chip className="flex items-center gap-3 rounded-2xl bg-paper px-4 py-3 text-ink shadow-[0_24px_50px_-20px_rgb(0_0_0/0.5)]">
+            <div data-chip style={i === 0 ? undefined : HIDDEN} className="flex items-center gap-3 rounded-2xl bg-paper px-4 py-3 text-ink shadow-[0_24px_50px_-20px_rgb(0_0_0/0.5)]">
               <span className="grid size-9 place-items-center rounded-full bg-blush text-clay">{s.chip.icon}</span>
               <span className="text-sm leading-tight">
                 <span className="block font-medium">{s.chip.title}</span>
