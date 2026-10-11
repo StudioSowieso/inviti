@@ -42,7 +42,7 @@ const THEMES: ThemeInput[] = [
     colors: {
       background: "#f3eee5",
       surface: "#f8f4ec",
-      surfaceAlt: "#d9e0e5",
+      surfaceAlt: "#dde3cf",
       text: "#4a4f3d",
       muted: "#7b7d6a",
       line: "#dcd5c5",
