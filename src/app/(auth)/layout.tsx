@@ -47,7 +47,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           {/* Echte uitnodiging in een telefoon, half uit beeld */}
           <div
             aria-hidden
-            className="pointer-events-none absolute right-6 -bottom-16 w-28 rotate-[7deg] sm:w-32 lg:right-10 lg:-bottom-24 lg:w-60"
+            className="pointer-events-none absolute right-6 -bottom-16 w-28 rotate-[7deg] sm:w-32 lg:right-8 lg:-bottom-28 lg:w-44 xl:w-56"
           >
             <PhoneFrame slugs={["leaf"]} className="w-full" />
           </div>
