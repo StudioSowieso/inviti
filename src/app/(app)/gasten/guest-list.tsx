@@ -242,6 +242,12 @@ function exportCsv(guests: Guest[]) {
 
 export function GuestList({ guests, groups: allGroups }: { guests: Guest[]; groups: GroupInfo[] }) {
   const [openId, setOpenId] = useState<string | null>(guests[0]?.id ?? null);
+  // De eerste gast staat altijd uitgeklapt bij het openen van de lijst, ook als de pagina opnieuw wordt
+  // geladen of er een nieuwe gast bovenaan komt.
+  const firstId = guests[0]?.id ?? null;
+  useEffect(() => {
+    setOpenId(firstId);
+  }, [firstId]);
   const [showFilters, setShowFilters] = useState(false);
   const [status, setStatus] = useState<RsvpStatus | "all">("all");
   const [group, setGroup] = useState<string>("all");
