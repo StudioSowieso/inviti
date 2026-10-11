@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  Botanical,
   CheckIcon,
   ChevronRightIcon,
   ListIcon,
@@ -205,12 +204,6 @@ export default function Home() {
 
         {/* Features */}
         <section className="relative bg-sage/60">
-          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-            <Botanical
-              data-parallax="0.12"
-              className="absolute -right-10 bottom-0 h-[26rem] text-forest/10 sm:right-10 sm:h-[34rem]"
-            />
-          </div>
           <div className="relative mx-auto max-w-6xl px-6 py-28 lg:px-10 lg:py-40">
             <Eyebrow>Alles wat je nodig hebt</Eyebrow>
             <h2 data-split className="mt-5 max-w-2xl font-serif text-4xl leading-[1.06] font-medium sm:text-6xl">
