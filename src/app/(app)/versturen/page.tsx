@@ -17,7 +17,7 @@ export default async function SendPage() {
 
   const [{ data: profile }, { data: invitation }, { data: guestRows }, { data: groupRows }] = await Promise.all([
     supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
-    supabase.from("invitations").select("config").maybeSingle(),
+    supabase.from("invitations").select("config").order("created_at", { ascending: true }).limit(1).maybeSingle(),
     supabase
       .from("guests")
       .select("id, first_name, last_name, email, phone, invite_token, guest_groups(name)")

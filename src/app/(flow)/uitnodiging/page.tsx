@@ -4,18 +4,18 @@ import { ThemeThumb } from "@/components/invitation/theme-thumb";
 import { Sparkle } from "@/components/icons";
 import { normalizeConfig } from "@/lib/invitation/defaults";
 import { getThemes, pickTheme } from "@/lib/invitation/themes";
-import { createClient } from "@/lib/supabase/server";
+import { ensureVariants } from "@/lib/invitation/variants";
+import { createClient, getUser } from "@/lib/supabase/server";
 import { createInvitation } from "./actions";
 import { Configurator } from "./configurator";
 
 export const metadata: Metadata = { title: "Uitnodiging — Inviti" };
 
-export default async function InvitationPage() {
-  const supabase = await createClient();
-  const [{ data: invitation }, { themes, source, reason }] = await Promise.all([
-    supabase.from("invitations").select("theme_slug, config").maybeSingle(),
-    getThemes(),
-  ]);
+export default async function InvitationPage({ searchParams }: { searchParams: Promise<{ v?: string }> }) {
+  const { v } = await searchParams;
+  const [supabase, user] = await Promise.all([createClient(), getUser()]);
+  const [{ variants, rows }, { themes, source, reason }] = await Promise.all([ensureVariants(supabase, user!.id), getThemes()]);
+  const invitation = rows.find((r) => r.id === v) ?? rows.find((r) => r.id === variants[0]?.id) ?? rows[0] ?? null;
 
   if (!invitation) {
     return (
@@ -71,6 +71,9 @@ export default async function InvitationPage() {
   return (
     <div data-themes-source={source} data-themes-reason={reason}>
       <Configurator
+        key={invitation.id}
+        invitationId={invitation.id}
+        variants={variants}
         themes={themes}
         initialThemeSlug={theme.slug}
         initialConfig={normalizeConfig(invitation.config)}

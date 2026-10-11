@@ -23,6 +23,7 @@ import {
   XIcon,
 } from "@/components/icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { InvitationView } from "@/components/invitation/invitation-view";
 import { ThemeThumb } from "@/components/invitation/theme-thumb";
 import type {
@@ -38,6 +39,7 @@ import { blockKey, normalizeMapsUrl } from "@/lib/invitation/format";
 import { applyPalette, validPalette } from "@/lib/invitation/palettes";
 import { createClient } from "@/lib/supabase/client";
 import { saveInvitation } from "./actions";
+import { VariantSwitcher, type VariantItem } from "./variant-switcher";
 import { Logo } from "@/components/logo";
 
 type Tab = "thema" | "animatie" | "details" | "blokken";
@@ -57,14 +59,19 @@ const BLOCK_META: Record<BlockType, { label: string; hint: string; icon: (p: { w
 const FIXED: string[] = ["hero", "footer"];
 
 export function Configurator({
+  invitationId,
+  variants,
   themes,
   initialThemeSlug,
   initialConfig,
 }: {
+  invitationId: string;
+  variants: VariantItem[];
   themes: InvitationTheme[];
   initialThemeSlug: string;
   initialConfig: InvitationConfig;
 }) {
+  const router = useRouter();
   const [themeSlug, setThemeSlug] = useState(initialThemeSlug);
   const [config, setConfig] = useState(initialConfig);
   const [tab, setTab] = useState<Tab>("thema");
@@ -169,7 +176,7 @@ export function Configurator({
 
   function save() {
     startTransition(async () => {
-      const res = await saveInvitation(themeSlug, config);
+      const res = await saveInvitation(invitationId, themeSlug, config);
       if (res.ok) {
         savedSnapshot.current = snapshot(themeSlug, config);
         setStatus({ kind: "saved" });
@@ -178,6 +185,21 @@ export function Configurator({
       }
     });
   }
+
+  /** Wisselt naar de uitnodiging van een andere groep; wijzigingen worden eerst opgeslagen. */
+  function openVariant(id: string) {
+    if (id === invitationId) return;
+    startTransition(async () => {
+      if (dirty) {
+        const res = await saveInvitation(invitationId, themeSlug, config);
+        if (!res.ok) return setStatus({ kind: "error", message: res.error });
+        savedSnapshot.current = snapshot(themeSlug, config);
+      }
+      router.push(`/uitnodiging?v=${id}`);
+    });
+  }
+
+  const activeVariant = variants.find((v) => v.id === invitationId);
 
   const statusText = pending
     ? "Opslaan…"
@@ -432,6 +454,7 @@ export function Configurator({
 
               {tab === "blokken" && (
                 <div className="space-y-8">
+                  <VariantSwitcher variants={variants} activeId={invitationId} onOpen={openVariant} />
                   <div>
                     <p className="eyebrow text-clay">Actieve blokken ({activeBlocks.length})</p>
                     <ul className="mt-3 space-y-2.5">
@@ -599,7 +622,7 @@ export function Configurator({
           <aside className={`${mobileView === "edit" ? "hidden lg:block" : ""}`}>
             <div className="card overflow-hidden lg:sticky lg:top-[5.25rem]">
               <div className="flex items-center justify-between border-b border-line px-5 py-3">
-                <p className="eyebrow text-clay">Live voorbeeld</p>
+                <p className="eyebrow text-clay">Live voorbeeld{activeVariant ? ` · ${activeVariant.name}` : ""}</p>
                 <div className="flex items-center gap-0.5">
                   <ToolButton label="Animatie opnieuw afspelen" disabled={config.animation === "none"} onClick={() => setReplayKey((k) => k + 1)}>
                     <RefreshIcon width={17} height={17} />

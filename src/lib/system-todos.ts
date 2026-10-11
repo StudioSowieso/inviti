@@ -11,7 +11,7 @@ const KEY = "invitation_created";
 export async function syncSystemTodos(supabase: Db, userId: string) {
   const [{ data: item }, { data: invitation }] = await Promise.all([
     supabase.from("todos").select("id, done").eq("system_key", KEY).maybeSingle(),
-    supabase.from("invitations").select("owner_id").maybeSingle(),
+    supabase.from("invitations").select("owner_id").limit(1).maybeSingle(),
   ]);
   const hasInvitation = !!invitation;
 
