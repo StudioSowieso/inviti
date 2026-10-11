@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRightIcon, PlusIcon } from "@/components/icons";
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, coupleInitials, type RsvpStatus } from "@/lib/format";
+import { pruneEmptyGroups } from "@/lib/prune-groups";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { GuestList, type Guest } from "./guest-list";
 
@@ -27,6 +28,8 @@ export default async function GuestsPage({
 }) {
   const { toegevoegd, bewerkt, geimporteerd } = await searchParams;
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
+
+  await pruneEmptyGroups(supabase);
 
   const [{ data: profile }, { data: rows }] = await Promise.all([
     supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { pruneEmptyGroups } from "@/lib/prune-groups";
 import { createClient } from "@/lib/supabase/server";
 
 export async function signOut() {
@@ -72,6 +73,7 @@ export async function setGuestStatus(id: string, status: "pending" | "attending"
 export async function deleteGuest(id: string) {
   const supabase = await createClient();
   await supabase.from("guests").delete().eq("id", id);
+  await pruneEmptyGroups(supabase);
   revalidatePath("/gasten");
   revalidatePath("/dashboard");
 }
@@ -169,6 +171,7 @@ export async function updateGuest(
 
   const { error } = await supabase.from("guests").update(parsed.values).eq("id", id);
   if (error) return { error: "De wijzigingen konden niet worden opgeslagen. Probeer het opnieuw." };
+  await pruneEmptyGroups(supabase);
 
   revalidatePath("/gasten");
   revalidatePath("/dashboard");
