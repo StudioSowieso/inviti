@@ -351,10 +351,10 @@ function MessageEditor({
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <div>
-          <div className="rounded-2xl rounded-tl-md bg-sage/60 px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap">
+          <div className="rounded-2xl rounded-tl-md bg-blush/70 px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap">
             {messageParts(template, addressee(sampleFirst, shownPlusOne), sampleLink, couple, !!shownPlusOne).map((p, i) =>
               p.auto ? (
-                <span key={i} className="rounded bg-forest/10 px-1 break-all">
+                <span key={i} className="rounded bg-clay/20 px-1 break-all">
                   {p.text}
                 </span>
               ) : (
