@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { LinkIcon, MailIcon, Sparkle } from "@/components/icons";
-import { saveInviteMessage } from "./actions";
+import { saveInviteMessage, setInviteSent } from "./actions";
 
 export type SendGuest = {
   id: string;
@@ -11,6 +11,8 @@ export type SendGuest = {
   lastName: string;
   email: string | null;
   phone: string | null;
+  plusOne: string;
+  sent: boolean;
   token: string;
   group: string | null;
 };
@@ -40,6 +42,12 @@ export const DEFAULT_MESSAGE =
 const PLACEHOLDERS = ["{voornaam}", "{namen}", "{datum}", "{link}"] as const;
 
 /** Vult de invulvelden in. Staat {link} er niet in, dan wordt de link onderaan toegevoegd. */
+/** "Anna" of, met invitee, "Anna en Piet". */
+function addressee(first: string, plusOne: string) {
+  const p = plusOne.trim().split(/\s+/)[0];
+  return p ? `${first} en ${p}` : first;
+}
+
 function message(template: string, first: string, link: string, couple: Couple | null) {
   const names = couple ? `${couple.partner1} & ${couple.partner2}` : "wij";
   const date = couple?.date ? longDate(couple.date) : "binnenkort";
@@ -104,6 +112,13 @@ export function SendView({
 }) {
   const [template, setTemplate] = useState(savedMessage ?? DEFAULT_MESSAGE);
   const [view, setView] = useState<"personal" | "groups">("personal");
+  const [sent, setSent] = useState<Record<string, boolean>>(() => Object.fromEntries(guests.map((g) => [g.id, g.sent])));
+  const sentCount = guests.filter((g) => sent[g.id]).length;
+  async function toggleSent(id: string, value: boolean) {
+    setSent((s) => ({ ...s, [id]: value }));
+    const res = await setInviteSent(id, value);
+    if (!res.ok) setSent((s) => ({ ...s, [id]: !value }));
+  }
   const url = (token: string) => `${origin}/u/${token}`;
 
   return (
@@ -112,7 +127,7 @@ export function SendView({
         template={template}
         onChange={setTemplate}
         saved={savedMessage ?? DEFAULT_MESSAGE}
-        sampleName={guests[0]?.firstName ?? "Emma"}
+        sampleName={guests[0] ? addressee(guests[0].firstName, guests[0].plusOne) : "Emma"}
         sampleLink={url(guests[0]?.token ?? "voorbeeld")}
         couple={couple}
       />
@@ -151,17 +166,24 @@ export function SendView({
         guests.length === 0 ? (
           <Empty text="Nog geen gasten" hint="Voeg eerst gasten toe aan je gastenlijst." />
         ) : (
+          <>
+          <p className="text-sm text-muted">
+            {sentCount} van {guests.length} uitnodigingen verstuurd. Vink zelf af wie je de uitnodiging al hebt gestuurd.
+          </p>
           <ul className="grid gap-3 xl:grid-cols-2">
             {guests.map((g) => {
               const link = url(g.token);
-              const text = message(template, g.firstName, link, couple);
+              const text = message(template, addressee(g.firstName, g.plusOne), link, couple);
               const subject = couple ? `Uitnodiging bruiloft ${couple.partner1} & ${couple.partner2}` : "Uitnodiging bruiloft";
               const wa = g.phone ? `https://wa.me/${whatsappNumber(g.phone)}?text=${encodeURIComponent(text)}` : null;
               const mail = g.email ? `mailto:${g.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}` : null;
               return (
-                <li key={g.id} className="card p-4">
+                <li key={g.id} className={`card p-4 transition ${sent[g.id] ? "bg-sage/40" : ""}`}>
                   <div className="flex items-baseline justify-between gap-3">
-                    <p className="min-w-0 truncate font-medium">{`${g.firstName} ${g.lastName}`.trim()}</p>
+                    <p className="min-w-0 truncate font-medium">
+                      {`${g.firstName} ${g.lastName}`.trim()}
+                      {g.plusOne && <span className="font-normal text-muted"> &amp; {g.plusOne}</span>}
+                    </p>
                     {g.group && <span className="shrink-0 rounded-full bg-cream px-2.5 py-0.5 text-xs text-muted">{g.group}</span>}
                   </div>
                   <p className="mt-0.5 truncate text-sm text-muted">{[g.phone, g.email].filter(Boolean).join(" · ") || "Geen telefoonnummer of e-mailadres"}</p>
@@ -185,11 +207,21 @@ export function SendView({
                       <MailIcon width={15} height={15} /> Mail
                     </a>
                     <CopyButton text={link} label="Link" />
+                    <label className="ml-auto inline-flex cursor-pointer items-center gap-2 text-xs font-medium">
+                      <input
+                        type="checkbox"
+                        checked={!!sent[g.id]}
+                        onChange={(e) => toggleSent(g.id, e.target.checked)}
+                        className="size-4 accent-[var(--color-forest)]"
+                      />
+                      Verstuurd
+                    </label>
                   </div>
                 </li>
               );
             })}
           </ul>
+          </>
         )
       ) : groups.length === 0 ? (
         <Empty text="Nog geen groepen" hint="Groepen maak je aan bij het toevoegen of bewerken van een gast." />

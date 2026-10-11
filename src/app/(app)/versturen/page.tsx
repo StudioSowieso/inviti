@@ -20,7 +20,7 @@ export default async function SendPage() {
     supabase.from("invitations").select("config").order("created_at", { ascending: true }).limit(1).maybeSingle(),
     supabase
       .from("guests")
-      .select("id, first_name, last_name, email, phone, invite_token, guest_groups(name)")
+      .select("id, first_name, last_name, email, phone, plus_one_name, invite_sent, invite_token, guest_groups(name)")
       .order("first_name", { ascending: true }),
     supabase.from("guest_groups").select("id, name, invite_token").order("name", { ascending: true }),
   ]);
@@ -36,6 +36,8 @@ export default async function SendPage() {
       lastName: (r.last_name as string | null) ?? "",
       email: r.email as string | null,
       phone: r.phone as string | null,
+      plusOne: ((r.plus_one_name as string | null) ?? "").trim(),
+      sent: !!r.invite_sent,
       token: r.invite_token as string,
       group: Array.isArray(group) ? (group[0]?.name ?? null) : (group?.name ?? null),
     };
