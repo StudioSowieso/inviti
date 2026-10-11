@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import {
-  formatDateDots,
   formatDateLong,
   blockKey,
   formatDateUpper,
@@ -45,6 +44,35 @@ const CHAPTER_LABEL: Partial<Record<BlockType, string>> = {
 
 const col = (key: keyof ThemeColors) => `var(--inv-${key})`;
 const heading = { fontFamily: "var(--inv-heading)" } satisfies CSSProperties;
+
+function HeroDate({ date, city }: { date: string; city: string }) {
+  const d = new Date(`${date}T12:00:00Z`);
+  if (Number.isNaN(d.getTime())) return null;
+  const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("nl-NL", { timeZone: "UTC", ...o }).format(d);
+  const cells = [fmt({ day: "numeric" }), fmt({ month: "long" }), fmt({ year: "numeric" })];
+  return (
+    <div className="mt-9">
+      <div className="grid grid-cols-3 border-y" style={{ borderColor: col("line") }}>
+        {cells.map((c, i) => (
+          <div
+            key={i}
+            className="py-3.5"
+            style={i > 0 ? { borderLeft: `1px solid ${col("line")}` } : undefined}
+          >
+            <p className={`leading-none ${i === 0 ? "text-[2rem]" : "text-[0.62rem] font-semibold tracking-[0.14em] uppercase"}`} style={i === 0 ? heading : undefined}>
+              {c}
+            </p>
+          </div>
+        ))}
+      </div>
+      {city && (
+        <p className="mt-3 text-[0.58rem] tracking-[0.18em] uppercase" style={{ color: col("muted") }}>
+          {city}
+        </p>
+      )}
+    </div>
+  );
+}
 
 type Stage = "closed" | "opening" | "open";
 
@@ -346,21 +374,26 @@ function BlockSection({ block, config }: { block: Block; config: InvitationConfi
       return (
         <Section type="hero" bg="background" className="pt-14 pb-10 text-center">
           <Eyebrow>{block.eyebrow}</Eyebrow>
-          <div className="mt-5 text-[2.7rem] leading-[1.05] font-normal" style={heading}>
-            <p>{config.partner1}</p>
-            <p className="my-1 text-xl italic" style={{ color: col("accent") }}>
-              &amp;
-            </p>
-            <p>{config.partner2}</p>
+
+          {/* Namen: groot, verspringend, met een ring om de ampersand */}
+          <div className="mt-8" style={heading}>
+            <p className="text-left text-[3.4rem] leading-[0.95] font-normal tracking-tight break-words">{config.partner1}</p>
+            <div className="my-3 flex items-center gap-3" style={{ color: col("accent") }}>
+              <span className="h-px flex-1" style={{ background: "currentColor", opacity: 0.45 }} />
+              <span
+                className="grid size-11 place-items-center rounded-full border text-[1.7rem] leading-none italic"
+                style={{ borderColor: "currentColor" }}
+              >
+                &amp;
+              </span>
+            </div>
+            <p className="text-right text-[3.4rem] leading-[0.95] font-normal tracking-tight break-words">{config.partner2}</p>
           </div>
-          <div className="mt-8">
-            <Photo label="Editorial portret" ratio="1.19" />
-          </div>
-          <p className="mt-5 text-[0.62rem] font-semibold tracking-[0.12em] uppercase">
-            {formatDateDots(config.date)}
-            {config.city ? ` — ${config.city}` : ""}
-          </p>
-          <p className="mt-5 flex items-center justify-center gap-1.5 text-[0.5rem]" style={{ color: col("muted") }}>
+
+          {/* Datum als drie vakken */}
+          <HeroDate date={config.date} city={config.city} />
+
+          <p className="mt-8 flex items-center justify-center gap-1.5 text-[0.5rem]" style={{ color: col("muted") }}>
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
               <path d="M12 4v16m0-16-4 4m4-4 4 4m-4 12-4-4m4 4 4-4" />
             </svg>
