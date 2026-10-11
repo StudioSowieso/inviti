@@ -436,10 +436,11 @@ function BroadcastTip({ onClose }: { onClose: () => void }) {
         <p className="eyebrow flex items-center gap-2 text-clay">
           Link gekopieerd <Sparkle width={9} height={9} />
         </p>
-        <h2 id="tip-title" className="mt-3 font-serif text-3xl leading-tight font-medium">
-          Stuur de link in één keer naar de hele groep
+        <h2 id="tip-title" className="mt-3 font-serif text-5xl leading-none font-medium text-clay">
+          Tip!
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">Maak in WhatsApp een verzendlijst. Iedereen krijgt de link als persoonlijk bericht, zonder dat ze elkaar zien.</p>
+        <p className="mt-3 font-serif text-xl leading-snug font-medium">Stuur de link in één keer naar de hele groep</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">Maak in WhatsApp een verzendlijst. Iedereen krijgt de link als persoonlijk bericht, zonder dat ze elkaar zien.</p>
         <ol className="mt-4 list-decimal space-y-1.5 pl-5 text-sm leading-relaxed">
           <li>
             iPhone: ga naar het tabblad <strong>Chats</strong> en kies <strong>Verzendlijsten</strong>. Android: tik op <strong>⋮</strong> en kies <strong>Nieuwe verzendlijst</strong>.
