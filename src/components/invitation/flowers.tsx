@@ -32,14 +32,14 @@ function rng(seed: number) {
 
 type SprigOpts = { len: number; bow: number; leaves: number; flowers: number };
 
-type SprigData = {
+export type SprigData = {
   stem: string;
   leaves: { x: number; y: number; deg: number; len: number }[];
   twigs: { x1: number; y1: number; x2: number; y2: number }[];
   blossoms: { x: number; y: number; r: number; rot: number }[];
 };
 
-function buildSprig(seed: number, { len, bow, leaves, flowers }: SprigOpts): SprigData {
+export function buildSprig(seed: number, { len, bow, leaves, flowers }: SprigOpts): SprigData {
   const r = rng(seed);
   // Kwadratische Bézier van (0,0) via (len/2, -bow) naar (len, 0).
   const point = (t: number) => ({ x: (1 - t) * t * len + t * t * len, y: -2 * (1 - t) * t * bow });
@@ -72,7 +72,7 @@ function buildSprig(seed: number, { len, bow, leaves, flowers }: SprigOpts): Spr
   return out;
 }
 
-function Blossom({ x, y, r, rot }: { x: number; y: number; r: number; rot: number }) {
+export function Blossom({ x, y, r, rot, petal }: { x: number; y: number; r: number; rot: number; petal?: string }) {
   return (
     <g transform={`translate(${x} ${y}) rotate(${rot})`}>
       {[0, 1, 2, 3, 4].map((i) => (
@@ -83,7 +83,7 @@ function Blossom({ x, y, r, rot }: { x: number; y: number; r: number; rot: numbe
           rx={r * 0.52}
           ry={r * 0.82}
           transform={`rotate(${i * 72})`}
-          style={{ fill: col("accent"), opacity: 0.82, stroke: `color-mix(in srgb, ${col("accent")} 70%, black)`, strokeOpacity: 0.25 }}
+          style={{ fill: petal ?? col("accent"), opacity: petal ? 1 : 0.82, stroke: `color-mix(in srgb, ${col("accent")} 70%, black)`, strokeOpacity: 0.25 }}
           strokeWidth={0.35}
         />
       ))}
@@ -92,7 +92,7 @@ function Blossom({ x, y, r, rot }: { x: number; y: number; r: number; rot: numbe
   );
 }
 
-function SprigArt({ data }: { data: SprigData }) {
+export function SprigArt({ data }: { data: SprigData }) {
   const stem = `color-mix(in srgb, ${col("envelope")} 80%, ${col("text")})`;
   return (
     <g>

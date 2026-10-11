@@ -28,6 +28,7 @@ import { SWEET_STRIPES, SweetBlockSection } from "./sweet";
 import { SweetEnvelope } from "./sweet-envelope";
 import { ModernEnvelope } from "./modern-envelope";
 import { FlowersBlockSection } from "./flowers";
+import { FlowersEnvelope } from "./flowers-envelope";
 import { NatureBlockSection, PAPER_NOISE } from "./nature";
 import { NatureEnvelope } from "./nature-envelope";
 import { REVEAL_MS, RevealOverlay } from "./reveal";
@@ -303,6 +304,8 @@ export function InvitationView({
           <SweetEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : lemon ? (
           <LemonEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : flowers ? (
+          <FlowersEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : leaf ? (
           <LeafEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : modern ? (

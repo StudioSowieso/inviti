@@ -621,7 +621,7 @@ export function Configurator({
           </div>
 
           {/* ---------- Live voorbeeld ---------- */}
-          <aside className={`${mobileView === "edit" ? "hidden lg:block" : ""}`}>
+          <aside className={`lg:self-stretch ${mobileView === "edit" ? "hidden lg:block" : ""}`}>
             <div className="card overflow-hidden lg:sticky lg:top-[5.25rem]">
               <div className="flex items-center justify-between border-b border-line px-5 py-3">
                 <p className="eyebrow text-clay">Live voorbeeld{activeVariant ? ` · ${activeVariant.name}` : ""}</p>
