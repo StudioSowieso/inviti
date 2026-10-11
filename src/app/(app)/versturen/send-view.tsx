@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { LinkIcon, MailIcon, Sparkle } from "@/components/icons";
 import { saveInviteMessage, setInviteSent } from "./actions";
 
@@ -94,7 +94,7 @@ const ACTION =
   "inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3.5 py-2 text-xs font-medium transition hover:bg-sage/60";
 const DISABLED = "pointer-events-none opacity-40";
 
-function CopyButton({ text, label = "Link kopiëren", className = "" }: { text: string; label?: string; className?: string }) {
+function CopyButton({ text, label = "Link kopiëren", className = "", onCopied }: { text: string; label?: string; className?: string; onCopied?: () => void }) {
   const [done, setDone] = useState(false);
   async function copy() {
     try {
@@ -109,6 +109,7 @@ function CopyButton({ text, label = "Link kopiëren", className = "" }: { text: 
     }
     setDone(true);
     setTimeout(() => setDone(false), 1800);
+    onCopied?.();
   }
   return (
     <button type="button" onClick={copy} className={`${ACTION} ${done ? "border-forest/30 bg-sage text-forest" : ""} ${className}`}>
@@ -135,6 +136,7 @@ export function SendView({
 }) {
   const [template, setTemplate] = useState(savedMessage ?? DEFAULT_MESSAGE);
   const [view, setView] = useState<"personal" | "groups">("personal");
+  const [tipOpen, setTipOpen] = useState(false);
   const [sent, setSent] = useState<Record<string, boolean>>(() => Object.fromEntries(guests.map((g) => [g.id, g.sent])));
   const sentCount = guests.filter((g) => sent[g.id]).length;
   async function toggleSent(id: string, value: boolean) {
@@ -146,6 +148,7 @@ export function SendView({
 
   return (
     <div className="space-y-5">
+      {tipOpen && <BroadcastTip onClose={() => setTipOpen(false)} />}
       <MessageEditor
         template={template}
         onChange={setTemplate}
@@ -274,7 +277,7 @@ export function SendView({
                 </div>
                 <div className="mt-4 rounded-xl bg-cream px-3.5 py-2.5 text-xs break-all text-muted">{link}</div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <CopyButton text={link} label="Groepslink kopiëren" />
+                  <CopyButton text={link} label="Groepslink kopiëren" onCopied={() => setTipOpen(true)} />
                   <a href={link} target="_blank" rel="noopener noreferrer" className={ACTION}>
                     Bekijk uitnodiging
                   </a>
@@ -410,6 +413,48 @@ function MessageEditor({
         </p>
       )}
     </section>
+  );
+}
+
+/** Korte tip na het kopiëren van een groepslink: zo maak je een verzendlijst in WhatsApp. */
+function BroadcastTip({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-ink/45 px-5" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tip-title"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md rounded-3xl bg-paper p-6 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.5)]"
+      >
+        <p className="eyebrow flex items-center gap-2 text-clay">
+          Link gekopieerd <Sparkle width={9} height={9} />
+        </p>
+        <h2 id="tip-title" className="mt-3 font-serif text-3xl leading-tight font-medium">
+          Stuur de link in één keer naar de hele groep
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted">Maak in WhatsApp een verzendlijst. Iedereen krijgt de link als persoonlijk bericht, zonder dat ze elkaar zien.</p>
+        <ol className="mt-4 list-decimal space-y-1.5 pl-5 text-sm leading-relaxed">
+          <li>
+            iPhone: ga naar het tabblad <strong>Chats</strong> en kies <strong>Verzendlijsten</strong>. Android: tik op <strong>⋮</strong> en kies <strong>Nieuwe verzendlijst</strong>.
+          </li>
+          <li>Tik op <strong>Nieuwe lijst</strong> en selecteer de gasten uit deze groep.</li>
+          <li>Geef de lijst een naam, plak de gekopieerde link en verstuur.</li>
+        </ol>
+        <p className="mt-4 rounded-xl bg-cream px-3.5 py-2.5 text-xs leading-relaxed text-muted">
+          Let op: gasten ontvangen een bericht uit een verzendlijst alleen als zij jouw nummer in hun contacten hebben.
+        </p>
+        <button type="button" autoFocus onClick={onClose} className="btn-primary mt-5">
+          Begrepen
+        </button>
+      </div>
+    </div>
   );
 }
 
