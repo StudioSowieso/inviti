@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { LinkIcon, MailIcon, Sparkle } from "@/components/icons";
+import { saveInviteMessage } from "./actions";
 
 export type SendGuest = {
   id: string;
@@ -33,10 +34,21 @@ function whatsappNumber(phone: string) {
   return digits;
 }
 
-function message(first: string, link: string, couple: Couple | null) {
+export const DEFAULT_MESSAGE =
+  "Hoi {voornaam},\n\nWe gaan trouwen op {datum}! Wij nodigen je graag uit voor onze bruiloft. Bekijk hier je persoonlijke uitnodiging:\n{link}\n\nLiefs,\n{namen}";
+
+const PLACEHOLDERS = ["{voornaam}", "{namen}", "{datum}", "{link}"] as const;
+
+/** Vult de invulvelden in. Staat {link} er niet in, dan wordt de link onderaan toegevoegd. */
+function message(template: string, first: string, link: string, couple: Couple | null) {
   const names = couple ? `${couple.partner1} & ${couple.partner2}` : "wij";
-  const date = couple?.date ? ` op ${longDate(couple.date)}` : "";
-  return `Hoi ${first},\n\nWe gaan trouwen${date}! Wij nodigen je graag uit voor onze bruiloft. Bekijk hier je persoonlijke uitnodiging:\n${link}\n\nLiefs,\n${names}`;
+  const date = couple?.date ? longDate(couple.date) : "binnenkort";
+  const filled = template
+    .replaceAll("{voornaam}", first)
+    .replaceAll("{namen}", names)
+    .replaceAll("{datum}", date)
+    .replaceAll("{link}", link);
+  return template.includes("{link}") ? filled : `${filled}\n\n${link}`;
 }
 
 function WhatsAppIcon() {
@@ -81,18 +93,30 @@ export function SendView({
   groups,
   hasInvitation,
   couple,
+  savedMessage,
 }: {
   origin: string;
   guests: SendGuest[];
   groups: SendGroup[];
   hasInvitation: boolean;
   couple: Couple | null;
+  savedMessage: string | null;
 }) {
+  const [template, setTemplate] = useState(savedMessage ?? DEFAULT_MESSAGE);
   const [view, setView] = useState<"personal" | "groups">("personal");
   const url = (token: string) => `${origin}/u/${token}`;
 
   return (
     <div className="space-y-5">
+      <MessageEditor
+        template={template}
+        onChange={setTemplate}
+        saved={savedMessage ?? DEFAULT_MESSAGE}
+        sampleName={guests[0]?.firstName ?? "Emma"}
+        sampleLink={url(guests[0]?.token ?? "voorbeeld")}
+        couple={couple}
+      />
+
       <div className="flex rounded-full border border-line bg-paper p-1 text-sm sm:max-w-xl" role="tablist">
         {(
           [
@@ -130,7 +154,7 @@ export function SendView({
           <ul className="grid gap-3 xl:grid-cols-2">
             {guests.map((g) => {
               const link = url(g.token);
-              const text = message(g.firstName, link, couple);
+              const text = message(template, g.firstName, link, couple);
               const subject = couple ? `Uitnodiging bruiloft ${couple.partner1} & ${couple.partner2}` : "Uitnodiging bruiloft";
               const wa = g.phone ? `https://wa.me/${whatsappNumber(g.phone)}?text=${encodeURIComponent(text)}` : null;
               const mail = g.email ? `mailto:${g.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}` : null;
@@ -205,6 +229,117 @@ export function SendView({
         </ul>
       )}
     </div>
+  );
+}
+
+function MessageEditor({
+  template,
+  onChange,
+  saved,
+  sampleName,
+  sampleLink,
+  couple,
+}: {
+  template: string;
+  onChange: (v: string) => void;
+  saved: string;
+  sampleName: string;
+  sampleLink: string;
+  couple: Couple | null;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [pending, start] = useTransition();
+  const [status, setStatus] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
+  const dirty = template !== saved;
+
+  function save() {
+    setStatus(null);
+    start(async () => {
+      const res = await saveInviteMessage(template === DEFAULT_MESSAGE ? "" : template);
+      setStatus(res.ok ? { kind: "ok", text: "Opgeslagen" } : { kind: "error", text: res.error });
+      if (res.ok) setEditing(false);
+    });
+  }
+
+  function insert(tag: string) {
+    const el = document.getElementById("invite-message") as HTMLTextAreaElement | null;
+    if (!el) return onChange(template + tag);
+    const { selectionStart: a, selectionEnd: b } = el;
+    onChange(template.slice(0, a) + tag + template.slice(b));
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(a + tag.length, a + tag.length);
+    });
+  }
+
+  return (
+    <section className="card p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="font-serif text-2xl font-medium">Voorbeeldbericht</h2>
+          <p className="mt-0.5 text-sm text-muted">Dit bericht gaat mee met elke WhatsApp en mail. Per gast vullen we de naam en link in.</p>
+        </div>
+        {!editing && (
+          <button type="button" onClick={() => setEditing(true)} className={ACTION}>
+            Bericht aanpassen
+          </button>
+        )}
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <div className="rounded-2xl rounded-tl-md bg-sage/60 px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap">
+          {message(template, sampleName, sampleLink, couple)}
+        </div>
+
+        {editing && (
+          <div>
+            <label htmlFor="invite-message" className="sr-only">
+              Bericht
+            </label>
+            <textarea
+              id="invite-message"
+              value={template}
+              onChange={(e) => onChange(e.target.value)}
+              rows={9}
+              maxLength={2000}
+              className="field w-full resize-y text-sm leading-relaxed"
+            />
+            <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-muted">
+              Voeg toe:
+              {PLACEHOLDERS.map((p) => (
+                <button key={p} type="button" onClick={() => insert(p)} className="rounded-full bg-cream px-2.5 py-1 font-medium text-ink transition hover:bg-sage">
+                  {p}
+                </button>
+              ))}
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <button type="button" onClick={save} disabled={pending || !dirty} className="btn-primary w-auto! px-5 py-2 text-sm disabled:opacity-50">
+                {pending ? "Opslaan…" : "Opslaan"}
+              </button>
+              <button type="button" onClick={() => onChange(DEFAULT_MESSAGE)} className={ACTION}>
+                Voorbeeldtekst herstellen
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(saved);
+                  setEditing(false);
+                  setStatus(null);
+                }}
+                className="text-xs text-muted underline-offset-4 hover:underline"
+              >
+                Annuleren
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+      {status && (
+        <p role="status" className={`mt-3 text-sm ${status.kind === "ok" ? "text-forest" : "text-[#7a3f2c]"}`}>
+          {status.text}
+        </p>
+      )}
+    </section>
   );
 }
 

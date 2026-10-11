@@ -16,7 +16,7 @@ export default async function SendPage() {
   const origin = `${proto}://${host}`;
 
   const [{ data: profile }, { data: invitation }, { data: guestRows }, { data: groupRows }] = await Promise.all([
-    supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
+    supabase.from("profiles").select("full_name, partner_name, invite_message").eq("id", user!.id).maybeSingle(),
     supabase.from("invitations").select("config").order("created_at", { ascending: true }).limit(1).maybeSingle(),
     supabase
       .from("guests")
@@ -60,6 +60,7 @@ export default async function SendPage() {
         guests={guests}
         groups={groups}
         hasInvitation={!!invitation}
+        savedMessage={(profile?.invite_message as string | null) ?? null}
         couple={config ? { partner1: config.partner1, partner2: config.partner2, date: config.date } : null}
       />
     </div>
