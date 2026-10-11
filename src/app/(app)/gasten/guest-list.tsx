@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { ChevronDownIcon, DownloadIcon, PenIcon, SlidersIcon, Sparkle, TrashIcon, UploadIcon } from "@/components/icons";
 import { RSVP_LABEL, type RsvpStatus } from "@/lib/format";
 import { useRouter } from "next/navigation";
-import { deleteGroup, deleteGuest, renameGroup, setGuestStatus } from "../actions";
+import { createGroup, deleteGroup, deleteGuest, renameGroup, setGuestStatus } from "../actions";
 
 export type Guest = {
   id: string;
@@ -30,6 +30,8 @@ function GroupManager({ groups }: { groups: GroupInfo[] }) {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [newName, setNewName] = useState("");
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, startTransition] = useTransition();
@@ -53,6 +55,8 @@ function GroupManager({ groups }: { groups: GroupInfo[] }) {
       setError(null);
       setEditing(null);
       setConfirming(null);
+      setAdding(false);
+      setNewName("");
       router.refresh();
     });
   }
@@ -156,6 +160,44 @@ function GroupManager({ groups }: { groups: GroupInfo[] }) {
               ))}
             </ul>
           )}
+          <div className="mt-1 border-t border-line px-3 pt-2.5 pb-1.5">
+            {adding ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  run(() => createGroup(newName));
+                }}
+                className="flex items-center gap-2"
+              >
+                <input
+                  autoFocus
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  maxLength={60}
+                  placeholder="Naam van de nieuwe groep"
+                  aria-label="Naam van de nieuwe groep"
+                  className="field min-w-0 flex-1 !py-1.5"
+                />
+                <button type="submit" disabled={busy || !newName.trim()} className="text-sm font-medium text-forest underline-offset-4 hover:underline">
+                  Toevoegen
+                </button>
+                <button type="button" onClick={() => setAdding(false)} className="text-sm text-muted underline-offset-4 hover:underline">
+                  Annuleren
+                </button>
+              </form>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setAdding(true);
+                  setError(null);
+                }}
+                className="text-sm font-medium text-clay underline-offset-4 hover:underline"
+              >
+                + Nieuwe groep toevoegen
+              </button>
+            )}
+          </div>
           {error && (
             <p role="alert" className="px-3 pt-1 pb-2 text-sm text-clay">
               {error}

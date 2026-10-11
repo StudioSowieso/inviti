@@ -141,7 +141,7 @@ export async function createVariant(rawName: string, fromId: string): Promise<Va
     if (count) return { ok: false, error: "Er is al een uitnodiging voor deze groep." };
     groupId = existing.id as string;
   } else {
-    const { data: created, error } = await supabase.from("guest_groups").insert({ name, owner_id: user.id }).select("id").single();
+    const { data: created, error } = await supabase.from("guest_groups").insert({ name, owner_id: user.id, keep: true }).select("id").single();
     if (error || !created) return { ok: false, error: "De groep kon niet worden aangemaakt." };
     groupId = created.id as string;
   }

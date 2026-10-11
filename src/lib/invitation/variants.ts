@@ -16,11 +16,11 @@ type InvRow = { id: string; group_id: string | null; theme_slug: string; config:
 export async function ensureVariants(supabase: Db, userId: string): Promise<{ variants: Variant[]; rows: InvRow[] }> {
   const [{ data: invs }, { data: groups }, { data: guests }] = await Promise.all([
     supabase.from("invitations").select("id, group_id, theme_slug, config").order("created_at", { ascending: true }),
-    supabase.from("guest_groups").select("id, name").order("created_at", { ascending: true }),
+    supabase.from("guest_groups").select("id, name, keep").order("created_at", { ascending: true }),
     supabase.from("guests").select("group_id").not("group_id", "is", null),
   ]);
   const rows = ((invs ?? []) as InvRow[]).slice();
-  const allGroups = ((groups ?? []) as { id: string; name: string }[]).slice();
+  const allGroups = ((groups ?? []) as { id: string; name: string; keep?: boolean }[]).slice();
   if (!rows.length) return { variants: [], rows };
 
   const counts = new Map<string, number>();
@@ -30,7 +30,7 @@ export async function ensureVariants(supabase: Db, userId: string): Promise<{ va
   async function groupId(name: string) {
     const found = allGroups.find((g) => g.name === name);
     if (found) return found.id;
-    const { data } = await supabase.from("guest_groups").insert({ name, owner_id: userId }).select("id, name").single();
+    const { data } = await supabase.from("guest_groups").insert({ name, owner_id: userId, keep: true }).select("id, name").single();
     if (!data) return null;
     allGroups.push({ id: data.id as string, name });
     return data.id as string;
@@ -57,9 +57,9 @@ export async function ensureVariants(supabase: Db, userId: string): Promise<{ va
     if (evening && !rows.some((r) => r.group_id === evening)) await addVariant(evening);
   }
 
-  // Elke groep met gasten heeft een eigen uitnodiging.
+  // Elke groep met gasten (of handmatig aangemaakt) heeft een eigen uitnodiging.
   for (const g of allGroups) {
-    if ((counts.get(g.id) ?? 0) > 0 && !rows.some((r) => r.group_id === g.id)) await addVariant(g.id);
+    if (((counts.get(g.id) ?? 0) > 0 || g.keep) && !rows.some((r) => r.group_id === g.id)) await addVariant(g.id);
   }
 
   const variants = rows

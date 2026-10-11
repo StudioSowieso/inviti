@@ -279,3 +279,19 @@ export async function deleteGroup(id: string): Promise<GroupResult> {
   revalidateGroups();
   return { ok: true };
 }
+
+export async function createGroup(rawName: string): Promise<GroupResult> {
+  const name = rawName.trim().replace(/\s+/g, " ").slice(0, 60);
+  if (!name) return { ok: false, error: "Geef de groep een naam." };
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/inloggen");
+  const { data: clash } = await supabase.from("guest_groups").select("id").eq("name", name).maybeSingle();
+  if (clash) return { ok: false, error: "Er bestaat al een groep met deze naam." };
+  const { error } = await supabase.from("guest_groups").insert({ name, owner_id: user.id, keep: true });
+  if (error) return { ok: false, error: "De groep kon niet worden aangemaakt." };
+  revalidateGroups();
+  return { ok: true };
+}

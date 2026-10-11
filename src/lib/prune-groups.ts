@@ -5,7 +5,7 @@ type Db = Awaited<ReturnType<typeof createClient>>;
 /** Verwijdert groepen waar geen enkele gast meer in zit. */
 export async function pruneEmptyGroups(supabase: Db) {
   const [{ data: groups }, { data: used }, { data: invitations }] = await Promise.all([
-    supabase.from("guest_groups").select("id"),
+    supabase.from("guest_groups").select("id").eq("keep", false),
     supabase.from("guests").select("group_id").not("group_id", "is", null),
     supabase.from("invitations").select("group_id").not("group_id", "is", null),
   ]);
