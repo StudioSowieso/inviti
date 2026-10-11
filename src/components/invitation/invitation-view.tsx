@@ -56,10 +56,10 @@ function HeroDate({ date, city }: { date: string; city: string }) {
         {cells.map((c, i) => (
           <div
             key={i}
-            className="py-3.5"
+            className="flex min-h-[3.75rem] items-center justify-center px-1 py-3"
             style={i > 0 ? { borderLeft: `1px solid ${col("line")}` } : undefined}
           >
-            <p className={`leading-none ${i === 0 ? "text-[2rem]" : "text-[0.62rem] font-semibold tracking-[0.14em] uppercase"}`} style={i === 0 ? heading : undefined}>
+            <p className={`leading-none whitespace-nowrap ${i === 0 ? "text-[2.2rem]" : "text-[1.15rem]"}`} style={heading}>
               {c}
             </p>
           </div>
