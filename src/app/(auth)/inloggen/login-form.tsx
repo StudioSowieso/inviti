@@ -7,18 +7,41 @@ import { createClient } from "@/lib/supabase/client";
 import { tryTestLogin } from "./actions";
 import { MailIcon, Sparkle } from "@/components/icons";
 
+// Voor dit adres verschijnt een wachtwoordveld in plaats van een inloglink per e-mail.
+// Dit is alleen een weergavekeuze: de echte controle doet Supabase met het wachtwoord van het account.
+const PASSWORD_LOGIN_EMAIL = "dvd17h@gmail.com";
+
 export function LoginForm({ linkError }: { linkError: boolean }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [error, setError] = useState<string | null>(
     linkError ? "Deze inloglink is verlopen of al gebruikt. Vraag een nieuwe aan." : null,
   );
 
+  const showPassword = email.trim().toLowerCase() === PASSWORD_LOGIN_EMAIL;
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setStatus("sending");
+
+    // Wachtwoord-login: geen e-mail nodig, dus ook geen e-maillimiet.
+    if (showPassword) {
+      const { error } = await createClient().auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+      if (error) {
+        setStatus("idle");
+        setError("E-mailadres of wachtwoord klopt niet.");
+        return;
+      }
+      router.replace("/dashboard");
+      router.refresh();
+      return;
+    }
 
     // Testomgeving: het testadres logt direct in (alleen als dat server-side is ingesteld).
     const test = await tryTestLogin(email);
@@ -104,9 +127,26 @@ export function LoginForm({ linkError }: { linkError: boolean }) {
           </div>
         </div>
 
-        <p className="text-sm leading-relaxed text-muted">
-          We sturen een veilige inloglink naar je e-mailadres. Je hebt geen wachtwoord nodig.
-        </p>
+        {showPassword ? (
+          <div>
+            <label htmlFor="password" className="mb-2 block text-sm font-medium">
+              Wachtwoord
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="field"
+            />
+          </div>
+        ) : (
+          <p className="text-sm leading-relaxed text-muted">
+            We sturen een veilige inloglink naar je e-mailadres. Je hebt geen wachtwoord nodig.
+          </p>
+        )}
 
         {error && (
           <p role="alert" className="rounded-xl bg-blush px-4 py-3 text-sm text-[#7a3f2c]">
@@ -115,7 +155,13 @@ export function LoginForm({ linkError }: { linkError: boolean }) {
         )}
 
         <button type="submit" className="btn-primary" disabled={status === "sending"}>
-          {status === "sending" ? "Bezig met versturen…" : "Stuur mij een inloglink"}
+          {status === "sending"
+            ? showPassword
+              ? "Bezig met inloggen…"
+              : "Bezig met versturen…"
+            : showPassword
+              ? "Inloggen"
+              : "Stuur mij een inloglink"}
         </button>
       </form>
 
