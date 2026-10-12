@@ -1,70 +1,73 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
+import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
+import { Sparkle } from "@/components/icons";
 import { firstName, greeting, coupleInitials } from "@/lib/format";
-import { normalizeConfig } from "@/lib/invitation/defaults";
 import { createClient, getUser } from "@/lib/supabase/server";
-import { SendView, type SendGroup, type SendGuest } from "./send-view";
 
 export const metadata: Metadata = { title: "Versturen — Inviti" };
 
-export default async function SendPage() {
-  const [supabase, user, h] = await Promise.all([createClient(), getUser(), headers()]);
+export default async function SendHubPage() {
+  const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
-  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
-  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
-  const origin = `${proto}://${host}`;
-
-  const [{ data: profile }, { data: invitation }, { data: guestRows }, { data: groupRows }] = await Promise.all([
-    supabase.from("profiles").select("full_name, partner_name, invite_message").eq("id", user!.id).maybeSingle(),
-    supabase.from("invitations").select("config").order("created_at", { ascending: true }).limit(1).maybeSingle(),
-    supabase
-      .from("guests")
-      .select("id, first_name, last_name, email, phone, plus_one_name, invite_sent, invite_token, guest_groups(name)")
-      .order("first_name", { ascending: true }),
-    supabase.from("guest_groups").select("id, name, invite_token").order("name", { ascending: true }),
+  const [{ data: profile }, { data: guestRows }] = await Promise.all([
+    supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
+    supabase.from("guests").select("id, invite_sent"),
   ]);
 
   const name = profile?.full_name ?? user?.user_metadata?.full_name ?? "";
-  const config = invitation ? normalizeConfig(invitation.config) : null;
-
-  const guests: SendGuest[] = (guestRows ?? []).map((r) => {
-    const group = r.guest_groups as unknown as { name: string } | { name: string }[] | null;
-    return {
-      id: r.id as string,
-      firstName: r.first_name as string,
-      lastName: (r.last_name as string | null) ?? "",
-      email: r.email as string | null,
-      phone: r.phone as string | null,
-      plusOne: ((r.plus_one_name as string | null) ?? "").trim(),
-      sent: !!r.invite_sent,
-      token: r.invite_token as string,
-      group: Array.isArray(group) ? (group[0]?.name ?? null) : (group?.name ?? null),
-    };
-  });
-
-  const groups: SendGroup[] = (groupRows ?? []).map((g) => ({
-    id: g.id as string,
-    name: g.name as string,
-    token: g.invite_token as string,
-    members: guests.filter((x) => x.group === g.name).map((x) => `${x.firstName} ${x.lastName}`.trim()),
-  }));
+  const total = guestRows?.length ?? 0;
+  const sent = (guestRows ?? []).filter((g) => g.invite_sent).length;
 
   return (
     <div className="space-y-7">
       <PageHeader
         greetingText={`${greeting()}, ${firstName(name)}`}
-        title="Uitnodiging versturen"
+        title="Versturen"
         initials={coupleInitials(name, profile?.partner_name)}
       />
-      <SendView
-        origin={origin}
-        guests={guests}
-        groups={groups}
-        hasInvitation={!!invitation}
-        savedMessage={(profile?.invite_message as string | null) ?? null}
-        couple={config ? { partner1: config.partner1, partner2: config.partner2, date: config.date } : null}
-      />
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        {/* Hoofdoptie: groter en prominenter dan de andere twee */}
+        <Link
+          href="/versturen/uitnodiging"
+          className="group flex min-h-64 flex-col justify-between rounded-3xl bg-forest p-7 text-paper shadow-[0_30px_80px_-40px_rgb(0_0_0/0.55)] transition hover:brightness-110 sm:col-span-2 sm:min-h-72 sm:p-10"
+        >
+          <div>
+            <p className="eyebrow flex items-center gap-2 text-paper/70">
+              De uitnodiging <Sparkle width={9} height={9} />
+            </p>
+            <h2 className="mt-4 font-serif text-4xl leading-none font-medium sm:text-6xl">Uitnodiging versturen</h2>
+            <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-paper/80">
+              Stuur je gasten hun persoonlijke uitnodiging via WhatsApp of mail, of deel een link per groep.
+            </p>
+          </div>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3 text-sm font-semibold text-forest transition group-hover:translate-x-0.5">
+              Naar uitnodigingen →
+            </span>
+            {total > 0 && (
+              <span className="rounded-full bg-paper/15 px-4 py-2 text-sm">
+                {sent} van {total} verstuurd
+              </span>
+            )}
+          </div>
+        </Link>
+
+        <Link href="/versturen/save-the-date" className="card group p-6 transition hover:bg-sage/40">
+          <p className="eyebrow text-clay">Eerder in het traject</p>
+          <h2 className="mt-3 font-serif text-2xl font-medium">Save the Date versturen</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted">Laat je gasten alvast de datum noteren, voordat de uitnodiging volgt.</p>
+          <span className="mt-5 inline-block text-sm font-medium text-forest">Openen →</span>
+        </Link>
+
+        <Link href="/versturen/after-wedding" className="card group p-6 transition hover:bg-sage/40">
+          <p className="eyebrow text-clay">Na de bruiloft</p>
+          <h2 className="mt-3 font-serif text-2xl font-medium">After Wedding versturen</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted">Bedank je gasten en deel een bericht of herinnering na de grote dag.</p>
+          <span className="mt-5 inline-block text-sm font-medium text-forest">Openen →</span>
+        </Link>
+      </div>
     </div>
   );
 }
