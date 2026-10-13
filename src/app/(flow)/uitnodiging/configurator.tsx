@@ -37,6 +37,7 @@ import type {
 import { MAX_TEXT_BLOCKS, newTextBlock, PHOTO_BUCKET } from "@/lib/invitation/defaults";
 import { blockKey, normalizeMapsUrl } from "@/lib/invitation/format";
 import { applyPalette, validPalette } from "@/lib/invitation/palettes";
+import { DEFAULT_OPEN_CATEGORY, groupThemes } from "@/lib/invitation/theme-categories";
 import { createClient } from "@/lib/supabase/client";
 import { saveInvitation } from "./actions";
 import { VariantSwitcher, type VariantItem } from "./variant-switcher";
@@ -78,6 +79,12 @@ export function Configurator({
   const [config, setConfig] = useState(initialConfig);
   const [tab, setTab] = useState<Tab>(initialTab);
   const [openBlock, setOpenBlock] = useState<string | null>(null);
+  const themeGroups = useMemo(() => groupThemes(themes), [themes]);
+  const [openCategories, setOpenCategories] = useState<string[]>(() => {
+    const groups = groupThemes(themes);
+    const start = groups.find((g) => g.id === DEFAULT_OPEN_CATEGORY) ?? groups[0];
+    return start ? [start.id] : [];
+  });
   const [dragging, setDragging] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
   const [replayKey, setReplayKey] = useState(0);
@@ -100,6 +107,68 @@ export function Configurator({
     setConfig((c) => ({ ...c, palette: validPalette(t, paletteSlug ?? c.palette) }));
     setStatus({ kind: "idle" });
   }
+  function toggleCategory(id: string) {
+    setOpenCategories((open) => (open.includes(id) ? open.filter((x) => x !== id) : [...open, id]));
+  }
+
+  function renderThemeCard(t: InvitationTheme) {
+    const selected = t.slug === themeSlug;
+    const activePalette = selected ? validPalette(t, config.palette) : "standaard";
+    return (
+      <div
+        key={t.slug}
+        className={`relative rounded-[1.4rem] border bg-paper p-3 text-left transition ${
+          selected ? "border-forest ring-2 ring-forest" : "border-line hover:border-clay/50"
+        }`}
+      >
+        {selected && (
+          <span className="absolute top-5 right-5 z-10 grid size-6 place-items-center rounded-full bg-forest text-paper">
+            <CheckIcon width={14} height={14} />
+          </span>
+        )}
+        <button
+          type="button"
+          aria-pressed={selected}
+          onClick={() => chooseTheme(t)}
+          className="block w-full text-left"
+        >
+          <ThemeThumb theme={applyPalette(t, activePalette)} />
+          <span className="mt-3 block px-1 font-serif text-xl font-medium">{t.title}</span>
+          {t.description && <span className="block px-1 pb-1 text-sm text-muted">{t.description}</span>}
+        </button>
+        <div className="mt-2 flex items-center gap-2 px-1 pb-1" role="group" aria-label={`Kleuren voor ${t.title}`}>
+          <span className="mr-1 text-xs text-muted">Kleur</span>
+          {t.palettes.map((p) => {
+            const active = selected && activePalette === p.slug;
+            return (
+              <button
+                key={p.slug}
+                type="button"
+                aria-pressed={active}
+                aria-label={`${p.title} (${t.title})`}
+                title={p.title}
+                onClick={() => chooseTheme(t, p.slug)}
+                className={`grid size-8 place-items-center rounded-full border transition ${
+                  active ? "border-forest ring-2 ring-forest ring-offset-2 ring-offset-paper" : "border-line hover:border-clay/60"
+                }`}
+              >
+                <span className="relative block size-5 overflow-hidden rounded-full" style={{ background: p.colors.background }}>
+                  <span className="absolute inset-y-0 left-0 w-1/2" style={{ background: p.colors.accent }} />
+                  <span className="absolute inset-y-0 right-0 w-1/2" style={{ background: p.colors.buttonBackground }} />
+                </span>
+              </button>
+            );
+          })}
+          {selected && (
+            <span className="ml-auto text-xs text-muted">
+              {t.palettes.find((p) => p.slug === activePalette)?.title}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   const activeBlocks = config.blocks.filter((b) => b.enabled);
   const inactiveBlocks = config.blocks.filter((b) => !b.enabled && b.type !== "text");
   const textCount = config.blocks.filter((b) => b.type === "text").length;
@@ -337,62 +406,45 @@ export function Configurator({
 
             <div className="mt-7">
               {tab === "thema" && (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                  {themes.map((t) => {
-                    const selected = t.slug === themeSlug;
-                    const activePalette = selected ? validPalette(t, config.palette) : "standaard";
+                <div className="space-y-3">
+                  {themeGroups.map((g) => {
+                    const open = openCategories.includes(g.id);
+                    const hasSelected = g.themes.some((t) => t.slug === themeSlug);
                     return (
-                      <div
-                        key={t.slug}
-                        className={`relative rounded-[1.4rem] border bg-paper p-3 text-left transition ${
-                          selected ? "border-forest ring-2 ring-forest" : "border-line hover:border-clay/50"
-                        }`}
-                      >
-                        {selected && (
-                          <span className="absolute top-5 right-5 z-10 grid size-6 place-items-center rounded-full bg-forest text-paper">
-                            <CheckIcon width={14} height={14} />
-                          </span>
-                        )}
-                        <button
-                          type="button"
-                          aria-pressed={selected}
-                          onClick={() => chooseTheme(t)}
-                          className="block w-full text-left"
-                        >
-                          <ThemeThumb theme={applyPalette(t, activePalette)} />
-                          <span className="mt-3 block px-1 font-serif text-xl font-medium">{t.title}</span>
-                          {t.description && <span className="block px-1 pb-1 text-sm text-muted">{t.description}</span>}
-                        </button>
-                        <div className="mt-2 flex items-center gap-2 px-1 pb-1" role="group" aria-label={`Kleuren voor ${t.title}`}>
-                          <span className="mr-1 text-xs text-muted">Kleur</span>
-                          {t.palettes.map((p) => {
-                            const active = selected && activePalette === p.slug;
-                            return (
-                              <button
-                                key={p.slug}
-                                type="button"
-                                aria-pressed={active}
-                                aria-label={`${p.title} (${t.title})`}
-                                title={p.title}
-                                onClick={() => chooseTheme(t, p.slug)}
-                                className={`grid size-8 place-items-center rounded-full border transition ${
-                                  active ? "border-forest ring-2 ring-forest ring-offset-2 ring-offset-paper" : "border-line hover:border-clay/60"
-                                }`}
-                              >
-                                <span className="relative block size-5 overflow-hidden rounded-full" style={{ background: p.colors.background }}>
-                                  <span className="absolute inset-y-0 left-0 w-1/2" style={{ background: p.colors.accent }} />
-                                  <span className="absolute inset-y-0 right-0 w-1/2" style={{ background: p.colors.buttonBackground }} />
-                                </span>
-                              </button>
-                            );
-                          })}
-                          {selected && (
-                            <span className="ml-auto text-xs text-muted">
-                              {t.palettes.find((p) => p.slug === activePalette)?.title}
+                      <section key={g.id} className="overflow-hidden rounded-2xl border border-line">
+                        <h3>
+                          <button
+                            type="button"
+                            onClick={() => toggleCategory(g.id)}
+                            aria-expanded={open}
+                            aria-controls={`thema-categorie-${g.id}`}
+                            className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-cream/60"
+                          >
+                            <span className="font-serif text-xl font-medium">{g.title}</span>
+                            <span className="text-sm text-muted">
+                              {g.themes.length} {g.themes.length === 1 ? "thema" : "thema\u2019s"}
                             </span>
-                          )}
-                        </div>
-                      </div>
+                            {hasSelected && (
+                              <span className="rounded-full bg-sage px-2.5 py-0.5 text-xs font-medium text-forest">
+                                Jouw keuze
+                              </span>
+                            )}
+                            <ChevronDownIcon
+                              width={16}
+                              height={16}
+                              className={`ml-auto shrink-0 text-muted transition ${open ? "rotate-180" : ""}`}
+                            />
+                          </button>
+                        </h3>
+                        {open && (
+                          <div
+                            id={`thema-categorie-${g.id}`}
+                            className="grid gap-4 px-4 pb-4 sm:grid-cols-2 xl:grid-cols-3"
+                          >
+                            {g.themes.map(renderThemeCard)}
+                          </div>
+                        )}
+                      </section>
                     );
                   })}
                 </div>
