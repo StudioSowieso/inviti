@@ -80,11 +80,13 @@ export function Configurator({
   const [tab, setTab] = useState<Tab>(initialTab);
   const [openBlock, setOpenBlock] = useState<string | null>(null);
   const themeGroups = useMemo(() => groupThemes(themes), [themes]);
-  const [openCategories, setOpenCategories] = useState<string[]>(() => {
+  // Accordeon: er staat maximaal één themacategorie tegelijk open.
+  const [openCategory, setOpenCategory] = useState<string | null>(() => {
     const groups = groupThemes(themes);
-    const start = groups.find((g) => g.id === DEFAULT_OPEN_CATEGORY) ?? groups[0];
-    return start ? [start.id] : [];
+    return (groups.find((g) => g.id === DEFAULT_OPEN_CATEGORY) ?? groups[0])?.id ?? null;
   });
+  const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
+  const scrollToCategory = useRef<string | null>(null);
   const [dragging, setDragging] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
   const [replayKey, setReplayKey] = useState(0);
@@ -108,8 +110,20 @@ export function Configurator({
     setStatus({ kind: "idle" });
   }
   function toggleCategory(id: string) {
-    setOpenCategories((open) => (open.includes(id) ? open.filter((x) => x !== id) : [...open, id]));
+    const opening = openCategory !== id;
+    scrollToCategory.current = opening ? id : null;
+    setOpenCategory(opening ? id : null);
   }
+
+  // Na het openen: scrol naar de geopende categorie. Doe dit pas na de render, want door het dichtklappen
+  // van de vorige categorie schuift de rest van de pagina op en zou je anders bovenaan terechtkomen.
+  useEffect(() => {
+    const id = scrollToCategory.current;
+    if (!id) return;
+    scrollToCategory.current = null;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    categoryRefs.current[id]?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }, [openCategory]);
 
   function renderThemeCard(t: InvitationTheme) {
     const selected = t.slug === themeSlug;
@@ -408,10 +422,16 @@ export function Configurator({
               {tab === "thema" && (
                 <div className="space-y-3">
                   {themeGroups.map((g) => {
-                    const open = openCategories.includes(g.id);
+                    const open = openCategory === g.id;
                     const hasSelected = g.themes.some((t) => t.slug === themeSlug);
                     return (
-                      <section key={g.id} className="overflow-hidden rounded-2xl border border-line">
+                      <section
+                        key={g.id}
+                        ref={(el) => {
+                          categoryRefs.current[g.id] = el;
+                        }}
+                        className="scroll-mt-24 overflow-hidden rounded-2xl border border-line"
+                      >
                         <h3>
                           <button
                             type="button"
