@@ -113,6 +113,7 @@ export const invitationTheme = defineType({
           { title: "Lemon (blauw-geel gestreept, citroentakken)", value: "lemon" },
           { title: "Flowers (crèmepapier, aquarel-wildbloemen in de hoeken)", value: "flowers" },
           { title: "Sunset (oranje, gestapelde kaartjes, golfranden, paperclip)", value: "sunset" },
+          { title: "Bourgondisch (gestreept papier, wiebelige kaartrand, kreeft, druiven en glazen)", value: "bourgondisch" },
         ],
         layout: "radio",
       },

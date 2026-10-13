@@ -3,6 +3,7 @@ import { fontStack, googleFontsHref, themeFonts } from "@/lib/invitation/fonts";
 import type { InvitationTheme } from "@/lib/invitation/types";
 import { Branch, BranchPair, HeroBranch } from "./leaf";
 import { CornerSprigs } from "./flowers";
+import { BourgStripes, Doodle, WOBBLE } from "./bourgondisch-art";
 import { Paperclip } from "./sunset";
 import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
@@ -20,6 +21,39 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
 function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "bourgondisch") {
+    const vars = {
+      "--inv-background": c.background,
+      "--inv-surface": c.surface,
+      "--inv-surfaceAlt": c.surfaceAlt,
+      "--inv-accent": c.accent,
+    } as CSSProperties;
+    return (
+      <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-xl" style={vars}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <BourgStripes className="absolute inset-0" />
+        <Doodle kind="grapes" w="2.1rem" style={{ position: "absolute", left: "0.6rem", top: "0.5rem", transform: "rotate(-10deg)" }} />
+        <Doodle kind="glass" w="1.3rem" style={{ position: "absolute", right: "0.9rem", top: "0.5rem", transform: "rotate(8deg)" }} />
+        <Doodle kind="oyster" w="2rem" style={{ position: "absolute", left: "0.9rem", bottom: "0.6rem", transform: "rotate(-6deg)" }} />
+        <Doodle kind="bottle" w="1rem" style={{ position: "absolute", right: "1.1rem", bottom: "0.3rem", transform: "rotate(14deg)" }} />
+        <div
+          className="relative w-[76%] px-3 py-5 text-center"
+          style={{ background: c.surface, border: `2px solid ${c.accent}`, borderRadius: WOBBLE, boxShadow: `0 0 0 0.3rem ${c.surface}` }}
+        >
+          <p className="text-[0.4rem] tracking-[0.24em]" style={{ fontFamily: fontStack(theme.headingFont), color: c.text }}>
+            12.09.2027
+          </p>
+          <p className="mt-1 text-[1.35rem] leading-[1.05]" style={{ fontFamily: fontStack(theme.scriptFont), color: c.text }}>
+            Emma <span style={{ color: c.accent }}>&amp;</span> Mats
+          </p>
+          <p className="mt-1.5 text-[0.36rem] tracking-[0.26em] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.text }}>
+            Vier met ons de liefde
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (theme.style === "sunset") {
     const vars = { "--inv-accent": c.accent, "--inv-text": c.text, "--inv-surfaceAlt": c.surfaceAlt, "--inv-surface": c.surface } as CSSProperties;

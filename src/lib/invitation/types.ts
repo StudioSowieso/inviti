@@ -9,9 +9,10 @@ export type ButtonShape = "pill" | "rounded" | "square";
  * - lemon: blauw-geel gestreept behang, crèmekaarten met gestreepte rand en getekende citroentakken
  * - flowers: crèmepapier met aquarel-wildbloemtakken in de hoeken en gespatieerde hoofdletters
  * - sunset: oranje tafel met gestapelde kaartjes in perzik, rood en roze, golvende randen en halfronde kaartjes met paperclip
+ * - bourgondisch: gestreept papier met een wiebelige kaartrand en olijfgroene lijntekeningen (kreeft, oesters, druiven, glazen)
  * - modern: editorial zwart-wit met greige, extra grote letters, handschrift en witte kaarten
  */
-export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset";
+export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset" | "bourgondisch";
 
 export type ThemeColors = {
   background: string;

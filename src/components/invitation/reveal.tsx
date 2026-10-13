@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties, type ReactNode } from "react";
 import { monogram } from "@/lib/invitation/format";
 import type { InvitationConfig, InvitationTheme, ThemeColors } from "@/lib/invitation/types";
 import { BranchArt, makeBranch } from "./leaf";
+import { BourgReveal } from "./bourgondisch-envelope";
 import { FlowersReveal } from "./flowers-envelope";
 import { LemonReveal } from "./lemon-envelope";
 import { SunsetReveal } from "./sunset-envelope";
@@ -19,6 +20,7 @@ import { PAPER_NOISE, tearPaths } from "./nature";
  * - Flowers: je gaat door de bloemtakken heen.
  * - Sunset: gestapelde kaartjes schuiven naar beide zijkanten.
  * - Sweet: de strepen van het behang schuiven open.
+ * - Bourgondisch: het gestreepte papier schuift als gordijnen opzij.
  * - Overige thema's: deuren in de kleuren van het thema slaan open.
  * De echte uitnodiging staat de hele tijd achter de animatie, dus je ziet hem verschijnen.
  */
@@ -40,6 +42,7 @@ export function RevealOverlay({ theme, ...props }: RevealProps & { theme: Invita
   if (theme.style === "modern") return <PhotoReveal {...props} />;
   if (theme.style === "lemon") return <LemonReveal {...props} />;
   if (theme.style === "sweet") return <SweetReveal {...props} />;
+  if (theme.style === "bourgondisch") return <BourgReveal {...props} />;
   return <DoorsReveal {...props} />;
 }
 

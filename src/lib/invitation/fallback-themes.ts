@@ -216,6 +216,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "rounded",
     style: "sunset",
   },
+  {
+    slug: "bourgondisch",
+    title: "Bourgondisch",
+    description:
+      "Feestelijk en Bourgondisch: handgeschilderd gestreept papier, een wiebelige kaartrand en getekende kreeft, oesters, druiven en glazen in olijfgroen.",
+    colors: {
+      background: "#ecebe2",
+      surface: "#fffefa",
+      surfaceAlt: "#e3e2d4",
+      text: "#5a6338",
+      muted: "#80866a",
+      line: "#d9d8c6",
+      accent: "#6f7a45",
+      buttonBackground: "#66703f",
+      buttonText: "#fffefa",
+      footerBackground: "#66703f",
+      footerText: "#f4f3e6",
+      envelope: "#eceae0",
+      envelopeCard: "#fffefa",
+    },
+    headingFont: "Cormorant Garamond",
+    bodyFont: "EB Garamond",
+    scriptFont: "Yellowtail",
+    buttonShape: "pill",
+    style: "bourgondisch",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

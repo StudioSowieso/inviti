@@ -17,6 +17,9 @@ import type {
   InvitationTheme,
   ThemeColors,
 } from "@/lib/invitation/types";
+import { BourgBlockSection } from "./bourgondisch";
+import { BourgEnvelope } from "./bourgondisch-envelope";
+import { BourgStripes } from "./bourgondisch-art";
 import { LeafBlockSection } from "./leaf";
 import { ModernBlockSection } from "./modern";
 import { StoryImg } from "./story-photo";
@@ -228,6 +231,7 @@ export function InvitationView({
   const lemon = theme.style === "lemon";
   const flowers = theme.style === "flowers";
   const sunset = theme.style === "sunset";
+  const bourg = theme.style === "bourgondisch";
   // "nature" en "leaf" delen papiertextuur en de bijpassende envelop.
   const textured = theme.style === "nature" || leaf || flowers || sunset;
   // Alle stijlen behalve "classic" laten de navigatiebalk de knopkleuren van het thema volgen.
@@ -249,8 +253,11 @@ export function InvitationView({
         <div className="relative flow-root">
           {sweet && <div aria-hidden="true" className="absolute inset-0" style={SWEET_STRIPES} />}
           {lemon && <div aria-hidden="true" className="absolute inset-0" style={LEMON_STRIPES} />}
+          {bourg && <BourgStripes className="absolute inset-0 h-full w-full" />}
           {visibleBlocks.map((b, i) =>
-            lemon ? (
+            bourg ? (
+              <BourgBlockSection key={blockKey(b)} block={b} config={config} index={i} />
+            ) : lemon ? (
               <LemonBlockSection key={blockKey(b)} block={b} config={config} />
             ) : sweet ? (
               <SweetBlockSection key={blockKey(b)} block={b} config={config} />
@@ -325,6 +332,8 @@ export function InvitationView({
       {stage !== "open" &&
         (config.animation === "reveal" ? (
           <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : bourg ? (
+          <BourgEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : sweet ? (
           <SweetEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : lemon ? (
