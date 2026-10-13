@@ -12,6 +12,7 @@ export const THEME_CATEGORIES: ThemeCategory[] = [
   { id: "modern", title: "Modern", slugs: ["modern", "creme-taupe"] },
   { id: "kleurrijk", title: "Kleurrijk", slugs: ["sweet", "sunset", "lemon"] },
   { id: "natuur", title: "Natuur", slugs: ["nature", "leaf", "flowers"] },
+  { id: "feestelijk", title: "Feestelijk", slugs: ["bourgondisch"] },
 ];
 
 /** Categorie die bij het openen van het scherm openstaat. */
