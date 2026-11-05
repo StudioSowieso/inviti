@@ -257,19 +257,32 @@ export function Doodle({
       className={className}
       fill="none"
       stroke={color ?? col("accent")}
-      strokeWidth={+(1.25 * k).toFixed(2)}
+      strokeWidth={+(1.55 * k).toFixed(2)}
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: w, height: "auto", overflow: "visible", ["--sw" as string]: +(1.25 * k).toFixed(2), ...style }}
+      style={{ width: w, height: "auto", overflow: "visible", ["--sw" as string]: +(1.55 * k).toFixed(2), ...style }}
     >
-      {/* Een lichte turbulentie laat de lijnen trillen als een met de hand getrokken pen */}
+      {/* Pen-en-inkt: de lijnen trillen (turbulentie) en elke tekening wordt tweemaal getrokken, de tweede
+          keer dunner en een tikje verschoven, zoals bij een snelle schets met de hand. */}
       <defs>
-        <filter id={fid} x="-8%" y="-8%" width="116%" height="116%">
-          <feTurbulence type="fractalNoise" baseFrequency={+(0.07 / k).toFixed(3)} numOctaves="2" seed="4" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale={+(2 * k).toFixed(2)} xChannelSelector="R" yChannelSelector="G" />
+        <filter id={fid + "a"} x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency={+(0.05 / k).toFixed(3)} numOctaves="3" seed="4" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale={+(3.4 * k).toFixed(2)} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id={fid + "b"} x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency={+(0.06 / k).toFixed(3)} numOctaves="3" seed="11" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale={+(3 * k).toFixed(2)} xChannelSelector="R" yChannelSelector="G" />
         </filter>
       </defs>
-      <g filter={`url(#${fid})`}>{art.body}</g>
+      <g filter={`url(#${fid}a)`}>{art.body}</g>
+      <g
+        filter={`url(#${fid}b)`}
+        opacity={0.5}
+        transform={`translate(${+(0.5 * k).toFixed(2)} ${+(0.4 * k).toFixed(2)})`}
+        style={{ ["--sw" as string]: +(0.9 * k).toFixed(2), strokeWidth: +(0.9 * k).toFixed(2) }}
+      >
+        {art.body}
+      </g>
     </svg>
   );
 }

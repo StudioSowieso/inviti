@@ -54,44 +54,62 @@ function Scatter({ items }: { items: Place[] }) {
   );
 }
 
-/** Het decor rond de beginkaart: boven en onder een rij tekeningen, en een paar die achter de kaart wegsteken. */
+/**
+ * Het decor staat verspreid, zonder dat tekeningen elkaar of de kaart raken. Afmetingen (breedte, hoogte)
+ * staan in cqw; de hoogte is nodig om een tekening in de ruimte tussen twee kaarten te laten passen.
+ */
+const SIZE: Record<DoodleKind, [number, number]> = {
+  lobster: [14, 16.8],
+  oyster: [14, 11.3],
+  grapes: [12, 14.8],
+  glass: [8.5, 16.4],
+  flutes: [14, 16.3],
+  candle: [6.5, 16.3],
+  bottle: [6, 17],
+  pen: [5.5, 17],
+  heart: [8, 7.4],
+};
+
+/** Het decor rond de beginkaart: een rij boven en een rij onder, elk binnen de ruimte buiten de kaart. */
 const HERO_DECOR: Place[] = [
-  { kind: "lobster", w: "25cqw", left: "5cqw", top: "5cqw", rotate: -18 },
-  { kind: "oyster", w: "13cqw", left: "41cqw", top: "9cqw", rotate: 8 },
-  { kind: "grapes", w: "14cqw", left: "62cqw", top: "4cqw", rotate: 6 },
-  { kind: "pen", w: "8cqw", right: "2cqw", top: "3cqw", rotate: 38 },
-  { kind: "candle", w: "9cqw", left: "-1cqw", top: "33cqw", rotate: -6 },
-  { kind: "glass", w: "10cqw", right: "0cqw", top: "42cqw", rotate: 12 },
-  { kind: "flutes", w: "24cqw", left: "5cqw", bottom: "3cqw" },
-  { kind: "grapes", w: "13cqw", left: "33cqw", bottom: "2cqw", rotate: -10 },
-  { kind: "bottle", w: "9cqw", left: "49cqw", bottom: "-6cqw", rotate: -8 },
-  { kind: "oyster", w: "12cqw", left: "62cqw", bottom: "9cqw", rotate: -6 },
-  { kind: "glass", w: "9cqw", right: "5cqw", bottom: "2cqw", rotate: -8 },
+  // boven (de kaart begint op 34cqw)
+  { kind: "lobster", w: "20cqw", left: "4cqw", top: "3cqw", rotate: -14 },
+  { kind: "oyster", w: "12cqw", left: "36cqw", top: "10cqw", rotate: 8 },
+  { kind: "grapes", w: "13cqw", left: "56cqw", top: "5cqw", rotate: 6 },
+  { kind: "pen", w: "7cqw", right: "6cqw", top: "3cqw", rotate: 38 },
+  // onder
+  { kind: "flutes", w: "22cqw", left: "4cqw", bottom: "3cqw" },
+  { kind: "grapes", w: "12cqw", left: "32cqw", bottom: "4cqw", rotate: -10 },
+  { kind: "bottle", w: "8cqw", left: "49cqw", bottom: "4cqw", rotate: -8 },
+  { kind: "oyster", w: "11cqw", left: "63cqw", bottom: "6cqw", rotate: -6 },
+  { kind: "glass", w: "9cqw", right: "6cqw", bottom: "4cqw", rotate: -8 },
+  // kleine hartjes in de smalle marge naast de kaart
+  { kind: "heart", w: "4cqw", left: "2cqw", top: "60cqw", rotate: -12 },
+  { kind: "heart", w: "4cqw", right: "2cqw", top: "60cqw", rotate: 12 },
 ];
 
-/** Per sectie wisselt het decor, zodat de uitnodiging niet steeds dezelfde twee plaatjes herhaalt. */
-const SECTION_DECOR: Place[][] = [
-  [
-    { kind: "grapes", w: "17cqw", left: "-6cqw", top: "-16cqw", rotate: -12 },
-    { kind: "oyster", w: "14cqw", right: "-5cqw", bottom: "-9cqw", rotate: 10 },
-  ],
-  [
-    { kind: "flutes", w: "24cqw", right: "-4cqw", top: "-18cqw" },
-    { kind: "heart", w: "7cqw", left: "6cqw", bottom: "-8cqw", rotate: -10 },
-  ],
-  [
-    { kind: "glass", w: "11cqw", left: "-3cqw", top: "-22cqw", rotate: -8 },
-    { kind: "grapes", w: "14cqw", right: "-4cqw", bottom: "-14cqw", rotate: 8 },
-  ],
-  [
-    { kind: "candle", w: "9cqw", right: "-2cqw", top: "-24cqw", rotate: 6 },
-    { kind: "oyster", w: "14cqw", left: "-4cqw", bottom: "-8cqw", rotate: -8 },
-  ],
-  [
-    { kind: "bottle", w: "9cqw", left: "-5cqw", top: "-22cqw", rotate: -22 },
-    { kind: "lobster", w: "19cqw", right: "-6cqw", bottom: "-22cqw", rotate: 22 },
-  ],
+/**
+ * Per sectie: één tekening in de ruimte boven de kaart (links) en één eronder (rechts). Links en rechts wisselen
+ * nooit, dus de tekening onder de ene kaart en die boven de volgende raken elkaar niet.
+ */
+const SECTION_PAIRS: [DoodleKind, DoodleKind][] = [
+  ["grapes", "oyster"],
+  ["flutes", "heart"],
+  ["glass", "grapes"],
+  ["candle", "oyster"],
+  ["bottle", "lobster"],
 ];
+
+function sectionDecor(index: number): Place[] {
+  const [topKind, bottomKind] = SECTION_PAIRS[index % SECTION_PAIRS.length];
+  const [tw, th] = SIZE[topKind];
+  const [bw, bh] = SIZE[bottomKind];
+  const tilt = index % 2 ? 8 : -8;
+  return [
+    { kind: topKind, w: `${tw}cqw`, left: "3cqw", top: `${-(th + 4)}cqw`, rotate: tilt },
+    { kind: bottomKind, w: `${bw}cqw`, right: "3cqw", bottom: `${-(bh + 4)}cqw`, rotate: -tilt },
+  ];
+}
 
 const SECTION = "relative mx-[9%] mt-[5.5rem]";
 
@@ -108,7 +126,7 @@ function Section({
 }) {
   return (
     <section data-block={type} className={SECTION} style={CONTAINER}>
-      <Scatter items={SECTION_DECOR[index % SECTION_DECOR.length]} />
+      <Scatter items={sectionDecor(index)} />
       <BourgCard className={`px-6 py-10 text-center ${className}`} style={{ zIndex: 2 }}>
         {children}
       </BourgCard>
@@ -337,11 +355,11 @@ export function BourgBlockSection({ block, config, index = 0 }: { block: Block; 
 
     case "footer":
       return (
-        <section data-block="footer" className="relative mx-[9%] mt-[5.5rem] mb-14" style={CONTAINER}>
+        <section data-block="footer" className="relative mx-[9%] mt-[5.5rem] mb-28" style={CONTAINER}>
           <Scatter
             items={[
-              { kind: "bottle", w: "9cqw", left: "-4cqw", top: "-20cqw", rotate: -20 },
-              { kind: "flutes", w: "22cqw", right: "-3cqw", top: "-18cqw" },
+              { kind: "bottle", w: "6cqw", left: "3cqw", top: "-21cqw", rotate: -10 },
+              { kind: "flutes", w: "14cqw", right: "3cqw", bottom: "-20cqw" },
             ]}
           />
           <BourgCard tone="olive" className="px-6 py-12 text-center" style={{ zIndex: 2 }}>
