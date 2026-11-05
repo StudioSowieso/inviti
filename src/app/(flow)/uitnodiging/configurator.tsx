@@ -456,14 +456,19 @@ export function Configurator({
                             />
                           </button>
                         </h3>
-                        {open && (
-                          <div
-                            id={`thema-categorie-${g.id}`}
-                            className="grid gap-4 px-4 pb-4 sm:grid-cols-2 xl:grid-cols-3"
-                          >
-                            {g.themes.map(renderThemeCard)}
-                          </div>
-                        )}
+                        {/* Altijd gerenderd, ook dichtgeklapt: de miniaturen laden hun lettertypen via een
+                            <link precedence>, waardoor React de pagina laat wachten (flits) zodra ze voor het
+                            eerst verschijnen. Zo gebeurt dat meteen bij het openen van het scherm. */}
+                        <div
+                          id={`thema-categorie-${g.id}`}
+                          inert={!open}
+                          aria-hidden={!open}
+                          className={`grid gap-4 px-4 sm:grid-cols-2 xl:grid-cols-3 ${
+                            open ? "pb-4" : "invisible max-h-0 overflow-hidden"
+                          }`}
+                        >
+                          {g.themes.map(renderThemeCard)}
+                        </div>
                       </section>
                     );
                   })}
