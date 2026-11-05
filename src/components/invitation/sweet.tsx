@@ -47,7 +47,7 @@ const GRADIENT: CSSProperties = {
 export function Bow({ size = 44, className = "" }: { size?: number; className?: string }) {
   const id = useId();
   return (
-    <svg viewBox="0 0 60 80" width={size} height={(size * 80) / 60} aria-hidden="true" className={className}>
+    <svg viewBox="0 0 60 80" width={size} height={(size * 80) / 60} aria-hidden="true" className={`inv-wiggle ${className}`}>
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="0.35" y2="1">
           <stop offset="0" style={{ stopColor: `color-mix(in srgb, ${col("accent")} 80%, black)` }} />

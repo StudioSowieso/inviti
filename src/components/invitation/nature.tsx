@@ -109,7 +109,7 @@ export function Sprig({ size = 28, className = "" }: { size?: number; className?
       strokeWidth="0.8"
       strokeLinecap="round"
       aria-hidden="true"
-      className={className}
+      className={`inv-sway ${className}`}
     >
       <SprigShape />
     </svg>
@@ -128,7 +128,7 @@ export function SprigDivider({ className = "" }: { className?: string }) {
       strokeWidth="0.8"
       strokeLinecap="round"
       aria-hidden="true"
-      className={`mx-auto block ${className}`}
+      className={`inv-sway-soft mx-auto block ${className}`}
       style={{ color: col("accent") }}
     >
       <path d="M0 8H62M98 8H160" strokeWidth="0.6" opacity="0.7" />

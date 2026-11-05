@@ -20,7 +20,7 @@ const CAPS = "uppercase tracking-[0.16em]";
 /** Paperclip in goud. */
 export function Paperclip({ className = "", style }: { className?: string; style?: CSSProperties }) {
   return (
-    <svg viewBox="0 0 30 58" width="26" height="50" aria-hidden="true" className={className} style={style} fill="none" stroke="#dcb85f" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 30 58" width="26" height="50" aria-hidden="true" className={`inv-swing ${className}`} style={style} fill="none" stroke="#dcb85f" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M15 3C7 3 5 14 9 26c3 10 5 18 5.5 23C15 55 23 54 22.5 47L17 22C15.5 14 21 13 22 19l3 13" />
     </svg>
   );
@@ -30,7 +30,7 @@ export function Paperclip({ className = "", style }: { className?: string; style
 export function HalfCard({ children, clip = true, className = "", tone = "surfaceAlt" }: { children: ReactNode; clip?: boolean; className?: string; tone?: keyof ThemeColors }) {
   return (
     <div
-      className={`relative mx-auto ${className}`}
+      className={`inv-float-soft relative mx-auto ${className}`}
       style={{
         background: col(tone),
         borderRadius: "999px 999px 0.5rem 0.5rem / 100% 100% 0.5rem 0.5rem",

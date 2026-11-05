@@ -39,6 +39,7 @@ function Scatter({ items }: { items: Place[] }) {
           key={i}
           kind={p.kind}
           w={p.w}
+          className="inv-float"
           style={{
             position: "absolute",
             zIndex: 1,
@@ -146,7 +147,7 @@ function Head({ eyebrow, title }: { eyebrow?: string; title: string }) {
   return (
     <header>
       <div className="flex justify-center">
-        <Doodle kind="heart" w="1.1rem" />
+        <Doodle kind="heart" w="1.1rem" className="inv-pulse" />
       </div>
       {eyebrow && <Caps className="mt-3">{eyebrow}</Caps>}
       <h2 className="mt-2 text-[2.3rem] leading-[1.1]" style={{ ...script, color: col("text") }}>

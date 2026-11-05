@@ -133,3 +133,74 @@ summary::-webkit-details-marker {
     cursor: grab;
   }
 }
+
+/*
+ * Beweging in de uitnodigingsthema's. Alles staat achter "no-preference", dus wie minder beweging wil,
+ * ziet de uitnodiging gewoon statisch. De losse eigenschappen `translate`, `rotate` en `scale` laten de
+ * bestaande `transform` van de tekeningen (spiegelen, kantelen) met rust.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Blokken komen zacht omhoog zodra ze in beeld scrollen (zie invitation-view). */
+  .inv-appear {
+    opacity: 0;
+    translate: 0 1.1rem;
+    transition:
+      opacity 0.9s ease,
+      translate 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .inv-appear.inv-in {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @keyframes inv-sway {
+    from { rotate: -1.8deg; translate: -1px 1px; }
+    to { rotate: 1.8deg; translate: 1px -2px; }
+  }
+  @keyframes inv-sway-soft {
+    from { rotate: -0.9deg; translate: -1px 0; }
+    to { rotate: 0.9deg; translate: 1px -1px; }
+  }
+  @keyframes inv-float {
+    from { translate: 0 0; rotate: -1.2deg; }
+    to { translate: 0 -0.35rem; rotate: 1.2deg; }
+  }
+  @keyframes inv-float-soft {
+    from { translate: 0 0; }
+    to { translate: 0 -0.22rem; }
+  }
+  @keyframes inv-wiggle {
+    0%, 100% { rotate: 0deg; scale: 1; }
+    30% { rotate: -4deg; scale: 1.04; }
+    60% { rotate: 3deg; scale: 1; }
+  }
+  @keyframes inv-pulse {
+    0%, 100% { scale: 1; }
+    50% { scale: 1.18; }
+  }
+  @keyframes inv-swing {
+    from { rotate: -5deg; }
+    to { rotate: 5deg; }
+  }
+  @keyframes inv-zoom {
+    from { scale: 1; }
+    to { scale: 1.07; }
+  }
+
+  .inv-sway { animation: inv-sway 5.5s ease-in-out infinite alternate; }
+  .inv-sway-soft { animation: inv-sway-soft 6.5s ease-in-out infinite alternate; }
+  .inv-sway-slow { animation: inv-sway 8s ease-in-out infinite alternate; transform-origin: 50% 50%; }
+  .inv-float { animation: inv-float 6s ease-in-out infinite alternate; }
+  .inv-float-soft { animation: inv-float-soft 7s ease-in-out infinite alternate; }
+  .inv-wiggle { animation: inv-wiggle 5s ease-in-out infinite; }
+  .inv-pulse { animation: inv-pulse 2.8s ease-in-out infinite; }
+  .inv-swing { animation: inv-swing 4.5s ease-in-out infinite alternate; }
+  .inv-zoom { animation: inv-zoom 16s ease-in-out infinite alternate; }
+
+  /* Elke tekening beweegt in een eigen tempo en eigen fase, zodat het niet als één blok wiegt. */
+  .inv-sway:nth-of-type(2n), .inv-sway-soft:nth-of-type(2n), .inv-sway-slow:nth-of-type(2n) { animation-duration: 7s; animation-delay: -2.5s; }
+  .inv-sway:nth-of-type(3n), .inv-sway-soft:nth-of-type(3n), .inv-sway-slow:nth-of-type(3n) { animation-duration: 6s; animation-delay: -4s; }
+  .inv-float:nth-of-type(2n) { animation-duration: 7.4s; animation-delay: -2s; }
+  .inv-float:nth-of-type(3n) { animation-duration: 5.2s; animation-delay: -3.5s; }
+  .inv-float:nth-of-type(4n) { animation-duration: 8.2s; animation-delay: -1s; }
+}

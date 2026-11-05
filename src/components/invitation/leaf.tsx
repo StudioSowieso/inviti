@@ -159,7 +159,7 @@ export function Branch({ size = 64, flip = false, className = "" }: { size?: num
       width={size}
       height={(size * 62) / 138}
       aria-hidden="true"
-      className={className}
+      className={`inv-sway ${className}`}
       style={{ transform: flip ? "scaleX(-1)" : undefined, color: col("accent") }}
     >
       <BranchArt data={SMALL} />
@@ -175,7 +175,7 @@ export function BranchPair({ size = 190, className = "" }: { size?: number; clas
       width={size}
       height={(size * 62) / 284}
       aria-hidden="true"
-      className={`mx-auto block ${className}`}
+      className={`inv-sway-soft mx-auto block ${className}`}
       style={{ color: col("accent") }}
     >
       <g transform="translate(2 4)">
@@ -194,7 +194,7 @@ export function HeroBranch({ className = "", style }: { className?: string; styl
     <svg
       viewBox="0 0 320 235"
       aria-hidden="true"
-      className={`block w-full ${className}`}
+      className={`inv-sway-slow block w-full ${className}`}
       style={{ color: col("accent"), ...style }}
     >
       <g transform="translate(6 108) rotate(10)">

@@ -223,6 +223,30 @@ export function InvitationView({
     if (top !== null) scrollRef.current?.scrollTo({ top, behavior: "smooth" });
   }, [focusBlock, stage, sectionTop]);
 
+  const visibleBlocksKey = config.blocks.filter((b) => b.enabled).map(blockKey).join("|");
+  // Zacht binnenkomen: elk blok verschijnt (opacity + licht omhoog) zodra het in beeld scrolt. De CSS staat in
+  // globals.css en staat uit bij "minder beweging". Zonder IntersectionObserver blijft alles gewoon zichtbaar.
+  useEffect(() => {
+    const root = scrollRef.current;
+    if (!root || typeof IntersectionObserver === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add("inv-in");
+          io.unobserve(e.target);
+        }
+      },
+      { root, threshold: 0.1, rootMargin: "0px 0px -4% 0px" },
+    );
+    root.querySelectorAll<HTMLElement>("[data-block]").forEach((el) => {
+      el.classList.add("inv-appear");
+      if (!el.classList.contains("inv-in")) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, [visibleBlocksKey, theme.style]);
+
   const fontsHref = googleFontsHref(...themeFonts(theme));
   const activeLabel = chapters.find((c) => c.key === active)?.label ?? "Welkom";
   const leaf = theme.style === "leaf";

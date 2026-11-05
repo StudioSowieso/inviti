@@ -108,7 +108,7 @@ export function LemonBranch({ className = "", style, flip = false }: { className
     <svg
       viewBox="0 0 230 190"
       aria-hidden="true"
-      className={className}
+      className={`inv-sway-slow ${className}`}
       style={{ transform: flip ? "scaleX(-1)" : undefined, ...style }}
     >
       <Defs id={id} />
@@ -138,7 +138,7 @@ export function LemonBranch({ className = "", style, flip = false }: { className
 export function BigLemon({ className = "", style, leaves = true }: { className?: string; style?: CSSProperties; leaves?: boolean }) {
   const id = useId();
   return (
-    <svg viewBox={leaves ? "-46 -36 100 72" : "-40 -30 90 62"} aria-hidden="true" className={className} style={{ overflow: "visible", ...style }}>
+    <svg viewBox={leaves ? "-46 -36 100 72" : "-40 -30 90 62"} aria-hidden="true" className={`inv-float ${className}`} style={{ overflow: "visible", ...style }}>
       <Defs id={id} />
       <g filter={`url(#${id}p)`}>
       {leaves && <Leaf id={id} x={4} y={-16} r={-128} s={1.15} />}
@@ -153,7 +153,7 @@ export function BigLemon({ className = "", style, leaves = true }: { className?:
 export function LemonSprig({ className = "", width = 76 }: { className?: string; width?: number }) {
   const id = useId();
   return (
-    <svg viewBox="6 -15 97 74" width={width} height={(width * 74) / 97} aria-hidden="true" className={className} style={{ overflow: "visible" }}>
+    <svg viewBox="6 -15 97 74" width={width} height={(width * 74) / 97} aria-hidden="true" className={`inv-sway ${className}`} style={{ overflow: "visible" }}>
       <Defs id={id} />
       <g filter={`url(#${id}p)`}>
       <path d="M14 30C34 22 52 24 66 30" fill="none" stroke="#4a6a35" strokeWidth="1.8" strokeLinecap="round" />

@@ -130,7 +130,7 @@ export function CornerSprigs({ corner, seed = 7, size = "11rem", className = "" 
     <svg
       aria-hidden="true"
       viewBox="0 0 190 190"
-      className={`pointer-events-none absolute ${className}`}
+      className={`inv-sway-slow pointer-events-none absolute ${className}`}
       style={{
         width: size,
         height: size,
@@ -154,7 +154,7 @@ export function CornerSprigs({ corner, seed = 7, size = "11rem", className = "" 
 function SprigDivider({ className = "" }: { className?: string }) {
   const data = useMemo(() => buildSprig(21, { len: 70, bow: 0, leaves: 6, flowers: 0 }), []);
   return (
-    <svg aria-hidden="true" viewBox="-6 -16 82 32" width={72} className={`mx-auto ${className}`}>
+    <svg aria-hidden="true" viewBox="-6 -16 82 32" width={72} className={`inv-sway-soft mx-auto ${className}`}>
       <SprigArt data={data} />
     </svg>
   );

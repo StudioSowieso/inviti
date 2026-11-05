@@ -30,7 +30,7 @@ export function ModernPhoto({ className = "", style }: { className?: string; sty
         ...style,
       }}
     >
-      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 h-full w-full" fill="none">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax slice" className="inv-zoom absolute inset-0 h-full w-full" fill="none">
         <path
           d="M10 100c2-22 12-36 26-40-6-4-9-10-9-17 0-10 7-17 17-17s17 7 17 17c0 7-3 13-9 17 14 4 24 18 26 40Z"
           style={{ fill: `color-mix(in srgb, ${col("text")} 22%, transparent)` }}
