@@ -12,14 +12,15 @@ import {
 } from "@/components/icons";
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, coupleInitials } from "@/lib/format";
+import { getHasPaid } from "@/lib/billing";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { syncSystemTodos } from "@/lib/system-todos";
 import { TodoItem } from "./todo-item";
 
 export const metadata: Metadata = { title: "Dashboard — Inviti" };
 
-export default async function DashboardPage() {
-  const [supabase, user] = await Promise.all([createClient(), getUser()]);
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ betaald?: string }> }) {
+  const [supabase, user, hasPaid, sp] = await Promise.all([createClient(), getUser(), getHasPaid(), searchParams]);
 
   await syncSystemTodos(supabase, user!.id);
 
@@ -70,7 +71,8 @@ export default async function DashboardPage() {
       title: "Uitnodigingen versturen",
       text: "Stuur via mail, link of WhatsApp",
       icon: SendIcon,
-      href: "/versturen",
+      href: hasPaid ? "/versturen" : undefined,
+      lockedLabel: "Na aankoop",
     },
   ];
 
@@ -81,6 +83,21 @@ export default async function DashboardPage() {
         title="Welkom terug"
         initials={coupleInitials(name, profile?.partner_name)}
       />
+
+      {sp.betaald && hasPaid && (
+        <p role="status" className="rounded-2xl bg-sage px-5 py-4 text-sm text-forest">
+          Bedankt! Je betaling is gelukt. Je kunt nu je uitnodigingen versturen.
+        </p>
+      )}
+      {!hasPaid && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-paper px-5 py-4 text-sm">
+          <span>
+            <strong className="font-medium">Je zit in de testomgeving.</strong>{" "}
+            <span className="text-muted">Uitnodigingen versturen is beschikbaar in de volledige versie.</span>
+          </span>
+          <a href="/upgrade" className="rounded-full bg-forest px-5 py-2 text-paper">Bekijk volledige versie</a>
+        </div>
+      )}
 
       <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] 2xl:grid-cols-[1.6fr_1fr] 2xl:gap-12">
         <div className="space-y-8">
@@ -124,7 +141,7 @@ export default async function DashboardPage() {
           <section>
             <h2 className="font-serif text-2xl font-medium">Snel starten</h2>
             <ul className="mt-4 grid gap-3 xl:grid-cols-2 2xl:grid-cols-3">
-              {quick.map(({ title, text, icon: Icon, href }) => {
+              {quick.map(({ title, text, icon: Icon, href, lockedLabel }) => {
                 const inner = (
                   <>
                     <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-cream text-forest">
@@ -138,7 +155,7 @@ export default async function DashboardPage() {
                       <ChevronRightIcon className="text-muted" />
                     ) : (
                       <span className="eyebrow shrink-0 rounded-full bg-cream px-2.5 py-1 text-[0.55rem] text-muted">
-                        Binnenkort
+                        {lockedLabel ?? "Binnenkort"}
                       </span>
                     )}
                   </>

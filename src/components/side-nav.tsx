@@ -13,11 +13,13 @@ const ITEMS = [
   { href: "/todo", label: "To do", icon: ListIcon, ready: true },
 ];
 
-export function SideNav({ isAdmin = false }: { isAdmin?: boolean }) {
+export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolean; hasPaid?: boolean }) {
   const pathname = usePathname();
-  const items = isAdmin
+  const all = isAdmin
     ? [...ITEMS, { href: "/admin", label: "Admin", icon: SettingsIcon, ready: true }]
     : ITEMS;
+  // Versturen is alleen voor betalers: voor anderen lichter en niet klikbaar.
+  const items = all.map((i) => (i.href === "/versturen" && !hasPaid ? { ...i, ready: false } : i));
 
   return (
     <nav className="sticky top-4 hidden h-[calc(100dvh-2rem)] w-24 shrink-0 flex-col items-center rounded-[1.75rem] border border-line bg-paper py-6 lg:flex">
@@ -46,7 +48,7 @@ export function SideNav({ isAdmin = false }: { isAdmin?: boolean }) {
                 </Link>
               ) : (
                 <span
-                  title="Binnenkort beschikbaar"
+                  title="Beschikbaar na aankoop"
                   className="flex w-[4.5rem] cursor-not-allowed flex-col items-center gap-1.5 rounded-2xl py-3 text-[0.6rem] tracking-[0.14em] text-muted/50 uppercase"
                 >
                   <Icon width={19} height={19} />

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getHasPaid } from "@/lib/billing";
 import { createClient } from "@/lib/supabase/server";
 import { logError } from "@/lib/log-error";
 
@@ -12,6 +13,7 @@ export async function saveInviteMessage(raw: string): Promise<{ ok: true } | { o
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/inloggen");
+  if (!(await getHasPaid())) return { ok: false, error: "Alleen beschikbaar in de volledige versie." };
 
   const text = typeof raw === "string" ? raw.replace(/\r\n/g, "\n").trim().slice(0, 2000) : "";
   const { error } = await supabase
@@ -28,6 +30,7 @@ export async function saveInviteMessage(raw: string): Promise<{ ok: true } | { o
 
 /** Vinkt een gast handmatig af als "uitnodiging verstuurd". Als iedereen is afgevinkt, vinkt ook het to-do item af. */
 export async function setInviteSent(id: string, sent: boolean): Promise<{ ok: boolean }> {
+  if (!(await getHasPaid())) return { ok: false };
   const supabase = await createClient();
   const { error } = await supabase.from("guests").update({ invite_sent: !!sent }).eq("id", id);
   if (error) {

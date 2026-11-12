@@ -3,11 +3,13 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { Sparkle } from "@/components/icons";
 import { firstName, greeting, coupleInitials } from "@/lib/format";
+import { requirePaid } from "@/lib/billing";
 import { createClient, getUser } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Versturen — Inviti" };
 
 export default async function SendHubPage() {
+  await requirePaid();
   const [supabase, user] = await Promise.all([createClient(), getUser()]);
 
   const [{ data: profile }, { data: guestRows }] = await Promise.all([
