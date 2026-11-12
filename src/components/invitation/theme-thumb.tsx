@@ -9,10 +9,10 @@ import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
 
 /** Kleine vooruitblik van een thema: kleuren, lettertypes, knopvorm en (bij "nature") decor. */
-/** Alle thumbnails zijn een staand telefoonscherm (zoals gasten de uitnodiging zien); wat niet past wordt onderaan afgesneden. */
+/** Alle thumbnails krijgen dezelfde hoogte; wat niet past wordt aan de onderkant afgesneden. */
 export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
   return (
-    <div className="mx-auto h-72 w-full max-w-[12.5rem] overflow-hidden rounded-[1.5rem] border-[5px] border-ink/90 [&>div]:h-full">
+    <div className="h-56 overflow-hidden rounded-xl [&>div]:h-full">
       <ThemeThumbInner theme={theme} />
     </div>
   );
