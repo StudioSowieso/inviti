@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { logClientError } from "@/lib/log-error-client";
 import { tryTestLogin } from "./actions";
 import { MailIcon, Sparkle } from "@/components/icons";
 
@@ -34,6 +35,7 @@ export function LoginForm({ linkError }: { linkError: boolean }) {
         password,
       });
       if (error) {
+        logClientError("login", "Wachtwoord-login mislukt", { status: error.status, code: error.code });
         setStatus("idle");
         setError("E-mailadres of wachtwoord klopt niet.");
         return;

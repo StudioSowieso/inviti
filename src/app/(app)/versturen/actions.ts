@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { logError } from "@/lib/log-error";
 
 /** Slaat het bericht op dat bij een WhatsApp of mail wordt meegestuurd. Leeg = terug naar de voorbeeldtekst. */
 export async function saveInviteMessage(raw: string): Promise<{ ok: true } | { ok: false; error: string }> {
@@ -17,7 +18,10 @@ export async function saveInviteMessage(raw: string): Promise<{ ok: true } | { o
     .from("profiles")
     .update({ invite_message: text || null })
     .eq("id", user.id);
-  if (error) return { ok: false, error: "Het bericht kon niet worden opgeslagen." };
+  if (error) {
+    await logError("saveInviteMessage", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { ok: false, error: "Het bericht kon niet worden opgeslagen." };
+  }
   revalidatePath("/versturen");
   return { ok: true };
 }
@@ -26,7 +30,10 @@ export async function saveInviteMessage(raw: string): Promise<{ ok: true } | { o
 export async function setInviteSent(id: string, sent: boolean): Promise<{ ok: boolean }> {
   const supabase = await createClient();
   const { error } = await supabase.from("guests").update({ invite_sent: !!sent }).eq("id", id);
-  if (error) return { ok: false };
+  if (error) {
+    await logError("setInviteSent", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { ok: false };
+  }
 
   const [{ count: total }, { count: done }] = await Promise.all([
     supabase.from("guests").select("id", { count: "exact", head: true }),

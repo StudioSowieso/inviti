@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { pruneEmptyGroups } from "@/lib/prune-groups";
 import { createClient } from "@/lib/supabase/server";
+import { logError } from "@/lib/log-error";
 
 export async function signOut() {
   const supabase = await createClient();
@@ -55,6 +56,7 @@ export async function addTodo(
   });
 
   if (error) {
+    await logError("addTodo", error.message, { detail: { code: error.code } });
     return { error: "De to-do kon niet worden opgeslagen. Probeer het opnieuw.", saved: prev.saved };
   }
 
@@ -116,7 +118,10 @@ async function readGuestForm(
         .insert({ name: groupName, owner_id: ownerId })
         .select("id")
         .single();
-      if (error) return { error: "De groep kon niet worden opgeslagen. Probeer het opnieuw." };
+      if (error) {
+        await logError("deleteGuest", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+        return { error: "De groep kon niet worden opgeslagen. Probeer het opnieuw." };
+      }
       groupId = created.id;
     }
   }
@@ -148,7 +153,10 @@ export async function addGuest(
   if ("error" in parsed) return { error: parsed.error };
 
   const { error } = await supabase.from("guests").insert({ owner_id: user.id, ...parsed.values });
-  if (error) return { error: "De gast kon niet worden opgeslagen. Probeer het opnieuw." };
+  if (error) {
+    await logError("addGuest", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { error: "De gast kon niet worden opgeslagen. Probeer het opnieuw." };
+  }
 
   revalidatePath("/gasten");
   revalidatePath("/dashboard");
@@ -170,7 +178,10 @@ export async function updateGuest(
   if ("error" in parsed) return { error: parsed.error };
 
   const { error } = await supabase.from("guests").update(parsed.values).eq("id", id);
-  if (error) return { error: "De wijzigingen konden niet worden opgeslagen. Probeer het opnieuw." };
+  if (error) {
+    await logError("updateGuest", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { error: "De wijzigingen konden niet worden opgeslagen. Probeer het opnieuw." };
+  }
   await pruneEmptyGroups(supabase);
 
   revalidatePath("/gasten");
@@ -228,7 +239,10 @@ export async function importGuests(rows: ImportRow[]): Promise<{ error: string }
         .from("guest_groups")
         .insert(missing.map((name) => ({ name, owner_id: user.id })))
         .select("id, name");
-      if (error) return { error: "De groepen konden niet worden aangemaakt. Probeer het opnieuw." };
+      if (error) {
+        await logError("importGuests", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+        return { error: "De groepen konden niet worden aangemaakt. Probeer het opnieuw." };
+      }
       (created ?? []).forEach((g) => groupIds.set(g.name as string, g.id as string));
     }
   }
@@ -236,7 +250,10 @@ export async function importGuests(rows: ImportRow[]): Promise<{ error: string }
   const { error } = await supabase.from("guests").insert(
     cleaned.map(({ group, ...r }) => ({ owner_id: user.id, ...r, group_id: group ? (groupIds.get(group) ?? null) : null })),
   );
-  if (error) return { error: "De gasten konden niet worden opgeslagen. Probeer het opnieuw." };
+  if (error) {
+    await logError("importGuests", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { error: "De gasten konden niet worden opgeslagen. Probeer het opnieuw." };
+  }
 
   revalidatePath("/gasten");
   revalidatePath("/dashboard");
@@ -261,7 +278,10 @@ export async function renameGroup(id: string, rawName: string): Promise<GroupRes
   const { data: clash } = await supabase.from("guest_groups").select("id").eq("name", name).neq("id", id).maybeSingle();
   if (clash) return { ok: false, error: "Er bestaat al een groep met deze naam." };
   const { error } = await supabase.from("guest_groups").update({ name }).eq("id", id);
-  if (error) return { ok: false, error: "De naam kon niet worden gewijzigd." };
+  if (error) {
+    await logError("renameGroup", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { ok: false, error: "De naam kon niet worden gewijzigd." };
+  }
   revalidateGroups();
   return { ok: true };
 }
@@ -275,7 +295,10 @@ export async function deleteGroup(id: string): Promise<GroupResult> {
     if ((count ?? 0) <= 1) return { ok: false, error: "Dit is de enige uitnodiging; die kun je niet verwijderen." };
   }
   const { error } = await supabase.from("guest_groups").delete().eq("id", id);
-  if (error) return { ok: false, error: "De groep kon niet worden verwijderd." };
+  if (error) {
+    await logError("deleteGroup", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { ok: false, error: "De groep kon niet worden verwijderd." };
+  }
   revalidateGroups();
   return { ok: true };
 }
@@ -291,7 +314,10 @@ export async function createGroup(rawName: string): Promise<GroupResult> {
   const { data: clash } = await supabase.from("guest_groups").select("id").eq("name", name).maybeSingle();
   if (clash) return { ok: false, error: "Er bestaat al een groep met deze naam." };
   const { error } = await supabase.from("guest_groups").insert({ name, owner_id: user.id, keep: true });
-  if (error) return { ok: false, error: "De groep kon niet worden aangemaakt." };
+  if (error) {
+    await logError("createGroup", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { ok: false, error: "De groep kon niet worden aangemaakt." };
+  }
   revalidateGroups();
   return { ok: true };
 }

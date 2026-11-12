@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HomeIcon, ListIcon, PenIcon, SendIcon, UsersIcon } from "./icons";
+import { HomeIcon, ListIcon, PenIcon, SendIcon, SettingsIcon, UsersIcon } from "./icons";
 import { Logo } from "./logo";
 
 const ITEMS = [
@@ -13,8 +13,11 @@ const ITEMS = [
   { href: "/todo", label: "To do", icon: ListIcon, ready: true },
 ];
 
-export function SideNav() {
+export function SideNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
+  const items = isAdmin
+    ? [...ITEMS, { href: "/admin", label: "Admin", icon: SettingsIcon, ready: true }]
+    : ITEMS;
 
   return (
     <nav className="sticky top-4 hidden h-[calc(100dvh-2rem)] w-24 shrink-0 flex-col items-center rounded-[1.75rem] border border-line bg-paper py-6 lg:flex">
@@ -27,7 +30,7 @@ export function SideNav() {
       </Link>
 
       <ul className="mt-10 flex flex-col gap-2">
-        {ITEMS.map(({ href, label, icon: Icon, ready }) => {
+        {items.map(({ href, label, icon: Icon, ready }) => {
           const active = ready && pathname.startsWith(href);
           return (
             <li key={label}>

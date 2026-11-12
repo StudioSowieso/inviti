@@ -6,6 +6,7 @@ import { normalizeConfig } from "@/lib/invitation/defaults";
 import { validPalette } from "@/lib/invitation/palettes";
 import { getThemes } from "@/lib/invitation/themes";
 import { createClient } from "@/lib/supabase/server";
+import { logError } from "@/lib/log-error";
 
 export async function createInvitation(formData: FormData) {
   const supabase = await createClient();
@@ -73,6 +74,7 @@ export async function saveInvitation(id: string, themeSlug: string, rawConfig: u
 
   if (error || !data) {
     console.error("[saveInvitation]", error);
+    if (error) await logError("saveInvitation", error.message, { detail: { code: error.code } });
     return { ok: false, error: "Opslaan is niet gelukt. Probeer het opnieuw." };
   }
 
@@ -142,7 +144,10 @@ export async function createVariant(rawName: string, fromId: string): Promise<Va
     groupId = existing.id as string;
   } else {
     const { data: created, error } = await supabase.from("guest_groups").insert({ name, owner_id: user.id, keep: true }).select("id").single();
-    if (error || !created) return { ok: false, error: "De groep kon niet worden aangemaakt." };
+    if (error || !created) {
+      await logError("createVariant", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+      return { ok: false, error: "De groep kon niet worden aangemaakt." };
+    }
     groupId = created.id as string;
   }
 
@@ -151,7 +156,10 @@ export async function createVariant(rawName: string, fromId: string): Promise<Va
     .insert({ owner_id: user.id, group_id: groupId, theme_slug: source.theme_slug, config: source.config })
     .select("id")
     .single();
-  if (error || !data) return { ok: false, error: "De uitnodiging kon niet worden aangemaakt." };
+  if (error || !data) {
+    await logError("createVariant", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { ok: false, error: "De uitnodiging kon niet worden aangemaakt." };
+  }
   revalidateVariants();
   return { ok: true, id: data.id as string };
 }
@@ -169,7 +177,10 @@ export async function renameVariant(id: string, rawName: string): Promise<Varian
   if (clash) return { ok: false, error: "Er bestaat al een groep met deze naam." };
 
   const { error } = await supabase.from("guest_groups").update({ name }).eq("id", inv.group_id);
-  if (error) return { ok: false, error: "De naam kon niet worden gewijzigd." };
+  if (error) {
+    await logError("renameVariant", error?.message ?? "Onbekende databasefout", { detail: { code: error?.code } });
+    return { ok: false, error: "De naam kon niet worden gewijzigd." };
+  }
   revalidateVariants();
   return { ok: true };
 }
