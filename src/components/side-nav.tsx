@@ -22,7 +22,7 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
   const items = all.map((i) => (i.href === "/versturen" && !hasPaid ? { ...i, ready: false } : i));
 
   return (
-    <nav className="sticky top-4 hidden h-[calc(100dvh-2rem)] w-24 shrink-0 flex-col items-center rounded-[1.75rem] border border-line bg-paper py-6 lg:flex">
+    <nav className="sticky top-[calc(1rem_+_var(--banner-h,0px))] hidden h-[calc(100dvh_-_2rem_-_var(--banner-h,0px))] w-24 shrink-0 flex-col items-center rounded-[1.75rem] border border-line bg-paper py-6 lg:flex">
       <Link
         href="/dashboard"
         className="flex flex-col items-center gap-1 text-forest"

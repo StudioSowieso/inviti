@@ -89,15 +89,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           Bedankt! Je betaling is gelukt. Je kunt nu je uitnodigingen versturen.
         </p>
       )}
-      {!hasPaid && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-paper px-5 py-4 text-sm">
-          <span>
-            <strong className="font-medium">Je zit in de testomgeving.</strong>{" "}
-            <span className="text-muted">Uitnodigingen versturen is beschikbaar in de volledige versie.</span>
-          </span>
-          <a href="/upgrade" className="rounded-full bg-forest px-5 py-2 text-paper">Bekijk volledige versie</a>
-        </div>
-      )}
 
       <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] 2xl:grid-cols-[1.6fr_1fr] 2xl:gap-12">
         <div className="space-y-8">

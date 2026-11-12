@@ -327,7 +327,7 @@ export function Configurator({
   return (
     <>
       {/* ---------- Eigen flow-header ---------- */}
-      <header className="sticky top-0 z-30 border-b border-line bg-cream/90 backdrop-blur">
+      <header className="sticky top-[var(--banner-h,0px)] z-30 border-b border-line bg-cream/90 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-[90rem] items-center gap-3 px-4 sm:px-6 lg:px-8">
           <Link
             href="/dashboard"
@@ -709,7 +709,7 @@ export function Configurator({
 
           {/* ---------- Live voorbeeld ---------- */}
           <aside className={`lg:self-stretch ${mobileView === "edit" ? "hidden lg:block" : ""}`}>
-            <div className="card overflow-hidden lg:sticky lg:top-[5.25rem]">
+            <div className="card overflow-hidden lg:sticky lg:top-[calc(5.25rem_+_var(--banner-h,0px))]">
               <div className="flex items-center justify-between border-b border-line px-5 py-3">
                 <p className="eyebrow text-clay">Live voorbeeld{activeVariant ? ` · ${activeVariant.name}` : ""}</p>
                 <div className="flex items-center gap-0.5">
