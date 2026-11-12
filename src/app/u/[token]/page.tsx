@@ -26,8 +26,11 @@ export default async function PublicInvitationPage({ params }: { params: Promise
   const theme = applyPalette(base, validPalette(base, config.palette));
 
   return (
-    <div className="h-dvh">
-      <InvitationView config={config} theme={theme} className="h-full" />
+    // Op een telefoon vult de uitnodiging het scherm; op een breder scherm tonen we hem als telefoon.
+    <div className="h-dvh sm:grid sm:place-items-center sm:bg-sage/40 sm:p-6">
+      <div className="h-dvh overflow-hidden sm:h-[min(54rem,calc(100dvh-3rem))] sm:w-[26rem] sm:rounded-[2.25rem] sm:border-[7px] sm:border-ink/90 sm:shadow-[0_24px_60px_-24px_rgb(31_36_32/0.5)]">
+        <InvitationView config={config} theme={theme} className="h-full" />
+      </div>
     </div>
   );
 }
