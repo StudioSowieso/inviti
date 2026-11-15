@@ -5,7 +5,18 @@ import { SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase/config";
 const PROTECTED = ["/dashboard", "/gasten", "/uitnodiging", "/todo", "/instellingen", "/versturen", "/admin", "/afrekenen", "/betaald", "/upgrade"];
 const AUTH_PAGES = ["/inloggen", "/account-aanmaken"];
 
+// Paden die ook tijdens "binnenkort online" gewoon moeten werken (betaalmeldingen, themavernieuwing).
+const COMING_SOON_OPEN = ["/binnenkort", "/api/stripe/webhook", "/api/revalidate"];
+
 export async function middleware(request: NextRequest) {
+  // Staat COMING_SOON=1 (bijvoorbeeld alleen bij Production), dan toont elke pagina alleen de coming-soon-pagina.
+  if (process.env.COMING_SOON === "1" && !COMING_SOON_OPEN.some((p) => request.nextUrl.pathname.startsWith(p))) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/binnenkort";
+    url.search = "";
+    return NextResponse.rewrite(url);
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_KEY, {
