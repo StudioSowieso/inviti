@@ -40,7 +40,7 @@ export function LandingNav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-[background-color,backdrop-filter,color] duration-500 ${
-        solid ? "bg-cream/90 text-ink backdrop-blur-md" : "bg-transparent text-paper"
+        open ? "bg-cream text-ink" : solid ? "bg-cream/90 text-ink backdrop-blur-md" : "bg-transparent text-paper"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
