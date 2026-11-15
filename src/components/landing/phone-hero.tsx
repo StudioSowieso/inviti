@@ -103,7 +103,7 @@ export function PhoneHero() {
         scrollTrigger: {
           trigger: stage,
           start: "top top",
-          end: () => `+=${window.innerHeight * 3.8}`,
+          end: () => `+=${window.innerHeight * 2.8}`,
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
@@ -202,10 +202,15 @@ export function PhoneHero() {
                     <Link href="/account-aanmaken" className={CTA_PRIMARY}>
                       Begin met jullie uitnodiging <ChevronRightIcon width={16} height={16} />
                     </Link>
-                    <Link href="#zo-werkt-het" className="hidden text-sm font-medium text-paper/80 underline-offset-4 hover:text-paper hover:underline sm:inline">
+                    <Link href="/zo-werkt-het" className="hidden text-sm font-medium text-paper/80 underline-offset-4 hover:text-paper hover:underline sm:inline">
                       Zo werkt het
                     </Link>
                   </div>
+                )}
+                {i === 0 && (
+                  <p className="mt-4 text-xs text-paper/60 md:mt-5">
+                    Gratis uitproberen. Je betaalt pas als je gaat versturen.
+                  </p>
                 )}
               </div>
             </div>
@@ -259,7 +264,7 @@ function StaticHero() {
           <Link href="/account-aanmaken" className={CTA_PRIMARY}>
             Begin met jullie uitnodiging <ChevronRightIcon width={16} height={16} />
           </Link>
-          <Link href="#zo-werkt-het" className="text-sm font-medium text-paper/80 underline-offset-4 hover:underline">
+          <Link href="/zo-werkt-het" className="text-sm font-medium text-paper/80 underline-offset-4 hover:underline">
             Zo werkt het
           </Link>
         </div>
