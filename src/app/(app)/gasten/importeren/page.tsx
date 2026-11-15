@@ -4,7 +4,7 @@ import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { ImportView } from "./import-view";
 
-export const metadata: Metadata = { title: "Gasten importeren — Inviti" };
+export const metadata: Metadata = { title: "Gasten importeren — Proost Mee" };
 
 export default async function ImportPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);

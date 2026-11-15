@@ -7,7 +7,7 @@ import { pruneEmptyGroups } from "@/lib/prune-groups";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { GuestList, type Guest, type GroupInfo } from "./guest-list";
 
-export const metadata: Metadata = { title: "Gastenlijst — Inviti" };
+export const metadata: Metadata = { title: "Gastenlijst — Proost Mee" };
 
 // Op de server opgemaakt in Nederlandse tijd, zodat server en browser hetzelfde tonen.
 function formatResponded(iso: string) {

@@ -29,8 +29,8 @@ export function LandingNav() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-        <Link href="/" className="block" aria-label="Inviti">
-          <Logo className="w-28 sm:w-32" />
+        <Link href="/" className="block" aria-label="Proost Mee">
+          <Logo className="w-20 sm:w-24" />
         </Link>
         <nav className="flex items-center gap-2 text-sm">
           <Link href="/inloggen" className="rounded-full px-4 py-2 font-medium opacity-85 transition hover:opacity-100">

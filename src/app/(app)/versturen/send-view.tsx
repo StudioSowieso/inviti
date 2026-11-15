@@ -195,7 +195,7 @@ export function SendView({
         ) : (
           <>
           <p className="text-sm text-muted">
-            <strong className="font-medium text-ink">{sentCount} van {guests.length} verstuurd.</strong> Inviti kan niet zien of je een uitnodiging echt hebt verstuurd, dus vink dit zelf handmatig af per gast.
+            <strong className="font-medium text-ink">{sentCount} van {guests.length} verstuurd.</strong> Proost Mee kan niet zien of je een uitnodiging echt hebt verstuurd, dus vink dit zelf handmatig af per gast.
           </p>
           <ul className="grid gap-3 xl:grid-cols-2">
             {guests.map((g) => {

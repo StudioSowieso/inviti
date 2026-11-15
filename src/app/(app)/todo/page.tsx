@@ -5,7 +5,7 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { syncSystemTodos } from "@/lib/system-todos";
 import { TodoBoard, type Todo } from "./todo-board";
 
-export const metadata: Metadata = { title: "To do — Inviti" };
+export const metadata: Metadata = { title: "To do — Proost Mee" };
 
 export default async function TodoPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);

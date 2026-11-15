@@ -8,7 +8,7 @@ import { requirePaid } from "@/lib/billing";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { SendView, type SendGroup, type SendGuest } from "../send-view";
 
-export const metadata: Metadata = { title: "Uitnodiging versturen — Inviti" };
+export const metadata: Metadata = { title: "Uitnodiging versturen — Proost Mee" };
 
 export default async function SendInvitationPage() {
   await requirePaid();

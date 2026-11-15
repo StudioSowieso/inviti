@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getIsAdmin } from "@/lib/admin";
 
-export const metadata: Metadata = { title: "Admin — Inviti", robots: { index: false } };
+export const metadata: Metadata = { title: "Admin — Proost Mee", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 const TABS = [

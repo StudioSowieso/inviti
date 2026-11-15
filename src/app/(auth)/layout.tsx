@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <div className="relative flex h-44 items-end justify-between px-6 pb-6 sm:h-52 lg:h-full lg:flex-col lg:items-start lg:justify-between lg:p-14">
-          <Link href="/" aria-label="Inviti, terug naar de startpagina" className="block">
+          <Link href="/" aria-label="Proost Mee, terug naar de startpagina" className="block">
             <Logo className="w-32 lg:w-56" tagline />
           </Link>
 

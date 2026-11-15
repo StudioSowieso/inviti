@@ -6,7 +6,7 @@ import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { requirePaid } from "@/lib/billing";
 import { createClient, getUser } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: "Versturen — Inviti" };
+export const metadata: Metadata = { title: "Versturen — Proost Mee" };
 
 export default async function SendHubPage() {
   await requirePaid();

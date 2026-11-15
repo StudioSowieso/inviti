@@ -56,7 +56,7 @@ export async function createCheckoutSession(opts: { userId: string; email: strin
   p.set("line_items[0][quantity]", "1");
   p.set("line_items[0][price_data][currency]", "eur");
   p.set("line_items[0][price_data][unit_amount]", String(PRICE_CENTS));
-  p.set("line_items[0][price_data][product_data][name]", "Inviti — volledige versie");
+  p.set("line_items[0][price_data][product_data][name]", "Proost Mee — volledige versie");
   p.set(
     "line_items[0][price_data][product_data][description]",
     "Eenmalig. Verstuur de persoonlijke uitnodiging aan al je gasten.",

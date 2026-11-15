@@ -1,4 +1,4 @@
-# Inviti
+# Proost Mee
 
 Online bruiloftsuitnodigingen en RSVP-beheer voor bruidsparen.
 

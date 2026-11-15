@@ -7,7 +7,7 @@ import { logError } from "@/lib/log-error";
 import { billingAvailable, createCheckoutSession } from "@/lib/stripe";
 import { getUser } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: "Afrekenen — Inviti" };
+export const metadata: Metadata = { title: "Afrekenen — Proost Mee" };
 export const dynamic = "force-dynamic";
 
 /** Maakt een Stripe-betaalpagina aan en stuurt de gebruiker erheen. */

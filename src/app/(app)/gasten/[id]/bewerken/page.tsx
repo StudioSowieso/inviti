@@ -5,7 +5,7 @@ import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { GuestForm } from "../../nieuw/guest-form";
 
-export const metadata: Metadata = { title: "Gast bewerken — Inviti" };
+export const metadata: Metadata = { title: "Gast bewerken — Proost Mee" };
 
 export default async function EditGuestPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

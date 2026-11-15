@@ -5,7 +5,7 @@ import { CheckIcon } from "@/components/icons";
 import { getHasPaid } from "@/lib/billing";
 import { PRICE_LABEL } from "@/lib/stripe";
 
-export const metadata: Metadata = { title: "Volledige versie — Inviti" };
+export const metadata: Metadata = { title: "Volledige versie — Proost Mee" };
 
 const POINTS = [
   "Verstuur de persoonlijke uitnodiging aan al je gasten",

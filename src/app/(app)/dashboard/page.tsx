@@ -17,7 +17,7 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { syncSystemTodos } from "@/lib/system-todos";
 import { TodoItem } from "./todo-item";
 
-export const metadata: Metadata = { title: "Dashboard — Inviti" };
+export const metadata: Metadata = { title: "Dashboard — Proost Mee" };
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ betaald?: string }> }) {
   const [supabase, user, hasPaid, sp] = await Promise.all([createClient(), getUser(), getHasPaid(), searchParams]);

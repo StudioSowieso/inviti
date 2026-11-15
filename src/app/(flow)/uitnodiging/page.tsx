@@ -9,7 +9,7 @@ import { createClient, getUser } from "@/lib/supabase/server";
 import { createInvitation } from "./actions";
 import { Configurator } from "./configurator";
 
-export const metadata: Metadata = { title: "Uitnodiging — Inviti" };
+export const metadata: Metadata = { title: "Uitnodiging — Proost Mee" };
 
 export default async function InvitationPage({ searchParams }: { searchParams: Promise<{ v?: string; tab?: string }> }) {
   const { v, tab } = await searchParams;

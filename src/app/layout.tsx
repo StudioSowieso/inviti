@@ -14,7 +14,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Inviti — Jullie bruiloft, mooi geregeld",
+  title: "Proost Mee — Jullie bruiloft, mooi geregeld",
   description: "Verstuur online bruiloftsuitnodigingen en houd RSVP's bij.",
 };
 

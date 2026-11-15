@@ -6,7 +6,7 @@ import { logError } from "@/lib/log-error";
 import { retrieveSession } from "@/lib/stripe";
 import { getUser } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: "Betaling — Inviti" };
+export const metadata: Metadata = { title: "Betaling — Proost Mee" };
 export const dynamic = "force-dynamic";
 
 /** Stripe stuurt de klant hierheen na de betaling. We controleren de sessie bij Stripe zelf; de URL alleen is nooit genoeg. */

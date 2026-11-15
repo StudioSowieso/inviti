@@ -4,7 +4,7 @@ import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { AccountForms } from "./account-forms";
 
-export const metadata: Metadata = { title: "Account — Inviti" };
+export const metadata: Metadata = { title: "Account — Proost Mee" };
 
 export default async function AccountPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);

@@ -1,10 +1,10 @@
-# Inviti thema's in Sanity
+# Proost Mee thema's in Sanity
 
 De thema's van de uitnodiging (kleuren, lettertypes, knopvorm) staan in Sanity en zijn los van
-releases van Inviti te bewerken. Een thema aanpassen of toevoegen vraagt dus geen deploy.
+releases van Proost Mee te bewerken. Een thema aanpassen of toevoegen vraagt dus geen deploy.
 
 ```
-Sanity Studio (inviti.sanity.studio)  ──►  Sanity dataset  ──►  Inviti (Next.js) leest thema's
+Sanity Studio (inviti.sanity.studio)  ──►  Sanity dataset  ──►  Proost Mee (Next.js) leest thema's
         thema bewerken                       concept / gepubliceerd     preview: concepten
                                                                         productie: gepubliceerd
 ```
@@ -13,12 +13,12 @@ Sanity Studio (inviti.sanity.studio)  ──►  Sanity dataset  ──►  Invi
   direct, nog voordat je op *Publish* klikt.
 - **Productie** (`main`) leest alleen **gepubliceerde** thema's. Na *Publish* ververst een webhook de
   cache direct (anders na uiterlijk 1 uur).
-- Zonder Sanity-instellingen gebruikt Inviti 3 ingebouwde thema's (`src/lib/invitation/fallback-themes.ts`).
+- Zonder Sanity-instellingen gebruikt Proost Mee 3 ingebouwde thema's (`src/lib/invitation/fallback-themes.ts`).
   Ook als Sanity tijdelijk onbereikbaar is werkt alles gewoon door.
 
 ## 1. Sanity-project (al aangemaakt)
 
-- Project: **Inviti**, Project ID `98wj3rgp`, dataset `production` (publiek leesbaar).
+- Project: **Inviti** (naam in Sanity ongewijzigd), Project ID `98wj3rgp`, dataset `production` (publiek leesbaar).
 - De startthema's zijn *In alle eenvoud* (slug `creme-taupe`), *Nature*, *Leaf*, *Modern*, *Sweet* en *Lemon*. *Bosgroen & Blush* is verwijderd (in Sanity op niet-actief gezet).
 - Het thema *Nature* (slug `nature`, stijl **Natuur**) staat als **concept** in de dataset, zodat de preview-omgeving
   het al toont. Publiceer het pas nadat de code van `preview` naar `main` is gegaan; anders zou productie het

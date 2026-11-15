@@ -26,7 +26,7 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
       <Link
         href="/dashboard"
         className="flex flex-col items-center gap-1 text-forest"
-        aria-label="Inviti"
+        aria-label="Proost Mee"
       >
         <Logo className="w-[4.4rem]" />
       </Link>

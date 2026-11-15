@@ -151,7 +151,7 @@ export function PhoneHero() {
   if (mounted && reduced) return <StaticHero />;
 
   return (
-    <section id="hero" ref={root} aria-label="Inviti in vier stappen">
+    <section id="hero" ref={root} aria-label="Proost Mee in vier stappen">
       <div data-stage className="relative h-svh overflow-hidden bg-forest-deep text-paper">
         {STEPS.map((s, i) => (
           <div
@@ -252,7 +252,7 @@ export function PhoneHero() {
 /** Zonder beweging: dezelfde boodschap, gewoon onder elkaar. */
 function StaticHero() {
   return (
-    <section id="hero" aria-label="Inviti in vier stappen" className="bg-forest-deep text-paper">
+    <section id="hero" aria-label="Proost Mee in vier stappen" className="bg-forest-deep text-paper">
       <div className="mx-auto max-w-6xl px-6 pt-32 pb-10 lg:px-10">
         <h1 className="max-w-2xl font-serif text-5xl leading-[1.02] font-medium sm:text-7xl">Jullie dag, mooi geregeld.</h1>
         <div className="mt-8 flex flex-wrap items-center gap-5">

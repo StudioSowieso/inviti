@@ -16,7 +16,7 @@ export function FlowHeader({ title, backHref = "/dashboard", children }: { title
           <span className="sm:hidden">Terug</span>
         </Link>
         <div className="flex min-w-0 flex-1 items-center gap-2.5 pl-1">
-          <Logo className="hidden w-24 text-forest sm:block" />
+          <Logo className="hidden w-16 text-forest sm:block" />
           <span className="hidden h-5 w-px bg-line sm:block" />
           <h1 className="truncate font-serif text-xl font-medium">{title}</h1>
         </div>

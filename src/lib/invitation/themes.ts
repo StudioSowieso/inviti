@@ -70,7 +70,7 @@ export type ThemeResult = {
 };
 
 /**
- * Haalt de thema's op uit Sanity, los van releases van Inviti.
+ * Haalt de thema's op uit Sanity, los van releases van Proost Mee.
  * - Productie leest alleen gepubliceerde thema's (gecached, ververst via webhook of na 1 uur).
  * - Preview (SANITY_PERSPECTIVE=drafts + token) leest ook onbewerkte concepten, zonder cache.
  * Zonder Sanity-instellingen of bij een fout worden de ingebouwde thema's gebruikt.

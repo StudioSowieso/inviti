@@ -4,7 +4,7 @@ import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { GuestForm } from "./guest-form";
 
-export const metadata: Metadata = { title: "Gast toevoegen — Inviti" };
+export const metadata: Metadata = { title: "Gast toevoegen — Proost Mee" };
 
 export default async function NewGuestPage() {
   const [supabase, user] = await Promise.all([createClient(), getUser()]);

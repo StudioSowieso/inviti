@@ -18,7 +18,7 @@ import { PhoneFrame } from "@/components/landing/phone";
 import { FALLBACK_THEMES } from "@/lib/invitation/fallback-themes";
 
 export const metadata: Metadata = {
-  title: "Inviti — Digitale bruiloftsuitnodigingen en RSVP",
+  title: "Proost Mee — Digitale bruiloftsuitnodigingen en RSVP",
   description:
     "Ontwerp jullie digitale bruiloftsuitnodiging, beheer de gastenlijst en volg alle RSVP's op één rustige plek.",
 };
@@ -70,7 +70,7 @@ const features = [
   {
     icon: ListIcon,
     title: "To-do lijst met deadlines",
-    text: "Plan alles wat nog moet gebeuren en koppel het aan een persoon. Inviti vinkt zelf af wanneer de gastenlijst klaar is of de uitnodigingen zijn verstuurd.",
+    text: "Plan alles wat nog moet gebeuren en koppel het aan een persoon. Proost Mee vinkt zelf af wanneer de gastenlijst klaar is of de uitnodigingen zijn verstuurd.",
   },
 ];
 
@@ -113,7 +113,7 @@ export default function Home() {
             Een uitnodiging die voelt als het begin van het feest. Mooi om te ontvangen, makkelijk om te beheren.
           </p>
           <p data-reveal className="mx-auto mt-10 max-w-lg leading-relaxed text-ink/70">
-            Papieren kaarten zijn mooi, maar adressen, reacties en dieetwensen bijhouden is veel werk. Met Inviti
+            Papieren kaarten zijn mooi, maar adressen, reacties en dieetwensen bijhouden is veel werk. Met Proost Mee
             komt alles samen in jullie eigen dashboard.
           </p>
         </section>
@@ -184,7 +184,7 @@ export default function Home() {
                 In drie stappen van idee naar RSVP
               </h2>
               <p data-reveal className="mt-6 max-w-sm leading-relaxed text-ink/70">
-                Geen ingewikkelde tools. Jullie doen wat bij jullie past, Inviti houdt het overzicht.
+                Geen ingewikkelde tools. Jullie doen wat bij jullie past, Proost Mee houdt het overzicht.
               </p>
             </div>
             <ol className="relative pl-10 sm:pl-14">
@@ -264,7 +264,7 @@ export default function Home() {
       <footer className="bg-forest text-paper/80">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-paper/15 px-6 py-8 text-sm sm:flex-row lg:px-10">
           <Logo className="w-28 text-paper" />
-          <p>© {new Date().getFullYear()} Inviti. Jullie dag, mooi geregeld.</p>
+          <p>© {new Date().getFullYear()} Proost Mee. Jullie dag, mooi geregeld.</p>
         </div>
       </footer>
     </div>
