@@ -44,8 +44,8 @@ function PhoneScreen({ slug }: { slug: string }) {
   );
 }
 
-/** Telefoonframe; `slugs` zijn de uitnodigingen die erin gestapeld staan (de hero wisselt ze). */
-export function PhoneFrame({ slugs, className = "" }: { slugs: string[]; className?: string }) {
+/** Telefoonframe; `slugs` zijn de uitnodigingen die erin gestapeld staan. Met `active` toont hij er één en wisselt zacht. */
+export function PhoneFrame({ slugs, className = "", active }: { slugs: string[]; className?: string; active?: number }) {
   return (
     <div
       className={`relative aspect-[340/720] rounded-[15%/7%] bg-ink p-[2.6%] shadow-[0_60px_90px_-40px_rgb(0_0_0/0.65),0_0_0_1.5px_rgb(255_255_255/0.08)_inset] ${className}`}
@@ -57,7 +57,13 @@ export function PhoneFrame({ slugs, className = "" }: { slugs: string[]; classNa
             key={slug}
             data-screen
             className="pointer-events-none absolute inset-0"
-            style={i === 0 ? undefined : { opacity: 0, visibility: "hidden" }}
+            style={
+              active === undefined
+                ? i === 0
+                  ? undefined
+                  : { opacity: 0, visibility: "hidden" }
+                : { opacity: i === active ? 1 : 0, transition: "opacity 0.5s ease" }
+            }
           >
             <PhoneScreen slug={slug} />
           </div>
