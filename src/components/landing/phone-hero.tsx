@@ -41,9 +41,9 @@ const SLUGS = STEPS.map((s) => s.slug);
 const CTA_PRIMARY =
   "inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3 font-medium text-forest transition hover:bg-blush";
 
-/** Vaste kanteling van de telefoon, in graden. De muis draait hem er een stukje vanaf. */
-const TILT_BASE = -14;
-const TILT_RANGE = 9;
+/** Hoeveel de telefoon met de muis meedraait, in graden bij de rand van de hero. */
+const TILT_Y = 18;
+const TILT_X = 8;
 
 const HEADING = "font-serif text-4xl leading-[1.06] font-medium sm:text-5xl md:text-6xl";
 
@@ -72,7 +72,8 @@ export function PhoneHero() {
     const apply = () => {
       cx += (tx - cx) * 0.08;
       cy += (ty - cy) * 0.08;
-      phone.style.transform = `rotateY(${TILT_BASE + cx * TILT_RANGE}deg) rotateX(${-cy * 4}deg)`;
+      // De telefoon kijkt naar de muis: muis links = naar links gedraaid, muis rechts = naar rechts.
+      phone.style.transform = `rotateY(${-cx * TILT_Y}deg) rotateX(${-cy * TILT_X}deg)`;
       raf = Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001 ? requestAnimationFrame(apply) : 0;
     };
     const kick = () => {
@@ -148,9 +149,10 @@ export function PhoneHero() {
           <p className="mt-4 text-xs text-paper/60">Gratis uitproberen. Je betaalt pas als je gaat versturen.</p>
         </div>
 
-        <div aria-hidden className="mx-auto" style={{ perspective: "1600px" }}>
-          <div ref={tilt} className="will-change-transform" style={{ transform: `rotateY(${TILT_BASE}deg)`, transformStyle: "preserve-3d" }}>
-            <PhoneFrame slugs={SLUGS} active={active} className="h-[52svh] md:h-[min(68svh,42rem)]" />
+        <div aria-hidden className="relative mx-auto" style={{ perspective: "1600px" }}>
+          <span className="pointer-events-none absolute inset-x-6 -bottom-5 h-12 rounded-full bg-black/45 blur-2xl" />
+          <div ref={tilt} className="will-change-transform" style={{ transformStyle: "preserve-3d" }}>
+            <PhoneFrame solid slugs={SLUGS} active={active} className="h-[52svh] md:h-[min(68svh,42rem)]" />
           </div>
         </div>
 

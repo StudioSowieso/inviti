@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { InvitationView } from "@/components/invitation/invitation-view";
 import { defaultConfig } from "@/lib/invitation/defaults";
 import { FALLBACK_THEMES } from "@/lib/invitation/fallback-themes";
@@ -44,13 +44,47 @@ function PhoneScreen({ slug }: { slug: string }) {
   );
 }
 
-/** Telefoonframe; `slugs` zijn de uitnodigingen die erin gestapeld staan. Met `active` toont hij er één en wisselt zacht. */
-export function PhoneFrame({ slugs, className = "", active }: { slugs: string[]; className?: string; active?: number }) {
+const EDGE_LAYERS = 12;
+
+/**
+ * Telefoonframe; `slugs` zijn de uitnodigingen die erin gestapeld staan. Met `active` toont hij er één en wisselt zacht.
+ * Met `solid` krijgt de telefoon echte dikte (een rand van gestapelde lagen), zodat hij in 3D een zijkant heeft.
+ */
+export function PhoneFrame({
+  slugs,
+  className = "",
+  active,
+  solid = false,
+}: {
+  slugs: string[];
+  className?: string;
+  active?: number;
+  solid?: boolean;
+}) {
+  const style: CSSProperties & Record<string, string> = { transformStyle: "preserve-3d" };
+  if (solid) style["--phone-depth"] = "1.6rem";
+
   return (
     <div
-      className={`relative aspect-[340/720] rounded-[15%/7%] bg-ink p-[2.6%] shadow-[0_60px_90px_-40px_rgb(0_0_0/0.65),0_0_0_1.5px_rgb(255_255_255/0.08)_inset] ${className}`}
-      style={{ transformStyle: "preserve-3d" }}
+      className={`relative aspect-[340/720] rounded-[15%/7%] bg-ink p-[2.6%] ${
+        solid
+          ? "shadow-[0_0_0_1.5px_rgb(255_255_255/0.08)_inset]"
+          : "shadow-[0_60px_90px_-40px_rgb(0_0_0/0.65),0_0_0_1.5px_rgb(255_255_255/0.08)_inset]"
+      } ${className}`}
+      style={style}
     >
+      {solid &&
+        Array.from({ length: EDGE_LAYERS }, (_, i) => (
+          <span
+            key={i}
+            aria-hidden
+            className="pointer-events-none absolute inset-0 rounded-[inherit]"
+            style={{
+              transform: `translateZ(calc(var(--phone-depth) * ${-(i + 1) / EDGE_LAYERS}))`,
+              background: `hsl(140 5% ${36 - i * 2.4}%)`,
+            }}
+          />
+        ))}
       <div className="relative h-full w-full overflow-hidden rounded-[12%/5.6%] bg-paper">
         {slugs.map((slug, i) => (
           <div
