@@ -9,24 +9,28 @@ const STEPS = [
   {
     slug: "leaf",
     glow: "#8c9b78",
-    title: "Een uitnodiging met openingsanimatie",
-    text: "Elke uitnodiging opent met een animatie, per thema een eigen envelop. Het eerste moment is meteen een cadeautje voor jullie gasten.",
+    label: "Uitnodiging",
+    title: "Jullie dag, mooi geregeld.",
+    text: "Ontwerp een persoonlijke digitale uitnodiging, beheer jullie gastenlijst en houd alle RSVP's bij op één rustige plek. Zodat jullie aandacht naar elkaar kan gaan.",
   },
   {
     slug: "sweet",
     glow: "#e6a7b4",
+    label: "Website",
     title: "Eigen bruiloftswebsite",
     text: "Elke uitnodiging is meteen een website met jullie verhaal, programma, locatie en dresscode. Eén link, alles erop.",
   },
   {
     slug: "gastenlijst",
     glow: "#e8c764",
+    label: "Gastenlijst",
     title: "Makkelijk gasten beheren",
     text: "Voeg gasten toe of importeer ze, deel ze in groepen in en zie wie komt. Plus-één en dieetwensen staan bij de juiste persoon.",
   },
   {
     slug: "modern",
     glow: "#b9ae9d",
+    label: "Versturen",
     title: "Uitnodigingen versturen",
     text: "Stuur elke gast een persoonlijke link via WhatsApp of mail, of maak één link per groep die je zelf deelt.",
   },
@@ -37,9 +41,11 @@ const SLUGS = STEPS.map((s) => s.slug);
 const CTA_PRIMARY =
   "inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3 font-medium text-forest transition hover:bg-blush";
 
+const HEADING = "font-serif text-4xl leading-[1.06] font-medium sm:text-5xl md:text-6xl";
+
 /**
- * Hero zonder scroll-effecten: een gewone sectie waarin je zelf een onderdeel kiest,
- * waarna de telefoon meewisselt.
+ * Hero zonder scroll-effecten. Rechts kies je een onderdeel, links past de tekst zich aan
+ * en de telefoon wisselt mee.
  */
 export function PhoneHero() {
   const [active, setActive] = useState(0);
@@ -55,21 +61,32 @@ export function PhoneHero() {
         />
       ))}
 
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-1/2 hidden h-[92%] w-[min(44vw,34rem)] -translate-x-1/2 rounded-t-full border border-b-0 border-paper/15 md:block"
-      />
-
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pt-32 pb-16 md:min-h-svh md:grid-cols-[1fr_auto_1fr] md:gap-10 md:py-28 lg:px-10">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 pt-32 pb-16 md:min-h-svh md:grid-cols-[1fr_auto_1fr] md:gap-12 md:py-28 lg:px-10">
+        {/* Tekst, past zich aan op de gekozen stap */}
         <div className="text-center md:text-left">
           <p className="eyebrow flex items-center justify-center gap-2 text-blush/80 md:justify-start">
             Digitale bruiloftsuitnodigingen <Sparkle width={9} height={9} />
           </p>
-          <h1 className="mt-4 font-serif text-5xl leading-[1.04] font-medium md:text-6xl">Jullie dag, mooi geregeld.</h1>
-          <p className="mx-auto mt-5 max-w-md leading-relaxed text-paper/75 md:mx-0">
-            Ontwerp een persoonlijke digitale uitnodiging, beheer jullie gastenlijst en houd alle RSVP&apos;s bij op één rustige
-            plek. Zodat jullie aandacht naar elkaar kan gaan.
-          </p>
+
+          <div className="mt-4 grid">
+            {STEPS.map((s, i) => {
+              const on = i === active;
+              const Heading = i === 0 ? "h1" : "h2";
+              return (
+                <div
+                  key={s.slug}
+                  aria-hidden={!on}
+                  className={`col-start-1 row-start-1 transition-opacity duration-500 motion-reduce:transition-none ${
+                    on ? "opacity-100" : "pointer-events-none opacity-0"
+                  }`}
+                >
+                  <Heading className={HEADING}>{s.title}</Heading>
+                  <p className="mx-auto mt-5 max-w-md leading-relaxed text-paper/75 md:mx-0">{s.text}</p>
+                </div>
+              );
+            })}
+          </div>
+
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 md:justify-start">
             <Link href="/account-aanmaken" className={CTA_PRIMARY}>
               Begin met jullie uitnodiging <ChevronRightIcon width={16} height={16} />
@@ -85,7 +102,8 @@ export function PhoneHero() {
           <PhoneFrame slugs={SLUGS} active={active} className="h-[52svh] md:h-[min(68svh,42rem)]" />
         </div>
 
-        <ul className="divide-y divide-paper/15 border-y border-paper/15">
+        {/* Keuze: alleen titels */}
+        <ul aria-label="Kies een onderdeel" className="flex justify-center gap-x-6 gap-y-2 max-md:flex-wrap md:flex-col md:items-start md:gap-1">
           {STEPS.map((s, i) => {
             const on = i === active;
             return (
@@ -94,23 +112,13 @@ export function PhoneHero() {
                   type="button"
                   aria-pressed={on}
                   onClick={() => setActive(i)}
-                  className={`flex w-full items-center justify-between gap-4 py-4 text-left font-serif text-2xl leading-tight font-medium transition-opacity motion-reduce:transition-none ${
-                    on ? "opacity-100" : "opacity-60 hover:opacity-100"
+                  className={`flex items-center gap-3 py-1.5 font-serif text-2xl font-medium transition-opacity motion-reduce:transition-none ${
+                    on ? "opacity-100" : "opacity-50 hover:opacity-100"
                   }`}
                 >
-                  {s.title}
-                  <span aria-hidden className={`size-2 shrink-0 rounded-full transition-colors ${on ? "bg-blush" : "bg-paper/25"}`} />
+                  <span aria-hidden className={`h-px bg-blush transition-all duration-500 motion-reduce:transition-none ${on ? "w-8" : "w-0 md:w-3"}`} />
+                  {s.label}
                 </button>
-                <div
-                  aria-hidden={!on}
-                  className={`grid transition-[grid-template-rows] duration-500 motion-reduce:transition-none ${
-                    on ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p className="max-w-sm pb-5 text-[0.95rem] leading-relaxed text-paper/75">{s.text}</p>
-                  </div>
-                </div>
               </li>
             );
           })}
