@@ -299,3 +299,8 @@ summary::-webkit-details-marker {
     radial-gradient(35% 40% at 85% 90%, rgb(238 107 74 / 0.28), transparent 70%),
     radial-gradient(35% 40% at 10% 10%, rgb(247 170 190 / 0.22), transparent 70%) !important;
 }
+
+/* Hero-kop iets kleiner in de bordeaux-uitvoering. */
+.brand-wine #hero h1 {
+  font-size: clamp(2.6rem, 6.4vw, 5.75rem);
+}
