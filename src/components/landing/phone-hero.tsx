@@ -21,7 +21,7 @@ const CARDS: Card[] = [
 ];
 const N = CARDS.length;
 /** Afstand tussen twee items, in stage-eenheden (u). */
-const STEP = 16.5;
+const STEP = 17.5;
 
 const Phone = memo(function Phone({ slug }: { slug: string }) {
   return <PhoneFrame slugs={[slug]} className="w-full" />;
@@ -133,6 +133,8 @@ export function PhoneHero() {
     animateTo(Math.round(posRef.current + g.v * 220));
   };
 
+  const active = ((Math.round(pos) % N) + N) % N;
+
   return (
     <section
       id="hero"
@@ -182,10 +184,21 @@ export function PhoneHero() {
         onPointerCancel={onUp}
         className="relative mt-10 h-[37em] cursor-grab touch-pan-y text-[clamp(0.6rem,1.05vw,0.9rem)] select-none active:cursor-grabbing md:mt-14"
       >
+        {/* Telefoon: staat vast in het midden en toont het item dat daar op dit moment staat */}
+        <div className="pointer-events-none absolute top-1/2 left-1/2 z-30 w-[17em] -translate-x-1/2 -translate-y-1/2">
+          <div className="relative aspect-[340/720]">
+            {CARDS.map((c, i) => (
+              <div key={c.slug} className="absolute inset-0" style={{ opacity: i === active ? 1 : 0 }}>
+                <Phone slug={c.slug} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Kaarten schuiven langs de telefoon; bij het midden gaan ze op in de telefoon */}
         {CARDS.map((c, i) => {
           const d = wrap(i, pos);
           const ad = Math.abs(d);
-          const t = Math.max(0, 1 - ad * 1.6); // 1 = telefoon, 0 = kaart
           const tilt = Math.max(-27, Math.min(27, -d * 9));
           return (
             <div
@@ -195,22 +208,14 @@ export function PhoneHero() {
                 const target = Math.round(posRef.current + d);
                 if (Math.round(posRef.current) !== target) animateTo(target);
               }}
-              className="absolute top-0 left-1/2 h-full w-[17em]"
+              className="absolute top-1/2 left-1/2 w-[15em]"
               style={{
-                transform: `translateX(calc(-50% + ${d * STEP}em)) perspective(1100px) rotateY(${tilt}deg)`,
+                transform: `translate(calc(-50% + ${d * STEP}em), -50%) perspective(1100px) rotateY(${tilt}deg)`,
                 zIndex: 20 - Math.round(ad * 2),
-                opacity: Math.max(0, Math.min(1, 4.4 - ad)),
+                opacity: Math.min(1, Math.max(0, ad * 2.4 - 0.3), Math.max(0, 4.4 - ad)),
               }}
             >
-              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2" style={{ opacity: t }}>
-                <Phone slug={c.slug} />
-              </div>
-              <div
-                className="absolute top-1/2 left-1/2 w-[15em] -translate-x-1/2 -translate-y-1/2"
-                style={{ opacity: 1 - t, transform: `translate(-50%, -50%) scale(${1 - t * 0.1})` }}
-              >
-                <Shot slug={c.slug} label={c.label} />
-              </div>
+              <Shot slug={c.slug} label={c.label} />
             </div>
           );
         })}
