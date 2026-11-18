@@ -33,14 +33,14 @@ export default function ThemasPage() {
               <figure
                 key={t.slug}
                 data-card
-                className={`w-[min(17rem,calc((100svh-15rem)*0.47))] shrink-0 ${i % 2 ? "mt-8" : ""}`}
+                className={`w-[min(17rem,calc((86svh-11rem)*0.47))] shrink-0 ${i % 2 ? "mt-8" : ""}`}
               >
                 <div aria-hidden>
                   <PhoneFrame slugs={[t.slug]} className="w-full" />
                 </div>
                 <figcaption className="mt-4">
                   <span className="block font-serif text-2xl font-medium">{t.title}</span>
-                  <span className="mt-1 block text-sm leading-snug text-ink/65">{t.description}</span>
+                  <span className="mt-1 line-clamp-3 text-sm leading-snug text-ink/65">{t.description}</span>
                 </figcaption>
               </figure>
             ))}
