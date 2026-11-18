@@ -51,7 +51,7 @@ const TILT_X = 8;
 
 /** Groot woord in de kop, met een zachte streek in blush eronder. */
 const BIG =
-  "relative isolate inline-block font-serif font-semibold uppercase leading-[0.95] tracking-tight text-forest text-[clamp(2.9rem,13vw,5rem)] md:text-[clamp(3.2rem,7vw,7rem)]";
+  "relative isolate inline-block font-serif font-semibold uppercase leading-[0.95] tracking-tight text-forest text-[clamp(2.9rem,13vw,5rem)] md:text-[clamp(3rem,5.6vw,6.25rem)]";
 
 function Stroke({ className = "bg-blush" }: { className?: string }) {
   return (
@@ -165,7 +165,7 @@ export function PhoneHero() {
           ))}
 
           <div
-            className="relative grid gap-8 px-6 pt-32 pb-8 md:min-h-[27rem] md:grid-cols-[1fr_clamp(11rem,20vw,17rem)_1fr] md:gap-10 md:px-12 md:py-12"
+            className="relative grid gap-8 px-6 pt-32 pb-8 md:min-h-[25rem] md:grid-cols-[1fr_clamp(11rem,20vw,17rem)_1fr] md:gap-10 md:px-12 md:py-10"
           >
             {/* Links: tekst bij de gekozen stap */}
             <div>
