@@ -21,7 +21,7 @@ export function LandingNav({ brand = "classic" }: { brand?: "classic" | "wine" }
     <header className={`fixed inset-x-0 top-0 z-40 text-ink ${open ? "bg-cream" : "bg-cream/90 backdrop-blur-md"}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
         <Link href="/" className="block" aria-label="Proost Mee, naar de homepage" onClick={() => setOpen(false)}>
-          {brand === "wine" ? <WineLogo className="text-forest text-lg sm:text-xl" /> : <Logo className="w-20 sm:w-24" />}
+          {brand === "wine" ? <WineLogo className="w-32 text-forest sm:w-40" /> : <Logo className="w-20 sm:w-24" />}
         </Link>
 
         <nav aria-label="Hoofdmenu" className="hidden items-center gap-9 text-sm md:flex">

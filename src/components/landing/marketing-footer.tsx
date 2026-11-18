@@ -25,7 +25,7 @@ export function MarketingFooter({ brand = "classic" }: { brand?: "classic" | "wi
     <footer className="bg-forest text-paper/80">
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-14 sm:grid-cols-[1.4fr_1fr_1fr] lg:px-10">
         <div>
-          {brand === "wine" ? <WineLogo className="text-xl text-paper" /> : <Logo className="w-28 text-paper" />}
+          {brand === "wine" ? <WineLogo className="w-44 text-paper" /> : <Logo className="w-28 text-paper" />}
           <p className="mt-5 max-w-xs text-sm leading-relaxed">
             Digitale bruiloftsuitnodigingen en RSVP, mooi geregeld op één plek.
           </p>

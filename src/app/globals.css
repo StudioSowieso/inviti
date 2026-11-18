@@ -252,3 +252,50 @@ summary::-webkit-details-marker {
     radial-gradient(50% 40% at 10% 70%, rgb(247 210 214 / 0.9), transparent 70%),
     linear-gradient(180deg, #fdeee9, #fae6e0);
 }
+
+/* Glaseffect: doorschijnende vlakken met blur over zachte kleurvlekken. */
+.brand-wine header:not(.bg-cream) {
+  background: rgb(253 244 240 / 0.5);
+  backdrop-filter: blur(22px) saturate(1.5);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  border-bottom: 1px solid rgb(255 255 255 / 0.55);
+}
+
+.brand-wine .card {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.18));
+  border: 1px solid rgb(255 255 255 / 0.7);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  box-shadow:
+    0 18px 50px -20px rgb(123 15 55 / 0.35),
+    inset 0 1px 0 rgb(255 255 255 / 0.8);
+}
+
+.brand-wine .hero-pill {
+  background: rgb(255 255 255 / 0.6);
+  border: 1px solid rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.brand-wine .glass-btn {
+  background: rgb(255 255 255 / 0.45);
+  border: 1px solid rgb(255 255 255 / 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.brand-wine #hero .shot {
+  border: 1px solid rgb(255 255 255 / 0.8);
+  box-shadow:
+    0 24px 50px -22px rgb(123 15 55 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.9);
+}
+
+.brand-wine [data-arch] > div[aria-hidden] {
+  opacity: 1;
+  background-image:
+    radial-gradient(60% 55% at 50% 45%, rgb(255 255 255 / 0.16), transparent 70%),
+    radial-gradient(35% 40% at 85% 90%, rgb(238 107 74 / 0.28), transparent 70%),
+    radial-gradient(35% 40% at 10% 10%, rgb(247 170 190 / 0.22), transparent 70%) !important;
+}

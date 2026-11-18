@@ -30,7 +30,7 @@ const Phone = memo(function Phone({ slug }: { slug: string }) {
 const Shot = memo(function Shot({ slug, label }: { slug: string; label: string }) {
   return (
     <div className="relative">
-      <ScreenCard slug={slug} className="w-full border border-line/70 shadow-[0_24px_40px_-20px_rgb(31_36_32/0.4)]" />
+      <ScreenCard slug={slug} className="shot w-full border border-line/70 shadow-[0_24px_40px_-20px_rgb(31_36_32/0.4)]" />
       <span className="absolute bottom-3 left-3 rounded-full bg-paper px-3 py-1 text-[11px] font-medium whitespace-nowrap text-forest shadow">
         {label}
       </span>
@@ -258,7 +258,7 @@ export function PhoneHero() {
           type="button"
           onClick={() => go(-1)}
           aria-label="Vorige"
-          className="grid h-11 w-11 place-items-center rounded-full border border-forest/25 bg-paper text-forest transition hover:bg-forest hover:text-paper"
+          className="glass-btn grid h-11 w-11 place-items-center rounded-full border border-forest/25 bg-paper text-forest transition hover:bg-forest hover:text-paper"
         >
           <ChevronRightIcon width={18} height={18} className="rotate-180" />
         </button>
@@ -266,7 +266,7 @@ export function PhoneHero() {
           type="button"
           onClick={() => go(1)}
           aria-label="Volgende"
-          className="grid h-11 w-11 place-items-center rounded-full border border-forest/25 bg-paper text-forest transition hover:bg-forest hover:text-paper"
+          className="glass-btn grid h-11 w-11 place-items-center rounded-full border border-forest/25 bg-paper text-forest transition hover:bg-forest hover:text-paper"
         >
           <ChevronRightIcon width={18} height={18} />
         </button>
