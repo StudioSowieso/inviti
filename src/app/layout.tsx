@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Cormorant_Garamond, Jost } from "next/font/google";
+import { Caveat, Cormorant_Garamond, Jost, Outfit } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -12,6 +12,11 @@ const caveat = Caveat({
   subsets: ["latin"],
   weight: ["500"],
   variable: "--font-caveat",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
 });
 
 const jost = Jost({
@@ -30,7 +35,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl" className={`${cormorant.variable} ${jost.variable} ${caveat.variable}`}>
+    <html lang="nl" className={`${cormorant.variable} ${jost.variable} ${caveat.variable} ${outfit.variable}`}>
       <body className="min-h-dvh">{children}</body>
     </html>
   );

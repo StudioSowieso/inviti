@@ -205,3 +205,50 @@ summary::-webkit-details-marker {
   .inv-float:nth-of-type(3n) { animation-duration: 5.2s; animation-delay: -3.5s; }
   .inv-float:nth-of-type(4n) { animation-duration: 8.2s; animation-delay: -1s; }
 }
+
+
+/* Tweede uitvoering van de voorkant: bordeaux, roze en oranje met Outfit (pagina /kleur). */
+.brand-wine {
+  --color-cream: #fbebe6;
+  --color-paper: #fdf4f0;
+  --color-line: #f0d4cb;
+  --color-forest: #7b0f37;
+  --color-forest-deep: #5c0a29;
+  --color-sage: #f6dfd3;
+  --color-clay: #ee6b4a;
+  --color-blush: #f7d2d6;
+  --color-ink: #6e0c31;
+  --color-muted: #a8697c;
+  --font-serif: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.brand-wine .font-serif {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.brand-wine .italic {
+  font-style: normal;
+}
+
+.brand-wine .font-hand {
+  color: var(--color-forest);
+}
+
+.brand-wine .hero-pill {
+  background: #fff;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.brand-wine #hero {
+  background-image:
+    radial-gradient(55% 45% at 85% 45%, rgb(238 107 74 / 0.16), transparent 70%),
+    radial-gradient(50% 40% at 10% 70%, rgb(247 210 214 / 0.9), transparent 70%),
+    linear-gradient(180deg, #fdeee9, #fae6e0);
+}

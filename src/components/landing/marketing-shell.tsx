@@ -4,14 +4,20 @@ import { ScrollFx } from "./scroll-fx";
 import { SmoothScroll } from "./smooth-scroll";
 
 /** Gedeelde omlijsting van alle publieke pagina's: menu, scrolleffecten en footer. */
-export function MarketingShell({ children }: { children: React.ReactNode }) {
+export function MarketingShell({
+  children,
+  brand = "classic",
+}: {
+  children: React.ReactNode;
+  brand?: "classic" | "wine";
+}) {
   return (
-    <div className="min-h-dvh overflow-x-clip">
+    <div className={`min-h-dvh overflow-x-clip ${brand === "wine" ? "brand-wine" : ""}`}>
       <SmoothScroll />
       <ScrollFx />
-      <LandingNav />
+      <LandingNav brand={brand} />
       <main>{children}</main>
-      <MarketingFooter />
+      <MarketingFooter brand={brand} />
     </div>
   );
 }

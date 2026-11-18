@@ -171,7 +171,7 @@ export function PhoneHero() {
       aria-label="Proost Mee"
       className="overflow-hidden bg-gradient-to-b from-blush/70 to-cream px-4 pt-28 pb-12 text-center md:pt-32"
     >
-      <p className="mx-auto inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 text-sm text-forest">
+      <p className="hero-pill mx-auto inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 text-sm text-forest">
         <Sparkle width={11} height={11} className="text-clay" />
         Digitale bruiloftsuitnodigingen
       </p>
