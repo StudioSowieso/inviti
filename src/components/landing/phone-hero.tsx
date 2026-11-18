@@ -73,6 +73,8 @@ export function PhoneHero() {
   const posRef = useRef(0);
   const raf = useRef(0);
   const stage = useRef<HTMLDivElement>(null);
+  const dragged = useRef(false);
+  const wheelTimer = useRef(0);
   const drag = useRef<{ x: number; start: number; moved: boolean; lastX: number; lastT: number; v: number } | null>(null);
 
   const set = useCallback((v: number) => {
@@ -119,18 +121,30 @@ export function PhoneHero() {
 
   const go = (dir: number) => stopAuto() ?? animateTo(Math.round(posRef.current) + dir);
 
+  // Zijwaarts scrollen (trackpad) schuift de rij mee en rondt af op het dichtstbijzijnde item.
+  const onWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    stopAuto();
+    cancelAnimationFrame(raf.current);
+    set(posRef.current + e.deltaX / stepPx());
+    window.clearTimeout(wheelTimer.current);
+    wheelTimer.current = window.setTimeout(() => animateTo(Math.round(posRef.current)), 140);
+  };
+
   const onDown = (e: React.PointerEvent) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     stopAuto();
     cancelAnimationFrame(raf.current);
     drag.current = { x: e.clientX, start: posRef.current, moved: false, lastX: e.clientX, lastT: performance.now(), v: 0 };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
   const onMove = (e: React.PointerEvent) => {
     const g = drag.current;
     if (!g) return;
     const dx = e.clientX - g.x;
-    if (Math.abs(dx) > 5) g.moved = true;
+    if (!g.moved && Math.abs(dx) > 5) {
+      g.moved = true;
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    }
     if (!g.moved) return;
     const sp = stepPx();
     const now = performance.now();
@@ -144,6 +158,8 @@ export function PhoneHero() {
     const g = drag.current;
     drag.current = null;
     if (!g || !g.moved) return;
+    dragged.current = true;
+    window.setTimeout(() => (dragged.current = false), 60);
     animateTo(Math.round(posRef.current + g.v * 220));
   };
 
@@ -192,6 +208,7 @@ export function PhoneHero() {
           if (e.key === "ArrowRight") go(1);
           if (e.key === "ArrowLeft") go(-1);
         }}
+        onWheel={onWheel}
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
@@ -218,7 +235,7 @@ export function PhoneHero() {
             <div
               key={c.slug}
               onClick={() => {
-                if (drag.current?.moved) return;
+                if (dragged.current) return;
                 stopAuto();
                 const target = Math.round(posRef.current + d);
                 if (Math.round(posRef.current) !== target) animateTo(target);
