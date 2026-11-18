@@ -48,7 +48,7 @@ export function HomeContent({ brand = "classic" }: { brand?: "classic" | "wine" 
       </section>
 
       {/* Lopende band */}
-      <section aria-label="Wat je krijgt" className="marquee-band overflow-hidden border-y border-forest/15 bg-sage/60 py-8 sm:py-10">
+      <section aria-label="Wat je krijgt" className="overflow-hidden border-y border-forest/15 bg-sage/60 py-8 sm:py-10">
         <div data-marquee className="flex w-max items-center whitespace-nowrap">
           {[0, 1].map((k) => (
             <div key={k} aria-hidden={k === 1} className="flex items-center">
@@ -81,7 +81,7 @@ export function HomeContent({ brand = "classic" }: { brand?: "classic" | "wine" 
               key={t.href}
               href={t.href}
               data-card
-              className="card tile group flex flex-col p-8 transition-colors hover:border-clay/60"
+              className="card group flex flex-col p-8 transition-colors hover:border-clay/60"
             >
               <h3 className="font-serif text-3xl leading-tight font-medium">{t.title}</h3>
               <p className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-ink/70">{t.text}</p>
