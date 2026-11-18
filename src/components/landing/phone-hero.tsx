@@ -81,12 +81,11 @@ export function PhoneHero() {
   }, []);
 
   const animateTo = useCallback(
-    (target: number) => {
+    (target: number, dur = 750) => {
       cancelAnimationFrame(raf.current);
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return set(target);
       const from = posRef.current;
       const t0 = performance.now();
-      const dur = 450;
       const tick = (now: number) => {
         const k = Math.min(1, (now - t0) / dur);
         set(from + (target - from) * (1 - Math.pow(1 - k, 3)));
@@ -99,7 +98,7 @@ export function PhoneHero() {
 
   useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
-  // De eerste 5 seconden loopt de rij rustig een paar keer vanzelf door, tot iemand hem aanraakt.
+  // De eerste 20 seconden loopt de rij rustig vanzelf door, elke 3 seconden een stap, tot iemand hem aanraakt.
   const auto = useRef<number[]>([]);
   const stopAuto = useCallback(() => {
     auto.current.forEach(clearTimeout);
@@ -107,8 +106,8 @@ export function PhoneHero() {
   }, []);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    auto.current = [900, 2300, 3700].map((ms) =>
-      window.setTimeout(() => animateTo(Math.round(posRef.current) + 1), ms),
+    auto.current = [1500, 4500, 7500, 10500, 13500, 16500, 19500].map((ms) =>
+      window.setTimeout(() => animateTo(Math.round(posRef.current) + 1, 1300), ms),
     );
     return stopAuto;
   }, [animateTo, stopAuto]);
