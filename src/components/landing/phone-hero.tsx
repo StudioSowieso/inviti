@@ -1,22 +1,20 @@
 import Link from "next/link";
 import { ChevronRightIcon, Sparkle } from "@/components/icons";
-import { ScreenCard } from "./phone";
+import { PhoneFrame, ScreenCard } from "./phone";
 
-type Card = { slug: string };
+type Card = { slug: string; label?: string; phone?: boolean };
 
-/** Voorbeelden in de rij: uitnodigingsontwerpen en schermen uit de backoffice, om en om. */
+/** Rij met voorbeelden: in het midden een telefoon, aan weerszijden ontwerpen en schermen uit de backoffice. */
 const CARDS: Card[] = [
-  { slug: "todo" },
-  { slug: "modern" },
-  { slug: "gastenlijst" },
-  { slug: "sweet" },
-  { slug: "leaf" },
-  { slug: "dashboard" },
-  { slug: "lemon" },
-  { slug: "versturen" },
-  { slug: "flowers" },
+  { slug: "modern", label: "Modern" },
+  { slug: "sweet", label: "Uitnodiging" },
+  { slug: "gastenlijst", label: "Gastenlijst" },
+  { slug: "leaf", phone: true },
+  { slug: "dashboard", label: "Dashboard" },
+  { slug: "versturen", label: "Versturen" },
+  { slug: "lemon", label: "Lemon" },
 ];
-const CENTER = 4;
+const CENTER = 3;
 
 /** Handgetekende pijl, voor de notities. */
 function Arrow({ className = "" }: { className?: string }) {
@@ -38,83 +36,91 @@ function Arrow({ className = "" }: { className?: string }) {
 }
 
 /**
- * Hero zonder scroll- of muiseffecten: gecentreerde kop in een omrande kaart op een zachte
- * kleurverloop-achtergrond, met daaronder een waaier van uitnodigingen en backoffice-schermen.
+ * Hero zonder scroll- of muiseffecten: grote kop, daaronder een rij met een telefoon in het midden
+ * en aan weerszijden kaarten die naar het midden kijken en buiten beeld doorlopen.
  */
 export function PhoneHero() {
   return (
     <section
       id="hero"
       aria-label="Proost Mee"
-      className="bg-[radial-gradient(120%_80%_at_15%_0%,var(--color-sage)_0%,transparent_55%),radial-gradient(110%_80%_at_95%_100%,var(--color-clay)_0%,transparent_60%),linear-gradient(180deg,var(--color-blush),var(--color-cream))] px-3 pt-24 pb-8 sm:px-6 md:pb-12"
+      className="overflow-hidden bg-gradient-to-b from-blush/70 to-cream px-4 pt-28 pb-12 text-center md:pt-32"
     >
-      <div className="relative mx-auto max-w-[88rem] overflow-hidden rounded-[2rem] border-[10px] border-paper bg-cream px-4 pt-8 pb-8 text-center shadow-[0_30px_70px_-30px_rgb(44_56_47/0.45)] md:rounded-[2.75rem] md:border-[14px] md:pt-10">
-        <p className="mx-auto inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 text-sm text-forest">
-          <Sparkle width={11} height={11} className="text-clay" />
-          Gratis uitproberen, betaal pas bij het versturen
-        </p>
+      <p className="mx-auto inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 text-sm text-forest">
+        <Sparkle width={11} height={11} className="text-clay" />
+        Digitale bruiloftsuitnodigingen
+      </p>
 
-        <h1 className="mx-auto mt-4 max-w-4xl font-serif text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.02] font-medium tracking-tight text-forest">
+      <div className="relative mx-auto max-w-5xl">
+        <h1 className="mt-5 font-serif text-[clamp(3.25rem,8.5vw,7.5rem)] leading-[0.98] font-medium tracking-tight text-forest">
           Jullie dag,
           <br />
           <span className="italic">mooi geregeld.</span>
         </h1>
 
-        <p className="mx-auto mt-4 max-w-xl leading-relaxed text-ink/70">
+        <p className="mx-auto mt-6 max-w-xl leading-relaxed text-ink/70">
           Ontwerp een persoonlijke digitale uitnodiging, beheer jullie gastenlijst en houd alle RSVP&apos;s bij op één rustige plek.
         </p>
 
-        {/* Notitie rechtsboven, wijst naar de rij */}
+        {/* Notitie rechts van de kop */}
         <div
           aria-hidden
-          className="pointer-events-none absolute top-[8rem] right-[5%] hidden -rotate-6 text-clay lg:block"
+          className="pointer-events-none absolute top-[2.5rem] right-0 hidden -rotate-6 text-clay lg:block"
         >
-          <p className="font-hand text-2xl leading-[1.05]">
-            Jullie uitnodiging,
-            <br />
-            jullie stijl
-          </p>
-          <Arrow className="mt-1 ml-10 h-12 w-16 rotate-[78deg]" />
-        </div>
-
-        {/* Waaier met voorbeelden */}
-        <div className="relative mt-4 overflow-hidden pt-2 pb-10">
-          <div className="relative left-1/2 flex w-max -translate-x-1/2 items-start gap-3 md:gap-5">
-            {CARDS.map((c, i) => {
-              const d = i - CENTER;
-              return (
-                <div
-                  key={c.slug}
-                  aria-hidden
-                  className="w-[clamp(8.5rem,13.5vw,12.5rem)] shrink-0"
-                  style={{ transform: `translateY(${d * d * 9}px) rotate(${d * 4.5}deg)` }}
-                >
-                  <ScreenCard
-                    slug={c.slug}
-                    className="w-full border-[5px] border-paper shadow-[0_18px_34px_-14px_rgb(31_36_32/0.35)]"
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Knop met notitie */}
-        <div className="mt-2 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-6">
-          <div aria-hidden className="pointer-events-none hidden items-center justify-end gap-2 text-clay md:flex">
-            <p className="-rotate-6 font-hand text-2xl leading-none">Eerst gratis proberen</p>
-            <Arrow className="h-9 w-14 rotate-[18deg]" />
-          </div>
-          <span className="inline-block rounded-full border-2 border-dashed border-forest/35 p-1.5">
-            <Link
-              href="/account-aanmaken"
-              className="inline-flex items-center gap-2 rounded-full bg-forest px-7 py-3.5 font-medium text-paper transition hover:bg-forest-deep"
-            >
-              Begin met jullie uitnodiging <ChevronRightIcon width={16} height={16} />
-            </Link>
-          </span>
+          <p className="font-hand text-3xl leading-none">Kies een onderdeel</p>
+          <Arrow className="mt-1 ml-16 h-12 w-16 rotate-[20deg]" />
         </div>
       </div>
+
+      {/* Rij met voorbeelden */}
+      <div className="relative mt-10 md:mt-14">
+        <div className="relative left-1/2 flex w-max -translate-x-1/2 items-center gap-2 md:gap-4">
+          {CARDS.map((c, i) => {
+            const d = i - CENTER;
+            const tilt = c.phone ? 0 : -d * 9;
+            return (
+              <div
+                key={c.slug}
+                aria-hidden
+                className={`shrink-0 ${
+                  c.phone ? "w-[clamp(9.5rem,17vw,15rem)]" : "w-[clamp(8rem,15vw,13rem)]"
+                }`}
+                style={{ transform: `perspective(1100px) rotateY(${tilt}deg)` }}
+              >
+                {c.phone ? (
+                  <PhoneFrame slugs={[c.slug]} className="w-full" />
+                ) : (
+                  <div className="relative">
+                    <ScreenCard
+                      slug={c.slug}
+                      className="w-full border border-line/70 shadow-[0_24px_40px_-20px_rgb(31_36_32/0.4)]"
+                    />
+                    <span className="absolute bottom-3 left-3 rounded-full bg-paper px-3 py-1 text-[11px] font-medium whitespace-nowrap text-forest shadow">
+                      {c.label}
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Knoppen */}
+      <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-6">
+        <span className="inline-block rounded-full border-2 border-dashed border-forest/35 p-1.5">
+          <Link
+            href="/account-aanmaken"
+            className="inline-flex items-center gap-2 rounded-full bg-forest px-7 py-3.5 font-medium text-paper transition hover:bg-forest-deep"
+          >
+            Begin met jullie uitnodiging <ChevronRightIcon width={16} height={16} />
+          </Link>
+        </span>
+        <Link href="/zo-werkt-het" className="font-medium text-forest hover:underline">
+          Zo werkt het
+        </Link>
+      </div>
+      <p className="mt-4 text-sm text-ink/60">Gratis uitproberen, je betaalt pas als je gaat versturen.</p>
     </section>
   );
 }
