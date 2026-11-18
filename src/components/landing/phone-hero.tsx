@@ -111,7 +111,7 @@ export function PhoneHero() {
         </div>
 
         {/* Gebogen rij met voorbeelden */}
-        <div className="relative mt-4 overflow-hidden py-3">
+        <div className="relative mt-2 overflow-hidden py-5">
           <div
             ref={row}
             className="relative left-1/2 flex w-max -translate-x-1/2 items-center gap-3 md:gap-5"
@@ -120,7 +120,7 @@ export function PhoneHero() {
             {CARDS.map((c, i) => {
               const d = i - CENTER;
               const rot = -d * 13;
-              const scale = 1.08 - Math.abs(d) * 0.06;
+              const scale = 1.05 - Math.abs(d) * 0.06;
               return (
                 <div
                   key={c.slug}
