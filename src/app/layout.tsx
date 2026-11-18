@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Caveat, Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-cormorant",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-caveat",
 });
 
 const jost = Jost({
@@ -24,7 +30,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl" className={`${cormorant.variable} ${jost.variable}`}>
+    <html lang="nl" className={`${cormorant.variable} ${jost.variable} ${caveat.variable}`}>
       <body className="min-h-dvh">{children}</body>
     </html>
   );

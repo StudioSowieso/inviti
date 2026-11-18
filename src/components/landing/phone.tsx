@@ -4,13 +4,23 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import { InvitationView } from "@/components/invitation/invitation-view";
 import { defaultConfig } from "@/lib/invitation/defaults";
 import { FALLBACK_THEMES } from "@/lib/invitation/fallback-themes";
+import { DashboardMock, TodoMock, VersturenMock } from "./backoffice-mocks";
 import { GuestMock } from "./guest-mock";
 import { applyPalette } from "@/lib/invitation/palettes";
 
 const SCREEN_W = 340;
 
+/** Backoffice-schermen (statische voorbeelden) en anders een echte uitnodiging. */
+function renderScreen(slug: string, config: ReturnType<typeof defaultConfig>, theme: ReturnType<typeof applyPalette>) {
+  if (slug === "gastenlijst") return <GuestMock />;
+  if (slug === "dashboard") return <DashboardMock />;
+  if (slug === "versturen") return <VersturenMock />;
+  if (slug === "todo") return <TodoMock />;
+  return <InvitationView config={config} theme={theme} startOpen className="h-full" />;
+}
+
 /** Een echte uitnodiging, op vaste breedte gerenderd en geschaald naar de ruimte. */
-function PhoneScreen({ slug }: { slug: string }) {
+export function PhoneScreen({ slug }: { slug: string }) {
   const box = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<{ k: number; h: number } | null>(null);
 
@@ -37,7 +47,7 @@ function PhoneScreen({ slug }: { slug: string }) {
     <div ref={box} className="absolute inset-0 overflow-hidden">
       {size && (
         <div style={{ width: SCREEN_W, height: size.h, transform: `scale(${size.k})`, transformOrigin: "top left" }}>
-          {slug === "gastenlijst" ? <GuestMock /> : <InvitationView config={config} theme={theme} startOpen className="h-full" />}
+          {renderScreen(slug, config, theme)}
         </div>
       )}
     </div>
@@ -105,6 +115,15 @@ export function PhoneFrame({
       </div>
       <span className="absolute top-[2.4%] left-1/2 z-10 h-[1.9%] w-[26%] -translate-x-1/2 rounded-full bg-ink" />
       <span className="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-br from-white/10 via-transparent to-transparent" />
+    </div>
+  );
+}
+
+/** Een scherm als losse kaart, zonder telefoonrand. Voor rijen met voorbeelden. */
+export function ScreenCard({ slug, className = "" }: { slug: string; className?: string }) {
+  return (
+    <div className={`relative aspect-[340/600] overflow-hidden rounded-[1.4rem] bg-paper ${className}`}>
+      <PhoneScreen slug={slug} />
     </div>
   );
 }
