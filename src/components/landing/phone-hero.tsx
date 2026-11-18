@@ -79,28 +79,28 @@ export function PhoneHero() {
       ref={root}
       id="hero"
       aria-label="Proost Mee"
-      className="bg-gradient-to-b from-blush to-cream px-3 pt-24 pb-6 sm:px-5 md:pt-28"
+      className="bg-gradient-to-b from-blush to-cream px-3 pt-24 pb-6 sm:px-5"
     >
-      <div className="relative mx-auto max-w-[88rem] overflow-hidden rounded-[2rem] bg-paper px-4 pt-10 pb-10 text-center shadow-[0_0_0_6px_rgb(251_249_246/0.6)] md:rounded-[2.5rem] md:pt-14">
+      <div className="relative mx-auto max-w-[88rem] overflow-hidden rounded-[2rem] bg-paper px-4 pt-8 pb-6 text-center shadow-[0_0_0_6px_rgb(251_249_246/0.6)] md:rounded-[2.5rem] md:pt-10">
         <p className="mx-auto inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 text-sm text-forest">
           <Sparkle width={11} height={11} className="text-clay" />
           Gratis uitproberen, betaal pas bij het versturen
         </p>
 
-        <h1 className="mx-auto mt-6 max-w-4xl font-serif text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.02] font-medium tracking-tight text-forest">
+        <h1 className="mx-auto mt-4 max-w-4xl font-serif text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.02] font-medium tracking-tight text-forest">
           Jullie dag,
           <br />
           <span className="italic">mooi geregeld.</span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-xl leading-relaxed text-ink/70">
+        <p className="mx-auto mt-4 max-w-xl leading-relaxed text-ink/70">
           Ontwerp een persoonlijke digitale uitnodiging, beheer jullie gastenlijst en houd alle RSVP&apos;s bij op één rustige plek.
         </p>
 
         {/* Notitie rechtsboven, wijst naar de rij */}
         <div
           aria-hidden
-          className="pointer-events-none absolute top-[9rem] right-[5%] hidden -rotate-6 text-clay lg:block"
+          className="pointer-events-none absolute top-[8rem] right-[5%] hidden -rotate-6 text-clay lg:block"
         >
           <p className="font-hand text-2xl leading-[1.05]">
             Jullie uitnodiging,
@@ -111,7 +111,7 @@ export function PhoneHero() {
         </div>
 
         {/* Gebogen rij met voorbeelden */}
-        <div className="relative mt-8 overflow-hidden py-6 md:mt-10">
+        <div className="relative mt-4 overflow-hidden py-3">
           <div
             ref={row}
             className="relative left-1/2 flex w-max -translate-x-1/2 items-center gap-3 md:gap-5"
@@ -150,7 +150,7 @@ export function PhoneHero() {
         </div>
 
         {/* Knop met notitie */}
-        <div className="mt-6 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-6">
+        <div className="mt-2 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-6">
           <div aria-hidden className="pointer-events-none hidden items-center justify-end gap-2 text-clay md:flex">
             <p className="-rotate-6 font-hand text-2xl leading-none">Eerst gratis proberen</p>
             <Arrow className="h-9 w-14 rotate-[18deg]" />
