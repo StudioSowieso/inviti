@@ -237,8 +237,7 @@ export function PhoneHero() {
               onClick={() => {
                 if (dragged.current) return;
                 stopAuto();
-                const target = Math.round(posRef.current + d);
-                if (Math.round(posRef.current) !== target) animateTo(target);
+                animateTo(Math.round(posRef.current + wrap(i, posRef.current)));
               }}
               className="absolute top-1/2 left-1/2 w-[15em]"
               style={{
