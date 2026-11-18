@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Logo } from "@/components/logo";
 
 const LINKS = [
@@ -11,38 +11,13 @@ const LINKS = [
   { href: "/prijzen", label: "Prijzen" },
 ];
 
-/**
- * Vaste navigatie. Op de homepage is hij transparant boven de donkere hero en daarna crème met blur,
- * op de andere pagina's staat hij meteen crème.
- */
+/** Vaste navigatie, crème met blur. Op mobiel klapt het menu open met een hamburger. */
 export function LandingNav() {
   const pathname = usePathname();
-  const onHome = pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const update = () => {
-      const hero = document.getElementById("hero");
-      setScrolled(hero ? hero.getBoundingClientRect().bottom < 90 : window.scrollY > 40);
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
-  const solid = !onHome || scrolled || open;
-
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-40 transition-[background-color,backdrop-filter,color] duration-500 ${
-        open ? "bg-cream text-ink" : solid ? "bg-cream/90 text-ink backdrop-blur-md" : "bg-transparent text-paper"
-      }`}
-    >
+    <header className={`fixed inset-x-0 top-0 z-40 text-ink ${open ? "bg-cream" : "bg-cream/90 backdrop-blur-md"}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
         <Link href="/" className="block" aria-label="Proost Mee, naar de homepage" onClick={() => setOpen(false)}>
           <Logo className="w-20 sm:w-24" />
@@ -75,9 +50,7 @@ export function LandingNav() {
           </Link>
           <Link
             href="/account-aanmaken"
-            className={`rounded-full px-5 py-2.5 font-medium transition ${
-              solid ? "bg-forest text-paper hover:bg-forest-deep" : "bg-paper text-forest hover:bg-blush"
-            }`}
+            className="rounded-full bg-forest px-5 py-2.5 font-medium text-paper transition hover:bg-forest-deep"
           >
             Aan de slag
           </Link>
