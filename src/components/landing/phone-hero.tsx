@@ -99,15 +99,30 @@ export function PhoneHero() {
 
   useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
+  // De eerste 5 seconden loopt de rij rustig een paar keer vanzelf door, tot iemand hem aanraakt.
+  const auto = useRef<number[]>([]);
+  const stopAuto = useCallback(() => {
+    auto.current.forEach(clearTimeout);
+    auto.current = [];
+  }, []);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    auto.current = [900, 2300, 3700].map((ms) =>
+      window.setTimeout(() => animateTo(Math.round(posRef.current) + 1), ms),
+    );
+    return stopAuto;
+  }, [animateTo, stopAuto]);
+
   const stepPx = () => {
     const u = parseFloat(getComputedStyle(stage.current!).fontSize);
     return u * STEP;
   };
 
-  const go = (dir: number) => animateTo(Math.round(posRef.current) + dir);
+  const go = (dir: number) => stopAuto() ?? animateTo(Math.round(posRef.current) + dir);
 
   const onDown = (e: React.PointerEvent) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
+    stopAuto();
     cancelAnimationFrame(raf.current);
     drag.current = { x: e.clientX, start: posRef.current, moved: false, lastX: e.clientX, lastT: performance.now(), v: 0 };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -205,6 +220,7 @@ export function PhoneHero() {
               key={c.slug}
               onClick={() => {
                 if (drag.current?.moved) return;
+                stopAuto();
                 const target = Math.round(posRef.current + d);
                 if (Math.round(posRef.current) !== target) animateTo(target);
               }}
