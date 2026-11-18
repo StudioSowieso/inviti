@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronRightIcon, Sparkle } from "@/components/icons";
 import { PhoneFrame } from "./phone";
 
@@ -41,6 +41,10 @@ const SLUGS = STEPS.map((s) => s.slug);
 const CTA_PRIMARY =
   "inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3 font-medium text-forest transition hover:bg-blush";
 
+/** Vaste kanteling van de telefoon, in graden. De muis draait hem er een stukje vanaf. */
+const TILT_BASE = -14;
+const TILT_RANGE = 9;
+
 const HEADING = "font-serif text-4xl leading-[1.06] font-medium sm:text-5xl md:text-6xl";
 
 /**
@@ -49,9 +53,55 @@ const HEADING = "font-serif text-4xl leading-[1.06] font-medium sm:text-5xl md:t
  */
 export function PhoneHero() {
   const [active, setActive] = useState(0);
+  const root = useRef<HTMLElement>(null);
+  const tilt = useRef<HTMLDivElement>(null);
+
+  // De telefoon draait zacht mee met de muis (alleen met een muis, en niet bij "minder beweging").
+  useEffect(() => {
+    const section = root.current;
+    const phone = tilt.current;
+    if (!section || !phone) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let tx = 0;
+    let ty = 0;
+    let cx = 0;
+    let cy = 0;
+    let raf = 0;
+
+    const apply = () => {
+      cx += (tx - cx) * 0.08;
+      cy += (ty - cy) * 0.08;
+      phone.style.transform = `rotateY(${TILT_BASE + cx * TILT_RANGE}deg) rotateX(${-cy * 4}deg)`;
+      raf = Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001 ? requestAnimationFrame(apply) : 0;
+    };
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return;
+      const r = section.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      kick();
+    };
+    const onLeave = () => {
+      tx = 0;
+      ty = 0;
+      kick();
+    };
+
+    section.addEventListener("pointermove", onMove);
+    section.addEventListener("pointerleave", onLeave);
+    return () => {
+      section.removeEventListener("pointermove", onMove);
+      section.removeEventListener("pointerleave", onLeave);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
-    <section id="hero" aria-label="Proost Mee" className="relative overflow-hidden bg-forest-deep text-paper">
+    <section ref={root} id="hero" aria-label="Proost Mee" className="relative overflow-hidden bg-forest-deep text-paper">
       {STEPS.map((s, i) => (
         <div
           key={s.slug}
@@ -98,31 +148,42 @@ export function PhoneHero() {
           <p className="mt-4 text-xs text-paper/60">Gratis uitproberen. Je betaalt pas als je gaat versturen.</p>
         </div>
 
-        <div aria-hidden className="mx-auto">
-          <PhoneFrame slugs={SLUGS} active={active} className="h-[52svh] md:h-[min(68svh,42rem)]" />
+        <div aria-hidden className="mx-auto" style={{ perspective: "1600px" }}>
+          <div ref={tilt} className="will-change-transform" style={{ transform: `rotateY(${TILT_BASE}deg)`, transformStyle: "preserve-3d" }}>
+            <PhoneFrame slugs={SLUGS} active={active} className="h-[52svh] md:h-[min(68svh,42rem)]" />
+          </div>
         </div>
 
-        {/* Keuze: alleen titels */}
-        <ul aria-label="Kies een onderdeel" className="flex justify-center gap-x-6 gap-y-2 max-md:flex-wrap md:flex-col md:items-start md:gap-1">
-          {STEPS.map((s, i) => {
-            const on = i === active;
-            return (
-              <li key={s.slug}>
-                <button
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => setActive(i)}
-                  className={`flex items-center gap-3 py-1.5 font-serif text-2xl font-medium transition-opacity motion-reduce:transition-none ${
-                    on ? "opacity-100" : "opacity-50 hover:opacity-100"
-                  }`}
-                >
-                  <span aria-hidden className={`h-px bg-blush transition-all duration-500 motion-reduce:transition-none ${on ? "w-8" : "w-0 md:w-3"}`} />
-                  {s.label}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        {/* Keuze: alleen titels, duidelijk als knoppen */}
+        <div className="text-center md:text-left">
+          <p className="mb-4 text-sm text-paper/65">Kies een onderdeel</p>
+          <ul aria-label="Kies een onderdeel" className="flex flex-wrap justify-center gap-3 md:max-w-xs md:flex-col md:flex-nowrap">
+            {STEPS.map((s, i) => {
+              const on = i === active;
+              return (
+                <li key={s.slug} className="md:w-full">
+                  <button
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => setActive(i)}
+                    className={`group flex w-full items-center justify-between gap-4 rounded-full border px-6 py-3 text-left font-serif text-xl font-medium transition-colors motion-reduce:transition-none ${
+                      on
+                        ? "border-paper bg-paper text-forest"
+                        : "border-paper/30 text-paper hover:border-paper/70 hover:bg-paper/10"
+                    }`}
+                  >
+                    {s.label}
+                    <ChevronRightIcon
+                      width={18}
+                      height={18}
+                      className={`shrink-0 transition-transform motion-reduce:transition-none ${on ? "" : "group-hover:translate-x-1"}`}
+                    />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     </section>
   );
