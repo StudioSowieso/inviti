@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { InvitationView } from "@/components/invitation/invitation-view";
 import { defaultConfig } from "@/lib/invitation/defaults";
 import { FALLBACK_THEMES } from "@/lib/invitation/fallback-themes";
@@ -54,60 +54,18 @@ export function PhoneScreen({ slug }: { slug: string }) {
   );
 }
 
-const EDGE_LAYERS = 12;
-
-/**
- * Telefoonframe; `slugs` zijn de uitnodigingen die erin gestapeld staan. Met `active` toont hij er één en wisselt zacht.
- * Met `solid` krijgt de telefoon echte dikte (een rand van gestapelde lagen), zodat hij in 3D een zijkant heeft.
- */
-export function PhoneFrame({
-  slugs,
-  className = "",
-  active,
-  solid = false,
-}: {
-  slugs: string[];
-  className?: string;
-  active?: number;
-  solid?: boolean;
-}) {
-  const style: CSSProperties & Record<string, string> = { transformStyle: "preserve-3d" };
-  if (solid) style["--phone-depth"] = "1.6rem";
-
+/** Telefoonframe met één uitnodiging of scherm erin (themagalerij en inlogpagina's). */
+export function PhoneFrame({ slugs, className = "" }: { slugs: string[]; className?: string }) {
   return (
     <div
-      className={`relative aspect-[340/720] rounded-[15%/7%] bg-ink p-[2.6%] ${
-        solid
-          ? "shadow-[0_0_0_1.5px_rgb(255_255_255/0.08)_inset]"
-          : "shadow-[0_60px_90px_-40px_rgb(0_0_0/0.65),0_0_0_1.5px_rgb(255_255_255/0.08)_inset]"
-      } ${className}`}
-      style={style}
+      className={`relative aspect-[340/720] rounded-[15%/7%] bg-ink p-[2.6%] shadow-[0_60px_90px_-40px_rgb(0_0_0/0.65),0_0_0_1.5px_rgb(255_255_255/0.08)_inset] ${className}`}
     >
-      {solid &&
-        Array.from({ length: EDGE_LAYERS }, (_, i) => (
-          <span
-            key={i}
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit]"
-            style={{
-              transform: `translateZ(calc(var(--phone-depth) * ${-(i + 1) / EDGE_LAYERS}))`,
-              background: `hsl(140 5% ${36 - i * 2.4}%)`,
-            }}
-          />
-        ))}
       <div className="relative h-full w-full overflow-hidden rounded-[12%/5.6%] bg-paper">
         {slugs.map((slug, i) => (
           <div
             key={slug}
-            data-screen
             className="pointer-events-none absolute inset-0"
-            style={
-              active === undefined
-                ? i === 0
-                  ? undefined
-                  : { opacity: 0, visibility: "hidden" }
-                : { opacity: i === active ? 1 : 0, transition: "opacity 0.5s ease" }
-            }
+            style={i === 0 ? undefined : { opacity: 0, visibility: "hidden" }}
           >
             <PhoneScreen slug={slug} />
           </div>
@@ -119,10 +77,10 @@ export function PhoneFrame({
   );
 }
 
-/** Een scherm als losse kaart, zonder telefoonrand. Voor rijen met voorbeelden. */
+/** Een scherm als losse staande kaart (3:4), zonder telefoonrand. Voor rijen met voorbeelden. */
 export function ScreenCard({ slug, className = "" }: { slug: string; className?: string }) {
   return (
-    <div className={`relative aspect-[340/600] overflow-hidden rounded-[1.4rem] bg-paper ${className}`}>
+    <div className={`relative aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-paper ${className}`}>
       <PhoneScreen slug={slug} />
     </div>
   );

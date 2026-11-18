@@ -1,28 +1,22 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useRef } from "react";
 import { ChevronRightIcon, Sparkle } from "@/components/icons";
 import { ScreenCard } from "./phone";
 
-type Card = { slug: string; label: string; kind: "design" | "app" };
+type Card = { slug: string };
 
 /** Voorbeelden in de rij: uitnodigingsontwerpen en schermen uit de backoffice, om en om. */
 const CARDS: Card[] = [
-  { slug: "todo", label: "To-do's", kind: "app" },
-  { slug: "modern", label: "Modern", kind: "design" },
-  { slug: "gastenlijst", label: "Gastenlijst", kind: "app" },
-  { slug: "sweet", label: "Sweet", kind: "design" },
-  { slug: "leaf", label: "Leaf", kind: "design" },
-  { slug: "dashboard", label: "Dashboard", kind: "app" },
-  { slug: "lemon", label: "Lemon", kind: "design" },
-  { slug: "versturen", label: "Versturen", kind: "app" },
-  { slug: "flowers", label: "Flowers", kind: "design" },
+  { slug: "todo" },
+  { slug: "modern" },
+  { slug: "gastenlijst" },
+  { slug: "sweet" },
+  { slug: "leaf" },
+  { slug: "dashboard" },
+  { slug: "lemon" },
+  { slug: "versturen" },
+  { slug: "flowers" },
 ];
 const CENTER = 4;
-
-/** Hoeveel de rij met de muis meedraait, in graden bij de rand van de hero. */
-const LOOK = 7;
 
 /** Handgetekende pijl, voor de notities. */
 function Arrow({ className = "" }: { className?: string }) {
@@ -44,44 +38,17 @@ function Arrow({ className = "" }: { className?: string }) {
 }
 
 /**
- * Hero zonder scroll-effecten: gecentreerde kop en daaronder een gebogen rij met voorbeelden van
- * uitnodigingen en backoffice-schermen. De rij draait zacht mee met de muis.
+ * Hero zonder scroll- of muiseffecten: gecentreerde kop in een omrande kaart op een zachte
+ * kleurverloop-achtergrond, met daaronder een waaier van uitnodigingen en backoffice-schermen.
  */
 export function PhoneHero() {
-  const root = useRef<HTMLElement>(null);
-  const row = useRef<HTMLDivElement>(null);
-
-  // De rij kijkt mee met de muis (alleen met een muis, en niet bij "minder beweging").
-  useEffect(() => {
-    const section = root.current;
-    const el = row.current;
-    if (!section || !el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType === "touch") return;
-      const r = section.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width - 0.5) * 2;
-      el.style.setProperty("--look", String(x));
-    };
-    const onLeave = () => el.style.setProperty("--look", "0");
-
-    section.addEventListener("pointermove", onMove);
-    section.addEventListener("pointerleave", onLeave);
-    return () => {
-      section.removeEventListener("pointermove", onMove);
-      section.removeEventListener("pointerleave", onLeave);
-    };
-  }, []);
-
   return (
     <section
-      ref={root}
       id="hero"
       aria-label="Proost Mee"
-      className="bg-gradient-to-b from-blush to-cream px-3 pt-24 pb-6 sm:px-5"
+      className="bg-[radial-gradient(120%_80%_at_15%_0%,var(--color-sage)_0%,transparent_55%),radial-gradient(110%_80%_at_95%_100%,var(--color-clay)_0%,transparent_60%),linear-gradient(180deg,var(--color-blush),var(--color-cream))] px-3 pt-24 pb-8 sm:px-6 md:pb-12"
     >
-      <div className="relative mx-auto max-w-[88rem] overflow-hidden rounded-[2rem] bg-paper px-4 pt-8 pb-6 text-center shadow-[0_0_0_6px_rgb(251_249_246/0.6)] md:rounded-[2.5rem] md:pt-10">
+      <div className="relative mx-auto max-w-[88rem] overflow-hidden rounded-[2rem] border-[10px] border-paper bg-cream px-4 pt-8 pb-8 text-center shadow-[0_30px_70px_-30px_rgb(44_56_47/0.45)] md:rounded-[2.75rem] md:border-[14px] md:pt-10">
         <p className="mx-auto inline-flex items-center gap-2 rounded-full bg-blush px-4 py-1.5 text-sm text-forest">
           <Sparkle width={11} height={11} className="text-clay" />
           Gratis uitproberen, betaal pas bij het versturen
@@ -110,39 +77,22 @@ export function PhoneHero() {
           <Arrow className="mt-1 ml-10 h-12 w-16 rotate-[78deg]" />
         </div>
 
-        {/* Gebogen rij met voorbeelden */}
-        <div className="relative mt-2 overflow-hidden py-5">
-          <div
-            ref={row}
-            className="relative left-1/2 flex w-max -translate-x-1/2 items-center gap-3 md:gap-5"
-            style={{ ["--look" as string]: "0" }}
-          >
+        {/* Waaier met voorbeelden */}
+        <div className="relative mt-4 overflow-hidden pt-2 pb-10">
+          <div className="relative left-1/2 flex w-max -translate-x-1/2 items-start gap-3 md:gap-5">
             {CARDS.map((c, i) => {
               const d = i - CENTER;
-              const rot = -d * 13;
-              const scale = 1.05 - Math.abs(d) * 0.06;
               return (
                 <div
                   key={c.slug}
                   aria-hidden
-                  className="w-[clamp(8.5rem,13.5vw,12.5rem)] shrink-0 transition-transform duration-300 ease-out motion-reduce:transition-none"
-                  style={{
-                    transform: `perspective(900px) rotateY(calc(${rot}deg + var(--look, 0) * ${LOOK}deg)) scale(${scale})`,
-                  }}
+                  className="w-[clamp(8.5rem,13.5vw,12.5rem)] shrink-0"
+                  style={{ transform: `translateY(${d * d * 9}px) rotate(${d * 4.5}deg)` }}
                 >
-                  <div className="relative">
-                    <ScreenCard
-                      slug={c.slug}
-                      className="w-full border border-line/70 shadow-[0_24px_40px_-20px_rgb(31_36_32/0.4)]"
-                    />
-                    <span
-                      className={`absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-[11px] font-medium whitespace-nowrap shadow ${
-                        c.kind === "app" ? "bg-forest text-paper" : "bg-paper text-forest"
-                      }`}
-                    >
-                      {c.label}
-                    </span>
-                  </div>
+                  <ScreenCard
+                    slug={c.slug}
+                    className="w-full border-[5px] border-paper shadow-[0_18px_34px_-14px_rgb(31_36_32/0.35)]"
+                  />
                 </div>
               );
             })}
