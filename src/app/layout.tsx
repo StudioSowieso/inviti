@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Cormorant_Garamond, Fraunces, Jost, Nunito_Sans, Outfit } from "next/font/google";
+import { Caveat, Cormorant_Garamond, Figtree, Fraunces, Jost, Outfit } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -14,9 +14,10 @@ const caveat = Caveat({
   variable: "--font-caveat",
 });
 
-const nunito = Nunito_Sans({
+const figtree = Figtree({
   subsets: ["latin"],
-  variable: "--font-nunito",
+  weight: ["400"],
+  variable: "--font-figtree",
 });
 
 const fraunces = Fraunces({
@@ -46,7 +47,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl" className={`${cormorant.variable} ${jost.variable} ${caveat.variable} ${outfit.variable} ${nunito.variable} ${fraunces.variable}`}>
+    <html lang="nl" className={`${cormorant.variable} ${jost.variable} ${caveat.variable} ${outfit.variable} ${figtree.variable} ${fraunces.variable}`}>
       <body className="min-h-dvh">{children}</body>
     </html>
   );

@@ -219,7 +219,7 @@ summary::-webkit-details-marker {
   --color-blush: #f7d2d6;
   --color-ink: #6e0c31;
   --color-muted: #a8697c;
-  --font-serif: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   background: var(--color-cream);
   color: var(--color-ink);
@@ -227,8 +227,8 @@ summary::-webkit-details-marker {
 }
 
 .brand-wine .font-serif {
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 400;
+  letter-spacing: -0.025em;
 }
 
 .brand-wine .italic {
@@ -305,10 +305,10 @@ summary::-webkit-details-marker {
   font-size: clamp(2.6rem, 6.4vw, 5.75rem);
 }
 
-/* Koppen in Nunito Sans; het cursieve deel van de kop krijgt een klassieke serif. */
+/* Koppen in Figtree Regular; het cursieve deel van de kop krijgt een klassieke serif. */
 .brand-wine .font-serif .italic {
   font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   font-style: italic;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.02em;
 }
