@@ -31,7 +31,7 @@ const TILES = [
 export function HomeContent({ brand = "classic" }: { brand?: "classic" | "wine" }) {
   return (
     <MarketingShell brand={brand}>
-      <PhoneHero />
+      <PhoneHero tone={brand === "wine" ? "olive" : undefined} />
 
       {/* Het idee */}
       <section className="mx-auto max-w-4xl px-6 py-28 text-center lg:py-40">

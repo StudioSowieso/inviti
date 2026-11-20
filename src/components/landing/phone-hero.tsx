@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { ChevronRightIcon, Sparkle } from "@/components/icons";
-import { PhoneFrame, ScreenCard } from "./phone";
+import { PhoneFrame, ScreenCard, type Tone } from "./phone";
 
 type Card = { slug: string; label: string };
 
@@ -23,14 +23,14 @@ const N = CARDS.length;
 /** Afstand tussen twee items, in stage-eenheden (u). */
 const STEP = 17.5;
 
-const Phone = memo(function Phone({ slug }: { slug: string }) {
-  return <PhoneFrame slugs={[slug]} className="w-full" />;
+const Phone = memo(function Phone({ slug, tone }: { slug: string; tone?: Tone }) {
+  return <PhoneFrame slugs={[slug]} className="w-full" tone={tone} />;
 });
 
-const Shot = memo(function Shot({ slug, label }: { slug: string; label: string }) {
+const Shot = memo(function Shot({ slug, label, tone }: { slug: string; label: string; tone?: Tone }) {
   return (
     <div className="relative">
-      <ScreenCard slug={slug} className="shot w-full border border-line/70 shadow-[0_24px_40px_-20px_rgb(31_36_32/0.4)]" />
+      <ScreenCard slug={slug} tone={tone} className="shot w-full border border-line/70 shadow-[0_24px_40px_-20px_rgb(31_36_32/0.4)]" />
       <span className="absolute bottom-3 left-3 rounded-full bg-paper px-3 py-1 text-[11px] font-medium whitespace-nowrap text-forest shadow">
         {label}
       </span>
@@ -68,7 +68,7 @@ function wrap(i: number, pos: number) {
  * Hero zonder scroll-effecten: een lus met voorbeelden die je kunt slepen of met pijltjes bedient.
  * Het item in het midden wordt de telefoon; de rest staat als kaart naar het midden gedraaid.
  */
-export function PhoneHero() {
+export function PhoneHero({ tone }: { tone?: Tone }) {
   const [pos, setPos] = useState(0);
   const posRef = useRef(0);
   const raf = useRef(0);
@@ -220,7 +220,7 @@ export function PhoneHero() {
           <div className="relative aspect-[340/720]">
             {CARDS.map((c, i) => (
               <div key={c.slug} className="absolute inset-0" style={{ opacity: i === active ? 1 : 0 }}>
-                <Phone slug={c.slug} />
+                <Phone slug={c.slug} tone={tone} />
               </div>
             ))}
           </div>
@@ -246,7 +246,7 @@ export function PhoneHero() {
                 opacity: Math.min(1, Math.max(0, ad * 2.4 - 0.3), Math.max(0, 4.4 - ad)),
               }}
             >
-              <Shot slug={c.slug} label={c.label} />
+              <Shot slug={c.slug} label={c.label} tone={tone} />
             </div>
           );
         })}
