@@ -3,6 +3,7 @@ import { ChevronRightIcon, Sparkle } from "@/components/icons";
 import { CtaBand, Eyebrow } from "@/components/landing/bits";
 import { USPS } from "@/components/landing/content";
 import { MarketingShell } from "@/components/landing/marketing-shell";
+import { OverviewBlock } from "@/components/landing/overview-block";
 import { PhoneHero } from "@/components/landing/phone-hero";
 import { PRICE_LABEL } from "@/lib/stripe";
 
@@ -47,6 +48,10 @@ export function HomeContent({ brand = "classic" }: { brand?: "classic" | "wine" 
         </p>
       </section>
 
+      {brand === "wine" ? (
+        <OverviewBlock />
+      ) : (
+        <>
       {/* Lopende band */}
       <section aria-label="Wat je krijgt" className="overflow-hidden border-y border-forest/15 bg-sage/60 py-8 sm:py-10">
         <div data-marquee className="flex w-max items-center whitespace-nowrap">
@@ -62,14 +67,16 @@ export function HomeContent({ brand = "classic" }: { brand?: "classic" | "wine" 
           ))}
         </div>
       </section>
+        </>
+      )}
 
       {/* Doorverwijzing naar de andere pagina's */}
       <section className="relative isolate mx-auto max-w-6xl px-6 py-28 lg:px-10 lg:py-40">
         {brand === "wine" && (
           <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-            <span className="absolute top-[38%] left-[6%] h-56 w-56 rounded-full bg-clay/45 blur-3xl" />
-            <span className="absolute top-[52%] left-[40%] h-60 w-60 rounded-full bg-[#e7a0b6]/60 blur-3xl" />
-            <span className="absolute top-[40%] right-[4%] h-56 w-56 rounded-full bg-[#c9843f]/40 blur-3xl" />
+            <span className="absolute top-[38%] left-[6%] h-56 w-56 rounded-full bg-sage blur-3xl" />
+            <span className="absolute top-[52%] left-[40%] h-60 w-60 rounded-full bg-[#b9c7a4]/50 blur-3xl" />
+            <span className="absolute top-[40%] right-[4%] h-56 w-56 rounded-full bg-[#c9b29b]/45 blur-3xl" />
           </div>
         )}
         <h2 data-split className="max-w-2xl font-serif text-4xl leading-[1.06] font-medium sm:text-6xl">
