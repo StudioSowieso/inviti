@@ -321,13 +321,6 @@ summary::-webkit-details-marker {
   font-size: clamp(2.6rem, 6.4vw, 5.75rem);
 }
 
-/* Koppen in Figtree Regular; het cursieve deel van de kop krijgt een klassieke serif. */
-.brand-wine .font-serif .italic {
-  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-}
 
 /* Voorbeelden op de voorkant tonen geen scrollbalk. */
 .no-scrollbar,

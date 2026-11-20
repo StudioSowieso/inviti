@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Cormorant_Garamond, Figtree, Fraunces, Jost, Outfit } from "next/font/google";
+import { Caveat, Cormorant_Garamond, Figtree, Jost, Outfit } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -18,12 +18,6 @@ const figtree = Figtree({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-figtree",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
 });
 
 const outfit = Outfit({
@@ -47,7 +41,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl" className={`${cormorant.variable} ${jost.variable} ${caveat.variable} ${outfit.variable} ${figtree.variable} ${fraunces.variable}`}>
+    <html lang="nl" className={`${cormorant.variable} ${jost.variable} ${caveat.variable} ${outfit.variable} ${figtree.variable}`}>
       <body className="min-h-dvh">{children}</body>
     </html>
   );
