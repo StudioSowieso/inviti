@@ -328,3 +328,15 @@ summary::-webkit-details-marker {
   font-weight: 400;
   letter-spacing: -0.02em;
 }
+
+/* Voorbeelden op de voorkant tonen geen scrollbalk. */
+.no-scrollbar,
+.no-scrollbar * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar *::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

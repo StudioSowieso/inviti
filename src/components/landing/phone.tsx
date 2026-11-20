@@ -79,7 +79,7 @@ export function PhoneScreen({ slug, tone }: { slug: string; tone?: Tone }) {
   }, []);
 
   return (
-    <div ref={box} className="absolute inset-0 overflow-hidden">
+    <div ref={box} className="no-scrollbar absolute inset-0 overflow-hidden">
       {size && (
         <div style={{ width: SCREEN_W, height: size.h, transform: `scale(${size.k})`, transformOrigin: "top left" }}>
           {renderScreen(slug, config, theme)}
