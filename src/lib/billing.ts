@@ -36,6 +36,7 @@ export async function fulfilSession(s: StripeSession): Promise<{ ok: boolean; re
       stripe_payment_intent: s.payment_intent,
       amount_total: s.amount_total,
       currency: s.currency,
+      livemode: s.livemode, // false = testbetaling (Stripe-testsleutel); preview en productie delen één database
     },
     { onConflict: "user_id", ignoreDuplicates: true },
   );
