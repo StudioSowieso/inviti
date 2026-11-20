@@ -5,8 +5,9 @@ import { SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase/config";
 const PROTECTED = ["/dashboard", "/gasten", "/uitnodiging", "/todo", "/instellingen", "/versturen", "/admin", "/afrekenen", "/betaald", "/upgrade"];
 const AUTH_PAGES = ["/inloggen", "/account-aanmaken"];
 
-// Paden die ook tijdens "binnenkort online" gewoon moeten werken (betaalmeldingen, themavernieuwing).
-const COMING_SOON_OPEN = ["/binnenkort", "/api/stripe/webhook", "/api/revalidate"];
+// Paden die ook tijdens "binnenkort online" gewoon moeten werken (betaalmeldingen, themavernieuwing,
+// en de juridische pagina's die Stripe en bezoekers moeten kunnen lezen).
+const COMING_SOON_OPEN = ["/binnenkort", "/api/stripe/webhook", "/api/revalidate", "/voorwaarden", "/privacy"];
 
 export async function middleware(request: NextRequest) {
   // Staat COMING_SOON=1 (bijvoorbeeld alleen bij Production), dan toont elke pagina alleen de coming-soon-pagina.

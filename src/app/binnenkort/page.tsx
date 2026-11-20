@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Sparkle } from "@/components/icons";
 import { Logo } from "@/components/logo";
+import { COMPANY } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "Proost Mee — Binnenkort online",
@@ -34,6 +36,26 @@ export default function ComingSoonPage() {
           overzichtelijk bijhoudt. Nog even geduld.
         </p>
         <p className="mt-12 text-xs tracking-[0.2em] text-paper/50 uppercase">proostmee.nl</p>
+        <div className="mt-6 space-y-2 text-xs leading-relaxed text-paper/60">
+          <p>
+            {COMPANY.tradeName} is een handelsnaam van {COMPANY.legalName} · KvK {COMPANY.kvk} · btw {COMPANY.vat}
+          </p>
+          <p>
+            {COMPANY.street}, {COMPANY.postalCode} {COMPANY.city} ·{" "}
+            <a href={`mailto:${COMPANY.email}`} className="underline underline-offset-4 hover:text-paper">
+              {COMPANY.email}
+            </a>
+          </p>
+          <p>
+            <Link href="/voorwaarden" className="underline underline-offset-4 hover:text-paper">
+              Algemene voorwaarden
+            </Link>{" "}
+            ·{" "}
+            <Link href="/privacy" className="underline underline-offset-4 hover:text-paper">
+              Privacyverklaring
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );

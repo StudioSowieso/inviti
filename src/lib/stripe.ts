@@ -61,6 +61,11 @@ export async function createCheckoutSession(opts: { userId: string; email: strin
     "line_items[0][price_data][product_data][description]",
     "Eenmalig. Verstuur de persoonlijke uitnodiging aan al je gasten.",
   );
+  // Onder de betaalknop: verwijzing naar de voorwaarden en het herroepingsrecht (Stripe toont markdown-links).
+  p.set(
+    "custom_text[submit][message]",
+    `Door te betalen ga je akkoord met onze [algemene voorwaarden](${opts.origin}/voorwaarden). Je kunt binnen 14 dagen zonder opgaaf van reden je geld terugvragen.`,
+  );
   p.set("metadata[user_id]", opts.userId);
   p.set("payment_intent_data[metadata][user_id]", opts.userId);
   p.set("success_url", `${opts.origin}/betaald?session_id={CHECKOUT_SESSION_ID}`);

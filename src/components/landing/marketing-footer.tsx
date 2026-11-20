@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { WineLogo } from "@/components/brand-logo";
 import { Logo } from "@/components/logo";
+import { COMPANY } from "@/lib/company";
 
 const COLUMNS = [
   {
@@ -18,12 +19,19 @@ const COLUMNS = [
       { href: "/inloggen", label: "Inloggen" },
     ],
   },
+  {
+    title: "Juridisch",
+    links: [
+      { href: "/voorwaarden", label: "Algemene voorwaarden" },
+      { href: "/privacy", label: "Privacyverklaring" },
+    ],
+  },
 ];
 
 export function MarketingFooter({ brand = "classic" }: { brand?: "classic" | "wine" }) {
   return (
     <footer className="bg-forest text-paper/80">
-      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-14 sm:grid-cols-[1.4fr_1fr_1fr] lg:px-10">
+      <div className="mx-auto grid max-w-6xl gap-12 px-6 py-14 sm:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-10">
         <div>
           {brand === "wine" ? <WineLogo className="w-44 text-paper" /> : <Logo className="w-28 text-paper" />}
           <p className="mt-5 max-w-xs text-sm leading-relaxed">
@@ -45,8 +53,15 @@ export function MarketingFooter({ brand = "classic" }: { brand?: "classic" | "wi
           </nav>
         ))}
       </div>
-      <div className="mx-auto max-w-6xl border-t border-paper/15 px-6 py-6 text-sm lg:px-10">
-        <p>© {new Date().getFullYear()} Proost Mee. Jullie dag, mooi geregeld.</p>
+      <div className="mx-auto max-w-6xl space-y-2 border-t border-paper/15 px-6 py-6 text-sm lg:px-10">
+        <p>© {new Date().getFullYear()} {COMPANY.tradeName}. Jullie dag, mooi geregeld.</p>
+        <p className="text-paper/60">
+          {COMPANY.tradeName} is een handelsnaam van {COMPANY.legalName} · KvK {COMPANY.kvk} · btw {COMPANY.vat} ·{" "}
+          {COMPANY.street}, {COMPANY.postalCode} {COMPANY.city} ·{" "}
+          <a href={`mailto:${COMPANY.email}`} className="underline underline-offset-4 hover:text-paper">
+            {COMPANY.email}
+          </a>
+        </p>
       </div>
     </footer>
   );
