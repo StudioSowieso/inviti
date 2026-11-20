@@ -11,6 +11,8 @@
   --color-blush: #f1ded4;
   --color-ink: #1f2420;
   --color-muted: #867f77;
+  --color-olive: #4c5b3c;
+  --color-olive-mid: #5f6f4e;
 
   --font-serif: var(--font-cormorant), "Times New Roman", serif;
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
