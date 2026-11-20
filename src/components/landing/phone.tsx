@@ -39,7 +39,8 @@ const OLIVE_BY_SLUG: Record<string, keyof typeof OLIVE_SETS> = {
   sweet: "sage",
   lemon: "cream",
   modern: "brown",
-  flowers: "olive",
+  flowers: "sage",
+  nature: "olive",
 };
 
 const SCREEN_W = 340;

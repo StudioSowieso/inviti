@@ -11,9 +11,9 @@ type Card = { slug: string; label: string };
 const CARDS: Card[] = [
   { slug: "leaf", label: "Leaf" },
   { slug: "dashboard", label: "Dashboard" },
-  { slug: "lemon", label: "Lemon" },
-  { slug: "versturen", label: "Versturen" },
   { slug: "flowers", label: "Flowers" },
+  { slug: "versturen", label: "Versturen" },
+  { slug: "nature", label: "Nature" },
   { slug: "todo", label: "To-do's" },
   { slug: "modern", label: "Modern" },
   { slug: "gastenlijst", label: "Gastenlijst" },
