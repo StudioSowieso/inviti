@@ -26,9 +26,13 @@ export function PageHeader({
           <ChevronLeftIcon />
         </Link>
       ) : (
-        <div className={`grid size-12 shrink-0 place-items-center rounded-full bg-clay font-serif font-semibold text-paper ${initials.length > 2 ? "text-[0.95rem] tracking-tight" : "text-lg"}`}>
+        <Link
+          href="/instellingen"
+          aria-label="Naar Account"
+          className={`grid size-12 shrink-0 place-items-center rounded-full bg-clay font-serif font-semibold text-paper transition-opacity hover:opacity-85 ${initials.length > 2 ? "text-[0.95rem] tracking-tight" : "text-lg"}`}
+        >
           {initials}
-        </div>
+        </Link>
       )}
 
       <div className="min-w-0 flex-1">
