@@ -99,7 +99,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   Bovenste ring Ja, middelste Nog niet, onderste Nee; elk toont zijn aandeel van alle gasten. */}
               <div className="relative flex min-h-[15rem] flex-col justify-center overflow-hidden rounded-[1.25rem] bg-paper py-6 text-center shadow-[0_10px_30px_-20px_rgb(90_65_54/0.5)]">
                 <p className="font-serif text-[2.6rem] leading-none">{total}</p>
-                <p className="mt-1 text-sm text-muted">{total === 1 ? "gast" : "gasten"}</p>
+                <p className="mt-1.5 px-4 text-xs text-muted">Totaal uitgenodigde gasten</p>
                 <svg viewBox="0 0 240 118" role="img" aria-label={`${yes} ja, ${pending} nog niet, ${no} nee, van ${total} gasten`} className="mt-3 block w-full">
                   {stats.map(({ label, value, ring }, i) => {
                     const R = 260 - i * 24;
@@ -142,8 +142,11 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </div>
 
               <div className="flex flex-col justify-center">
-              <h2 className="eyebrow text-ink/80 sm:mb-6">RSVP-overzicht</h2>
-              <ul className="mt-5 grid grid-cols-3 gap-3 sm:mt-0 sm:grid-cols-1 sm:gap-5">
+              <h2 className="eyebrow text-ink/80">RSVP-overzicht</h2>
+              <p className="mt-1 mb-5 text-sm text-ink/75 sm:mb-6">
+                Totaal uitgenodigde gasten: <span className="font-semibold text-ink">{total}</span>
+              </p>
+              <ul className="grid grid-cols-3 gap-3 sm:mt-0 sm:grid-cols-1 sm:gap-5">
                 {stats.map(({ label, value, hint, icon: Icon, tone }) => (
                   <li key={label} className="sm:flex sm:items-center sm:gap-4">
                     <p className="font-serif text-[2.6rem] leading-none sm:order-2 sm:ml-auto sm:pr-2">{value}</p>
