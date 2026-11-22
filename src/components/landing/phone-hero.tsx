@@ -24,7 +24,7 @@ const N = CARDS.length;
 const STEP = 17.5;
 
 const Phone = memo(function Phone({ slug, tone }: { slug: string; tone?: Tone }) {
-  return <PhoneFrame slugs={[slug]} className="w-full" tone={tone} />;
+  return <PhoneFrame slugs={[slug]} className="w-full shadow-[0_26px_38px_-30px_rgb(0_0_0/0.4),0_0_0_1.5px_rgb(255_255_255/0.08)_inset]!" tone={tone} />;
 });
 
 const Shot = memo(function Shot({ slug, label, tone }: { slug: string; label: string; tone?: Tone }) {
