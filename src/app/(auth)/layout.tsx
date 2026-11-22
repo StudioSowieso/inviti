@@ -26,7 +26,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </Link>
 
           <div className="relative z-10 hidden lg:block">
-            <p className="eyebrow flex items-center gap-2 text-blush/80">
+            <p className="eyebrow flex items-center gap-2 text-paper/90!">
               Wedding planner <Sparkle width={9} height={9} />
             </p>
             <h2 className="mt-5 max-w-md font-serif text-6xl leading-[1.02] font-medium">
