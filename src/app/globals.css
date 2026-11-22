@@ -402,19 +402,22 @@ summary::-webkit-details-marker {
   letter-spacing: 0.2em;
 }
 
-/* Zacht bewegende kaarten in het blok "Uitnodiging maken". */
+/* Linker en rechter kaart in "Uitnodiging maken" schuiven naar binnen en buiten; de middelste zweeft. */
 @keyframes float-a {
-  50% { transform: rotate(3deg) translateY(-6px); }
+  0%, 100% { transform: translateX(1.6rem); }
+  50% { transform: translateX(-1.4rem) rotate(-3deg); }
 }
 @keyframes float-b {
-  50% { transform: rotate(-3deg) translateY(6px); }
+  0%, 100% { transform: translateX(-1.6rem); }
+  50% { transform: translateX(1.4rem) rotate(3deg); }
+}
 }
 @keyframes float-c {
   50% { transform: translateY(-5px); }
 }
 
-.float-a { animation: float-a 6s ease-in-out infinite; }
-.float-b { animation: float-b 7s ease-in-out infinite; }
+.float-a { animation: float-a 5s ease-in-out infinite; }
+.float-b { animation: float-b 5s ease-in-out infinite; }
 .float-c { animation: float-c 5s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
