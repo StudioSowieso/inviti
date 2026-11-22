@@ -102,9 +102,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 <p className="mt-1 text-sm text-muted">{total === 1 ? "gast" : "gasten"}</p>
                 <svg viewBox="0 0 240 118" role="img" aria-label={`${yes} ja, ${pending} nog niet, ${no} nee, van ${total} gasten`} className="mt-3 block w-full">
                   {stats.map(({ label, value, ring }, i) => {
-                    const R = 190 - i * 25;
-                    const cy = 250;
-                    const A = 52; // halve boog in graden
+                    const R = 260 - i * 24;
+                    const cy = 280;
+                    const A = 40; // halve boog in graden
                     const rad = (deg: number) => (deg * Math.PI) / 180;
                     const x1 = 120 - R * Math.sin(rad(A));
                     const x2 = 120 + R * Math.sin(rad(A));
