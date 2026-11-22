@@ -116,13 +116,6 @@ export function TrialBanner({ price }: { price: string }) {
               >
                 Koop de volledige versie
               </a>
-              <button
-                type="button"
-                onClick={() => ref.current?.close()}
-                className="mt-3 w-full cursor-pointer text-center text-sm text-paper/75 underline-offset-4 hover:underline"
-              >
-                Verder in de testomgeving
-              </button>
               <p className="mt-4 text-center text-xs text-paper/60">
                 Veilig betalen via Stripe, onder andere met iDEAL en creditcard.
               </p>
