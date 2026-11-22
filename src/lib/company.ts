@@ -13,4 +13,4 @@ export const COMPANY = {
 } as const;
 
 /** Datum waarop de voorwaarden en de privacyverklaring voor het laatst zijn aangepast. */
-export const LEGAL_UPDATED = "20 november 2026";
+export const LEGAL_UPDATED = "22 november 2026";

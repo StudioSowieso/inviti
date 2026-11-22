@@ -76,7 +76,10 @@ export default function PrivacyPage() {
 
       <LegalSection title="6. Hoe lang we gegevens bewaren">
         <LegalList>
-          <li>Je account en de gegevens die je invoert bewaren we zolang je account bestaat.</li>
+          <li>
+            Je account en de gegevens die je invoert, waaronder die van je gasten, bewaren we uiterlijk 12 maanden na de
+            trouwdatum die je hebt ingevuld. Daarna verwijderen of anonimiseren we ze.
+          </li>
           <li>
             Wil je dat we je account en alle gegevens verwijderen? Mail ons, dan doen we dat.
           </li>
