@@ -62,13 +62,19 @@ export function OverviewBlock() {
           {/* 3. Uitnodiging */}
           <div className="flex min-h-[19rem] flex-col rounded-[1.75rem] bg-paper p-7 shadow-[0_20px_40px_-28px_rgb(90_65_54/0.5)]">
             <p className={`${LABEL} text-forest`}>3 · Uitnodiging maken</p>
-            <div aria-hidden className="relative mx-auto mt-6 h-32 w-44">
-              <span className="absolute top-3 left-0 h-24 w-24 -rotate-12 rounded-2xl bg-sage" />
-              <span className="absolute top-0 right-0 h-28 w-24 rotate-6 rounded-2xl bg-coral" />
-              <span className="absolute top-2 left-1/2 flex h-28 w-24 -translate-x-1/2 flex-col items-center justify-center rounded-2xl bg-olive text-center text-paper">
-                <span className="text-[0.38rem] tracking-[0.2em] uppercase">Wij gaan trouwen</span>
-                <span className="mt-1 text-sm">Emma &amp; Mats</span>
-              </span>
+            <div aria-hidden className="relative mt-5 min-h-[11rem] flex-1">
+              <div className="absolute inset-x-0 inset-y-0 mx-auto w-full max-w-[17rem]">
+                <span className="absolute top-[14%] left-[4%] h-[76%] w-[46%] -rotate-12 rounded-2xl bg-sage" />
+                <span className="absolute top-[8%] right-[4%] h-[82%] w-[46%] rotate-6 rounded-2xl bg-coral" />
+                <span className="absolute top-[2%] left-1/2 flex h-[94%] w-[48%] -translate-x-1/2 flex-col items-center justify-center rounded-2xl bg-olive text-center text-paper shadow-[0_14px_30px_-16px_rgb(0_0_0/0.5)]">
+                  <span className="text-[0.5rem] tracking-[0.2em] uppercase">Wij gaan trouwen</span>
+                  <span className="mt-2 text-lg leading-tight">
+                    Emma
+                    <br />&amp; Mats
+                  </span>
+                  <Sparkle width={11} height={11} className="mt-3 text-coral" />
+                </span>
+              </div>
             </div>
             <p className="mt-auto pt-6 text-xs text-forest">Kies een thema, vul jullie gegevens in en verstuur.</p>
           </div>
