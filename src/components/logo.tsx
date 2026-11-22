@@ -1,54 +1,21 @@
 import type { CSSProperties } from "react";
+import { WineLogo, WineLogoStacked } from "@/components/brand-logo";
 
 /**
- * Het Proost Mee-logo: PROOST boven MEE, met een fijne boog erboven.
- * Volgt de tekstkleur (`currentColor`), dus gebruik `text-forest`, `text-paper`, enz.
- * Met `tagline` komt de ondertitel eronder (alleen op grote formaten zinvol).
+ * Het Proost Mee-logo. Standaard het beeldmerk met de tekst ernaast; `stacked` zet de tekst eronder
+ * (backoffice). Volgt de tekstkleur (`currentColor`), dus gebruik `text-forest`, `text-paper`, enz.
  */
-const WORD =
-  "M20.69 36.15H8.79V62H0.71V0.09H20.69Q31.17 0.09 36.64 5.15Q42.1 10.21 42.1 18.21Q42.1 25.94 36.82 31.04Q31.53 36.15 20.69 36.15ZM33.84 18.21Q33.84 6.75 20.69 6.75H8.79V29.49H20.69Q27.44 29.49 30.64 26.56Q33.84 23.63 33.84 18.21ZM90.74 62 75.99 36.68H66.22V62H58.14V0.09H78.12Q85.14 0.09 89.98 2.49Q94.82 4.89 97.22 8.97Q99.62 13.06 99.62 18.3Q99.62 24.69 95.93 29.58Q92.25 34.46 84.87 36.06L100.42 62ZM66.22 30.2H78.12Q84.7 30.2 87.98 26.96Q91.27 23.72 91.27 18.3Q91.27 12.79 88.03 9.77Q84.79 6.75 78.12 6.75H66.22ZM115.12 31Q115.12 21.94 119.25 14.7Q123.38 7.46 130.49 3.42Q137.6 -0.62 146.21 -0.62Q154.92 -0.62 162.02 3.42Q169.13 7.46 173.21 14.66Q177.3 21.85 177.3 31Q177.3 40.15 173.21 47.34Q169.13 54.54 162.02 58.58Q154.92 62.62 146.21 62.62Q137.6 62.62 130.49 58.58Q123.38 54.54 119.25 47.3Q115.12 40.06 115.12 31ZM169.04 31Q169.04 23.54 166.06 17.99Q163.09 12.44 157.94 9.42Q152.79 6.4 146.21 6.4Q139.64 6.4 134.49 9.42Q129.34 12.44 126.36 17.99Q123.38 23.54 123.38 31Q123.38 38.37 126.36 43.97Q129.34 49.56 134.53 52.58Q139.73 55.6 146.21 55.6Q152.7 55.6 157.89 52.58Q163.09 49.56 166.06 43.97Q169.04 38.37 169.04 31ZM190.94 31Q190.94 21.94 195.07 14.7Q199.2 7.46 206.31 3.42Q213.41 -0.62 222.03 -0.62Q230.73 -0.62 237.84 3.42Q244.95 7.46 249.03 14.66Q253.12 21.85 253.12 31Q253.12 40.15 249.03 47.34Q244.95 54.54 237.84 58.58Q230.73 62.62 222.03 62.62Q213.41 62.62 206.31 58.58Q199.2 54.54 195.07 47.3Q190.94 40.06 190.94 31ZM244.86 31Q244.86 23.54 241.88 17.99Q238.91 12.44 233.75 9.42Q228.6 6.4 222.03 6.4Q215.46 6.4 210.3 9.42Q205.15 12.44 202.18 17.99Q199.2 23.54 199.2 31Q199.2 38.37 202.18 43.97Q205.15 49.56 210.35 52.58Q215.54 55.6 222.03 55.6Q228.51 55.6 233.71 52.58Q238.91 49.56 241.88 43.97Q244.86 38.37 244.86 31ZM268 45.48H276.62Q277.06 49.83 280.21 52.81Q283.37 55.78 289.41 55.78Q295.18 55.78 298.51 52.9Q301.84 50.01 301.84 45.48Q301.84 41.93 299.89 39.7Q297.93 37.48 295 36.33Q292.07 35.17 287.1 33.84Q280.97 32.24 277.28 30.64Q273.6 29.05 270.98 25.63Q268.36 22.21 268.36 16.43Q268.36 11.37 270.93 7.46Q273.51 3.55 278.17 1.42Q282.83 -0.71 288.87 -0.71Q297.58 -0.71 303.13 3.64Q308.68 7.99 309.39 15.19H300.51Q300.07 11.64 296.78 8.93Q293.49 6.22 288.07 6.22Q283.01 6.22 279.81 8.84Q276.62 11.46 276.62 16.17Q276.62 19.54 278.53 21.67Q280.44 23.81 283.23 24.92Q286.03 26.03 291.09 27.45Q297.22 29.13 300.95 30.78Q304.68 32.42 307.35 35.84Q310.01 39.26 310.01 45.12Q310.01 49.65 307.62 53.65Q305.22 57.65 300.51 60.13Q295.8 62.62 289.41 62.62Q283.28 62.62 278.44 60.45Q273.6 58.27 270.84 54.41Q268.09 50.54 268 45.48ZM366.02 0.09V6.66H349.15V62H341.06V6.66H324.1V0.09ZM161.33 80.53V142H153.25V96.17L132.82 142H127.13L106.62 96.08V142H98.53V80.53H107.24L129.98 131.34L152.72 80.53ZM189.09 86.66V107.36H211.66V114.02H189.09V135.34H214.32V142H181.01V80H214.32V86.66ZM240.66 86.66V107.36H263.22V114.02H240.66V135.34H265.89V142H232.58V80H265.89V86.66Z";
-
 export function Logo({
   className = "",
-  style,
-  tagline = false,
+  stacked = false,
   title = "Proost Mee",
 }: {
   className?: string;
   style?: CSSProperties;
+  /** Niet meer in gebruik; het logo heeft geen ondertitel. */
   tagline?: boolean;
+  stacked?: boolean;
   title?: string;
 }) {
-  const height = tagline ? 278 : 246;
-  return (
-    <svg
-      viewBox={`-12 -84 387 ${height}`}
-      role="img"
-      aria-label={title}
-      className={className}
-      style={style}
-    >{" "}
-      <path d={WORD} fill="currentColor" />
-      <path
-        d="M-6 -14A187.5 66 0 0 1 369 -14"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3.6"
-        strokeLinecap="round"
-      />
-      {tagline && (
-        <text
-          x="181.5"
-          y="186"
-          textAnchor="middle"
-          fill="currentColor"
-          fontSize="11"
-          letterSpacing="5.2"
-          style={{ fontFamily: "var(--font-sans), sans-serif" }}
-        >
-          JOUW BRUILOFTSUITNODIGING
-        </text>
-      )}
-    </svg>
-  );
+  return stacked ? <WineLogoStacked className={className} title={title} /> : <WineLogo className={className} title={title} />;
 }

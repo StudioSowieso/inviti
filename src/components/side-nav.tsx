@@ -28,7 +28,7 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
         className="flex flex-col items-center gap-1 text-forest"
         aria-label="Proost Mee"
       >
-        <Logo className="w-[4.4rem]" />
+        <Logo stacked className="w-[4.6rem]" />
       </Link>
 
       <ul className="mt-10 flex flex-col gap-2">

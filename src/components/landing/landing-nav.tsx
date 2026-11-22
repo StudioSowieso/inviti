@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { WineLogo } from "@/components/brand-logo";
 import { Logo } from "@/components/logo";
 
 const LINKS = [
@@ -23,7 +22,7 @@ export function LandingNav({ brand = "classic" }: { brand?: "classic" | "wine" }
         <div className="nav-pill-bar mx-auto max-w-4xl rounded-[2rem] px-5 py-2.5 sm:rounded-full sm:px-7">
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="block" aria-label="Proost Mee, naar de homepage" onClick={() => setOpen(false)}>
-              <WineLogo className="w-28 text-forest sm:w-36" />
+              <Logo className="w-28 text-forest sm:w-36" />
             </Link>
 
             <nav aria-label="Hoofdmenu" className="hidden items-center gap-7 text-sm md:flex">
@@ -86,7 +85,7 @@ export function LandingNav({ brand = "classic" }: { brand?: "classic" | "wine" }
     <header className={`fixed inset-x-0 top-0 z-40 text-ink ${open ? "bg-cream" : "bg-cream/90 backdrop-blur-md"}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
         <Link href="/" className="block" aria-label="Proost Mee, naar de homepage" onClick={() => setOpen(false)}>
-          <Logo className="w-20 sm:w-24" />
+          <Logo className="w-28 sm:w-36" />
         </Link>
 
         <nav aria-label="Hoofdmenu" className="hidden items-center gap-9 text-sm md:flex">
