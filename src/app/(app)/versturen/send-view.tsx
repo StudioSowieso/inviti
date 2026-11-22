@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { LinkIcon, MailIcon, Sparkle } from "@/components/icons";
-import { saveInviteMessage, setInviteSent } from "./actions";
+import { acceptWithdrawalWaiver, saveInviteMessage, setInviteSent } from "./actions";
 
 export type SendGuest = {
   id: string;
@@ -94,7 +94,7 @@ const ACTION =
   "inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3.5 py-2 text-xs font-medium transition hover:bg-sage/60";
 const DISABLED = "pointer-events-none opacity-40";
 
-function CopyButton({ text, label = "Link kopiëren", className = "", onCopied }: { text: string; label?: string; className?: string; onCopied?: () => void }) {
+function CopyButton({ text, label = "Link kopiëren", className = "", onCopied, guard }: { text: string; label?: string; className?: string; onCopied?: () => void; guard: (run: () => void) => void }) {
   const [done, setDone] = useState(false);
   async function copy() {
     try {
@@ -112,7 +112,7 @@ function CopyButton({ text, label = "Link kopiëren", className = "", onCopied }
     onCopied?.();
   }
   return (
-    <button type="button" onClick={copy} className={`${ACTION} ${done ? "border-forest/30 bg-sage text-forest" : ""} ${className}`}>
+    <button type="button" onClick={() => guard(copy)} className={`${ACTION} ${done ? "border-forest/30 bg-sage text-forest" : ""} ${className}`}>
       <LinkIcon width={15} height={15} />
       {done ? "Gekopieerd" : label}
     </button>
@@ -124,6 +124,7 @@ export function SendView({
   guests,
   groups,
   hasInvitation,
+  waived: initialWaived,
   couple,
   savedMessage,
 }: {
@@ -131,15 +132,21 @@ export function SendView({
   guests: SendGuest[];
   groups: SendGroup[];
   hasInvitation: boolean;
+  waived: boolean;
   couple: Couple | null;
   savedMessage: string | null;
 }) {
   const [template, setTemplate] = useState(savedMessage ?? DEFAULT_MESSAGE);
   const [view, setView] = useState<"personal" | "groups">("personal");
   const [tipOpen, setTipOpen] = useState(false);
+  // Bij het eerste versturen vragen we eenmalig om afstand van het herroepingsrecht te bevestigen
+  const [waived, setWaived] = useState(initialWaived);
+  const [consent, setConsent] = useState<{ run: () => void } | null>(null);
+  const guard = (run: () => void) => (waived ? run() : setConsent({ run }));
   const [sent, setSent] = useState<Record<string, boolean>>(() => Object.fromEntries(guests.map((g) => [g.id, g.sent])));
   const sentCount = guests.filter((g) => sent[g.id]).length;
   async function toggleSent(id: string, value: boolean) {
+    if (value && !waived) return guard(() => void toggleSent(id, true));
     setSent((s) => ({ ...s, [id]: value }));
     const res = await setInviteSent(id, value);
     if (!res.ok) setSent((s) => ({ ...s, [id]: !value }));
@@ -149,6 +156,17 @@ export function SendView({
   return (
     <div className="space-y-5">
       {tipOpen && <BroadcastTip onClose={() => setTipOpen(false)} />}
+      {consent && (
+        <WaiverDialog
+          onCancel={() => setConsent(null)}
+          onAccepted={() => {
+            const run = consent.run;
+            setWaived(true);
+            setConsent(null);
+            run();
+          }}
+        />
+      )}
       <MessageEditor
         template={template}
         onChange={setTemplate}
@@ -219,6 +237,12 @@ export function SendView({
                       href={wa ?? undefined}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={(e) => {
+                        if (wa && !waived) {
+                          e.preventDefault();
+                          guard(() => void window.open(wa, "_blank", "noopener,noreferrer"));
+                        }
+                      }}
                       aria-disabled={!wa}
                       title={wa ? undefined : "Geen telefoonnummer ingevuld"}
                       className={`${ACTION} ${wa ? "" : DISABLED}`}
@@ -227,13 +251,19 @@ export function SendView({
                     </a>
                     <a
                       href={mail ?? undefined}
+                      onClick={(e) => {
+                        if (mail && !waived) {
+                          e.preventDefault();
+                          guard(() => void (window.location.href = mail));
+                        }
+                      }}
                       aria-disabled={!mail}
                       title={mail ? undefined : "Geen e-mailadres ingevuld"}
                       className={`${ACTION} ${mail ? "" : DISABLED}`}
                     >
                       <MailIcon width={15} height={15} /> Mail
                     </a>
-                    <CopyButton text={link} label="Link" />
+                    <CopyButton text={link} label="Link" guard={guard} />
                     <label title="Handmatige checkbox: vink af zodra je de uitnodiging zelf hebt verstuurd" className="ml-auto inline-flex cursor-pointer items-center gap-2 text-xs font-medium">
                       <input
                         type="checkbox"
@@ -278,7 +308,7 @@ export function SendView({
                 </div>
                 <div className="mt-4 rounded-xl bg-cream px-3.5 py-2.5 text-xs break-all text-muted">{link}</div>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <CopyButton text={link} label="Groepslink kopiëren" onCopied={() => setTipOpen(true)} />
+                  <CopyButton text={link} label="Groepslink kopiëren" onCopied={() => setTipOpen(true)} guard={guard} />
                   <a href={link} target="_blank" rel="noopener noreferrer" className={ACTION}>
                     Bekijk uitnodiging
                   </a>
@@ -466,6 +496,86 @@ function Empty({ text, hint }: { text: string; hint: string }) {
       <Sparkle className="text-clay" />
       <p className="mt-3 font-serif text-2xl">{text}</p>
       <p className="mt-1 max-w-xs text-sm text-muted">{hint}</p>
+    </div>
+  );
+}
+
+/** Eenmalige bevestiging bij het eerste versturen: de dienst is dan uitgevoerd en het herroepingsrecht vervalt. */
+function WaiverDialog({ onCancel, onAccepted }: { onCancel: () => void; onAccepted: () => void }) {
+  const [agreed, setAgreed] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && !busy && onCancel();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onCancel, busy]);
+
+  async function accept() {
+    setBusy(true);
+    setError(null);
+    const res = await acceptWithdrawalWaiver();
+    if (res.ok) onAccepted();
+    else {
+      setBusy(false);
+      setError("Je bevestiging kon niet worden opgeslagen. Probeer het opnieuw.");
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-ink/45 px-5" onClick={() => !busy && onCancel()}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="waiver-title"
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md rounded-3xl bg-paper p-6 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.5)]"
+      >
+        <p className="eyebrow flex items-center gap-2 text-clay">
+          Voordat je verstuurt <Sparkle width={9} height={9} />
+        </p>
+        <h2 id="waiver-title" className="mt-3 font-serif text-3xl leading-tight font-medium">
+          Je herroepingsrecht vervalt zodra je de eerste uitnodiging verstuurt
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          Als consument kun je een aankoop normaal binnen 14 dagen ongedaan maken. Zodra je je eerste uitnodiging
+          verstuurt, is onze dienst uitgevoerd. Je doet dan afstand van dat recht en kunt de aankoop niet meer
+          herroepen. Heb je nog niets verstuurd, dan kun je tot dat moment nog altijd herroepen.{" "}
+          <Link href="/voorwaarden" target="_blank" className="font-medium text-forest underline underline-offset-4">
+            Lees artikel 7 van de voorwaarden
+          </Link>
+          .
+        </p>
+        <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-xl bg-cream px-4 py-3 text-sm leading-snug">
+          <input
+            type="checkbox"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+            className="mt-0.5 size-4 shrink-0 accent-[var(--color-forest)]"
+          />
+          <span>
+            Ik begrijp dat mijn herroepingsrecht vervalt zodra ik de eerste uitnodiging verstuur, en ik ga hiermee
+            uitdrukkelijk akkoord.
+          </span>
+        </label>
+        {error && (
+          <p role="alert" className="mt-3 text-sm text-[#7a3f2c]">
+            {error}
+          </p>
+        )}
+        <button type="button" onClick={accept} disabled={!agreed || busy} className="btn-primary mt-5 disabled:opacity-50">
+          {busy ? "Opslaan…" : "Akkoord en versturen"}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={busy}
+          className="mt-3 w-full cursor-pointer text-center text-sm text-muted underline-offset-4 hover:underline"
+        >
+          Nog niet versturen
+        </button>
+      </div>
     </div>
   );
 }

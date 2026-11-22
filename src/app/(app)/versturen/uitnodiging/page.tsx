@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { normalizeConfig } from "@/lib/invitation/defaults";
-import { requirePaid } from "@/lib/billing";
+import { getWithdrawalWaived, requirePaid } from "@/lib/billing";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { SendView, type SendGroup, type SendGuest } from "../send-view";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "Uitnodiging versturen — Proost Mee
 
 export default async function SendInvitationPage() {
   await requirePaid();
-  const [supabase, user, h] = await Promise.all([createClient(), getUser(), headers()]);
+  const [supabase, user, h, waived] = await Promise.all([createClient(), getUser(), headers(), getWithdrawalWaived()]);
 
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
   const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
@@ -68,6 +68,7 @@ export default async function SendInvitationPage() {
         guests={guests}
         groups={groups}
         hasInvitation={!!invitation}
+        waived={waived}
         savedMessage={(profile?.invite_message as string | null) ?? null}
         couple={config ? { partner1: config.partner1, partner2: config.partner2, date: config.date } : null}
       />

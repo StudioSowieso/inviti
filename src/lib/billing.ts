@@ -42,3 +42,17 @@ export async function fulfilSession(s: StripeSession): Promise<{ ok: boolean; re
   );
   return error ? { ok: false, reason: error.message } : { ok: true };
 }
+
+/**
+ * Heeft de klant bij het eerste versturen uitdrukkelijk afstand gedaan van het herroepingsrecht?
+ * Zonder aankoopregel (bijvoorbeeld een beheerder) is er niets om vast te leggen en tonen we de melding niet.
+ */
+export async function getWithdrawalWaived(): Promise<boolean> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("purchases").select("withdrawal_waived_at").maybeSingle();
+  if (!data) return true;
+  return !!data.withdrawal_waived_at;
+}
+
+/** Versie van de tekst waarmee de klant akkoord gaat; verhoog bij elke inhoudelijke wijziging van de melding. */
+export const WAIVER_VERSION = "2026-11-22";
