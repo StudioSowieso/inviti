@@ -2,26 +2,31 @@
 
 import { useEffect, useRef } from "react";
 
+const STAR = "M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0Z";
+
 /**
- * Rustige muisvolger: een klein stipje dat bijna direct meebeweegt en een zachte ring die er net achteraan
- * zweeft. Boven klikbare dingen zwelt de ring op. Alleen met een echte muis en zonder "minder beweging";
- * de gewone cursor blijft zichtbaar, dus niets wordt onduidelijk.
+ * Rustige muisvolger met dezelfde sterretjes als in het logo: een roze ster volgt de muis licht vertraagd en
+ * draait zacht mee met de beweging, een kleiner sterretje zweeft er nog iets achteraan. Boven klikbare dingen
+ * wordt de ster groter. Alleen met een echte muis en zonder "minder beweging"; de gewone cursor blijft zichtbaar.
  */
 export function CursorFollow() {
-  const ring = useRef<HTMLDivElement>(null);
-  const dot = useRef<HTMLDivElement>(null);
+  const big = useRef<HTMLDivElement>(null);
+  const small = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const r = ring.current;
-    const d = dot.current;
-    if (!fine || calm || !r || !d) return;
+    const a = big.current;
+    const b = small.current;
+    if (!fine || calm || !a || !b) return;
 
     let tx = 0;
     let ty = 0;
-    let rx = 0;
-    let ry = 0;
+    let ax = 0;
+    let ay = 0;
+    let bx = 0;
+    let by = 0;
+    let rot = 0;
     let scale = 1;
     let target = 1;
     let shown = false;
@@ -31,30 +36,34 @@ export function CursorFollow() {
       tx = e.clientX;
       ty = e.clientY;
       if (!shown) {
-        rx = tx;
-        ry = ty;
+        ax = bx = tx;
+        ay = by = ty;
         shown = true;
-        r.style.opacity = "1";
-        d.style.opacity = "1";
+        a.style.opacity = "1";
+        b.style.opacity = "0.7";
       }
       const el = e.target instanceof Element ? e.target : null;
-      const hot = el?.closest("a, button, [role='button'], summary, [data-card]");
       const text = el?.closest("input, textarea, select");
-      target = text ? 0.4 : hot ? 1.9 : 1;
-      r.dataset.hot = hot && !text ? "1" : "0";
-      d.style.transform = `translate3d(${tx}px, ${ty}px, 0) translate(-50%, -50%)`;
+      const hot = el?.closest("a, button, [role='button'], summary, [data-card]");
+      target = text ? 0.4 : hot ? 1.8 : 1;
     };
     const onLeave = () => {
       shown = false;
-      r.style.opacity = "0";
-      d.style.opacity = "0";
+      a.style.opacity = "0";
+      b.style.opacity = "0";
     };
 
     const tick = () => {
-      rx += (tx - rx) * 0.14;
-      ry += (ty - ry) * 0.14;
-      scale += (target - scale) * 0.16;
-      r.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${scale})`;
+      const px = ax;
+      ax += (tx - ax) * 0.2;
+      ay += (ty - ay) * 0.2;
+      bx += (tx - bx) * 0.08;
+      by += (ty - by) * 0.08;
+      scale += (target - scale) * 0.14;
+      // draait mee met de horizontale snelheid, en zakt rustig terug
+      rot += ((ax - px) * 2.2 - rot * 0.06);
+      a.style.transform = `translate3d(${ax}px, ${ay}px, 0) translate(-50%, -50%) rotate(${rot}deg) scale(${scale})`;
+      b.style.transform = `translate3d(${bx + 14}px, ${by + 12}px, 0) translate(-50%, -50%) rotate(${-rot * 0.7}deg)`;
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -71,15 +80,23 @@ export function CursorFollow() {
   return (
     <>
       <div
-        ref={ring}
+        ref={big}
         aria-hidden
-        className="cursor-ring pointer-events-none fixed top-0 left-0 z-[70] size-9 rounded-full border border-clay/60 opacity-0 transition-[opacity,background-color,border-color] duration-300"
-      />
+        className="pointer-events-none fixed top-0 left-0 z-[70] text-clay opacity-0 transition-opacity duration-300"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d={STAR} />
+        </svg>
+      </div>
       <div
-        ref={dot}
+        ref={small}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[70] size-1.5 rounded-full bg-clay opacity-0 transition-opacity duration-300"
-      />
+        className="pointer-events-none fixed top-0 left-0 z-[70] text-forest opacity-0 transition-opacity duration-300"
+      >
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+          <path d={STAR} />
+        </svg>
+      </div>
     </>
   );
 }

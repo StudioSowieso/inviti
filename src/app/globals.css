@@ -440,9 +440,3 @@ summary::-webkit-details-marker {
     animation: none;
   }
 }
-
-/* Muisvolger: ring kleurt zacht in boven klikbare onderdelen */
-.cursor-ring[data-hot="1"] {
-  background-color: rgb(235 140 131 / 0.14);
-  border-color: rgb(235 140 131 / 0.85);
-}
