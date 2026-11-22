@@ -19,6 +19,13 @@ export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
   if (brand === "wine") {
     return (
       <header className="nav-pill fixed inset-x-0 top-3 z-40 px-3 text-ink sm:top-4 sm:px-6">
+        {/* Vervorming voor het glas: golvend verschuiven van wat achter de balk zit (alleen Chrome en Edge) */}
+        <svg width="0" height="0" aria-hidden className="absolute">
+          <filter id="nav-distort" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.006 0.03" numOctaves="2" seed="7" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="60" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </svg>
         <div className="nav-pill-bar mx-auto max-w-4xl rounded-[2rem] px-5 py-2.5 sm:rounded-full sm:px-7">
           <div className="flex items-center justify-between gap-4">
             <Link href="/" className="block" aria-label="Proost Mee, naar de homepage" onClick={() => setOpen(false)}>
