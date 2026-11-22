@@ -415,9 +415,6 @@ summary::-webkit-details-marker {
   50% { transform: translateY(-5px); }
 }
 
-  50% { transform: translateY(-5px); }
-}
-
 .float-a { animation: float-a 5s ease-in-out infinite; }
 .float-b { animation: float-b 5s ease-in-out infinite; }
 .float-c { animation: float-c 5s ease-in-out infinite; }
