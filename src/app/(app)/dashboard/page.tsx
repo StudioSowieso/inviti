@@ -94,13 +94,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         <div className="space-y-8">
           {/* RSVP-overzicht */}
           <section className="relative overflow-hidden rounded-[1.5rem] bg-sage p-5 text-ink shadow-[0_18px_40px_-26px_rgb(90_65_54/0.45)] sm:p-6 xl:p-8">
-            <div className="relative">
-              <h2 className="eyebrow text-ink/80">RSVP-overzicht</h2>
-            </div>
-
-            <div className="relative mt-5 grid items-center gap-5 sm:grid-cols-[minmax(0,17rem)_1fr] sm:gap-8">
+            <div className="relative grid gap-5 sm:grid-cols-[minmax(0,17rem)_1fr] sm:gap-8">
               {/* Ringen: hoe groter de ring, hoe lager de rij; elke ring toont zijn aandeel van alle gasten */}
-              <div className="relative rounded-[1.25rem] bg-paper px-3 pt-6 pb-4 shadow-[0_10px_30px_-20px_rgb(90_65_54/0.5)]">
+              <div className="relative flex min-h-[13rem] items-center rounded-[1.25rem] bg-paper px-3 py-5 shadow-[0_10px_30px_-20px_rgb(90_65_54/0.5)]">
+                <div className="relative w-full">
                 <svg viewBox="0 0 240 132" role="img" aria-label={`${yes} ja, ${pending} nog niet, ${no} nee, van ${total} gasten`} className="block w-full">
                   {stats.map(({ label, value, ring }, i) => {
                     const r = 104 - i * 24;
@@ -122,13 +119,16 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     );
                   })}
                 </svg>
-                <div className="absolute inset-x-0 bottom-4 text-center">
+                <div className="absolute inset-x-0 bottom-0 text-center">
                   <p className="font-serif text-[2.4rem] leading-none">{total}</p>
                   <p className="mt-1 text-xs text-muted">{total === 1 ? "gast" : "gasten"}</p>
                 </div>
+                </div>
               </div>
 
-              <ul className="grid grid-cols-3 gap-3 sm:grid-cols-1 sm:gap-5">
+              <div className="flex flex-col justify-center">
+              <h2 className="eyebrow text-ink/80 sm:mb-6">RSVP-overzicht</h2>
+              <ul className="mt-5 grid grid-cols-3 gap-3 sm:mt-0 sm:grid-cols-1 sm:gap-5">
                 {stats.map(({ label, value, hint, icon: Icon, tone }) => (
                   <li key={label} className="sm:flex sm:items-center sm:gap-4">
                     <p className="font-serif text-[2.6rem] leading-none sm:order-2 sm:ml-auto sm:pr-2">{value}</p>
@@ -144,6 +144,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   </li>
                 ))}
               </ul>
+              </div>
             </div>
           </section>
 
