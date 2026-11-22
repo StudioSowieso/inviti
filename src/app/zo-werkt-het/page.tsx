@@ -61,7 +61,7 @@ export default function ZoWerktHetPage() {
 
       <CtaBand
         title="Begin met jullie uitnodiging"
-        note={`Je kunt alles gratis uitproberen. Voor het versturen betaal je eenmalig ${PRICE_LABEL}.`}
+        note={`Ontwerp en plan gratis in de testomgeving. Versturen kan met de volledige versie, eenmalig ${PRICE_LABEL}.`}
       />
     </MarketingShell>
   );

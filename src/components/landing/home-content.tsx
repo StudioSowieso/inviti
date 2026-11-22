@@ -23,7 +23,7 @@ const TILES = [
   {
     href: "/prijzen",
     title: "Prijzen",
-    text: `Gratis uitproberen. Voor het versturen betaal je eenmalig ${PRICE_LABEL}, geen abonnement.`,
+    text: `Begin gratis in de testomgeving. Voor het versturen kies je de volledige versie, eenmalig ${PRICE_LABEL}.`,
     cta: "Bekijk de prijzen",
   },
 ];
@@ -101,7 +101,7 @@ export function HomeContent({ brand = "wine" }: { brand?: "classic" | "wine" }) 
         </div>
       </section>
 
-      <CtaBand note={`Gratis uitproberen. Voor het versturen betaal je eenmalig ${PRICE_LABEL}, geen abonnement.`} />
+      <CtaBand note={`Begin gratis in de testomgeving. Voor het versturen kies je de volledige versie, eenmalig ${PRICE_LABEL}.`} />
     </MarketingShell>
   );
 }

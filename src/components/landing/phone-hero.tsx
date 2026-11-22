@@ -288,7 +288,7 @@ export function PhoneHero({ tone }: { tone?: Tone }) {
           Zo werkt het
         </Link>
       </div>
-      <p className="mt-4 text-sm text-ink/60">Gratis uitproberen, je betaalt pas als je gaat versturen.</p>
+      <p className="mt-4 text-sm text-ink/60">Begin gratis in de testomgeving. Je betaalt pas als je gaat versturen.</p>
     </section>
   );
 }

@@ -23,8 +23,8 @@ export default async function UpgradePage() {
         <p className="eyebrow text-clay">Je zit in de testomgeving</p>
         <h1 className="mt-3 font-serif text-4xl leading-tight font-medium">Klaar om te versturen?</h1>
         <p className="mt-3 text-[0.95rem] leading-relaxed text-muted">
-          In de testomgeving kun je alles uitproberen: je uitnodiging ontwerpen, je gastenlijst opbouwen en je to-do’s
-          bijhouden. Voor het versturen zelf heb je de volledige versie nodig.
+          De testomgeving is gratis en laat je ontwerpen, je gastenlijst opbouwen en je to-do’s bijhouden. Dat zijn niet alle
+          functies: voor het versturen en het ontvangen van RSVP’s heb je de volledige versie nodig.
         </p>
         <ul className="mt-6 space-y-3 text-sm">
           {POINTS.map((t) => (

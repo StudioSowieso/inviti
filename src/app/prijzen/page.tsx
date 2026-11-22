@@ -7,7 +7,7 @@ import { PRICE_LABEL } from "@/lib/stripe";
 
 export const metadata: Metadata = {
   title: "Prijzen — Proost Mee",
-  description: `Gratis uitproberen. Voor het versturen van de uitnodiging betaal je eenmalig ${PRICE_LABEL}, geen abonnement.`,
+  description: `Begin gratis in de testomgeving en ontwerp je uitnodiging. Versturen kan met de volledige versie, eenmalig ${PRICE_LABEL}, geen abonnement.`,
 };
 
 const FREE = [
@@ -30,7 +30,7 @@ const FAQ = [
   },
   {
     q: "Kan ik eerst uitproberen?",
-    a: "Ja. In de testomgeving ontwerp je je uitnodiging, bouw je de gastenlijst op en houd je je to-do's bij. Alleen voor het versturen heb je de volledige versie nodig.",
+    a: "Ja, gratis en zonder betaalgegevens. In de testomgeving ontwerp je je uitnodiging, bouw je de gastenlijst op en houd je je to-do's bij. Dat zijn niet alle functies: om uitnodigingen te versturen en RSVP's te ontvangen heb je de volledige versie nodig.",
   },
   {
     q: "Hoe betaal ik?",
@@ -49,9 +49,9 @@ function Check({ light = false }: { light?: boolean }) {
 export default function PrijzenPage() {
   return (
     <MarketingShell>
-      <PageIntro eyebrow="Prijzen" title="Gratis uitproberen, eenmalig betalen om te versturen">
-        Je ontwerpt, bouwt de gastenlijst en plant je to-do&apos;s in de testomgeving. Pas als de uitnodiging de deur uit gaat,
-        heb je de volledige versie nodig.
+      <PageIntro eyebrow="Prijzen" title="Begin gratis, betaal pas als je gaat versturen">
+        In de gratis testomgeving ontwerp je jullie uitnodiging, bouw je de gastenlijst op en houd je je to-do&apos;s bij. Dat is
+        niet de volledige versie: versturen en RSVP&apos;s ontvangen horen daar bij. Pas dan betaal je, eenmalig en zonder abonnement.
       </PageIntro>
 
       <section className="mx-auto max-w-6xl px-6 pb-28 lg:px-10 lg:pb-40">
@@ -116,7 +116,7 @@ export default function PrijzenPage() {
         </div>
       </section>
 
-      <CtaBand title="Probeer het gratis" text="Maak een account aan en ontwerp jullie uitnodiging. Betalen kan later." />
+      <CtaBand title="Probeer het gratis" text="Maak een gratis account aan en ontwerp jullie uitnodiging in de testomgeving. Versturen en betalen kan later." />
     </MarketingShell>
   );
 }

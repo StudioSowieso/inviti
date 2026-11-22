@@ -147,7 +147,7 @@ export function SignupForm() {
               {
                 value: "trial",
                 title: "Eerst proberen in de testomgeving",
-                text: "Gratis. Ontwerp je uitnodiging en bouw je gastenlijst op. Uitnodigingen versturen komt beschikbaar na aankoop.",
+                text: "Gratis, zonder betaalgegevens. Ontwerp je uitnodiging en bouw je gastenlijst op. Versturen kan later met de volledige versie.",
               },
             ] as const
           ).map((o) => (
