@@ -363,3 +363,8 @@ summary::-webkit-details-marker {
   background: var(--color-paper);
   box-shadow: 0 14px 40px -22px rgb(90 65 54 / 0.45), 0 1px 0 rgb(255 255 255 / 0.9) inset;
 }
+
+/* Eyebrow in de groene slotsectie: lichte tekst zoals de rest daar. */
+.brand-wine [data-arch] .eyebrow {
+  color: rgb(250 248 244 / 0.85);
+}
