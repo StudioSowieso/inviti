@@ -5,6 +5,7 @@ import { SideNav } from "@/components/side-nav";
 import { getIsAdmin } from "@/lib/admin";
 import { getHasPaid } from "@/lib/billing";
 import { TRIAL_BANNER_HEIGHT, TrialBanner } from "@/components/trial-banner";
+import { ClinkLoader } from "@/components/clink-loader";
 import { getUser } from "@/lib/supabase/server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -14,6 +15,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="brand-back min-h-dvh" style={{ "--banner-h": hasPaid ? "0px" : TRIAL_BANNER_HEIGHT } as CSSProperties}>
+      <ClinkLoader name="app" />
       {!hasPaid && <TrialBanner price={PRICE_LABEL} />}
       <div className="mx-auto flex w-full max-w-[100rem] gap-6 px-4 py-4 sm:px-6 lg:gap-8 lg:px-8 2xl:px-12">
         <SideNav isAdmin={isAdmin} hasPaid={hasPaid} />

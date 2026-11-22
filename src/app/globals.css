@@ -440,3 +440,60 @@ summary::-webkit-details-marker {
     animation: none;
   }
 }
+
+/* Laadanimatie: twee glazen klinken tegen elkaar, sterretjes springen op, dan fade-out */
+.clink-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-cream);
+  animation: clink-out 0.55s ease 1.95s forwards;
+}
+.clink-stage {
+  width: min(13rem, 52vw);
+  color: var(--color-forest);
+}
+.clink-mark {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  animation: clink-in 0.35s ease both;
+}
+.clink-l {
+  animation: clink-swing-l 1.05s cubic-bezier(0.55, 0, 0.7, 1) 0.35s both;
+}
+.clink-r {
+  animation: clink-swing-r 1.05s cubic-bezier(0.55, 0, 0.7, 1) 0.35s both;
+}
+.clink-stars {
+  animation: clink-pop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 1.3s both;
+}
+@keyframes clink-swing-l {
+  0% { transform: rotate(-20deg) translateX(-14px); }
+  70% { transform: rotate(2.5deg); }
+  82% { transform: rotate(-1.2deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes clink-swing-r {
+  0% { transform: rotate(20deg) translateX(14px); }
+  70% { transform: rotate(-2.5deg); }
+  82% { transform: rotate(1.2deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes clink-pop {
+  0% { opacity: 0; transform: scale(0.2) rotate(-25deg); }
+  60% { opacity: 1; transform: scale(1.18) rotate(6deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes clink-in {
+  from { opacity: 0; }
+}
+@keyframes clink-out {
+  to { opacity: 0; visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clink-l, .clink-r, .clink-stars { animation: none; }
+  .clink-overlay { animation: clink-out 0.4s ease 0.9s forwards; }
+}

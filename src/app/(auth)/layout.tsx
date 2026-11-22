@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckIcon, Sparkle } from "@/components/icons";
 import { PhoneFrame } from "@/components/landing/phone";
+import { ResetClinkLoader } from "@/components/clink-loader";
 import { Logo } from "@/components/logo";
 
 const POINTS = ["Een uitnodiging die voelt als jullie", "Gastenlijst en groepen op één plek", "Alle RSVP's in één overzicht"];
@@ -8,6 +9,7 @@ const POINTS = ["Een uitnodiging die voelt als jullie", "Gastenlijst en groepen 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="brand-wine min-h-dvh lg:grid lg:grid-cols-[1.05fr_1fr]">
+      <ResetClinkLoader name="app" />
       {/* Beeldvlak: mobiel bovenaan, desktop links, in dezelfde stijl als de landingspagina */}
       <aside className="relative overflow-hidden bg-forest text-paper lg:min-h-dvh">
         <div

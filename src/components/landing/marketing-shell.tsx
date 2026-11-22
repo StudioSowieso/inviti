@@ -1,3 +1,4 @@
+import { ClinkLoader } from "../clink-loader";
 import { CursorFollow } from "./cursor-follow";
 import { LandingNav } from "./landing-nav";
 import { MarketingFooter } from "./marketing-footer";
@@ -14,6 +15,7 @@ export function MarketingShell({
 }) {
   return (
     <div className={`min-h-dvh overflow-x-clip ${brand === "wine" ? "brand-wine" : ""}`}>
+      <ClinkLoader name="site" />
       <SmoothScroll />
       <ScrollFx />
       <CursorFollow />
