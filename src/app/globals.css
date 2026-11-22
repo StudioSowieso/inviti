@@ -401,3 +401,22 @@ summary::-webkit-details-marker {
 .brand-back .eyebrow {
   letter-spacing: 0.2em;
 }
+
+/* Zacht bewegende kaarten in het blok "Uitnodiging maken". */
+@keyframes float-a {
+  50% { transform: rotate(3deg) translateY(-6px); }
+}
+@keyframes float-b {
+  50% { transform: rotate(-3deg) translateY(6px); }
+}
+@keyframes float-c {
+  50% { transform: translateY(-5px); }
+}
+
+.float-a { animation: float-a 6s ease-in-out infinite; }
+.float-b { animation: float-b 7s ease-in-out infinite; }
+.float-c { animation: float-c 5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .float-a, .float-b, .float-c { animation: none; }
+}

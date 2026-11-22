@@ -1,9 +1,19 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Sparkle } from "@/components/icons";
 
-const REPLIES = [
-  { label: "Ja", n: 36 },
-  { label: "Nog niet", n: 9 },
-  { label: "Nee", n: 3 },
+/** Wisselende stand van de reacties (altijd samen 48), zodat de balkjes af en toe bewegen. */
+const SCENES: [number, number, number][] = [
+  [36, 9, 3],
+  [30, 13, 5],
+  [41, 5, 2],
+  [33, 11, 4],
+];
+const BARS = [
+  { label: "Ja", color: "bg-forest" },
+  { label: "Nog niet", color: "bg-coral" },
+  { label: "Nee", color: "bg-ink/55" },
 ];
 const GUESTS = ["Familie Jansen · 4 gasten", "Sanne & Tim · vegetarisch", "Oma & Opa de Vries", "Lotte Bakker · +1"];
 
@@ -11,6 +21,14 @@ const LABEL = "text-[0.62rem] font-semibold tracking-[0.24em] uppercase";
 
 /** Blok "Dit regel je met Proost Mee": drie kaarten die laten zien wat er achter de uitnodiging zit. */
 export function OverviewBlock() {
+  const [scene, setScene] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => setScene((v) => (v + 1) % SCENES.length), 3200);
+    return () => window.clearInterval(id);
+  }, []);
+  const counts = SCENES[scene];
+
   return (
     <section aria-labelledby="regel-je" className="bg-sage px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-5xl text-center">
@@ -30,14 +48,17 @@ export function OverviewBlock() {
               <span className="text-sm">gasten reageerden</span>
             </p>
             <div className="mt-6 space-y-3">
-              {REPLIES.map((r) => (
+              {BARS.map((r, i) => (
                 <div key={r.label}>
                   <div className="flex justify-between text-xs text-forest">
                     <span>{r.label}</span>
-                    <span>{r.n}</span>
+                    <span className="tabular-nums">{counts[i]}</span>
                   </div>
                   <div className="mt-1 h-2 overflow-hidden rounded-full bg-sage">
-                    <div className="h-full rounded-full bg-olive-mid" style={{ width: `${(r.n / 48) * 100}%` }} />
+                    <div
+                      className={`h-full rounded-full transition-[width] duration-1000 ease-in-out ${r.color}`}
+                      style={{ width: `${(counts[i] / 48) * 100}%` }}
+                    />
                   </div>
                 </div>
               ))}
@@ -64,9 +85,9 @@ export function OverviewBlock() {
             <p className={`${LABEL} text-forest`}>3 · Uitnodiging maken</p>
             <div aria-hidden className="relative mt-5 min-h-[11rem] flex-1">
               <div className="absolute inset-x-0 inset-y-0 mx-auto w-full max-w-[17rem]">
-                <span className="absolute top-[14%] left-[4%] h-[76%] w-[46%] -rotate-12 rounded-2xl bg-sage" />
-                <span className="absolute top-[8%] right-[4%] h-[82%] w-[46%] rotate-6 rounded-2xl bg-coral" />
-                <span className="absolute top-[2%] left-1/2 flex h-[94%] w-[48%] -translate-x-1/2 flex-col items-center justify-center rounded-2xl bg-olive text-center text-paper shadow-[0_14px_30px_-16px_rgb(0_0_0/0.5)]">
+                <span className="float-a absolute top-[14%] left-[4%] h-[76%] w-[46%] -rotate-12 rounded-2xl bg-sage" />
+                <span className="float-b absolute top-[8%] right-[4%] h-[82%] w-[46%] rotate-6 rounded-2xl bg-coral" />
+                <span className="float-c absolute top-[2%] left-1/2 flex h-[94%] w-[48%] -translate-x-1/2 flex-col items-center justify-center rounded-2xl bg-olive text-center text-paper shadow-[0_14px_30px_-16px_rgb(0_0_0/0.5)]">
                   <span className="text-[0.5rem] tracking-[0.2em] uppercase">Wij gaan trouwen</span>
                   <span className="mt-2 text-lg leading-tight">
                     Emma
