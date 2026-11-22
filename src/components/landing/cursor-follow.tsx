@@ -82,7 +82,7 @@ export function CursorFollow() {
       <div
         ref={big}
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[70] text-clay opacity-0 transition-opacity duration-300"
+        className="pointer-events-none fixed top-0 left-0 z-[70] text-olive opacity-0 transition-opacity duration-300"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path d={STAR} />
