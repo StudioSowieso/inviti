@@ -49,9 +49,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const todoPct = todoTotal ? Math.round((doneCount / todoTotal) * 100) : 0;
 
   const stats = [
-    { label: "Ja", value: yes, hint: "gasten komen", icon: CheckIcon, tone: "bg-forest text-paper", ring: "stroke-forest" },
-    { label: "Nog niet", value: pending, hint: "wachten nog", icon: ClockIcon, tone: "bg-clay text-paper", ring: "stroke-clay" },
-    { label: "Nee", value: no, hint: "komen niet", icon: XIcon, tone: "bg-ink/45 text-paper", ring: "stroke-ink/45" },
+    { label: "Ja", value: yes, hint: "gasten komen", icon: CheckIcon, tone: "bg-forest text-paper", ring: "stroke-forest", dot: "bg-forest" },
+    { label: "Nog niet", value: pending, hint: "wachten nog", icon: ClockIcon, tone: "bg-clay text-paper", ring: "stroke-clay", dot: "bg-clay" },
+    { label: "Nee", value: no, hint: "komen niet", icon: XIcon, tone: "bg-ink/45 text-paper", ring: "stroke-ink/45", dot: "bg-ink/45" },
   ];
 
   const quick = [
@@ -95,35 +95,49 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           {/* RSVP-overzicht */}
           <section className="relative overflow-hidden rounded-[1.5rem] bg-sage p-5 text-ink shadow-[0_18px_40px_-26px_rgb(90_65_54/0.45)] sm:p-6 xl:p-8">
             <div className="relative grid gap-5 sm:grid-cols-[minmax(0,17rem)_1fr] sm:gap-8">
-              {/* Ringen: hoe groter de ring, hoe lager de rij; elke ring toont zijn aandeel van alle gasten */}
-              <div className="relative flex min-h-[13rem] items-center rounded-[1.25rem] bg-paper px-3 py-5 shadow-[0_10px_30px_-20px_rgb(90_65_54/0.5)]">
-                <div className="relative w-full">
-                <svg viewBox="0 0 240 132" role="img" aria-label={`${yes} ja, ${pending} nog niet, ${no} nee, van ${total} gasten`} className="block w-full">
+              {/* Ringen zoals in het ontwerp: brede bogen die links en rechts buiten beeld lopen.
+                  Bovenste ring Ja, middelste Nog niet, onderste Nee; elk toont zijn aandeel van alle gasten. */}
+              <div className="relative flex min-h-[15rem] flex-col justify-center overflow-hidden rounded-[1.25rem] bg-paper py-6 text-center shadow-[0_10px_30px_-20px_rgb(90_65_54/0.5)]">
+                <p className="font-serif text-[2.6rem] leading-none">{total}</p>
+                <p className="mt-1 text-sm text-muted">{total === 1 ? "gast" : "gasten"}</p>
+                <svg viewBox="0 0 240 118" role="img" aria-label={`${yes} ja, ${pending} nog niet, ${no} nee, van ${total} gasten`} className="mt-3 block w-full">
                   {stats.map(({ label, value, ring }, i) => {
-                    const r = 104 - i * 24;
-                    const d = `M ${120 - r} 124 A ${r} ${r} 0 0 1 ${120 + r} 124`;
-                    const pct = total ? (value / total) * 100 : 0;
+                    const R = 190 - i * 25;
+                    const cy = 250;
+                    const A = 52; // halve boog in graden
+                    const rad = (deg: number) => (deg * Math.PI) / 180;
+                    const x1 = 120 - R * Math.sin(rad(A));
+                    const x2 = 120 + R * Math.sin(rad(A));
+                    const y = cy - R * Math.cos(rad(A));
+                    const d = `M ${x1} ${y} A ${R} ${R} 0 0 1 ${x2} ${y}`;
+                    const visible = Math.asin(120 / R) * (180 / Math.PI); // deel van de boog dat in beeld is
+                    const hidden = (A - visible) / (2 * A);
+                    const share = total ? value / total : 0;
+                    const len = hidden + share * 0.9 * ((visible * 2) / (2 * A)); // 0.9: einde blijft net in beeld
                     return (
-                      <g key={label} fill="none" strokeWidth="13" strokeLinecap="round">
-                        <path d={d} pathLength={100} className="stroke-line" />
-                        {pct > 0 && (
+                      <g key={label} fill="none" strokeWidth="12" strokeLinecap="round">
+                        <path d={d} className="stroke-line" />
+                        {share > 0 && (
                           <path
                             d={d}
                             pathLength={100}
                             strokeDasharray="100"
                             className={`${ring} ring-in`}
-                            style={{ strokeDashoffset: 100 - pct, animationDelay: `${i * 120}ms` }}
+                            style={{ strokeDashoffset: 100 - len * 100, animationDelay: `${i * 120}ms` }}
                           />
                         )}
                       </g>
                     );
                   })}
                 </svg>
-                <div className="absolute inset-x-0 bottom-0 text-center">
-                  <p className="font-serif text-[2.4rem] leading-none">{total}</p>
-                  <p className="mt-1 text-xs text-muted">{total === 1 ? "gast" : "gasten"}</p>
-                </div>
-                </div>
+                <ul className="mt-1 flex justify-center gap-5 text-sm">
+                  {stats.map(({ label, value, dot }) => (
+                    <li key={label} className="flex items-center gap-1.5">
+                      <span className={`size-2.5 rounded-full ${dot}`} />
+                      <span className="font-semibold">{value}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div className="flex flex-col justify-center">
