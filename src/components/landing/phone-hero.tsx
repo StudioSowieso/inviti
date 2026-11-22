@@ -177,10 +177,8 @@ export function PhoneHero({ tone }: { tone?: Tone }) {
       </p>
 
       <div className="relative mx-auto max-w-5xl">
-        <h1 className="mt-5 font-serif text-[clamp(3.25rem,8.5vw,7.5rem)] leading-[0.98] font-medium tracking-tight text-forest">
-          Jullie dag,
-          <br />
-          <span className="italic">mooi geregeld.</span>
+        <h1 className="mt-5 font-serif text-[clamp(1.6rem,6.6vw,5rem)] leading-[1.05] whitespace-nowrap font-medium tracking-tight text-forest">
+          Jullie dag, <span className="italic">mooi geregeld.</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-xl leading-relaxed text-ink/70">
