@@ -1,3 +1,4 @@
+import { PRICE_LABEL } from "@/lib/stripe";
 import type { CSSProperties } from "react";
 import { redirect } from "next/navigation";
 import { TRIAL_BANNER_HEIGHT, TrialBanner } from "@/components/trial-banner";
@@ -12,7 +13,7 @@ export default async function FlowLayout({ children }: { children: React.ReactNo
 
   return (
     <div className="brand-back min-h-dvh" style={{ "--banner-h": hasPaid ? "0px" : TRIAL_BANNER_HEIGHT } as CSSProperties}>
-      {!hasPaid && <TrialBanner />}
+      {!hasPaid && <TrialBanner price={PRICE_LABEL} />}
       {children}
     </div>
   );
