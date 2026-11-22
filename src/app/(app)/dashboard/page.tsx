@@ -130,11 +130,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     );
                   })}
                 </svg>
-                <ul className="mt-1 flex justify-center gap-5 text-sm">
+                <ul className="mt-1 flex flex-wrap justify-center gap-x-4 gap-y-1 px-3 text-xs">
                   {stats.map(({ label, value, dot }) => (
                     <li key={label} className="flex items-center gap-1.5">
                       <span className={`size-2.5 rounded-full ${dot}`} />
-                      <span className="font-semibold">{value}</span>
+                      <span className="text-ink/75">{label}</span>
+                      <span className="text-sm font-semibold">{value}</span>
                     </li>
                   ))}
                 </ul>
