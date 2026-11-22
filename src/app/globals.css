@@ -368,3 +368,36 @@ summary::-webkit-details-marker {
 .brand-wine [data-arch] .eyebrow {
   color: rgb(250 248 244 / 0.85);
 }
+
+/* Backoffice in dezelfde kleuren als de voorkant: bruine tekst, olijfgroen voor actieve onderdelen, roze accent. */
+.brand-back {
+  --color-cream: #f2f0eb;
+  --color-paper: #faf8f4;
+  --color-line: #e3dfd4;
+  --color-forest: #4c5b3c;
+  --color-forest-deep: #3d4a30;
+  --color-sage: #dde6d5;
+  --color-clay: #eb8c83;
+  --color-blush: #f7d4cf;
+  --color-ink: #5a4136;
+  --color-muted: #8a7a6e;
+  --logo-accent: #eb8c83;
+  --font-serif: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.brand-back .text-forest {
+  color: var(--color-ink);
+}
+
+.brand-back .font-serif {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.brand-back .eyebrow {
+  letter-spacing: 0.2em;
+}

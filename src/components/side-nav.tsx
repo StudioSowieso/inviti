@@ -40,7 +40,7 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
                 <Link
                   href={href}
                   className={`flex w-[4.5rem] flex-col items-center gap-1.5 rounded-2xl py-3 text-[0.6rem] tracking-[0.14em] uppercase transition ${
-                    active ? "bg-blush/70 text-ink" : "text-muted hover:bg-cream hover:text-ink"
+                    active ? "bg-forest text-paper" : "text-muted hover:bg-cream hover:text-ink"
                   }`}
                 >
                   <Icon width={19} height={19} />

@@ -12,7 +12,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const [isAdmin, hasPaid] = await Promise.all([getIsAdmin(), getHasPaid()]);
 
   return (
-    <div style={{ "--banner-h": hasPaid ? "0px" : TRIAL_BANNER_HEIGHT } as CSSProperties}>
+    <div className="brand-back min-h-dvh" style={{ "--banner-h": hasPaid ? "0px" : TRIAL_BANNER_HEIGHT } as CSSProperties}>
       {!hasPaid && <TrialBanner />}
       <div className="mx-auto flex w-full max-w-[100rem] gap-6 px-4 py-4 sm:px-6 lg:gap-8 lg:px-8 2xl:px-12">
         <SideNav isAdmin={isAdmin} hasPaid={hasPaid} />

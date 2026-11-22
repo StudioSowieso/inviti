@@ -49,9 +49,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const todoPct = todoTotal ? Math.round((doneCount / todoTotal) * 100) : 0;
 
   const stats = [
-    { label: "Ja", value: yes, hint: "gasten komen", icon: CheckIcon, tone: "bg-sage text-forest" },
-    { label: "Nog niet", value: pending, hint: "wachten nog", icon: ClockIcon, tone: "bg-paper/15 text-paper" },
-    { label: "Nee", value: no, hint: "komen niet", icon: XIcon, tone: "bg-blush text-clay" },
+    { label: "Ja", value: yes, hint: "gasten komen", icon: CheckIcon, tone: "bg-paper text-ink" },
+    { label: "Nog niet", value: pending, hint: "wachten nog", icon: ClockIcon, tone: "bg-paper text-ink" },
+    { label: "Nee", value: no, hint: "komen niet", icon: XIcon, tone: "bg-paper text-ink" },
   ];
 
   const quick = [
@@ -93,14 +93,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] 2xl:grid-cols-[1.6fr_1fr] 2xl:gap-12">
         <div className="space-y-8">
           {/* RSVP-overzicht */}
-          <section className="relative overflow-hidden rounded-[1.5rem] bg-forest p-5 text-paper sm:p-6 xl:p-8">
-            <div
-              className="pointer-events-none absolute -top-24 -right-16 size-64 rounded-full opacity-20"
-              style={{ background: "radial-gradient(circle, #f1ded4 0%, transparent 65%)" }}
-            />
+          <section className="relative overflow-hidden rounded-[1.5rem] bg-sage p-5 text-ink shadow-[0_18px_40px_-26px_rgb(90_65_54/0.45)] sm:p-6 xl:p-8">
             <div className="relative flex items-baseline justify-between">
-              <h2 className="eyebrow text-paper/80">RSVP-overzicht</h2>
-              <span className="text-sm font-medium text-paper/90">
+              <h2 className="eyebrow text-ink/80">RSVP-overzicht</h2>
+              <span className="text-sm font-medium text-ink/90">
                 {total} {total === 1 ? "gast" : "gasten"}
               </span>
             </div>
@@ -115,15 +111,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     <span className="text-sm font-medium">{label}</span>
                   </div>
                   <p className="mt-3 font-serif text-[2.6rem] leading-none">{value}</p>
-                  <p className="mt-1 text-xs text-paper/55">{hint}</p>
+                  <p className="mt-1 text-xs text-ink/70">{hint}</p>
                 </div>
               ))}
             </div>
 
             {total > 0 && (
-              <div className="relative mt-6 flex h-1.5 overflow-hidden rounded-full bg-paper/15">
-                <span className="bg-sage" style={{ width: `${(yes / total) * 100}%` }} />
-                <span className="bg-blush" style={{ width: `${(no / total) * 100}%` }} />
+              <div className="relative mt-6 flex h-1.5 overflow-hidden rounded-full bg-paper">
+                <span className="bg-forest" style={{ width: `${(yes / total) * 100}%` }} />
+                <span className="bg-clay" style={{ width: `${(no / total) * 100}%` }} />
               </div>
             )}
           </section>

@@ -11,7 +11,7 @@ export default async function FlowLayout({ children }: { children: React.ReactNo
   const hasPaid = await getHasPaid();
 
   return (
-    <div className="min-h-dvh" style={{ "--banner-h": hasPaid ? "0px" : TRIAL_BANNER_HEIGHT } as CSSProperties}>
+    <div className="brand-back min-h-dvh" style={{ "--banner-h": hasPaid ? "0px" : TRIAL_BANNER_HEIGHT } as CSSProperties}>
       {!hasPaid && <TrialBanner />}
       {children}
     </div>
