@@ -26,10 +26,10 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
     <nav className="sticky top-[calc(1rem_+_var(--banner-h,0px))] hidden h-[calc(100dvh_-_2rem_-_var(--banner-h,0px))] w-28 shrink-0 flex-col items-center rounded-[1.75rem] border border-line bg-paper py-6 lg:flex">
       <Link
         href="/dashboard"
-        className="flex flex-col items-center gap-1 text-forest"
+        className="flex flex-col items-center gap-1 text-ink"
         aria-label="Proost Mee"
       >
-        <Logo stacked className="w-[4.6rem]" />
+        <Logo stacked className="w-[5.2rem]" />
       </Link>
 
       <ul className="mt-10 flex flex-col gap-2">

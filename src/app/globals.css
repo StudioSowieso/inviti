@@ -224,7 +224,7 @@ summary::-webkit-details-marker {
   --color-muted: #8a7a6e;
   --color-olive: #4c5b3c;
   --color-olive-mid: #5f6f4e;
-  --logo-accent: #6b7a52;
+  --logo-accent: #e0948a;
   --color-clay: #eb8c83;
   --color-coral: #eb8c83;
   --font-serif: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
@@ -452,7 +452,7 @@ summary::-webkit-details-marker {
   }
 }
 
-/* Laadanimatie: twee glazen klinken tegen elkaar, sterretjes springen op, dan fade-out */
+/* Laadanimatie: twee glazen klinken tegen elkaar, de wijn schommelt, een vonk, sterretjes ploppen op, de naam schuift in beeld */
 .clink-overlay {
   position: fixed;
   inset: 0;
@@ -460,43 +460,76 @@ summary::-webkit-details-marker {
   display: grid;
   place-items: center;
   background: var(--color-cream);
-  animation: clink-out 0.55s ease 1.95s forwards;
+  animation: clink-out 0.5s ease 2.15s forwards;
 }
 .clink-stage {
-  width: min(13rem, 52vw);
-  color: var(--color-forest);
+  width: min(20rem, 68vw);
+  color: var(--color-ink);
 }
 .clink-mark {
   display: block;
   width: 100%;
   overflow: visible;
-  animation: clink-in 0.35s ease both;
+  animation: clink-in 0.3s ease both;
 }
 .clink-l {
-  animation: clink-swing-l 1.05s cubic-bezier(0.55, 0, 0.7, 1) 0.35s both;
+  animation: clink-swing-l 0.85s both 0.25s;
 }
 .clink-r {
-  animation: clink-swing-r 1.05s cubic-bezier(0.55, 0, 0.7, 1) 0.35s both;
+  animation: clink-swing-r 0.85s both 0.25s;
 }
-.clink-stars {
-  animation: clink-pop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 1.3s both;
+.clink-wine {
+  transform-box: fill-box;
+  transform-origin: 50% 40%;
+  animation: clink-slosh 1s ease-out 0.85s both;
 }
+.clink-burst {
+  animation: clink-burst 0.6s ease-out 0.87s both;
+}
+.clink-star {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: clink-pop 0.65s cubic-bezier(0.2, 1.5, 0.4, 1) both;
+}
+.clink-star-0 { animation-delay: 0.95s; }
+.clink-star-1 { animation-delay: 1.08s; }
+.clink-star-2 { animation-delay: 1.2s; }
+.clink-word {
+  animation: clink-word 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.clink-word-1 { animation-delay: 1.15s; }
+.clink-word-2 { animation-delay: 1.3s; }
 @keyframes clink-swing-l {
-  0% { transform: rotate(-20deg) translateX(-14px); }
-  70% { transform: rotate(2.5deg); }
-  82% { transform: rotate(-1.2deg); }
+  0% { transform: rotate(-26deg) translateX(-18px); animation-timing-function: cubic-bezier(0.55, 0.05, 0.9, 0.5); }
+  76% { transform: rotate(2deg); animation-timing-function: ease-out; }
+  88% { transform: rotate(-1.2deg); animation-timing-function: ease-in-out; }
   100% { transform: rotate(0deg); }
 }
 @keyframes clink-swing-r {
-  0% { transform: rotate(20deg) translateX(14px); }
-  70% { transform: rotate(-2.5deg); }
-  82% { transform: rotate(1.2deg); }
+  0% { transform: rotate(26deg) translateX(18px); animation-timing-function: cubic-bezier(0.55, 0.05, 0.9, 0.5); }
+  76% { transform: rotate(-2deg); animation-timing-function: ease-out; }
+  88% { transform: rotate(1.2deg); animation-timing-function: ease-in-out; }
   100% { transform: rotate(0deg); }
 }
+@keyframes clink-slosh {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-7deg); }
+  45% { transform: rotate(4deg); }
+  70% { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes clink-burst {
+  0% { opacity: 0; transform: scale(0.3); }
+  25% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
 @keyframes clink-pop {
-  0% { opacity: 0; transform: scale(0.2) rotate(-25deg); }
-  60% { opacity: 1; transform: scale(1.18) rotate(6deg); }
+  0% { opacity: 0; transform: scale(0) rotate(-40deg); }
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes clink-word {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 @keyframes clink-in {
   from { opacity: 0; }
@@ -505,6 +538,7 @@ summary::-webkit-details-marker {
   to { opacity: 0; visibility: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .clink-l, .clink-r, .clink-stars { animation: none; }
+  .clink-l, .clink-r, .clink-wine, .clink-burst, .clink-star, .clink-word { animation: none; }
+  .clink-burst { opacity: 0; }
   .clink-overlay { animation: clink-out 0.4s ease 0.9s forwards; }
 }
