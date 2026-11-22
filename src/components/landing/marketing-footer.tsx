@@ -27,7 +27,7 @@ const COLUMNS = [
   },
 ];
 
-export function MarketingFooter({ brand = "classic" }: { brand?: "classic" | "wine" }) {
+export function MarketingFooter({ brand = "wine" }: { brand?: "classic" | "wine" }) {
   return (
     <footer className="bg-forest text-paper/80">
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-14 sm:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-10">

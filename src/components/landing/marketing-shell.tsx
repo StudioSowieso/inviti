@@ -6,7 +6,7 @@ import { SmoothScroll } from "./smooth-scroll";
 /** Gedeelde omlijsting van alle publieke pagina's: menu, scrolleffecten en footer. */
 export function MarketingShell({
   children,
-  brand = "classic",
+  brand = "wine",
 }: {
   children: React.ReactNode;
   brand?: "classic" | "wine";

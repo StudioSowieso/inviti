@@ -7,7 +7,7 @@ const POINTS = ["Een uitnodiging die voelt als jullie", "Gastenlijst en groepen 
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-dvh lg:grid lg:grid-cols-[1.05fr_1fr]">
+    <div className="brand-wine min-h-dvh lg:grid lg:grid-cols-[1.05fr_1fr]">
       {/* Beeldvlak: mobiel bovenaan, desktop links, in dezelfde stijl als de landingspagina */}
       <aside className="relative overflow-hidden bg-forest text-paper lg:min-h-dvh">
         <div

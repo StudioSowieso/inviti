@@ -12,7 +12,7 @@ const LINKS = [
 ];
 
 /** Vaste navigatie, crème met blur. Op mobiel klapt het menu open met een hamburger. */
-export function LandingNav({ brand = "classic" }: { brand?: "classic" | "wine" }) {
+export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 

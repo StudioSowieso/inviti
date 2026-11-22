@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 /** Wordt getoond op elke pagina zolang COMING_SOON=1 staat (zie middleware). */
 export default function ComingSoonPage() {
   return (
-    <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-forest px-6 py-16 text-paper">
+    <main className="brand-wine relative grid min-h-dvh place-items-center overflow-hidden bg-forest px-6 py-16 text-paper">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.09]"

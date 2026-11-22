@@ -28,7 +28,7 @@ const TILES = [
   },
 ];
 
-export function HomeContent({ brand = "classic" }: { brand?: "classic" | "wine" }) {
+export function HomeContent({ brand = "wine" }: { brand?: "classic" | "wine" }) {
   return (
     <MarketingShell brand={brand}>
       <PhoneHero tone={brand === "wine" ? "olive" : undefined} />
