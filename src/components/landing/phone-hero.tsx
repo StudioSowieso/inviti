@@ -187,14 +187,17 @@ export function PhoneHero({ tone }: { tone?: Tone }) {
           Ontwerp een persoonlijke digitale uitnodiging, beheer jullie gastenlijst en houd alle RSVP&apos;s bij op één rustige plek.
         </p>
 
-        {/* Notitie rechts van de kop */}
+        {/* Notitie rechts van de kop (alleen in de klassieke uitvoering) */}
+        {!tone && (
         <div
-          aria-hidden
-          className="pointer-events-none absolute top-[2.5rem] right-0 hidden -rotate-6 text-clay lg:block"
-        >
-          <p className="font-hand text-3xl leading-none">Sleep door de voorbeelden</p>
-          <Arrow className="mt-1 ml-16 h-12 w-16 rotate-[20deg]" />
-        </div>
+            aria-hidden
+            className="pointer-events-none absolute top-[2.5rem] right-0 hidden -rotate-6 text-clay lg:block"
+          >
+            <p className="font-hand text-3xl leading-none">Sleep door de voorbeelden</p>
+            <Arrow className="mt-1 ml-16 h-12 w-16 rotate-[20deg]" />
+    
+        )}
+      </div>
       </div>
 
       {/* Sleepbare rij met voorbeelden */}
