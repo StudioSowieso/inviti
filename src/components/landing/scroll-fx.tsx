@@ -80,14 +80,23 @@ export function ScrollFx() {
           type: "lines",
           mask: "lines",
           autoSplit: true,
-          onSplit: (self) =>
-            gsap.from(self.lines, {
+          onSplit: (self) => {
+            // Het masker knipt op de regelhoogte af; extra ruimte onderaan voorkomt dat staarten van g, j, p en y wegvallen
+            self.lines.forEach((l) => {
+              const m = (l as HTMLElement).parentElement;
+              if (m) {
+                m.style.paddingBottom = "0.22em";
+                m.style.marginBottom = "-0.22em";
+              }
+            });
+            return gsap.from(self.lines, {
               yPercent: 105,
               duration: 1.15,
               stagger: 0.1,
               ease: "power4.out",
               scrollTrigger: { trigger: el, start: "top 86%", once: true },
-            }),
+            });
+          },
         });
       });
 
