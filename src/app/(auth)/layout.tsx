@@ -11,7 +11,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className="brand-wine min-h-dvh lg:grid lg:grid-cols-[1.05fr_1fr]">
       <ResetClinkLoader name="app" />
       {/* Beeldvlak: mobiel bovenaan, desktop links, in dezelfde stijl als de landingspagina */}
-      <aside className="relative overflow-hidden bg-forest text-paper lg:min-h-dvh">
+      <aside className="relative overflow-hidden bg-olive text-paper lg:min-h-dvh [--logo-accent:#b9c7a4]">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-[0.09]"
@@ -58,7 +58,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
       </aside>
 
-      <main className="flex items-start justify-center bg-cream px-6 pt-10 pb-12 lg:items-center lg:px-14">
+      <main className="flex items-start justify-center bg-[#eef1e8] px-6 pt-10 pb-12 lg:items-center lg:px-14">
         <div className="w-full max-w-md">{children}</div>
       </main>
     </div>
