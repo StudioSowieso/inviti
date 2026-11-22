@@ -1,3 +1,4 @@
+import { CursorFollow } from "./cursor-follow";
 import { LandingNav } from "./landing-nav";
 import { MarketingFooter } from "./marketing-footer";
 import { ScrollFx } from "./scroll-fx";
@@ -15,6 +16,7 @@ export function MarketingShell({
     <div className={`min-h-dvh overflow-x-clip ${brand === "wine" ? "brand-wine" : ""}`}>
       <SmoothScroll />
       <ScrollFx />
+      <CursorFollow />
       <LandingNav brand={brand} />
       <main>{children}</main>
       <MarketingFooter brand={brand} />
