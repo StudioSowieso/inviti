@@ -274,10 +274,10 @@ export function PhoneHero({ tone }: { tone?: Tone }) {
 
       {/* Knoppen */}
       <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-6">
-        <span className="inline-block rounded-full border-2 border-dashed border-forest/35 p-1.5">
+        <span className="cta-ring inline-block rounded-full border-2 border-dashed border-forest/35 p-1.5">
           <Link
             href="/account-aanmaken"
-            className="inline-flex items-center gap-2 rounded-full bg-forest px-7 py-3.5 font-medium text-paper transition hover:bg-forest-deep"
+            className="cta inline-flex items-center gap-2 rounded-full bg-forest px-7 py-3.5 font-medium text-paper transition hover:bg-forest-deep"
           >
             Begin met jullie uitnodiging <ChevronRightIcon width={16} height={16} />
           </Link>

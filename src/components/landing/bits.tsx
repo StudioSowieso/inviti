@@ -60,7 +60,7 @@ export function CtaBand({
           <div className="mt-10 flex flex-wrap items-center justify-center gap-5">
             <Link
               href="/account-aanmaken"
-              className="inline-flex items-center gap-2 rounded-full bg-paper px-7 py-3.5 font-medium text-forest transition hover:bg-blush"
+              className="cta inline-flex items-center gap-2 rounded-full bg-paper px-7 py-3.5 font-medium text-forest transition hover:bg-blush"
             >
               Account aanmaken <ChevronRightIcon width={16} height={16} />
             </Link>

@@ -64,7 +64,7 @@ export function OverviewBlock() {
             <p className={`${LABEL} text-forest`}>3 · Uitnodiging maken</p>
             <div aria-hidden className="relative mx-auto mt-6 h-32 w-44">
               <span className="absolute top-3 left-0 h-24 w-24 -rotate-12 rounded-2xl bg-sage" />
-              <span className="absolute top-0 right-0 h-28 w-24 rotate-6 rounded-2xl bg-olive-mid" />
+              <span className="absolute top-0 right-0 h-28 w-24 rotate-6 rounded-2xl bg-coral" />
               <span className="absolute top-2 left-1/2 flex h-28 w-24 -translate-x-1/2 flex-col items-center justify-center rounded-2xl bg-olive text-center text-paper">
                 <span className="text-[0.38rem] tracking-[0.2em] uppercase">Wij gaan trouwen</span>
                 <span className="mt-1 text-sm">Emma &amp; Mats</span>

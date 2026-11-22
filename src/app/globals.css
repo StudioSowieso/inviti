@@ -13,6 +13,7 @@
   --color-muted: #867f77;
   --color-olive: #4c5b3c;
   --color-olive-mid: #5f6f4e;
+  --color-coral: #eb8c83;
 
   --font-serif: var(--font-cormorant), "Times New Roman", serif;
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
@@ -224,6 +225,8 @@ summary::-webkit-details-marker {
   --color-olive: #4c5b3c;
   --color-olive-mid: #5f6f4e;
   --logo-accent: #6b7a52;
+  --color-clay: #eb8c83;
+  --color-coral: #eb8c83;
   --font-serif: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   background: var(--color-cream);
@@ -259,7 +262,7 @@ summary::-webkit-details-marker {
 }
 
 /* Glaseffect: doorschijnende vlakken met blur over zachte kleurvlekken. */
-.brand-wine header:not(.bg-cream) {
+.brand-wine header:not(.bg-cream):not(.nav-pill) {
   background: rgb(253 244 240 / 0.5);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
@@ -332,4 +335,31 @@ summary::-webkit-details-marker {
 .no-scrollbar *::-webkit-scrollbar,
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Roze (#eb8c83) voor knoppen en accenten; teksten van eyebrows blijven bruin met een roze sterretje. */
+.brand-wine .cta {
+  background: var(--color-coral);
+  color: #fff;
+}
+
+.brand-wine .cta:hover {
+  background: #e17a70;
+}
+
+.brand-wine .cta-ring {
+  border-color: rgb(235 140 131 / 0.7);
+}
+
+.brand-wine .eyebrow {
+  color: var(--color-forest);
+}
+
+.brand-wine .eyebrow svg {
+  color: var(--color-coral);
+}
+
+.brand-wine .nav-pill-bar {
+  background: var(--color-paper);
+  box-shadow: 0 14px 40px -22px rgb(90 65 54 / 0.45), 0 1px 0 rgb(255 255 255 / 0.9) inset;
 }
