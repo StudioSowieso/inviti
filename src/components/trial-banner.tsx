@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { CheckIcon, XIcon } from "@/components/icons";
 
 /** Vaste balk bovenaan voor wie nog in de testomgeving zit. Hoogte staat in --banner-h (2.75rem). */
@@ -29,6 +29,15 @@ const BENEFITS = [
   },
 ];
 
+/** Knop die het koopvenster opent (bijvoorbeeld bij een onderdeel dat pas na aankoop beschikbaar is). */
+export function UpgradeTrigger({ className, children, title }: { className?: string; children: ReactNode; title?: string }) {
+  return (
+    <button type="button" title={title} className={className} onClick={() => window.dispatchEvent(new Event("open-upgrade"))}>
+      {children}
+    </button>
+  );
+}
+
 export function TrialBanner({ price }: { price: string }) {
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -39,8 +48,13 @@ export function TrialBanner({ price }: { price: string }) {
     const onClick = (e: MouseEvent) => {
       if (e.target === d) d.close();
     };
+    const open = () => d.showModal();
     d.addEventListener("click", onClick);
-    return () => d.removeEventListener("click", onClick);
+    window.addEventListener("open-upgrade", open);
+    return () => {
+      d.removeEventListener("click", onClick);
+      window.removeEventListener("open-upgrade", open);
+    };
   }, []);
 
   return (

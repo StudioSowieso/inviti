@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HomeIcon, ListIcon, PenIcon, SendIcon, SettingsIcon, UsersIcon } from "./icons";
 import { Logo } from "./logo";
+import { UpgradeTrigger } from "./trial-banner";
 
 const ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: HomeIcon, ready: true },
@@ -22,7 +23,7 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
   const items = all.map((i) => (i.href === "/versturen" && !hasPaid ? { ...i, ready: false } : i));
 
   return (
-    <nav className="sticky top-[calc(1rem_+_var(--banner-h,0px))] hidden h-[calc(100dvh_-_2rem_-_var(--banner-h,0px))] w-24 shrink-0 flex-col items-center rounded-[1.75rem] border border-line bg-paper py-6 lg:flex">
+    <nav className="sticky top-[calc(1rem_+_var(--banner-h,0px))] hidden h-[calc(100dvh_-_2rem_-_var(--banner-h,0px))] w-28 shrink-0 flex-col items-center rounded-[1.75rem] border border-line bg-paper py-6 lg:flex">
       <Link
         href="/dashboard"
         className="flex flex-col items-center gap-1 text-forest"
@@ -39,7 +40,7 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
               {ready ? (
                 <Link
                   href={href}
-                  className={`flex w-[4.5rem] flex-col items-center gap-1.5 rounded-2xl py-3 text-[0.6rem] tracking-[0.14em] uppercase transition ${
+                  className={`flex w-[5.5rem] flex-col items-center gap-1.5 rounded-2xl py-3 text-[0.6rem] tracking-[0.08em] uppercase transition ${
                     active ? "bg-forest text-paper" : "text-muted hover:bg-cream hover:text-ink"
                   }`}
                 >
@@ -47,13 +48,13 @@ export function SideNav({ isAdmin = false, hasPaid = false }: { isAdmin?: boolea
                   {label}
                 </Link>
               ) : (
-                <span
+                <UpgradeTrigger
                   title="Beschikbaar na aankoop"
-                  className="flex w-[4.5rem] cursor-not-allowed flex-col items-center gap-1.5 rounded-2xl py-3 text-[0.6rem] tracking-[0.14em] text-muted/50 uppercase"
+                  className="flex w-[5.5rem] cursor-pointer flex-col items-center gap-1.5 rounded-2xl py-3 text-[0.6rem] tracking-[0.08em] text-muted/60 uppercase transition hover:bg-cream hover:text-ink"
                 >
                   <Icon width={19} height={19} />
                   {label}
-                </span>
+                </UpgradeTrigger>
               )}
             </li>
           );

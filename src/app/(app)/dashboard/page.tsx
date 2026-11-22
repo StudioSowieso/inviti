@@ -1,3 +1,4 @@
+import { UpgradeTrigger } from "@/components/trial-banner";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -199,7 +200,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                         {inner}
                       </Link>
                     ) : (
-                      <div className="card flex items-center gap-4 p-4 opacity-80">{inner}</div>
+                      <UpgradeTrigger className="card flex w-full cursor-pointer items-center gap-4 p-4 text-left transition hover:border-clay/40">
+                        {inner}
+                      </UpgradeTrigger>
                     )}
                   </li>
                 );
