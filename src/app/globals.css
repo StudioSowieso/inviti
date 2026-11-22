@@ -411,8 +411,10 @@ summary::-webkit-details-marker {
   0%, 100% { transform: translateX(-1.6rem); }
   50% { transform: translateX(1.4rem) rotate(3deg); }
 }
-}
 @keyframes float-c {
+  50% { transform: translateY(-5px); }
+}
+
   50% { transform: translateY(-5px); }
 }
 
