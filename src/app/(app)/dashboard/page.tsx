@@ -150,7 +150,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               <ul className="grid grid-cols-3 gap-3 sm:mt-0 sm:grid-cols-1 sm:gap-5">
                 {stats.map(({ label, value, hint, icon: Icon, tone }) => (
                   <li key={label} className="sm:flex sm:items-center sm:gap-4">
-                    <p className="font-serif text-[2.6rem] leading-none sm:order-2 sm:ml-auto sm:pr-2">{value}</p>
+                    <p className="grid h-16 w-full place-items-center rounded-2xl bg-paper font-serif text-[2.2rem] leading-none sm:order-2 sm:ml-auto sm:w-20">{value}</p>
                     <div className="mt-2 sm:mt-0">
                       <div className="flex items-center gap-2">
                         <span className={`grid size-6 place-items-center rounded-full ${tone}`}>
