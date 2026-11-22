@@ -23,6 +23,7 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   Allura: { css2: "Allura", kind: "script" },
   "Mrs Saint Delafield": { css2: "Mrs+Saint+Delafield", kind: "script" },
   Yellowtail: { css2: "Yellowtail", kind: "script" },
+  "Kaushan Script": { css2: "Kaushan+Script", kind: "script" },
 };
 
 export const DEFAULT_HEADING_FONT = "Cormorant Garamond";

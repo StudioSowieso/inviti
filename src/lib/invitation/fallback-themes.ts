@@ -238,7 +238,7 @@ const THEMES: ThemeInput[] = [
     },
     headingFont: "Cormorant Garamond",
     bodyFont: "EB Garamond",
-    scriptFont: "Yellowtail",
+    scriptFont: "Kaushan Script",
     buttonShape: "pill",
     style: "bourgondisch",
   },

@@ -17,7 +17,7 @@ const FONTS = [
 ];
 
 // Sierlettertypes voor namen en afsluiting (alleen zichtbaar bij de stijlen "Natuur", "Leaf", "Modern", "Sweet" en "Lemon").
-const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura", "Mrs Saint Delafield", "Yellowtail"];
+const SCRIPT_FONTS = ["Great Vibes", "Pinyon Script", "Allura", "Mrs Saint Delafield", "Yellowtail", "Kaushan Script"];
 
 const colorField = (name: string, title: string, description: string) =>
   defineField({
