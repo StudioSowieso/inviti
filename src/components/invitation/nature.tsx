@@ -252,7 +252,7 @@ export function programIcon(title: string) {
 // ---------- Fotovervanger: heuvels bij zonsondergang ----------
 
 /** Zolang er geen foto is: een zacht heuvellandschap in de kleuren van het thema. */
-export function NaturePhoto({ tone = "warm", className = "" }: { tone?: "warm" | "soft"; className?: string }) {
+export function NaturePhoto({ tone = "warm", className = "", lift = 0 }: { tone?: "warm" | "soft"; className?: string; lift?: number }) {
   const id = useId().replace(/:/g, "");
   // Alle kleuren volgen het gekozen kleurenpalet via de --inv-variabelen van de uitnodiging.
   const bg = "var(--inv-background)";
@@ -282,6 +282,7 @@ export function NaturePhoto({ tone = "warm", className = "" }: { tone?: "warm" |
       </defs>
       <rect width="400" height="300" fill={`url(#sky${id})`} />
       <rect width="400" height="300" fill={`url(#sun${id})`} />
+      <g transform={`translate(0 ${-lift})`}>
       <path d="M0 168C60 138 112 150 172 165S300 128 400 150V300H0Z" style={{ fill: hill(70) }} />
       <path d="M0 200C70 170 140 190 212 205S340 184 400 196V300H0Z" style={{ fill: hill(100) }} />
       <path d="M0 246C80 220 160 240 250 250S360 232 400 240V300H0Z" style={{ fill: hill(100, 22) }} />
@@ -289,6 +290,8 @@ export function NaturePhoto({ tone = "warm", className = "" }: { tone?: "warm" |
         <ellipse cx="58" cy="222" rx="7" ry="17" />
         <ellipse cx="74" cy="226" rx="5" ry="12" />
         <ellipse cx="338" cy="214" rx="6" ry="15" />
+      </g>
+      {lift > 0 && <rect x="0" y="299" width="400" height={lift + 2} style={{ fill: hill(100, 22) }} />}
       </g>
     </svg>
   );
@@ -391,7 +394,7 @@ export function NatureBlockSection({
       return (
         <section data-block="hero" className="relative">
           <div className="relative flex h-[29rem] flex-col items-center justify-end overflow-hidden px-6 pb-16 text-center text-white">
-            <NaturePhoto tone="warm" />
+            <NaturePhoto tone="warm" lift={42} />
             <div
               className="absolute inset-0"
               style={{ background: "linear-gradient(to top, rgb(34 38 22 / .66), rgb(34 38 22 / .14) 58%, transparent)" }}
