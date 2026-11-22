@@ -259,8 +259,17 @@ export default function TermsPage() {
             hen.
           </li>
           <li>
-            Wij kunnen niet garanderen dat een bericht of uitnodiging aankomt, op tijd wordt gelezen of niet in een
-            spamfilter terechtkomt. Controleer daarom bij belangrijke gasten zelf of de uitnodiging is aangekomen.
+            <strong>Jij verstuurt de uitnodigingen zelf.</strong> {COMPANY.tradeName} levert de uitnodiging en de link
+            of het bericht, maar het versturen gebeurt door jou, via je eigen e-mail, WhatsApp of een andere manier die
+            je kiest. Wij versturen niets namens jou en hebben geen invloed op het verzenden, het bezorgen of het
+            ontvangen van die berichten.
+          </li>
+          <li>
+            Wij zijn daarom niet verantwoordelijk voor de ontvangst van uitnodigingen. Dat geldt bijvoorbeeld als een
+            bericht niet aankomt, vertraagd is, in een spamfilter of ongewenste-berichtenmap terechtkomt, naar een
+            verkeerd e-mailadres of telefoonnummer is gestuurd, of niet wordt geopend of gelezen. Ook zijn wij niet
+            verantwoordelijk voor beperkingen of storingen van e-mailproviders en WhatsApp. Controleer bij belangrijke
+            gasten zelf of de uitnodiging is aangekomen.
           </li>
           <li>
             Gasten kunnen zelf bepalen of en hoe zij reageren. Wij staan niet in voor de juistheid, tijdigheid of
@@ -281,6 +290,10 @@ export default function TermsPage() {
             uitnodigingen, gasten die niet of te laat reageren of komen, kosten van locatie, catering of leveranciers,
             gemiste inkomsten, verlies van gegevens, immateriële schade en schade door een verkeerd ingevulde of
             niet-gecontroleerde uitnodiging of gastenlijst.
+          </li>
+          <li>
+            Wij zijn niet aansprakelijk voor schade doordat uitnodigingen die jij zelf via e-mail, WhatsApp of een andere
+            weg hebt verstuurd niet, niet op tijd of niet bij de juiste persoon aankomen.
           </li>
           <li>
             Wij zijn niet aansprakelijk voor schade door storingen of fouten bij externe partijen (zoals Stripe,
