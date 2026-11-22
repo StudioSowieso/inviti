@@ -49,9 +49,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const todoPct = todoTotal ? Math.round((doneCount / todoTotal) * 100) : 0;
 
   const stats = [
-    { label: "Ja", value: yes, hint: "gasten komen", icon: CheckIcon, tone: "bg-paper text-ink" },
-    { label: "Nog niet", value: pending, hint: "wachten nog", icon: ClockIcon, tone: "bg-paper text-ink" },
-    { label: "Nee", value: no, hint: "komen niet", icon: XIcon, tone: "bg-paper text-ink" },
+    { label: "Ja", value: yes, hint: "gasten komen", icon: CheckIcon, tone: "bg-forest text-paper", ring: "stroke-forest" },
+    { label: "Nog niet", value: pending, hint: "wachten nog", icon: ClockIcon, tone: "bg-clay text-paper", ring: "stroke-clay" },
+    { label: "Nee", value: no, hint: "komen niet", icon: XIcon, tone: "bg-ink/45 text-paper", ring: "stroke-ink/45" },
   ];
 
   const quick = [
@@ -94,34 +94,57 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         <div className="space-y-8">
           {/* RSVP-overzicht */}
           <section className="relative overflow-hidden rounded-[1.5rem] bg-sage p-5 text-ink shadow-[0_18px_40px_-26px_rgb(90_65_54/0.45)] sm:p-6 xl:p-8">
-            <div className="relative flex items-baseline justify-between">
+            <div className="relative">
               <h2 className="eyebrow text-ink/80">RSVP-overzicht</h2>
-              <span className="text-sm font-medium text-ink/90">
-                {total} {total === 1 ? "gast" : "gasten"}
-              </span>
             </div>
 
-            <div className="relative mt-6 grid grid-cols-3 gap-3">
-              {stats.map(({ label, value, hint, icon: Icon, tone }) => (
-                <div key={label}>
-                  <div className="flex items-center gap-2">
-                    <span className={`grid size-7 place-items-center rounded-full ${tone}`}>
-                      <Icon width={15} height={15} />
-                    </span>
-                    <span className="text-sm font-medium">{label}</span>
-                  </div>
-                  <p className="mt-3 font-serif text-[2.6rem] leading-none">{value}</p>
-                  <p className="mt-1 text-xs text-ink/70">{hint}</p>
+            <div className="relative mt-5 grid items-center gap-5 sm:grid-cols-[minmax(0,17rem)_1fr] sm:gap-8">
+              {/* Ringen: hoe groter de ring, hoe lager de rij; elke ring toont zijn aandeel van alle gasten */}
+              <div className="relative rounded-[1.25rem] bg-paper px-3 pt-6 pb-4 shadow-[0_10px_30px_-20px_rgb(90_65_54/0.5)]">
+                <svg viewBox="0 0 240 132" role="img" aria-label={`${yes} ja, ${pending} nog niet, ${no} nee, van ${total} gasten`} className="block w-full">
+                  {stats.map(({ label, value, ring }, i) => {
+                    const r = 104 - i * 24;
+                    const d = `M ${120 - r} 124 A ${r} ${r} 0 0 1 ${120 + r} 124`;
+                    const pct = total ? (value / total) * 100 : 0;
+                    return (
+                      <g key={label} fill="none" strokeWidth="13" strokeLinecap="round">
+                        <path d={d} pathLength={100} className="stroke-line" />
+                        {pct > 0 && (
+                          <path
+                            d={d}
+                            pathLength={100}
+                            strokeDasharray="100"
+                            className={`${ring} ring-in`}
+                            style={{ strokeDashoffset: 100 - pct, animationDelay: `${i * 120}ms` }}
+                          />
+                        )}
+                      </g>
+                    );
+                  })}
+                </svg>
+                <div className="absolute inset-x-0 bottom-4 text-center">
+                  <p className="font-serif text-[2.4rem] leading-none">{total}</p>
+                  <p className="mt-1 text-xs text-muted">{total === 1 ? "gast" : "gasten"}</p>
                 </div>
-              ))}
-            </div>
-
-            {total > 0 && (
-              <div className="relative mt-6 flex h-1.5 overflow-hidden rounded-full bg-paper">
-                <span className="bg-forest" style={{ width: `${(yes / total) * 100}%` }} />
-                <span className="bg-clay" style={{ width: `${(no / total) * 100}%` }} />
               </div>
-            )}
+
+              <ul className="grid grid-cols-3 gap-3 sm:grid-cols-1 sm:gap-5">
+                {stats.map(({ label, value, hint, icon: Icon, tone }) => (
+                  <li key={label} className="sm:flex sm:items-center sm:gap-4">
+                    <p className="font-serif text-[2.6rem] leading-none sm:order-2 sm:ml-auto sm:pr-2">{value}</p>
+                    <div className="mt-2 sm:mt-0">
+                      <div className="flex items-center gap-2">
+                        <span className={`grid size-6 place-items-center rounded-full ${tone}`}>
+                          <Icon width={13} height={13} />
+                        </span>
+                        <span className="text-sm font-medium">{label}</span>
+                      </div>
+                      <p className="mt-0.5 text-xs text-ink/70 sm:pl-8">{hint}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </section>
 
           {/* Snel starten */}

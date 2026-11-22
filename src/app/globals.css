@@ -422,3 +422,18 @@ summary::-webkit-details-marker {
 @media (prefers-reduced-motion: reduce) {
   .float-a, .float-b, .float-c { animation: none; }
 }
+
+/* RSVP-ringen: de ringen tekenen zich één keer bij het laden */
+@keyframes ring-in {
+  from {
+    stroke-dashoffset: 100;
+  }
+}
+.ring-in {
+  animation: ring-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring-in {
+    animation: none;
+  }
+}
