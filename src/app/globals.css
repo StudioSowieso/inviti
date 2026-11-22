@@ -157,6 +157,55 @@ summary::-webkit-details-marker {
     translate: 0 0;
   }
 
+  /*
+   * Inhoud van een blok komt na elkaar binnen (kleine vertraging per element). Tekeningen, absoluut
+   * gepositioneerde versiering en elementen met een eigen beweging blijven buiten schot.
+   */
+  .inv-appear > *:not(svg):not(.absolute):not([aria-hidden="true"]):not([class*="inv-"]) {
+    opacity: 0;
+    translate: 0 0.9rem;
+    transition:
+      opacity 0.8s ease,
+      translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .inv-appear.inv-in > *:not(svg):not(.absolute):not([aria-hidden="true"]):not([class*="inv-"]) {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .inv-appear.inv-in > :nth-child(2) { transition-delay: 0.1s; }
+  .inv-appear.inv-in > :nth-child(3) { transition-delay: 0.2s; }
+  .inv-appear.inv-in > :nth-child(4) { transition-delay: 0.3s; }
+  .inv-appear.inv-in > :nth-child(5) { transition-delay: 0.4s; }
+  .inv-appear.inv-in > :nth-child(n + 6) { transition-delay: 0.5s; }
+
+  /* Foto's zoomen rustig uit zodra ze in beeld komen. */
+  .inv-appear img:not([class*="inv-"]) {
+    scale: 1.07;
+    transition: scale 1.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .inv-appear.inv-in img:not([class*="inv-"]) {
+    scale: 1;
+  }
+
+  /* Knoppen en links reageren met een klein liftje. */
+  [data-block] button:not(:disabled),
+  [data-block] a {
+    transition:
+      translate 0.25s ease,
+      box-shadow 0.25s ease,
+      opacity 0.25s ease;
+  }
+  [data-block] button:not(:disabled):hover,
+  [data-block] a:hover {
+    translate: 0 -2px;
+    box-shadow: 0 8px 18px -10px rgb(0 0 0 / 0.35);
+  }
+
+  /* Het slotblok wordt door de scroll bijgesneden (zie invitation-view); alleen de rand animeert. */
+  [data-block="footer"] {
+    will-change: clip-path;
+  }
+
   @keyframes inv-sway {
     from { rotate: -1.8deg; translate: -1px 1px; }
     to { rotate: 1.8deg; translate: 1px -2px; }

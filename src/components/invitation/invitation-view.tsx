@@ -247,6 +247,46 @@ export function InvitationView({
     return () => io.disconnect();
   }, [visibleBlocksKey, theme.style]);
 
+  // Footer: vanuit een afgeronde boog (zoals op de landingspagina) naar een rechte onderrand terwijl je naar beneden scrolt.
+  useEffect(() => {
+    const root = scrollRef.current;
+    if (!root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const footer = root.querySelector<HTMLElement>('[data-block="footer"]');
+      if (!footer) return;
+      const rr = root.getBoundingClientRect();
+      const fr = footer.getBoundingClientRect();
+      const start = rr.height * 0.98;
+      let end = Math.max(rr.height - fr.height, rr.height * 0.2);
+      if (start - end < 80) end = start - 80;
+      const p = Math.min(1, Math.max(0, (start - (fr.top - rr.top)) / (start - end)));
+      if (p >= 0.995) {
+        footer.style.clipPath = "";
+        return;
+      }
+      const q = 1 - p;
+      const e = (p * p * (3 - 2 * p)); // zachte ease
+      const k = 1 - e;
+      footer.style.clipPath = `inset(${(16 * k).toFixed(2)}% ${(20 * k).toFixed(2)}% 0% ${(20 * k).toFixed(2)}% round ${(999 * k * (q > 0 ? 1 : 0)).toFixed(0)}px ${(999 * k).toFixed(0)}px 0px 0px)`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    root.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      root.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      const f = root.querySelector<HTMLElement>('[data-block="footer"]');
+      if (f) f.style.clipPath = "";
+    };
+  }, [visibleBlocksKey, theme.style, stage]);
+
   const fontsHref = googleFontsHref(...themeFonts(theme));
   const activeLabel = chapters.find((c) => c.key === active)?.label ?? "Welkom";
   const leaf = theme.style === "leaf";
