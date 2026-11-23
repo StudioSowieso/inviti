@@ -22,7 +22,7 @@ export function InvitationPreview({ variants }: { variants: PreviewVariant[] }) 
     <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch sm:gap-6 xl:gap-8">
       <div className="shrink-0">
         <div
-          className="relative overflow-hidden rounded-[2rem] border-[7px] border-ink/90 bg-paper shadow-[0_24px_60px_-24px_rgb(31_36_32/0.5)]"
+          className="relative box-content overflow-hidden rounded-[2rem] border-[7px] border-ink/90 bg-paper shadow-[0_24px_60px_-24px_rgb(31_36_32/0.5)]"
           style={{ width: `${21 * SCALE}rem`, height: `${42 * SCALE}rem` }}
         >
           <div
