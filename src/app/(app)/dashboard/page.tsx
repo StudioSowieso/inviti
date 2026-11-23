@@ -106,8 +106,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </p>
       )}
 
-      <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] 2xl:grid-cols-[1.6fr_1fr] 2xl:gap-12">
-        <div className="space-y-8">
+      <div className="grid items-start gap-8 lg:grid-cols-[1.25fr_1fr] 2xl:grid-cols-[1.6fr_1fr] 2xl:gap-12">
           {/* RSVP-overzicht */}
           <section className="relative overflow-hidden rounded-[1.5rem] bg-sage p-5 text-ink shadow-[0_18px_40px_-26px_rgb(90_65_54/0.45)] sm:p-6 xl:p-8">
             <div className="relative grid gap-5 sm:grid-cols-[minmax(0,17rem)_1fr] sm:gap-8">
@@ -182,19 +181,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             </div>
           </section>
 
-          {/* Voorbeeld van de uitnodiging */}
-          {previews.length > 0 && (
-            <section className="card p-5 sm:p-6">
-              <h2 className="font-serif text-2xl font-medium">Jouw uitnodiging</h2>
-              <p className="mt-1 mb-5 text-sm text-muted">Zo ziet je gast hem op de telefoon.</p>
-              <InvitationPreview variants={previews} />
-            </section>
-          )}
-
           {/* Snel starten */}
           <section>
             <h2 className="font-serif text-2xl font-medium">Snel starten</h2>
-            <ul className="mt-4 grid gap-3 xl:grid-cols-2 2xl:grid-cols-3">
+            <ul className="mt-4 grid gap-3">
               {quick.map(({ title, text, icon: Icon, href, lockedLabel }) => {
                 const inner = (
                   <>
@@ -233,7 +223,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               })}
             </ul>
           </section>
-        </div>
 
         {/* To Do: een echt lijstje, bewust anders dan de kaarten bij Snel starten */}
         <section className="self-start overflow-hidden rounded-[1.5rem] border border-line bg-paper shadow-[0_10px_40px_-24px_rgb(31_36_32/0.35)]">
@@ -280,6 +269,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <ChevronRightIcon width={16} height={16} />
           </Link>
         </section>
+
+          {/* Voorbeeld van de uitnodiging */}
+          {previews.length > 0 && (
+            <section className="card p-5 sm:p-6">
+              <h2 className="font-serif text-2xl font-medium">Jouw uitnodiging</h2>
+              <p className="mt-1 mb-5 text-sm text-muted">Zo ziet je gast hem op de telefoon.</p>
+              <InvitationPreview variants={previews} />
+            </section>
+          )}
       </div>
     </div>
   );

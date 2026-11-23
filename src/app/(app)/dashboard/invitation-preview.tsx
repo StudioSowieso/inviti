@@ -19,7 +19,7 @@ export function InvitationPreview({ variants }: { variants: PreviewVariant[] }) 
   if (!current) return null;
 
   return (
-    <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:gap-8">
+    <div className="flex flex-col items-center gap-6 2xl:flex-row 2xl:gap-8">
       <div className="shrink-0">
         <div
           className="relative overflow-hidden rounded-[2rem] border-[7px] border-ink/90 bg-paper shadow-[0_24px_60px_-24px_rgb(31_36_32/0.5)]"
@@ -37,9 +37,9 @@ export function InvitationPreview({ variants }: { variants: PreviewVariant[] }) 
         </div>
       </div>
 
-      <div className="min-w-0 text-center sm:text-left">
+      <div className="min-w-0 text-center 2xl:text-left">
         {variants.length > 1 && (
-          <div role="tablist" aria-label="Uitnodiging per groep" className="mb-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+          <div role="tablist" aria-label="Uitnodiging per groep" className="mb-4 flex flex-wrap justify-center gap-2 2xl:justify-start">
             {variants.map((v, i) => (
               <button
                 key={v.id}
