@@ -19,9 +19,24 @@ export function billingAvailable(): boolean {
   return true;
 }
 
+/**
+ * De publieke Stripe-sleutel voor het ingebedde betaalformulier (pk_test… of pk_live…). Die is bedoeld om in de
+ * browser te staan. We geven hem alleen terug als hij bij dezelfde modus hoort als de geheime sleutel, zodat een
+ * testformulier nooit met een livesleutel wordt gemengd.
+ */
+export function publishableKey(): string | null {
+  const pk = process.env.STRIPE_PUBLISHABLE_KEY;
+  const sk = process.env.STRIPE_SECRET_KEY;
+  if (!pk || !sk) return null;
+  const skLive = sk.startsWith("sk_live") || sk.startsWith("rk_live");
+  if (skLive !== pk.startsWith("pk_live")) return null;
+  return pk;
+}
+
 export type StripeSession = {
   id: string;
   url: string | null;
+  client_secret?: string | null;
   status: string | null;
   payment_status: string;
   mode: string;
@@ -47,8 +62,26 @@ async function stripe<T>(path: string, init?: { method?: string; body?: URLSearc
   return json;
 }
 
+/**
+ * Maakt een ingebedde Checkout-sessie aan: het betaalformulier verschijnt op onze eigen pagina (/afrekenen) in plaats
+ * van op een aparte Stripe-pagina. Na de betaling stuurt Stripe de klant naar /betaald.
+ */
 export async function createCheckoutSession(opts: { userId: string; email: string | null; origin: string }) {
+  const body = (uiMode: string) => checkoutParams(opts, uiMode);
+  try {
+    return await stripe<StripeSession>("/checkout/sessions", { method: "POST", body: body("embedded") });
+  } catch (e) {
+    // Nieuwere API-versies noemen de ingebedde modus "embedded_page". Alleen bij een afwijzing van ui_mode opnieuw proberen.
+    if (e instanceof Error && /ui_mode/i.test(e.message)) {
+      return stripe<StripeSession>("/checkout/sessions", { method: "POST", body: body("embedded_page") });
+    }
+    throw e;
+  }
+}
+
+function checkoutParams(opts: { userId: string; email: string | null; origin: string }, uiMode: string) {
   const p = new URLSearchParams();
+  p.set("ui_mode", uiMode);
   p.set("mode", "payment");
   p.set("client_reference_id", opts.userId);
   if (opts.email) p.set("customer_email", opts.email);
@@ -68,9 +101,9 @@ export async function createCheckoutSession(opts: { userId: string; email: strin
   );
   p.set("metadata[user_id]", opts.userId);
   p.set("payment_intent_data[metadata][user_id]", opts.userId);
-  p.set("success_url", `${opts.origin}/betaald?session_id={CHECKOUT_SESSION_ID}`);
-  p.set("cancel_url", `${opts.origin}/upgrade`);
-  return stripe<StripeSession>("/checkout/sessions", { method: "POST", body: p });
+  // Ingebed: geen success_url/cancel_url, maar één return_url. Stripe stuurt de klant hierheen zodra de betaling klaar is.
+  p.set("return_url", `${opts.origin}/betaald?session_id={CHECKOUT_SESSION_ID}`);
+  return p;
 }
 
 export function retrieveSession(id: string) {
