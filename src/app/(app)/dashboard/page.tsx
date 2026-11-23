@@ -16,6 +16,10 @@ import { firstName, greeting, coupleInitials } from "@/lib/format";
 import { getHasPaid } from "@/lib/billing";
 import { createClient, getUser } from "@/lib/supabase/server";
 import { syncSystemTodos } from "@/lib/system-todos";
+import { normalizeConfig } from "@/lib/invitation/defaults";
+import { applyPalette } from "@/lib/invitation/palettes";
+import { getThemes, pickTheme } from "@/lib/invitation/themes";
+import { InvitationPreview, type PreviewVariant } from "./invitation-preview";
 import { TodoItem } from "./todo-item";
 
 export const metadata: Metadata = { title: "Dashboard — Proost Mee" };
@@ -25,7 +29,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   await syncSystemTodos(supabase, user!.id);
 
-  const [{ data: profile }, { data: guests }, { data: todos }] = await Promise.all([
+  const [{ data: profile }, { data: guests }, { data: todos }, { data: invs }, { data: groups }, { themes }] = await Promise.all([
     supabase.from("profiles").select("full_name, partner_name").eq("id", user!.id).maybeSingle(),
     supabase.from("guests").select("rsvp_status"),
     supabase
@@ -34,7 +38,18 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
       .order("done", { ascending: true })
       .order("due_date", { ascending: true, nullsFirst: false })
       .order("created_at", { ascending: true }),
+    supabase.from("invitations").select("id, group_id, theme_slug, config").order("created_at", { ascending: true }),
+    supabase.from("guest_groups").select("id, name"),
+    getThemes(),
   ]);
+
+  // Voorbeeld van de uitnodiging(en): elk concept dat is aangemaakt of opgeslagen, met de naam van zijn groep.
+  const previews: PreviewVariant[] = (invs ?? []).map((inv, i) => {
+    const config = normalizeConfig(inv.config);
+    const theme = applyPalette(pickTheme(themes, inv.theme_slug), config.palette);
+    const name = (groups ?? []).find((g) => g.id === inv.group_id)?.name ?? `Uitnodiging ${i + 1}`;
+    return { id: inv.id as string, name, config, theme };
+  });
 
   const name = profile?.full_name ?? user?.user_metadata?.full_name ?? "";
   const list = guests ?? [];
@@ -166,6 +181,15 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </div>
             </div>
           </section>
+
+          {/* Voorbeeld van de uitnodiging */}
+          {previews.length > 0 && (
+            <section className="card p-5 sm:p-6">
+              <h2 className="font-serif text-2xl font-medium">Jouw uitnodiging</h2>
+              <p className="mt-1 mb-5 text-sm text-muted">Zo ziet je gast hem op de telefoon.</p>
+              <InvitationPreview variants={previews} />
+            </section>
+          )}
 
           {/* Snel starten */}
           <section>
