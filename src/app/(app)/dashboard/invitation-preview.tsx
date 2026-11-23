@@ -19,7 +19,7 @@ export function InvitationPreview({ variants }: { variants: PreviewVariant[] }) 
   if (!current) return null;
 
   return (
-    <div className="flex flex-col items-center gap-6 sm:flex-row sm:gap-6 xl:gap-8">
+    <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch sm:gap-6 xl:gap-8">
       <div className="shrink-0">
         <div
           className="relative overflow-hidden rounded-[2rem] border-[7px] border-ink/90 bg-paper shadow-[0_24px_60px_-24px_rgb(31_36_32/0.5)]"
@@ -37,36 +37,62 @@ export function InvitationPreview({ variants }: { variants: PreviewVariant[] }) 
         </div>
       </div>
 
-      <div className="min-w-0 flex-1 text-center sm:text-left">
-        <h2 className="font-serif text-2xl leading-tight font-medium">Jouw uitnodiging</h2>
-        <p className="mt-1 mb-4 text-sm text-muted">Zo ziet je gast hem op de telefoon.</p>
+      <div className="flex min-w-0 flex-1 flex-col self-stretch text-center sm:text-left">
+        <div>
+          <p className="eyebrow text-clay">Jouw uitnodiging</p>
+          <h2 className="mt-2 font-serif text-2xl leading-tight font-medium">
+            {current.config.partner1 || "Jullie"} &amp; {current.config.partner2 || "uitnodiging"}
+          </h2>
+          <p className="mt-1 text-sm text-muted">Zo ziet je gast hem op de telefoon.</p>
+        </div>
+
         {variants.length > 1 && (
-          <div role="tablist" aria-label="Uitnodiging per groep" className="mb-4 flex flex-wrap justify-center gap-2 sm:justify-start">
-            {variants.map((v, i) => (
-              <button
-                key={v.id}
-                role="tab"
-                aria-selected={i === index}
-                onClick={() => setIndex(i)}
-                className={`rounded-full border px-4 py-1.5 text-sm transition ${
-                  i === index ? "border-forest bg-forest text-paper" : "border-line bg-paper hover:border-clay/50"
-                }`}
-              >
-                {v.name}
-              </button>
-            ))}
+          <div className="mt-5">
+            <p className="mb-1.5 text-xs text-muted">Uitnodiging voor</p>
+            <div
+              role="tablist"
+              aria-label="Uitnodiging per groep"
+              className="inline-flex max-w-full flex-wrap gap-1 rounded-full bg-cream p-1"
+            >
+              {variants.map((v, i) => (
+                <button
+                  key={v.id}
+                  role="tab"
+                  aria-selected={i === index}
+                  onClick={() => setIndex(i)}
+                  className={`rounded-full px-3.5 py-1.5 text-sm transition ${
+                    i === index ? "bg-paper font-medium text-ink shadow-sm" : "text-muted hover:text-ink"
+                  }`}
+                >
+                  {v.name}
+                </button>
+              ))}
+            </div>
           </div>
         )}
-        <p className="font-serif text-xl leading-tight">
-          {current.config.partner1 || "Jullie"} &amp; {current.config.partner2 || "uitnodiging"}
-        </p>
-        <p className="mt-1 text-sm text-muted">
-          Thema {current.theme.title}
-          {current.config.date ? ` · ${formatDateLong(current.config.date)}` : ""}
-        </p>
+
+        <dl className="mt-5 divide-y divide-line border-y border-line text-sm">
+          <div className="flex justify-between gap-4 py-2.5">
+            <dt className="text-muted">Thema</dt>
+            <dd className="text-right font-medium">{current.theme.title}</dd>
+          </div>
+          {current.config.date && (
+            <div className="flex justify-between gap-4 py-2.5">
+              <dt className="text-muted">Datum</dt>
+              <dd className="text-right font-medium">{formatDateLong(current.config.date)}</dd>
+            </div>
+          )}
+          {current.config.city && (
+            <div className="flex justify-between gap-4 py-2.5">
+              <dt className="text-muted">Plaats</dt>
+              <dd className="text-right font-medium">{current.config.city}</dd>
+            </div>
+          )}
+        </dl>
+
         <Link
           href={`/uitnodiging?v=${current.id}`}
-          className="mt-5 inline-flex rounded-full bg-forest px-6 py-3 text-sm font-medium text-paper transition hover:bg-forest-deep"
+          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-forest px-6 py-3 text-sm font-medium text-paper transition hover:bg-forest-deep sm:mt-auto"
         >
           Uitnodiging bewerken
         </Link>
