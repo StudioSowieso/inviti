@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "@/components/logo";
+import { createClient } from "@/lib/supabase/client";
 
 const LINKS = [
   { href: "/zo-werkt-het", label: "Zo werkt het" },
@@ -15,6 +16,17 @@ const LINKS = [
 export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // Alleen voor de weergave: ingelogde bezoekers zien een link naar hun dashboard i.p.v. "Inloggen".
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    createClient()
+      .auth.getSession()
+      .then(({ data }) => setLoggedIn(!!data.session))
+      .catch(() => undefined);
+  }, []);
+  const accountItem = loggedIn
+    ? { href: "/dashboard", label: "Mijn dashboard" }
+    : { href: "/inloggen", label: "Inloggen" };
 
   if (brand === "wine") {
     return (
@@ -39,6 +51,7 @@ export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
             </nav>
 
             <div className="flex items-center gap-1 text-sm">
+              {!loggedIn && (
               <Link href="/inloggen" className="hidden items-center gap-1.5 px-3 py-2 font-medium transition hover:text-coral sm:flex">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden className="text-coral">
                   <circle cx="12" cy="8" r="3.5" />
@@ -46,8 +59,9 @@ export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
                 </svg>
                 Inloggen
               </Link>
-              <Link href="/account-aanmaken" className="cta rounded-full px-5 py-2.5 font-medium transition">
-                Aan de slag
+              )}
+              <Link href={loggedIn ? "/dashboard" : "/account-aanmaken"} className="cta rounded-full px-5 py-2.5 font-medium transition">
+                {loggedIn ? "Naar dashboard" : "Aan de slag"}
               </Link>
               <button
                 type="button"
@@ -66,7 +80,7 @@ export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
           {open && (
             <nav id="mobiel-menu" aria-label="Hoofdmenu" className="mt-3 border-t border-line pt-1 pb-2 md:hidden">
               <ul>
-                {[...LINKS, { href: "/inloggen", label: "Inloggen" }].map((l) => (
+                {[...LINKS, accountItem].map((l) => (
                   <li key={l.href} className="border-b border-line last:border-0">
                     <Link href={l.href} onClick={() => setOpen(false)} className="block py-3 text-lg font-medium">
                       {l.label}
@@ -107,17 +121,19 @@ export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
         </nav>
 
         <div className="flex items-center gap-2 text-sm">
+          {!loggedIn && (
+            <Link
+              href="/inloggen"
+              className="hidden rounded-full px-4 py-2 font-medium opacity-85 transition hover:opacity-100 sm:block"
+            >
+              Inloggen
+            </Link>
+          )}
           <Link
-            href="/inloggen"
-            className="hidden rounded-full px-4 py-2 font-medium opacity-85 transition hover:opacity-100 sm:block"
-          >
-            Inloggen
-          </Link>
-          <Link
-            href="/account-aanmaken"
+            href={loggedIn ? "/dashboard" : "/account-aanmaken"}
             className="rounded-full bg-forest px-5 py-2.5 font-medium text-paper transition hover:bg-forest-deep"
           >
-            Aan de slag
+            {loggedIn ? "Naar dashboard" : "Aan de slag"}
           </Link>
           <button
             type="button"
@@ -142,7 +158,7 @@ export function LandingNav({ brand = "wine" }: { brand?: "classic" | "wine" }) {
       {open && (
         <nav id="mobiel-menu" aria-label="Hoofdmenu" className="border-t border-line px-6 pt-2 pb-6 md:hidden">
           <ul>
-            {[...LINKS, { href: "/inloggen", label: "Inloggen" }].map((l) => (
+            {[...LINKS, accountItem].map((l) => (
               <li key={l.href} className="border-b border-line last:border-0">
                 <Link
                   href={l.href}

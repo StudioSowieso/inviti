@@ -48,7 +48,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && (path === "/" || AUTH_PAGES.some((p) => path.startsWith(p)))) {
+  // Ingelogde klanten mogen alle pagina's bekijken, ook de homepage. Alleen inlog- en aanmaakpagina's sturen door.
+  if (user && AUTH_PAGES.some((p) => path.startsWith(p))) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
     url.search = "";
