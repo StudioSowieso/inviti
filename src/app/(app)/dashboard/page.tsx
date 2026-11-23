@@ -273,8 +273,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           {/* Voorbeeld van de uitnodiging */}
           {previews.length > 0 && (
             <section className="card p-5 sm:p-6">
-              <h2 className="font-serif text-2xl font-medium">Jouw uitnodiging</h2>
-              <p className="mt-1 mb-5 text-sm text-muted">Zo ziet je gast hem op de telefoon.</p>
               <InvitationPreview variants={previews} />
             </section>
           )}
