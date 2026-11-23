@@ -52,7 +52,7 @@ export function InvitationPreview({ variants }: { variants: PreviewVariant[] }) 
             <div
               role="tablist"
               aria-label="Uitnodiging per groep"
-              className="inline-flex max-w-full flex-wrap gap-1 rounded-full bg-cream p-1"
+              className="grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-1 rounded-3xl bg-cream p-1"
             >
               {variants.map((v, i) => (
                 <button
@@ -60,7 +60,7 @@ export function InvitationPreview({ variants }: { variants: PreviewVariant[] }) 
                   role="tab"
                   aria-selected={i === index}
                   onClick={() => setIndex(i)}
-                  className={`rounded-full px-3.5 py-1.5 text-sm transition ${
+                  className={`rounded-full px-3 py-1.5 text-center text-sm transition ${
                     i === index ? "bg-paper font-medium text-ink shadow-sm" : "text-muted hover:text-ink"
                   }`}
                 >
