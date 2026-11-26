@@ -129,38 +129,40 @@ export function BurgBlockSection({ block, config }: { block: Block; config: Invi
   switch (block.type) {
     case "hero":
       return (
-        <section
-          data-block="hero"
-          className="relative flex min-h-[44rem] flex-col justify-between px-[8cqw] pt-12 pb-12"
-          style={{ background: col("background"), ...CONTAINER }}
-        >
-          <p className="mx-auto max-w-[19rem] text-center text-[0.58rem] leading-[1.7] font-bold tracking-[0.14em] uppercase" style={{ ...mono, color: col("text") }}>
-            {block.eyebrow}
-          </p>
-
-          <h1 className="text-center" aria-label={names}>
-            <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(19cqw, 5.2rem)" }}>
-              {config.partner1}
-            </span>
-            <span className="my-2 block leading-none" style={{ ...script, color: col("text"), fontSize: "min(10cqw, 2.6rem)" }}>
-              en
-            </span>
-            <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(19cqw, 5.2rem)" }}>
-              {config.partner2}
-            </span>
-          </h1>
-
-          <div>
-            <div className="flex items-end justify-between gap-4 text-[0.64rem] leading-[1.6]" style={{ ...mono, color: col("text") }}>
-              <p>
-                {date && <span className="block font-bold tracking-[0.08em] uppercase">{date}</span>}
-                {config.time && <span className="block">om {config.time} uur</span>}
-              </p>
-              {config.city && <p className="text-right font-bold tracking-[0.08em] uppercase">{config.city}</p>}
-            </div>
-            <p className="mt-9 text-center leading-none" style={{ ...script, color: col("text"), fontSize: "min(8.5cqw, 2.2rem)" }}>
-              graag tot dan
+        <section data-block="hero" className="relative" style={{ background: col("background"), ...CONTAINER }}>
+          {/* Alles in cqw, zodat de tekst meeschaalt met de breedte van de uitnodiging (ook in een klein telefoonvoorbeeld). */}
+          <div className="flex flex-col justify-between px-[7cqw] pt-[11cqw] pb-[9cqw]" style={{ minHeight: "150cqw" }}>
+            <p
+              className="mx-auto text-center font-bold uppercase"
+              style={{ ...mono, color: col("text"), fontSize: "3.3cqw", lineHeight: 1.6, letterSpacing: "0.1em", maxWidth: "88cqw" }}
+            >
+              {block.eyebrow}
             </p>
+
+            <h1 className="text-center break-words" aria-label={names}>
+              <span className="block uppercase" style={{ ...heading, color: col("text"), fontSize: "21cqw", lineHeight: 1.02 }}>
+                {config.partner1}
+              </span>
+              <span className="block" style={{ ...script, color: col("text"), fontSize: "11cqw", lineHeight: 1.2, margin: "1cqw 0" }}>
+                en
+              </span>
+              <span className="block uppercase" style={{ ...heading, color: col("text"), fontSize: "21cqw", lineHeight: 1.02 }}>
+                {config.partner2}
+              </span>
+            </h1>
+
+            <div>
+              <div className="flex items-end justify-between gap-[4cqw]" style={{ ...mono, color: col("text"), fontSize: "3.6cqw", lineHeight: 1.6 }}>
+                <p>
+                  {date && <span className="block font-bold tracking-[0.06em] uppercase">{date}</span>}
+                  {config.time && <span className="block">om {config.time} uur</span>}
+                </p>
+                {config.city && <p className="text-right font-bold tracking-[0.06em] uppercase">{config.city}</p>}
+              </div>
+              <p className="text-center" style={{ ...script, color: col("text"), fontSize: "10cqw", lineHeight: 1, marginTop: "9cqw" }}>
+                graag tot dan
+              </p>
+            </div>
           </div>
         </section>
       );
