@@ -21,6 +21,8 @@ import { BourgBlockSection } from "./bourgondisch";
 import { BourgEnvelope } from "./bourgondisch-envelope";
 import { BourgStripes } from "./bourgondisch-art";
 import { BurgBlockSection } from "./burgundy";
+import { LandgoedBlockSection } from "./landgoed";
+import { LandgoedEnvelope } from "./landgoed-envelope";
 import { BurgEnvelope } from "./burgundy-envelope";
 import { LeafBlockSection } from "./leaf";
 import { ModernBlockSection } from "./modern";
@@ -299,6 +301,7 @@ export function InvitationView({
   const sunset = theme.style === "sunset";
   const bourg = theme.style === "bourgondisch";
   const burg = theme.style === "burgundy";
+  const landgoed = theme.style === "landgoed";
   // "nature" en "leaf" delen papiertextuur en de bijpassende envelop.
   const textured = theme.style === "nature" || leaf || flowers || sunset;
   // Alle stijlen behalve "classic" laten de navigatiebalk de knopkleuren van het thema volgen.
@@ -322,7 +325,9 @@ export function InvitationView({
           {lemon && <div aria-hidden="true" className="absolute inset-0" style={LEMON_STRIPES} />}
           {bourg && <BourgStripes className="absolute inset-0 h-full w-full" />}
           {visibleBlocks.map((b, i) =>
-            burg ? (
+            landgoed ? (
+              <LandgoedBlockSection key={blockKey(b)} block={b} config={config} index={i} />
+            ) : burg ? (
               <BurgBlockSection key={blockKey(b)} block={b} config={config} index={i} />
             ) : bourg ? (
               <BourgBlockSection key={blockKey(b)} block={b} config={config} index={i} />
@@ -401,6 +406,8 @@ export function InvitationView({
       {stage !== "open" &&
         (config.animation === "reveal" ? (
           <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : landgoed ? (
+          <LandgoedEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : burg ? (
           <BurgEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : bourg ? (

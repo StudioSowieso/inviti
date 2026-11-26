@@ -268,6 +268,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "square",
     style: "burgundy",
   },
+  {
+    slug: "landgoed",
+    title: "Landgoed",
+    description:
+      "Rustig en klassiek: diep olijfgroen met crème boogpanelen, getekende rankenkransen, sierlijk schrift en een hart met kanten rand.",
+    colors: {
+      background: "#56613f",
+      surface: "#f0eadd",
+      surfaceAlt: "#e2dcc8",
+      text: "#4a5536",
+      muted: "#7c8068",
+      line: "#d6d0bb",
+      accent: "#6d7852",
+      buttonBackground: "#4f5a3a",
+      buttonText: "#f0eadd",
+      footerBackground: "#434d2f",
+      footerText: "#ebe6d4",
+      envelope: "#ece5d3",
+      envelopeCard: "#f0eadd",
+    },
+    headingFont: "Cormorant Garamond",
+    bodyFont: "Lora",
+    scriptFont: "Pinyon Script",
+    buttonShape: "pill",
+    style: "landgoed",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

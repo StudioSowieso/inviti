@@ -5,6 +5,7 @@ import { Branch, BranchPair, HeroBranch } from "./leaf";
 import { CornerSprigs } from "./flowers";
 import { BourgStripes, Doodle, WOBBLE } from "./bourgondisch-art";
 import { BurgStripes, WavyCard } from "./burgundy-art";
+import { Vine } from "./landgoed-art";
 import { Paperclip } from "./sunset";
 import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
@@ -22,6 +23,33 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
 function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "landgoed") {
+    const vars = {
+      "--inv-background": c.background,
+      "--inv-surface": c.surface,
+      "--inv-surfaceAlt": c.surfaceAlt,
+      "--inv-accent": c.accent,
+      "--inv-text": c.text,
+    } as CSSProperties;
+    return (
+      <div className="relative flex items-center justify-center overflow-hidden rounded-xl" style={{ ...vars, background: c.background, containerType: "inline-size" }}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="relative w-[66%] text-center" style={{ background: c.surface, borderRadius: "999px", padding: "18cqw 4cqw" }}>
+          <Vine className="absolute left-1/2 -translate-x-1/2" style={{ top: "3cqw", width: "48cqw" }} />
+          <Vine flip className="absolute left-1/2 -translate-x-1/2" style={{ bottom: "3cqw", width: "48cqw" }} />
+          <p className="relative text-[1.25rem] leading-[1.1]" style={{ fontFamily: fontStack(theme.scriptFont), color: c.text }}>
+            Emma
+            <span className="block text-[0.8rem]">&amp;</span>
+            Mats
+          </p>
+          <p className="relative mt-1.5 text-[0.4rem] tracking-[0.18em] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.text }}>
+            12 september 2027
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (theme.style === "burgundy") {
     const vars = {
