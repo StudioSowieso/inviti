@@ -24,6 +24,29 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
 
+  if (theme.style === "lago") {
+    const vars = { "--inv-background": c.background, "--inv-accent": c.accent, "--inv-footerBackground": c.footerBackground } as CSSProperties;
+    return (
+      <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-xl text-center" style={{ ...vars, containerType: "inline-size" }}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <NaturePhoto tone="warm" />
+        <div aria-hidden="true" className="absolute inset-0" style={{ background: `color-mix(in srgb, ${c.footerBackground} 72%, transparent)` }} />
+        <p className="relative text-[1.7rem] leading-[0.95] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.background }}>
+          Emma
+        </p>
+        <p className="relative -my-0.5 text-[1.1rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont), color: c.background }}>
+          en
+        </p>
+        <p className="relative text-[1.7rem] leading-[0.95] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.background }}>
+          Mats
+        </p>
+        <p className="relative mt-3 text-[0.38rem] tracking-[0.3em] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.background }}>
+          Wij gaan trouwen
+        </p>
+      </div>
+    );
+  }
+
   if (theme.style === "landgoed") {
     const vars = {
       "--inv-background": c.background,

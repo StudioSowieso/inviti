@@ -12,6 +12,46 @@ type PaletteDef = { slug: string; title: string; colors: Partial<ThemeColors> };
  * horen bij elkaar, zodat een kleurkeuze het hele thema meeneemt.
  */
 const EXTRA_PALETTES: Record<string, PaletteDef[]> = {
+  lago: [
+    {
+      slug: "marine",
+      title: "Marine",
+      colors: {
+        background: "#f4f1e8",
+        surface: "#fbf9f2",
+        surfaceAlt: "#e2e0d2",
+        text: "#26405c",
+        muted: "#62768b",
+        line: "#d3d6d3",
+        accent: "#2f4d6e",
+        buttonBackground: "#26405c",
+        buttonText: "#f4f1e8",
+        footerBackground: "#22384f",
+        footerText: "#e8eef3",
+        envelope: "#26405c",
+        envelopeCard: "#f4f1e8",
+      },
+    },
+    {
+      slug: "terracotta",
+      title: "Terracotta",
+      colors: {
+        background: "#f8efe4",
+        surface: "#fffaf3",
+        surfaceAlt: "#eddcc8",
+        text: "#7a3f2c",
+        muted: "#9a7664",
+        line: "#e2cdb9",
+        accent: "#8f4b36",
+        buttonBackground: "#7a3f2c",
+        buttonText: "#f8efe4",
+        footerBackground: "#6a3524",
+        footerText: "#f6e8da",
+        envelope: "#7a3f2c",
+        envelopeCard: "#f8efe4",
+      },
+    },
+  ],
   landgoed: [
     {
       slug: "salie",

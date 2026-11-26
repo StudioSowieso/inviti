@@ -294,6 +294,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "pill",
     style: "landgoed",
   },
+  {
+    slug: "lago",
+    title: "Lago",
+    description:
+      "Modern en Italiaans: dunne hoge hoofdletters, sierlijk schrift, bosgroen op crème, een dubbel fotokader en een RSVP-blok met strepen.",
+    colors: {
+      background: "#fbf5e4",
+      surface: "#fffcf2",
+      surfaceAlt: "#ece6cf",
+      text: "#3f5238",
+      muted: "#6d775f",
+      line: "#d9d5bd",
+      accent: "#4a5f3f",
+      buttonBackground: "#3f5238",
+      buttonText: "#fbf5e4",
+      footerBackground: "#3d4f35",
+      footerText: "#f3efdc",
+      envelope: "#3f5238",
+      envelopeCard: "#fbf5e4",
+    },
+    headingFont: "Italiana",
+    bodyFont: "EB Garamond",
+    scriptFont: "Pinyon Script",
+    buttonShape: "square",
+    style: "lago",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({
