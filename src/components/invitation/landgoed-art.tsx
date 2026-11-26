@@ -95,26 +95,6 @@ export function Flourish({ className = "", color }: { className?: string; color?
   );
 }
 
-const HEART = "M50 86C10 56 2 34 12 18C22 4 42 6 50 24C58 6 78 4 88 18C98 34 90 56 50 86Z";
-
-/** Hart met kanten rand (stippen) en dunne omlijning; de inhoud staat er gecentreerd in. */
-export function LaceHeart({ children, className = "", style }: { children?: React.ReactNode; className?: string; style?: CSSProperties }) {
-  return (
-    <div className={`relative ${className}`} style={{ aspectRatio: "100 / 92", ...style }}>
-      <svg viewBox="-6 -6 112 104" aria-hidden="true" className="absolute inset-0 h-full w-full overflow-visible">
-        <path d={HEART} fill={`color-mix(in srgb, ${col("background")} 86%, white)`} />
-        <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={9} strokeLinecap="round" strokeDasharray="0.1 5.4" opacity={0.95} />
-        <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={5} strokeLinecap="round" strokeDasharray="0.1 3.6" opacity={0.8} transform="translate(50 46) scale(1.03) translate(-50 -46)" />
-        <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={1.1} opacity={0.9} transform="translate(50 46) scale(1.075) translate(-50 -46)" />
-        <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={0.9} opacity={0.7} transform="translate(50 46) scale(0.9) translate(-50 -46)" />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ paddingTop: "7%" }}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
 /** Ovaal fotokader met een rand van stippen (kant); met een echte foto vult die het kader. */
 export function OvalFrame({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (

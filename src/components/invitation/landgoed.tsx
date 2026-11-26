@@ -5,11 +5,11 @@ import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/type
 import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
 import { blockKey, mapsHref, formatDateLong } from "@/lib/invitation/format";
-import { Flourish, LaceHeart, OvalFrame, Vine } from "./landgoed-art";
+import { Flourish, OvalFrame, Vine } from "./landgoed-art";
 
 /**
  * Stijl "landgoed": een diep olijfgroene pagina met crème, hoge boogpanelen (ovaal boven en onder) met getekende
- * rankenkransen, sierlijk schrift voor de titels, een hart met kanten rand en kleine sierstreepjes.
+ * rankenkransen, sierlijk schrift voor de titels en kleine sierstreepjes.
  * Kleuren: background = olijfgroen, surface = crème, text = donker olijf (op crème), footerBackground = diepste groen.
  * Alle maten staan in cqw, zodat de uitnodiging meeschaalt met zijn breedte.
  */
@@ -125,85 +125,85 @@ function CountdownCircles({ date, time }: { date: string; time: string }) {
   );
 }
 
-/** Bokeh-bloemetjes onderin de tuin: vaste posities (x, y in cqw, grootte), zodat het er elke keer hetzelfde uitziet. */
-const BLOOMS: [number, number, number][] = [
-  [6, 128, 5], [16, 142, 4], [4, 150, 6], [26, 154, 3.4], [12, 160, 4.6], [90, 126, 5.4], [80, 140, 4], [94, 148, 6],
-  [70, 156, 3.4], [86, 160, 4.8], [40, 158, 3], [58, 162, 3.6], [34, 146, 2.6], [64, 148, 2.8],
-];
+const MONTHS = ["JAN", "FEB", "MRT", "APR", "MEI", "JUN", "JUL", "AUG", "SEP", "OKT", "NOV", "DEC"];
+const WEEKDAYS = ["ZONDAG", "MAANDAG", "DINSDAG", "WOENSDAG", "DONDERDAG", "VRIJDAG", "ZATERDAG"];
 
-function LandgoedHero({ block, config, names, date }: { block: Extract<Block, { type: "hero" }>; config: InvitationConfig; names: string; date: string }) {
-  const paper = `linear-gradient(160deg, color-mix(in srgb, ${col("envelope")} 96%, white), color-mix(in srgb, ${col("envelope")} 82%, #8a8468))`;
+/** Datum in delen voor de datumregel (MAAND | DAG | JAAR en de weekdag); leeg als de datum ontbreekt. */
+function dateParts(date: string) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!m) return null;
+  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  return { month: MONTHS[+m[2] - 1], day: String(+m[3]), year: m[1], weekday: WEEKDAYS[d.getUTCDay()] };
+}
+
+/** Hero: crème papier met monogram, hoofdletternamen, een hartje als scheiding en een grote datumregel. */
+function LandgoedHero({ block, config, names }: { block: Extract<Block, { type: "hero" }>; config: InvitationConfig; names: string }) {
+  const dp = dateParts(config.date);
+  const initials = [config.partner1[0], config.partner2[0]].map((x) => (x ?? "").toUpperCase());
+  const line = `linear-gradient(90deg, transparent, ${col("accent")})`;
   return (
-    <section data-block="hero" className="relative overflow-hidden" style={{ ...CONTAINER }}>
-      <div className="relative" style={{ height: "172cqw", background: `linear-gradient(180deg, color-mix(in srgb, ${col("background")} 55%, #c9cfbb) 0%, ${col("background")} 34%, ${col("footerBackground")} 100%)` }}>
-        {/* Tuin: zuilen links en rechts, zacht licht en bokeh */}
-        <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(60% 30% at 50% 6%, rgb(255 255 255 / .28), transparent 70%)" }} />
-        {[0, 1].map((side) => (
-          <div
-            key={side}
-            aria-hidden="true"
-            className="absolute"
-            style={{
-              top: 0,
-              bottom: "20cqw",
-              width: "15cqw",
-              [side === 0 ? "left" : "right"]: 0,
-              background: `linear-gradient(${side === 0 ? 90 : 270}deg, color-mix(in srgb, ${col("footerBackground")} 80%, black), color-mix(in srgb, ${col("background")} 60%, ${col("footerBackground")}))`,
-              opacity: 0.8,
-            }}
-          />
-        ))}
-        {BLOOMS.map(([x, y, d], i) => (
-          <span
-            key={i}
-            aria-hidden="true"
-            className="absolute rounded-full"
-            style={{ left: `${x}cqw`, top: `${y}cqw`, width: `${d}cqw`, height: `${d}cqw`, background: col("surface"), opacity: 0.38, filter: "blur(0.5cqw)" }}
-          />
-        ))}
+    <section data-block="hero" className="relative overflow-hidden" style={{ background: col("surface"), ...CONTAINER }}>
+      {/* Aquarelvlek links boven en een takje rechts boven */}
+      <div aria-hidden="true" className="absolute" style={{ left: "-16cqw", top: "-14cqw", width: "50cqw", height: "42cqw", borderRadius: "50%", background: `radial-gradient(closest-side, color-mix(in srgb, ${col("accent")} 38%, transparent), transparent)`, filter: "blur(1.5cqw)" }} />
+      <Vine className="pointer-events-none absolute" style={{ right: "-30cqw", top: "-6cqw", width: "78cqw", rotate: "28deg", opacity: 0.8 }} />
 
-        {/* Envelop: achterkant met donkere voering */}
-        <div className="absolute" style={{ left: "13cqw", top: "84cqw", width: "74cqw", height: "56cqw", background: paper, borderRadius: "1cqw", boxShadow: "0 3cqw 6cqw rgb(0 0 0 / .45)" }}>
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-[3%] top-0"
-            style={{ height: "46%", clipPath: "polygon(6% 0, 94% 0, 100% 100%, 0 100%)", background: `linear-gradient(180deg, ${col("footerBackground")}, color-mix(in srgb, ${col("background")} 70%, ${col("footerBackground")}))` }}
-          />
+      <div className="relative text-center" style={{ padding: "22cqw 8cqw 20cqw" }}>
+        {/* Monogram */}
+        <div className="flex items-center justify-center" style={{ ...heading, color: col("accent"), gap: "6cqw", fontSize: "17cqw", lineHeight: 1 }}>
+          <span>{initials[0]}</span>
+          <span aria-hidden="true" style={{ width: "0.4cqw", height: "17cqw", background: col("accent") }} />
+          <span>{initials[1]}</span>
         </div>
-
-        {/* Hart met kanten rand, half uit de envelop */}
-        <LaceHeart className="absolute inv-float-soft" style={{ left: "17cqw", top: "34cqw", width: "66cqw", zIndex: 2 }}>
-          <p style={{ ...script, color: col("surface"), fontSize: "13cqw", lineHeight: 1.05 }}>{block.eyebrow}</p>
-          <p aria-label={names} style={{ ...heading, color: col("surface"), fontSize: "5cqw", marginTop: "2.2cqw", letterSpacing: "0.04em" }}>
-            {config.partner1} &amp; {config.partner2}
-          </p>
-          {date && <p style={{ ...heading, color: col("surface"), fontSize: "4cqw", letterSpacing: "0.08em", marginTop: "1.2cqw", opacity: 0.9 }}>{date}</p>}
-        </LaceHeart>
-
-        {/* Voorkant van de envelop met vouwen en zegel */}
-        <div
-          aria-hidden="true"
-          className="absolute"
-          style={{
-            left: "13cqw",
-            top: "84cqw",
-            width: "74cqw",
-            height: "56cqw",
-            zIndex: 3,
-            borderRadius: "0 0 1cqw 1cqw",
-            clipPath: "polygon(0 26%, 50% 66%, 100% 26%, 100% 100%, 0 100%)",
-            background: paper,
-          }}
-        />
-        <svg aria-hidden="true" viewBox="0 0 74 56" className="pointer-events-none absolute" style={{ left: "13cqw", top: "84cqw", width: "74cqw", height: "56cqw", zIndex: 4 }} fill="none" stroke={col("muted")} strokeWidth={0.25} opacity={0.55}>
-          <path d="M0 14.5 37 37 74 14.5M0 56 28 30M74 56 46 30" />
+        <svg viewBox="0 0 60 18" aria-hidden="true" className="mx-auto" style={{ width: "22cqw", marginTop: "3cqw" }} fill="none" stroke={col("accent")} strokeWidth={0.9} strokeLinecap="round">
+          <path d="M4 14C18 16 38 14 56 4" />
+          {[10, 18, 26, 34, 42, 50].map((x, i) => (
+            <path key={x} d={`M${x} ${14 - i * 1.6}c-2 -4 -6 -5 -8 -4c1 4 5 5 8 4z`} style={{ fill: col("accent"), fillOpacity: 0.18 }} />
+          ))}
         </svg>
-        <div
-          className="absolute grid place-items-center"
-          style={{ left: "50cqw", top: "113cqw", width: "9cqw", height: "11cqw", transform: "translateX(-50%)", zIndex: 5, border: `0.35cqw solid ${col("muted")}`, borderRadius: "50%", color: col("muted"), ...script, fontSize: "5.2cqw", opacity: 0.8 }}
-        >
-          {(config.partner1[0] ?? "") + (config.partner2[0] ?? "")}
+
+        <p className="mx-auto uppercase" style={{ ...heading, color: col("text"), fontSize: "4.4cqw", letterSpacing: "0.16em", lineHeight: 1.7, marginTop: "13cqw", maxWidth: "70cqw", fontWeight: 600 }}>
+          {block.eyebrow}
+        </p>
+        <div className="mx-auto" style={{ height: "0.3cqw", width: "16cqw", marginTop: "4cqw", background: col("accent"), opacity: 0.6 }} />
+
+        <h1 aria-label={names} style={{ marginTop: "11cqw" }}>
+          <span className="block uppercase" style={{ ...heading, color: col("text"), fontSize: "15.5cqw", lineHeight: 1.05, fontWeight: 400 }}>
+            {config.partner1}
+          </span>
+          <span className="block" style={{ ...script, color: col("accent"), fontSize: "12cqw", lineHeight: 1.1, margin: "2cqw 0" }}>
+            en
+          </span>
+          <span className="block uppercase" style={{ ...heading, color: col("text"), fontSize: "15.5cqw", lineHeight: 1.05, fontWeight: 400 }}>
+            {config.partner2}
+          </span>
+        </h1>
+
+        {/* Hartje tussen twee lijnen */}
+        <div className="flex items-center justify-center" style={{ gap: "3cqw", marginTop: "12cqw" }}>
+          <span style={{ height: "0.3cqw", flex: 1, background: line, opacity: 0.7 }} />
+          <svg viewBox="0 0 24 22" aria-hidden="true" style={{ width: "7cqw" }} fill={col("accent")}>
+            <path d="M12 21C3 14 1 9 3.4 5.2C6 1.4 10.6 2.4 12 6C13.4 2.4 18 1.4 20.6 5.2C23 9 21 14 12 21Z" />
+          </svg>
+          <span style={{ height: "0.3cqw", flex: 1, background: `linear-gradient(270deg, transparent, ${col("accent")})`, opacity: 0.7 }} />
         </div>
+
+        {dp && (
+          <div style={{ marginTop: "10cqw" }}>
+            <div className="flex items-center justify-center" style={{ ...heading, color: col("text"), gap: "5cqw" }}>
+              <span style={{ fontSize: "5.4cqw", letterSpacing: "0.12em", fontWeight: 600 }}>{dp.month}</span>
+              <span aria-hidden="true" style={{ width: "0.3cqw", height: "11cqw", background: col("accent"), opacity: 0.7 }} />
+              <span style={{ fontSize: "15cqw", lineHeight: 1, fontWeight: 400 }}>{dp.day}</span>
+              <span aria-hidden="true" style={{ width: "0.3cqw", height: "11cqw", background: col("accent"), opacity: 0.7 }} />
+              <span style={{ fontSize: "5.4cqw", letterSpacing: "0.12em", fontWeight: 600 }}>{dp.year}</span>
+            </div>
+            <p style={{ ...heading, color: col("text"), fontSize: "4.6cqw", letterSpacing: "0.16em", fontWeight: 600, marginTop: "5cqw" }}>{dp.weekday}</p>
+          </div>
+        )}
+        {(config.time || config.city) && (
+          <p className="uppercase" style={{ ...heading, color: col("muted"), fontSize: "3.6cqw", letterSpacing: "0.2em", marginTop: "5cqw" }}>
+            {[config.time ? `${config.time} uur` : "", config.city].filter(Boolean).join("  ·  ")}
+          </p>
+        )}
       </div>
     </section>
   );
@@ -215,7 +215,7 @@ export function LandgoedBlockSection({ block, config }: { block: Block; config: 
 
   switch (block.type) {
     case "hero":
-      return <LandgoedHero block={block} config={config} names={names} date={date} />;
+      return <LandgoedHero block={block} config={config} names={names} />;
 
     case "countdown":
       return (
