@@ -59,7 +59,8 @@ export type InvitationTheme = {
 
 export type ProgramItem = { time: string; title: string; subtitle: string };
 
-export type HeroBlock = { type: "hero"; enabled: boolean; eyebrow: string };
+/** `photo` (optioneel) is de achtergrondfoto van het beginscherm in thema's die dat ondersteunen (zoals "lago"). */
+export type HeroBlock = { type: "hero"; enabled: boolean; eyebrow: string; photo?: string };
 export type CountdownBlock = { type: "countdown"; enabled: boolean; eyebrow: string; title: string };
 /** `photo` is de openbare URL van een geüploade foto in de bucket "invitation-photos" (leeg = geen foto). */
 export type StoryBlock = { type: "story"; enabled: boolean; eyebrow: string; title: string; text: string; photo?: string };

@@ -122,9 +122,9 @@ export function LagoBlockSection({ block, config }: { block: Block; config: Invi
       return (
         <section data-block="hero" className="relative overflow-hidden" style={{ ...CONTAINER }}>
           <div className="relative flex flex-col items-center justify-center text-center" style={{ minHeight: "165cqw", padding: "16cqw 6cqw" }}>
-            {/* Landschap in de kleuren van het thema, met een groene waas zodat de tekst leesbaar blijft */}
-            <NaturePhoto tone="warm" />
-            <div aria-hidden="true" className="absolute inset-0" style={{ background: `linear-gradient(180deg, color-mix(in srgb, ${col("footerBackground")} 62%, transparent), color-mix(in srgb, ${col("footerBackground")} 82%, transparent))` }} />
+            {/* Eigen foto (of een getekend landschap) met een doorzichtige groene laag eroverheen, zodat de tekst leesbaar blijft */}
+            {block.photo ? <StoryImg src={block.photo} /> : <NaturePhoto tone="warm" />}
+            <div aria-hidden="true" className="absolute inset-0" style={{ background: `linear-gradient(180deg, color-mix(in srgb, ${col("footerBackground")} 58%, transparent), color-mix(in srgb, ${col("footerBackground")} 74%, transparent))` }} />
             <h1 className="relative" aria-label={names} style={{ color: col("background") }}>
               <span className="block uppercase" style={{ ...heading, fontSize: "20cqw", lineHeight: 0.98, letterSpacing: "0.02em" }}>
                 {config.partner1}

@@ -624,7 +624,7 @@ export function Configurator({
                             </div>
                             {open && (
                               <div className="space-y-4 border-t border-line bg-cream/50 p-4 sm:p-5">
-                                <BlockFields block={b} onChange={(p) => patchBlock(key, p)} />
+                                <BlockFields block={b} themeStyle={theme.style} onChange={(p) => patchBlock(key, p)} />
                               </div>
                             )}
                           </li>
@@ -901,7 +901,7 @@ async function preparePhoto(file: File): Promise<Blob> {
   );
 }
 
-function PhotoField({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+function PhotoField({ value, onChange, label = "Foto", hint, prefix = "story" }: { value: string; onChange: (url: string) => void; label?: string; hint?: string; prefix?: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -925,7 +925,7 @@ function PhotoField({ value, onChange }: { value: string; onChange: (url: string
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) throw new Error("niet ingelogd");
-      const path = `${user.id}/story-${Date.now()}.jpg`;
+      const path = `${user.id}/${prefix}-${Date.now()}.jpg`;
       const { error: uploadError } = await supabase.storage
         .from(PHOTO_BUCKET)
         .upload(path, blob, { contentType: "image/jpeg", cacheControl: "31536000", upsert: false });
@@ -942,7 +942,7 @@ function PhotoField({ value, onChange }: { value: string; onChange: (url: string
 
   return (
     <div>
-      <span className="mb-2 block text-sm font-medium">Foto</span>
+      <span className="mb-2 block text-sm font-medium">{label}</span>
       <input
         ref={inputRef}
         type="file"
@@ -985,7 +985,7 @@ function PhotoField({ value, onChange }: { value: string; onChange: (url: string
         </button>
       )}
       <p className="mt-2 text-xs text-muted">
-        Verschijnt in het blok "Ons verhaal". Vergeet niet op te slaan; een foto in liggend of staand formaat past zich aan.
+        {hint ?? 'Verschijnt in het blok "Ons verhaal". Vergeet niet op te slaan; een foto in liggend of staand formaat past zich aan.'}
       </p>
       {error && (
         <p role="alert" className="mt-2 text-xs text-clay">
@@ -998,10 +998,23 @@ function PhotoField({ value, onChange }: { value: string; onChange: (url: string
 
 // ---------- Velden per blok ----------
 
-function BlockFields({ block, onChange }: { block: Block; onChange: (p: Record<string, unknown>) => void }) {
+function BlockFields({ block, onChange, themeStyle }: { block: Block; onChange: (p: Record<string, unknown>) => void; themeStyle?: string }) {
   switch (block.type) {
     case "hero":
-      return <Input label="Kleine tekst boven de namen" value={block.eyebrow} onChange={(v) => onChange({ eyebrow: v })} />;
+      return (
+        <>
+          <Input label="Kleine tekst boven de namen" value={block.eyebrow} onChange={(v) => onChange({ eyebrow: v })} />
+          {themeStyle === "lago" && (
+            <PhotoField
+              label="Achtergrondfoto"
+              prefix="hero"
+              value={block.photo ?? ""}
+              onChange={(url) => onChange({ photo: url })}
+              hint="Komt als achtergrond achter de namen, met een groene laag eroverheen zodat de tekst leesbaar blijft. Een liggende of staande foto past zich aan. Vergeet niet op te slaan."
+            />
+          )}
+        </>
+      );
 
     case "countdown":
       return (

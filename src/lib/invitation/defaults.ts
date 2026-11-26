@@ -117,7 +117,7 @@ function normalizeBlock(base: Block, raw: Record<string, unknown>): Block {
 
   switch (base.type) {
     case "hero":
-      return { ...base, enabled, eyebrow: str(raw.eyebrow, base.eyebrow, 80) };
+      return { ...base, enabled, eyebrow: str(raw.eyebrow, base.eyebrow, 80), photo: photoUrl(raw.photo) };
     case "countdown":
       return { ...base, enabled, eyebrow: str(raw.eyebrow, base.eyebrow, 80), title: str(raw.title, base.title, 120) };
     case "story":
