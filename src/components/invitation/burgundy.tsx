@@ -5,7 +5,7 @@ import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/type
 import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
 import { blockKey, mapsHref, formatDateLong } from "@/lib/invitation/format";
-import { BurgStripes, Cherries, WavyCard, WavyFrame } from "./burgundy-art";
+import { BurgStripes, WavyCard, WavyFrame } from "./burgundy-art";
 
 /**
  * Stijl "burgundy": poederblauw papier met bordeaux typemachinetekst, hoge smalle hoofdletters voor de namen,
@@ -129,40 +129,39 @@ export function BurgBlockSection({ block, config }: { block: Block; config: Invi
   switch (block.type) {
     case "hero":
       return (
-        <section data-block="hero" className="relative overflow-hidden px-[8cqw] py-[14cqw]" style={CONTAINER}>
-          <BurgStripes className="absolute inset-0" />
-          <Cherries
-            className="inv-float absolute z-[3] w-[17cqw]"
-            style={{ left: "3cqw", top: "5cqw", rotate: "-14deg" }}
-          />
-          <Cherries
-            className="inv-float absolute z-[3] w-[13cqw]"
-            style={{ right: "4cqw", bottom: "6cqw", rotate: "16deg", scale: "-1 1" }}
-          />
-          <WavyCard className="relative px-[7cqw] pt-[17cqw] pb-[14cqw] text-center" style={{ zIndex: 2 }}>
-            <p className="mx-auto max-w-[16rem] text-[0.56rem] leading-[1.7] font-bold tracking-[0.14em] uppercase" style={{ ...mono, color: col("text") }}>
-              {block.eyebrow}
-            </p>
+        <section
+          data-block="hero"
+          className="relative flex min-h-[44rem] flex-col justify-between px-[8cqw] pt-12 pb-12"
+          style={{ background: col("background"), ...CONTAINER }}
+        >
+          <p className="mx-auto max-w-[19rem] text-center text-[0.58rem] leading-[1.7] font-bold tracking-[0.14em] uppercase" style={{ ...mono, color: col("text") }}>
+            {block.eyebrow}
+          </p>
 
-            <h1 className="mt-[9cqw]" aria-label={names}>
-              <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(15cqw, 4.2rem)" }}>
-                {config.partner1}
-              </span>
-              <span className="my-1 block leading-none" style={{ ...script, color: col("text"), fontSize: "min(9cqw, 2.4rem)" }}>
-                en
-              </span>
-              <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(15cqw, 4.2rem)" }}>
-                {config.partner2}
-              </span>
-            </h1>
+          <h1 className="text-center" aria-label={names}>
+            <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(19cqw, 5.2rem)" }}>
+              {config.partner1}
+            </span>
+            <span className="my-2 block leading-none" style={{ ...script, color: col("text"), fontSize: "min(10cqw, 2.6rem)" }}>
+              en
+            </span>
+            <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(19cqw, 5.2rem)" }}>
+              {config.partner2}
+            </span>
+          </h1>
 
-            <div className="mx-auto mt-[9cqw] h-px w-[40%]" style={{ background: col("text"), opacity: 0.35 }} />
-            <p className="mt-[6cqw] text-[0.66rem] leading-[1.7]" style={{ ...mono, color: col("text") }}>
-              {date && <span className="block font-bold tracking-[0.1em] uppercase">{date}</span>}
-              {config.time && <span className="block">om {config.time} uur</span>}
-              {config.city && <span className="block font-bold tracking-[0.1em] uppercase">{config.city}</span>}
+          <div>
+            <div className="flex items-end justify-between gap-4 text-[0.64rem] leading-[1.6]" style={{ ...mono, color: col("text") }}>
+              <p>
+                {date && <span className="block font-bold tracking-[0.08em] uppercase">{date}</span>}
+                {config.time && <span className="block">om {config.time} uur</span>}
+              </p>
+              {config.city && <p className="text-right font-bold tracking-[0.08em] uppercase">{config.city}</p>}
+            </div>
+            <p className="mt-9 text-center leading-none" style={{ ...script, color: col("text"), fontSize: "min(8.5cqw, 2.2rem)" }}>
+              graag tot dan
             </p>
-          </WavyCard>
+          </div>
         </section>
       );
 
