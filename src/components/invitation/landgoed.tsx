@@ -125,48 +125,97 @@ function CountdownCircles({ date, time }: { date: string; time: string }) {
   );
 }
 
+/** Bokeh-bloemetjes onderin de tuin: vaste posities (x, y in cqw, grootte), zodat het er elke keer hetzelfde uitziet. */
+const BLOOMS: [number, number, number][] = [
+  [6, 128, 5], [16, 142, 4], [4, 150, 6], [26, 154, 3.4], [12, 160, 4.6], [90, 126, 5.4], [80, 140, 4], [94, 148, 6],
+  [70, 156, 3.4], [86, 160, 4.8], [40, 158, 3], [58, 162, 3.6], [34, 146, 2.6], [64, 148, 2.8],
+];
+
+function LandgoedHero({ block, config, names, date }: { block: Extract<Block, { type: "hero" }>; config: InvitationConfig; names: string; date: string }) {
+  const paper = `linear-gradient(160deg, color-mix(in srgb, ${col("envelope")} 96%, white), color-mix(in srgb, ${col("envelope")} 82%, #8a8468))`;
+  return (
+    <section data-block="hero" className="relative overflow-hidden" style={{ ...CONTAINER }}>
+      <div className="relative" style={{ height: "172cqw", background: `linear-gradient(180deg, color-mix(in srgb, ${col("background")} 55%, #c9cfbb) 0%, ${col("background")} 34%, ${col("footerBackground")} 100%)` }}>
+        {/* Tuin: zuilen links en rechts, zacht licht en bokeh */}
+        <div aria-hidden="true" className="absolute inset-0" style={{ background: "radial-gradient(60% 30% at 50% 6%, rgb(255 255 255 / .28), transparent 70%)" }} />
+        {[0, 1].map((side) => (
+          <div
+            key={side}
+            aria-hidden="true"
+            className="absolute"
+            style={{
+              top: 0,
+              bottom: "20cqw",
+              width: "15cqw",
+              [side === 0 ? "left" : "right"]: 0,
+              background: `linear-gradient(${side === 0 ? 90 : 270}deg, color-mix(in srgb, ${col("footerBackground")} 80%, black), color-mix(in srgb, ${col("background")} 60%, ${col("footerBackground")}))`,
+              opacity: 0.8,
+            }}
+          />
+        ))}
+        {BLOOMS.map(([x, y, d], i) => (
+          <span
+            key={i}
+            aria-hidden="true"
+            className="absolute rounded-full"
+            style={{ left: `${x}cqw`, top: `${y}cqw`, width: `${d}cqw`, height: `${d}cqw`, background: col("surface"), opacity: 0.38, filter: "blur(0.5cqw)" }}
+          />
+        ))}
+
+        {/* Envelop: achterkant met donkere voering */}
+        <div className="absolute" style={{ left: "13cqw", top: "84cqw", width: "74cqw", height: "56cqw", background: paper, borderRadius: "1cqw", boxShadow: "0 3cqw 6cqw rgb(0 0 0 / .45)" }}>
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-[3%] top-0"
+            style={{ height: "46%", clipPath: "polygon(6% 0, 94% 0, 100% 100%, 0 100%)", background: `linear-gradient(180deg, ${col("footerBackground")}, color-mix(in srgb, ${col("background")} 70%, ${col("footerBackground")}))` }}
+          />
+        </div>
+
+        {/* Hart met kanten rand, half uit de envelop */}
+        <LaceHeart className="absolute inv-float-soft" style={{ left: "17cqw", top: "34cqw", width: "66cqw", zIndex: 2 }}>
+          <p style={{ ...script, color: col("surface"), fontSize: "13cqw", lineHeight: 1.05 }}>{block.eyebrow}</p>
+          <p aria-label={names} style={{ ...heading, color: col("surface"), fontSize: "5cqw", marginTop: "2.2cqw", letterSpacing: "0.04em" }}>
+            {config.partner1} &amp; {config.partner2}
+          </p>
+          {date && <p style={{ ...heading, color: col("surface"), fontSize: "4cqw", letterSpacing: "0.08em", marginTop: "1.2cqw", opacity: 0.9 }}>{date}</p>}
+        </LaceHeart>
+
+        {/* Voorkant van de envelop met vouwen en zegel */}
+        <div
+          aria-hidden="true"
+          className="absolute"
+          style={{
+            left: "13cqw",
+            top: "84cqw",
+            width: "74cqw",
+            height: "56cqw",
+            zIndex: 3,
+            borderRadius: "0 0 1cqw 1cqw",
+            clipPath: "polygon(0 26%, 50% 66%, 100% 26%, 100% 100%, 0 100%)",
+            background: paper,
+          }}
+        />
+        <svg aria-hidden="true" viewBox="0 0 74 56" className="pointer-events-none absolute" style={{ left: "13cqw", top: "84cqw", width: "74cqw", height: "56cqw", zIndex: 4 }} fill="none" stroke={col("muted")} strokeWidth={0.25} opacity={0.55}>
+          <path d="M0 14.5 37 37 74 14.5M0 56 28 30M74 56 46 30" />
+        </svg>
+        <div
+          className="absolute grid place-items-center"
+          style={{ left: "50cqw", top: "113cqw", width: "9cqw", height: "11cqw", transform: "translateX(-50%)", zIndex: 5, border: `0.35cqw solid ${col("muted")}`, borderRadius: "50%", color: col("muted"), ...script, fontSize: "5.2cqw", opacity: 0.8 }}
+        >
+          {(config.partner1[0] ?? "") + (config.partner2[0] ?? "")}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function LandgoedBlockSection({ block, config }: { block: Block; config: InvitationConfig; index?: number }) {
   const names = `${config.partner1} & ${config.partner2}`;
   const date = formatDateLong(config.date);
 
   switch (block.type) {
     case "hero":
-      return (
-        <section
-          data-block="hero"
-          className="relative overflow-hidden"
-          style={{ background: `radial-gradient(75% 45% at 50% 46%, color-mix(in srgb, ${col("background")} 80%, white), ${col("background")})`, ...CONTAINER }}
-        >
-          <div className="relative flex flex-col items-center justify-center" style={{ minHeight: "175cqw", padding: "10cqw 0" }}>
-            {/* Boogkader met dunne lijn rond het hart */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute"
-              style={{ inset: "5cqw", borderRadius: "999px 999px 9cqw 9cqw", border: `0.4cqw solid color-mix(in srgb, ${col("surface")} 55%, transparent)` }}
-            />
-            <Vine className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ top: "12cqw", width: "78cqw", opacity: 0.8 }} />
-            <Vine flip className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ bottom: "12cqw", width: "78cqw", opacity: 0.8 }} />
-            <LaceHeart className="inv-float-soft" style={{ width: "84cqw" }}>
-              <p className="uppercase" style={{ ...heading, color: col("surface"), fontSize: "3.3cqw", letterSpacing: "0.24em", opacity: 0.9 }}>
-                {block.eyebrow}
-              </p>
-              <h1 aria-label={names} style={{ ...script, color: col("surface"), fontSize: "13.5cqw", lineHeight: 1.08, marginTop: "2.6cqw" }}>
-                {config.partner1}
-                <span className="block" style={{ fontSize: "8cqw", lineHeight: 1 }}>
-                  &amp;
-                </span>
-                {config.partner2}
-              </h1>
-              {date && <p style={{ ...heading, color: col("surface"), fontSize: "4.2cqw", letterSpacing: "0.12em", marginTop: "3.4cqw" }}>{date}</p>}
-            </LaceHeart>
-            {config.city && (
-              <p className="uppercase" style={{ ...heading, color: col("surface"), fontSize: "3.6cqw", letterSpacing: "0.3em", marginTop: "9cqw", opacity: 0.85 }}>
-                {config.city}
-              </p>
-            )}
-          </div>
-        </section>
-      );
+      return <LandgoedHero block={block} config={config} names={names} date={date} />;
 
     case "countdown":
       return (

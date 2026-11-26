@@ -102,8 +102,9 @@ export function LaceHeart({ children, className = "", style }: { children?: Reac
   return (
     <div className={`relative ${className}`} style={{ aspectRatio: "100 / 92", ...style }}>
       <svg viewBox="-6 -6 112 104" aria-hidden="true" className="absolute inset-0 h-full w-full overflow-visible">
-        <path d={HEART} fill={col("footerBackground")} />
-        <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={7} strokeLinecap="round" strokeDasharray="0.1 4.6" opacity={0.95} />
+        <path d={HEART} fill={`color-mix(in srgb, ${col("background")} 86%, white)`} />
+        <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={9} strokeLinecap="round" strokeDasharray="0.1 5.4" opacity={0.95} />
+        <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={5} strokeLinecap="round" strokeDasharray="0.1 3.6" opacity={0.8} transform="translate(50 46) scale(1.03) translate(-50 -46)" />
         <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={1.1} opacity={0.9} transform="translate(50 46) scale(1.075) translate(-50 -46)" />
         <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={0.9} opacity={0.7} transform="translate(50 46) scale(0.9) translate(-50 -46)" />
       </svg>
