@@ -29,18 +29,18 @@ function Title({ eyebrow, title, tone }: { eyebrow?: string; title: string; tone
   return (
     <header className="text-center">
       {eyebrow && (
-        <p className="uppercase" style={{ ...heading, color: soft(tone), fontSize: "2.9cqw", letterSpacing: "0.24em", marginBottom: "1.6cqw" }}>
+        <p className="uppercase" style={{ ...heading, color: soft(tone), fontSize: "3.6cqw", letterSpacing: "0.24em", marginBottom: "2cqw" }}>
           {eyebrow}
         </p>
       )}
-      <h2 style={{ ...script, color: ink(tone), fontSize: "11.5cqw", lineHeight: 1.1 }}>{title}</h2>
+      <h2 style={{ ...script, color: ink(tone), fontSize: "15cqw", lineHeight: 1.05 }}>{title}</h2>
     </header>
   );
 }
 
 function Text({ children, tone, className = "" }: { children: ReactNode; tone: Tone; className?: string }) {
   return (
-    <p className={`mx-auto whitespace-pre-line ${className}`} style={{ ...body, color: soft(tone), fontSize: "3.6cqw", lineHeight: 1.75, maxWidth: "66cqw" }}>
+    <p className={`mx-auto whitespace-pre-line ${className}`} style={{ ...body, color: soft(tone), fontSize: "4.4cqw", lineHeight: 1.7, maxWidth: "78cqw" }}>
       {children}
     </p>
   );
@@ -52,9 +52,9 @@ function PillButton({ children, href, tone }: { children: ReactNode; href?: stri
     background: tone === "cream" ? col("buttonBackground") : col("surface"),
     color: tone === "cream" ? col("buttonText") : col("text"),
     borderRadius: "var(--inv-radius)",
-    fontSize: "3cqw",
+    fontSize: "3.8cqw",
     letterSpacing: "0.18em",
-    padding: "3cqw 8cqw",
+    padding: "3.8cqw 10cqw",
   };
   const cls = "inline-flex items-center justify-center font-semibold uppercase";
   return href ? (
@@ -68,23 +68,37 @@ function PillButton({ children, href, tone }: { children: ReactNode; href?: stri
   );
 }
 
-/** Olijfgroen vlak met crème tekst. */
+/** Olijfgroen vlak met crème tekst en zachte rankenkransen boven en onder. */
 function Green({ type, children }: { type: string; children: ReactNode }) {
   return (
-    <section data-block={type} className="relative text-center" style={{ background: col("background"), padding: "13cqw 10cqw", ...CONTAINER }}>
-      {children}
+    <section data-block={type} className="relative overflow-hidden text-center" style={{ background: col("background"), ...CONTAINER }}>
+      <Vine className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ top: "3cqw", width: "92cqw", opacity: 0.35 }} />
+      <Vine flip className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ bottom: "3cqw", width: "92cqw", opacity: 0.35 }} />
+      {/* De padding staat op een kind: cqw in de eigen stijl van de container zou naar de buitenste container verwijzen. */}
+      <div className="relative" style={{ padding: "30cqw 9cqw" }}>
+        {children}
+      </div>
     </section>
   );
 }
 
-/** Crème boogpaneel (ovaal boven en onder) met een rankenkrans boven en onder, op het groene vlak. */
+/** Crème boogpaneel (ovaal boven en onder) met een dunne binnenlijn en rankenkransen, op het groene vlak. */
 function Arch({ type, children }: { type: string; children: ReactNode }) {
   return (
-    <section data-block={type} className="relative" style={{ background: col("background"), padding: "6cqw 7cqw", ...CONTAINER }}>
-      <div className="relative text-center" style={{ background: col("surface"), borderRadius: "999px", padding: "34cqw 9cqw" }}>
-        <Vine className="absolute left-1/2 -translate-x-1/2" style={{ top: "6cqw", width: "76cqw" }} />
-        <Vine flip className="absolute left-1/2 -translate-x-1/2" style={{ bottom: "6cqw", width: "76cqw" }} />
-        <div className="relative">{children}</div>
+    <section data-block={type} className="relative" style={{ background: col("background"), ...CONTAINER }}>
+      <div style={{ padding: "6cqw 5cqw" }}>
+        <div className="relative text-center" style={{ background: col("surface"), borderRadius: "999px" }}>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute"
+            style={{ inset: "2.4cqw", borderRadius: "999px", border: `0.35cqw solid color-mix(in srgb, ${col("accent")} 45%, transparent)` }}
+          />
+          <Vine className="absolute left-1/2 -translate-x-1/2" style={{ top: "6cqw", width: "80cqw" }} />
+          <Vine flip className="absolute left-1/2 -translate-x-1/2" style={{ bottom: "6cqw", width: "80cqw" }} />
+          <div className="relative" style={{ padding: "36cqw 10cqw" }}>
+            {children}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -93,16 +107,16 @@ function Arch({ type, children }: { type: string; children: ReactNode }) {
 function CountdownCircles({ date, time }: { date: string; time: string }) {
   const cells = useCountdown(date, time);
   return (
-    <div className="flex justify-center" style={{ gap: "2.6cqw", marginTop: "7cqw" }}>
+    <div className="flex justify-center" style={{ gap: "2.4cqw", marginTop: "8cqw" }}>
       {cells.map(([value, label]) => (
         <div key={label} className="text-center">
           <p
             className="grid place-items-center rounded-full tabular-nums"
-            style={{ ...heading, width: "14cqw", height: "14cqw", background: col("surfaceAlt"), color: col("text"), fontSize: "6cqw", fontWeight: 600 }}
+            style={{ ...heading, width: "17cqw", height: "17cqw", background: col("surfaceAlt"), color: col("text"), fontSize: "7.4cqw", fontWeight: 600 }}
           >
             {value}
           </p>
-          <p className="uppercase" style={{ ...heading, color: col("muted"), fontSize: "2.2cqw", letterSpacing: "0.14em", marginTop: "1.8cqw" }}>
+          <p className="uppercase" style={{ ...heading, color: col("muted"), fontSize: "2.8cqw", letterSpacing: "0.12em", marginTop: "2cqw" }}>
             {label}
           </p>
         </div>
@@ -120,30 +134,37 @@ export function LandgoedBlockSection({ block, config }: { block: Block; config: 
       return (
         <section
           data-block="hero"
-          className="relative flex items-center justify-center overflow-hidden"
-          style={{
-            minHeight: "150cqw",
-            background: `radial-gradient(70% 50% at 50% 42%, color-mix(in srgb, ${col("background")} 82%, white), ${col("background")})`,
-            ...CONTAINER,
-          }}
+          className="relative overflow-hidden"
+          style={{ background: `radial-gradient(75% 45% at 50% 46%, color-mix(in srgb, ${col("background")} 80%, white), ${col("background")})`, ...CONTAINER }}
         >
-          <Vine className="absolute left-1/2 -translate-x-1/2" style={{ top: "6cqw", width: "88cqw", opacity: 0.55 }} />
-          <Vine flip className="absolute left-1/2 -translate-x-1/2" style={{ bottom: "6cqw", width: "88cqw", opacity: 0.55 }} />
-          <LaceHeart className="inv-float-soft" style={{ width: "82cqw" }}>
-            <p className="uppercase" style={{ ...heading, color: col("surface"), fontSize: "2.7cqw", letterSpacing: "0.26em", opacity: 0.85 }}>
-              {block.eyebrow}
-            </p>
-            <h1 aria-label={names} style={{ ...script, color: col("surface"), fontSize: "10.5cqw", lineHeight: 1.12, marginTop: "2.4cqw" }}>
-              {config.partner1}
-              <span className="block" style={{ fontSize: "7cqw", lineHeight: 1 }}>
-                &amp;
-              </span>
-              {config.partner2}
-            </h1>
-            {date && (
-              <p style={{ ...heading, color: col("surface"), fontSize: "3.3cqw", letterSpacing: "0.14em", marginTop: "3cqw", opacity: 0.9 }}>{date}</p>
+          <div className="relative flex flex-col items-center justify-center" style={{ minHeight: "175cqw", padding: "10cqw 0" }}>
+            {/* Boogkader met dunne lijn rond het hart */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute"
+              style={{ inset: "5cqw", borderRadius: "999px 999px 9cqw 9cqw", border: `0.4cqw solid color-mix(in srgb, ${col("surface")} 55%, transparent)` }}
+            />
+            <Vine className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ top: "12cqw", width: "78cqw", opacity: 0.8 }} />
+            <Vine flip className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ bottom: "12cqw", width: "78cqw", opacity: 0.8 }} />
+            <LaceHeart className="inv-float-soft" style={{ width: "84cqw" }}>
+              <p className="uppercase" style={{ ...heading, color: col("surface"), fontSize: "3.3cqw", letterSpacing: "0.24em", opacity: 0.9 }}>
+                {block.eyebrow}
+              </p>
+              <h1 aria-label={names} style={{ ...script, color: col("surface"), fontSize: "13.5cqw", lineHeight: 1.08, marginTop: "2.6cqw" }}>
+                {config.partner1}
+                <span className="block" style={{ fontSize: "8cqw", lineHeight: 1 }}>
+                  &amp;
+                </span>
+                {config.partner2}
+              </h1>
+              {date && <p style={{ ...heading, color: col("surface"), fontSize: "4.2cqw", letterSpacing: "0.12em", marginTop: "3.4cqw" }}>{date}</p>}
+            </LaceHeart>
+            {config.city && (
+              <p className="uppercase" style={{ ...heading, color: col("surface"), fontSize: "3.6cqw", letterSpacing: "0.3em", marginTop: "9cqw", opacity: 0.85 }}>
+                {config.city}
+              </p>
             )}
-          </LaceHeart>
+          </div>
         </section>
       );
 
@@ -158,12 +179,12 @@ export function LandgoedBlockSection({ block, config }: { block: Block; config: 
     case "story":
       return (
         <Arch type="story">
-          <OvalFrame className="mx-auto" >
+          <OvalFrame className="mx-auto w-[52cqw]">
             {block.photo ? (
               <StoryImg src={block.photo} />
             ) : (
               <div className="grid h-full w-full place-items-center" aria-hidden="true">
-                <span style={{ ...script, color: col("muted"), fontSize: "9cqw" }}>foto</span>
+                <span style={{ ...script, color: col("muted"), fontSize: "12cqw" }}>foto</span>
               </div>
             )}
           </OvalFrame>
@@ -190,14 +211,14 @@ export function LandgoedBlockSection({ block, config }: { block: Block; config: 
       return (
         <Arch type="program">
           <Title eyebrow={block.eyebrow} title={block.title} tone="cream" />
-          <ul className="mx-auto" style={{ marginTop: "6cqw", maxWidth: "62cqw" }}>
+          <ul className="mx-auto" style={{ marginTop: "6cqw", maxWidth: "76cqw" }}>
             {block.items.map((item, i) => (
-              <li key={i} className="text-center" style={{ paddingBottom: "4cqw" }}>
-                <p style={{ ...heading, color: col("text"), fontSize: "6.4cqw", fontWeight: 600, lineHeight: 1.1 }}>{item.time}</p>
-                <p className="uppercase" style={{ ...heading, color: col("text"), fontSize: "3.1cqw", letterSpacing: "0.16em", marginTop: "1cqw" }}>
+              <li key={i} className="text-center" style={{ paddingBottom: "5cqw" }}>
+                <p style={{ ...heading, color: col("text"), fontSize: "8.5cqw", fontWeight: 600, lineHeight: 1.1 }}>{item.time}</p>
+                <p className="uppercase" style={{ ...heading, color: col("text"), fontSize: "3.8cqw", letterSpacing: "0.14em", marginTop: "1.2cqw" }}>
                   {item.title}
                 </p>
-                {item.subtitle && <p style={{ ...body, color: col("muted"), fontSize: "3.3cqw", marginTop: "0.6cqw" }}>{item.subtitle}</p>}
+                {item.subtitle && <p style={{ ...body, color: col("muted"), fontSize: "4cqw", marginTop: "0.8cqw" }}>{item.subtitle}</p>}
                 {i < block.items.length - 1 && <Flourish className="mx-auto mt-[3.4cqw] w-[20cqw]" color={col("accent")} />}
               </li>
             ))}
@@ -253,22 +274,21 @@ export function LandgoedBlockSection({ block, config }: { block: Block; config: 
 
     case "footer":
       return (
-        <section
-          data-block="footer"
-          className="text-center"
-          style={{ background: col("footerBackground"), color: col("footerText"), padding: "13cqw 9cqw 24cqw", ...CONTAINER }}
-        >
-          <div className="relative mx-auto" style={{ border: `0.5cqw solid ${col("footerText")}`, borderRadius: "6cqw", padding: "3cqw" }}>
-            <div style={{ border: `0.3cqw solid color-mix(in srgb, ${col("footerText")} 60%, transparent)`, borderRadius: "4.4cqw", padding: "10cqw 6cqw" }}>
-              <p style={{ ...script, fontSize: "10cqw", lineHeight: 1.1 }}>{block.closing || "Tot dan"}</p>
-              <Flourish className="mx-auto mt-[3cqw] w-[26cqw]" color={col("footerText")} />
-              <p className="uppercase" style={{ ...heading, fontSize: "4cqw", letterSpacing: "0.18em", marginTop: "4cqw" }}>
-                {names}
-              </p>
-              {block.contactEmail && <p style={{ ...body, fontSize: "3cqw", marginTop: "5cqw", opacity: 0.8 }}>Vragen? mail naar {block.contactEmail}</p>}
-              <p className="uppercase" style={{ ...heading, fontSize: "2.6cqw", letterSpacing: "0.18em", marginTop: "3cqw", opacity: 0.7 }}>
-                {[date, config.city].filter(Boolean).join(" · ")}
-              </p>
+        <section data-block="footer" className="relative overflow-hidden text-center" style={{ background: col("footerBackground"), color: col("footerText"), ...CONTAINER }}>
+          <Vine className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ top: "3cqw", width: "92cqw", opacity: 0.3 }} />
+          <div style={{ padding: "14cqw 8cqw 28cqw" }}>
+            <div className="relative" style={{ border: `0.6cqw solid ${col("footerText")}`, borderRadius: "7cqw", padding: "3cqw" }}>
+              <div style={{ border: `0.35cqw solid color-mix(in srgb, ${col("footerText")} 60%, transparent)`, borderRadius: "5cqw", padding: "13cqw 6cqw" }}>
+                <p style={{ ...script, fontSize: "14cqw", lineHeight: 1.05 }}>{block.closing || "Tot dan"}</p>
+                <Flourish className="mx-auto w-[34cqw]" color={col("footerText")} />
+                <p className="uppercase" style={{ ...heading, fontSize: "5.2cqw", letterSpacing: "0.16em", marginTop: "5cqw", lineHeight: 1.4 }}>
+                  {names}
+                </p>
+                {block.contactEmail && <p style={{ ...body, fontSize: "3.8cqw", marginTop: "6cqw", opacity: 0.85 }}>Vragen? mail naar {block.contactEmail}</p>}
+                <p className="uppercase" style={{ ...heading, fontSize: "3.2cqw", letterSpacing: "0.16em", marginTop: "4cqw", opacity: 0.75 }}>
+                  {[date, config.city].filter(Boolean).join(" · ")}
+                </p>
+              </div>
             </div>
           </div>
         </section>

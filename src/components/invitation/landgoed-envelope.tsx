@@ -46,8 +46,8 @@ export function LandgoedEnvelope({ config, opening, onOpen }: Props) {
           className="absolute inset-x-0 z-[2] text-center"
           style={{ top: `${FLAP + 9}%`, color: col("text"), opacity: opening ? 0 : 1, transition: "opacity 250ms ease" }}
         >
-          <p style={{ ...script, fontSize: "12cqw", lineHeight: 1.1 }}>{names}</p>
-          <p className="uppercase" style={{ ...heading, fontSize: "2.8cqw", letterSpacing: "0.24em", marginTop: "5cqw", opacity: 0.7 }}>
+          <p style={{ ...script, fontSize: "15cqw", lineHeight: 1.1 }}>{names}</p>
+          <p className="uppercase" style={{ ...heading, fontSize: "3.6cqw", letterSpacing: "0.24em", marginTop: "6cqw", opacity: 0.7 }}>
             Tik om te openen
           </p>
         </div>
@@ -77,7 +77,7 @@ export function LandgoedEnvelope({ config, opening, onOpen }: Props) {
             viewBox="0 0 100 92"
             aria-hidden="true"
             className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{ top: "calc(100% - 3cqw)", width: "22cqw", backfaceVisibility: "hidden", filter: "drop-shadow(0 6px 8px rgb(0 0 0 / .3))" }}
+            style={{ top: "calc(100% - 3cqw)", width: "26cqw", backfaceVisibility: "hidden", filter: "drop-shadow(0 6px 8px rgb(0 0 0 / .3))" }}
           >
             <path d={HEART} fill={col("background")} />
             <path d={HEART} fill="none" stroke={col("surface")} strokeWidth={5} strokeLinecap="round" strokeDasharray="0.1 4.2" opacity={0.9} />
