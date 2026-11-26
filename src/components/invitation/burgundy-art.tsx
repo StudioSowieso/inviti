@@ -11,7 +11,7 @@ import type { ThemeColors } from "@/lib/invitation/types";
 
 const col = (key: keyof ThemeColors) => `var(--inv-${key})`;
 
-/** Verticale strepen in bordeaux en poederblauw (stilstaand). */
+/** Verticale strepen in bordeaux en poederblauw (stilstaand). Gebruik binnen een element met `container-type: inline-size`: de breedte van een streep is 1/13 van die container. */
 export function BurgStripes({ className = "", style }: { className?: string; style?: CSSProperties }) {
   return (
     <div
@@ -19,7 +19,8 @@ export function BurgStripes({ className = "", style }: { className?: string; sty
       className={className}
       style={{
         backgroundColor: col("background"),
-        backgroundImage: `repeating-linear-gradient(90deg, ${col("text")} 0, ${col("text")} 1.5rem, transparent 1.5rem, transparent 3rem)`,
+        // Altijd 13 strepen over de breedte (begint en eindigt met bordeaux), dus op elk scherm even breed en in dezelfde kleur aan de randen.
+        backgroundImage: `repeating-linear-gradient(90deg, ${col("text")} 0, ${col("text")} calc(100cqw / 13), transparent calc(100cqw / 13), transparent calc(200cqw / 13))`,
         ...style,
       }}
     />

@@ -22,7 +22,7 @@ type Props = { config: InvitationConfig; opening: boolean; onOpen: () => void };
 export function BurgEnvelope({ config, opening, onOpen }: Props) {
   const names = `${config.partner1} & ${config.partner2}`;
   return (
-    <div className="absolute inset-0 z-30 overflow-hidden" style={{ perspective: "1600px", pointerEvents: opening ? "none" : "auto" }}>
+    <div className="absolute inset-0 z-30 overflow-hidden" style={{ perspective: "1600px", containerType: "inline-size", pointerEvents: opening ? "none" : "auto" }}>
       <div
         className="absolute inset-0"
         style={{

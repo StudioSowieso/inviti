@@ -31,7 +31,7 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
       "--inv-text": c.text,
     } as CSSProperties;
     return (
-      <div className="relative flex flex-col justify-center overflow-hidden rounded-xl" style={vars}>
+      <div className="relative flex flex-col justify-center overflow-hidden rounded-xl" style={{ ...vars, containerType: "inline-size" }}>
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
         <BurgStripes className="absolute inset-0" />
         <WavyCard className="relative mx-[12%] px-3 py-6 text-center">
