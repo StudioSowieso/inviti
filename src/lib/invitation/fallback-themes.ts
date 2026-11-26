@@ -242,6 +242,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "pill",
     style: "bourgondisch",
   },
+  {
+    slug: "burgundy",
+    title: "Burgundy",
+    description:
+      "Poederblauw met diep bordeaux: hoge letters voor de namen, typemachinetekst, bordeaux strepen en een kaartje met golvende rand.",
+    colors: {
+      background: "#c3d6ee",
+      surface: "#f6f0ec",
+      surfaceAlt: "#adc3e0",
+      text: "#6b1424",
+      muted: "#7e3a46",
+      line: "#aec3df",
+      accent: "#6b1424",
+      buttonBackground: "#6b1424",
+      buttonText: "#f6f0ec",
+      footerBackground: "#5e1120",
+      footerText: "#e4ecf8",
+      envelope: "#6b1424",
+      envelopeCard: "#e4ecf8",
+    },
+    headingFont: "Oranienbaum",
+    bodyFont: "Courier Prime",
+    scriptFont: "Pinyon Script",
+    buttonShape: "square",
+    style: "burgundy",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

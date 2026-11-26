@@ -12,6 +12,46 @@ type PaletteDef = { slug: string; title: string; colors: Partial<ThemeColors> };
  * horen bij elkaar, zodat een kleurkeuze het hele thema meeneemt.
  */
 const EXTRA_PALETTES: Record<string, PaletteDef[]> = {
+  burgundy: [
+    {
+      slug: "blush",
+      title: "Blush",
+      colors: {
+        background: "#f1d3d4",
+        surface: "#fbf4f0",
+        surfaceAlt: "#e8bcc0",
+        text: "#6b1424",
+        muted: "#8a4452",
+        line: "#e3bcbd",
+        accent: "#6b1424",
+        buttonBackground: "#6b1424",
+        buttonText: "#fbf4f0",
+        footerBackground: "#5e1120",
+        footerText: "#f8e6e4",
+        envelope: "#6b1424",
+        envelopeCard: "#f8e6e4",
+      },
+    },
+    {
+      slug: "salie",
+      title: "Salie",
+      colors: {
+        background: "#cfdcc9",
+        surface: "#f5f2ea",
+        surfaceAlt: "#b8cab0",
+        text: "#33472f",
+        muted: "#55694f",
+        line: "#b9c9b2",
+        accent: "#33472f",
+        buttonBackground: "#33472f",
+        buttonText: "#f5f2ea",
+        footerBackground: "#2b3d28",
+        footerText: "#e6eee0",
+        envelope: "#33472f",
+        envelopeCard: "#e6eee0",
+      },
+    },
+  ],
   bourgondisch: [
     {
       slug: "bordeaux",

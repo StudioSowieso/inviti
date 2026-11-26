@@ -4,6 +4,7 @@ import type { InvitationTheme } from "@/lib/invitation/types";
 import { Branch, BranchPair, HeroBranch } from "./leaf";
 import { CornerSprigs } from "./flowers";
 import { BourgStripes, Doodle, WOBBLE } from "./bourgondisch-art";
+import { BurgStripes, WavyCard } from "./burgundy-art";
 import { Paperclip } from "./sunset";
 import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
@@ -21,6 +22,38 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
 function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "burgundy") {
+    const vars = {
+      "--inv-background": c.background,
+      "--inv-surface": c.surface,
+      "--inv-surfaceAlt": c.surfaceAlt,
+      "--inv-text": c.text,
+    } as CSSProperties;
+    return (
+      <div className="relative flex flex-col justify-center overflow-hidden rounded-xl" style={vars}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <BurgStripes className="absolute inset-0" />
+        <WavyCard className="relative mx-[12%] px-3 py-6 text-center">
+          <p className="text-[0.85rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont), color: c.text }}>
+            Wij gaan trouwen
+          </p>
+          <p className="mt-1.5 text-[1.5rem] leading-[1] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.text }}>
+            Emma
+          </p>
+          <p className="text-[0.8rem] leading-[1.3]" style={{ fontFamily: fontStack(theme.scriptFont), color: c.text }}>
+            en
+          </p>
+          <p className="text-[1.5rem] leading-[1] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.text }}>
+            Mats
+          </p>
+          <p className="mt-2 text-[0.38rem] font-bold tracking-[0.12em] uppercase" style={{ fontFamily: fontStack(theme.bodyFont), color: c.text }}>
+            12 september 2027
+          </p>
+        </WavyCard>
+      </div>
+    );
+  }
 
   if (theme.style === "bourgondisch") {
     const vars = {

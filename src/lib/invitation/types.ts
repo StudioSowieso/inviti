@@ -10,9 +10,10 @@ export type ButtonShape = "pill" | "rounded" | "square";
  * - flowers: crèmepapier met aquarel-wildbloemtakken in de hoeken en gespatieerde hoofdletters
  * - sunset: oranje tafel met gestapelde kaartjes in perzik, rood en roze, golvende randen en halfronde kaartjes met paperclip
  * - bourgondisch: gestreept papier met een wiebelige kaartrand en olijfgroene lijntekeningen (kreeft, oesters, druiven, glazen)
+ * - burgundy: poederblauw papier met bordeaux typemachinetekst, hoge hoofdletters, bordeaux strepen en golvende kaartjes
  * - modern: editorial zwart-wit met greige, extra grote letters, handschrift en witte kaarten
  */
-export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset" | "bourgondisch";
+export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset" | "bourgondisch" | "burgundy";
 
 export type ThemeColors = {
   background: string;

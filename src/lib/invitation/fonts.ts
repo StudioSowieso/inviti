@@ -5,7 +5,7 @@ import type { InvitationTheme } from "./types";
  * het Sanity-schema (sanity/schemaTypes/invitationTheme.ts). Een onbekende naam valt
  * terug op de standaardfont, zodat een typefout in Sanity de uitnodiging niet breekt.
  */
-export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans" | "script" }> = {
+export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans" | "script" | "mono" }> = {
   "Cormorant Garamond": { css2: "Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500", kind: "serif" },
   "Playfair Display": { css2: "Playfair+Display:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
   Lora: { css2: "Lora:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
@@ -13,6 +13,8 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   "EB Garamond": { css2: "EB+Garamond:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
   Italiana: { css2: "Italiana", kind: "serif" },
   Gloock: { css2: "Gloock", kind: "serif" },
+  Oranienbaum: { css2: "Oranienbaum", kind: "serif" },
+  "Courier Prime": { css2: "Courier+Prime:ital,wght@0,400;0,700;1,400", kind: "mono" },
   Inter: { css2: "Inter:wght@400;500;600", kind: "sans" },
   "Josefin Sans": { css2: "Josefin+Sans:wght@300;400;600", kind: "sans" },
   Jost: { css2: "Jost:wght@400;500;600", kind: "sans" },
@@ -41,7 +43,9 @@ export function fontStack(name: string) {
       ? "Georgia, 'Times New Roman', serif"
       : f?.kind === "script"
         ? "'Snell Roundhand', cursive"
-        : "ui-sans-serif, system-ui, sans-serif";
+        : f?.kind === "mono"
+          ? "'Courier New', ui-monospace, monospace"
+          : "ui-sans-serif, system-ui, sans-serif";
   return `"${name}", ${generic}`;
 }
 
@@ -52,7 +56,7 @@ export function googleFontsHref(...names: string[]) {
   return `https://fonts.googleapis.com/css2?${families.join("&")}&display=swap`;
 }
 
-/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon", "flowers", "sunset" en "bourgondisch"). */
+/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon", "flowers", "sunset", "bourgondisch" en "burgundy"). */
 export function themeFonts(theme: InvitationTheme) {
   return [theme.headingFont, theme.bodyFont, ...(theme.style !== "classic" ? [theme.scriptFont] : [])];
 }
