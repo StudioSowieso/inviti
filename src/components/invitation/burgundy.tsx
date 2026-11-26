@@ -5,7 +5,7 @@ import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/type
 import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
 import { blockKey, mapsHref, formatDateLong } from "@/lib/invitation/format";
-import { BurgStripes, WavyCard, WavyFrame } from "./burgundy-art";
+import { BurgStripes, Cherries, WavyCard, WavyFrame } from "./burgundy-art";
 
 /**
  * Stijl "burgundy": poederblauw papier met bordeaux typemachinetekst, hoge smalle hoofdletters voor de namen,
@@ -71,7 +71,7 @@ function Button({ children, href }: { children: ReactNode; href?: string }) {
 function Striped({ type, children, className = "" }: { type: string; children: ReactNode; className?: string }) {
   return (
     <section data-block={type} className="relative px-[8%] py-12" style={CONTAINER}>
-      <BurgStripes drift className="absolute inset-0" />
+      <BurgStripes className="absolute inset-0" />
       <WavyCard className={`px-[1.6rem] py-12 text-center ${className}`} style={{ zIndex: 1 }}>
         {children}
       </WavyCard>
@@ -129,34 +129,40 @@ export function BurgBlockSection({ block, config }: { block: Block; config: Invi
   switch (block.type) {
     case "hero":
       return (
-        <section
-          data-block="hero"
-          className="relative flex min-h-[40rem] flex-col justify-between px-[8cqw] pt-12 pb-14"
-          style={{ background: col("background"), ...CONTAINER }}
-        >
-          <p className="mx-auto max-w-[17rem] text-center text-[0.58rem] leading-[1.7] font-bold tracking-[0.14em] uppercase" style={{ ...mono, color: col("text") }}>
-            {block.eyebrow}
-          </p>
+        <section data-block="hero" className="relative overflow-hidden px-[8cqw] py-[14cqw]" style={CONTAINER}>
+          <BurgStripes className="absolute inset-0" />
+          <Cherries
+            className="inv-float absolute z-[3] w-[17cqw]"
+            style={{ left: "3cqw", top: "5cqw", rotate: "-14deg" }}
+          />
+          <Cherries
+            className="inv-float absolute z-[3] w-[13cqw]"
+            style={{ right: "4cqw", bottom: "6cqw", rotate: "16deg", scale: "-1 1" }}
+          />
+          <WavyCard className="relative px-[7cqw] pt-[17cqw] pb-[14cqw] text-center" style={{ zIndex: 2 }}>
+            <p className="mx-auto max-w-[16rem] text-[0.56rem] leading-[1.7] font-bold tracking-[0.14em] uppercase" style={{ ...mono, color: col("text") }}>
+              {block.eyebrow}
+            </p>
 
-          <h1 className="text-center" aria-label={names}>
-            <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(17cqw, 4.8rem)" }}>
-              {config.partner1}
-            </span>
-            <span className="my-1.5 block leading-none" style={{ ...script, color: col("text"), fontSize: "min(9cqw, 2.4rem)" }}>
-              en
-            </span>
-            <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(17cqw, 4.8rem)" }}>
-              {config.partner2}
-            </span>
-          </h1>
+            <h1 className="mt-[9cqw]" aria-label={names}>
+              <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(15cqw, 4.2rem)" }}>
+                {config.partner1}
+              </span>
+              <span className="my-1 block leading-none" style={{ ...script, color: col("text"), fontSize: "min(9cqw, 2.4rem)" }}>
+                en
+              </span>
+              <span className="block leading-[1.02] uppercase" style={{ ...heading, color: col("text"), fontSize: "min(15cqw, 4.2rem)" }}>
+                {config.partner2}
+              </span>
+            </h1>
 
-          <div className="flex items-end justify-between gap-4 text-[0.66rem] leading-[1.6]" style={{ ...mono, color: col("text") }}>
-            <p>
+            <div className="mx-auto mt-[9cqw] h-px w-[40%]" style={{ background: col("text"), opacity: 0.35 }} />
+            <p className="mt-[6cqw] text-[0.66rem] leading-[1.7]" style={{ ...mono, color: col("text") }}>
               {date && <span className="block font-bold tracking-[0.1em] uppercase">{date}</span>}
               {config.time && <span className="block">om {config.time} uur</span>}
+              {config.city && <span className="block font-bold tracking-[0.1em] uppercase">{config.city}</span>}
             </p>
-            {config.city && <p className="text-right font-bold tracking-[0.1em] uppercase">{config.city}</p>}
-          </div>
+          </WavyCard>
         </section>
       );
 

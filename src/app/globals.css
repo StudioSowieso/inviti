@@ -206,12 +206,6 @@ summary::-webkit-details-marker {
     will-change: clip-path;
   }
 
-  /* Burgundy: de strepen achter de kaartjes schuiven heel traag opzij. */
-  @keyframes burg-drift {
-    to { background-position-x: 3rem; }
-  }
-  .burg-drift { animation: burg-drift 14s linear infinite; }
-
   @keyframes inv-sway {
     from { rotate: -1.8deg; translate: -1px 1px; }
     to { rotate: 1.8deg; translate: 1px -2px; }

@@ -11,12 +11,12 @@ import type { ThemeColors } from "@/lib/invitation/types";
 
 const col = (key: keyof ThemeColors) => `var(--inv-${key})`;
 
-/** Verticale strepen in bordeaux en poederblauw; `drift` laat ze heel rustig opzij schuiven. */
-export function BurgStripes({ className = "", style, drift = false }: { className?: string; style?: CSSProperties; drift?: boolean }) {
+/** Verticale strepen in bordeaux en poederblauw (stilstaand). */
+export function BurgStripes({ className = "", style }: { className?: string; style?: CSSProperties }) {
   return (
     <div
       aria-hidden="true"
-      className={`${drift ? "burg-drift" : ""} ${className}`}
+      className={className}
       style={{
         backgroundColor: col("background"),
         backgroundImage: `repeating-linear-gradient(90deg, ${col("text")} 0, ${col("text")} 1.5rem, transparent 1.5rem, transparent 3rem)`,
@@ -96,5 +96,22 @@ export function WavyFrame({ children, className = "" }: { children: ReactNode; c
         <path d={WAVY} fill="none" stroke={col("surface")} strokeWidth={2.5} vectorEffect="non-scaling-stroke" />
       </svg>
     </div>
+  );
+}
+
+/** Twee kersen aan een steeltje, met een crème rand zodat ze loskomen van de bordeaux strepen. */
+export function Cherries({ className = "", style }: { className?: string; style?: CSSProperties }) {
+  return (
+    <svg viewBox="0 0 80 90" aria-hidden="true" className={className} style={{ overflow: "visible", ...style }}>
+      <g strokeLinecap="round" strokeLinejoin="round">
+        <path d="M30 56C32 38 40 20 54 6M52 60C52 40 52 24 54 6" fill="none" stroke={col("surface")} strokeWidth={6} />
+        <path d="M30 56C32 38 40 20 54 6M52 60C52 40 52 24 54 6" fill="none" stroke={col("footerBackground")} strokeWidth={2.4} />
+        <path d="M54 6C62 0 72 2 76 10C68 14 60 12 54 6Z" fill={col("accent")} stroke={col("surface")} strokeWidth={3} />
+        <circle cx="26" cy="64" r="17" fill={col("footerBackground")} stroke={col("surface")} strokeWidth={3.5} />
+        <circle cx="54" cy="68" r="17" fill={col("footerBackground")} stroke={col("surface")} strokeWidth={3.5} />
+        <path d="M18 58C19 54 22 52 25 52" fill="none" stroke={col("surface")} strokeWidth={2.6} opacity={0.85} />
+        <path d="M46 62C47 58 50 56 53 56" fill="none" stroke={col("surface")} strokeWidth={2.6} opacity={0.85} />
+      </g>
+    </svg>
   );
 }
