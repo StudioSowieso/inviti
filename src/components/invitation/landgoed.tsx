@@ -143,9 +143,8 @@ function LandgoedHero({ block, config, names }: { block: Extract<Block, { type: 
   const line = `linear-gradient(90deg, transparent, ${col("accent")})`;
   return (
     <section data-block="hero" className="relative overflow-hidden" style={{ background: col("surface"), ...CONTAINER }}>
-      {/* Aquarelvlek links boven en een takje rechts boven */}
-      <div aria-hidden="true" className="absolute" style={{ left: "-16cqw", top: "-14cqw", width: "50cqw", height: "42cqw", borderRadius: "50%", background: `radial-gradient(closest-side, color-mix(in srgb, ${col("accent")} 38%, transparent), transparent)`, filter: "blur(1.5cqw)" }} />
-      <Vine className="pointer-events-none absolute" style={{ right: "-30cqw", top: "-6cqw", width: "78cqw", rotate: "28deg", opacity: 0.8 }} />
+      {/* Takje rechts boven, goed in beeld */}
+      <Vine className="pointer-events-none absolute" style={{ right: "-6cqw", top: "8cqw", width: "58cqw", rotate: "16deg" }} />
 
       <div className="relative text-center" style={{ padding: "22cqw 8cqw 20cqw" }}>
         {/* Monogram */}
