@@ -6,6 +6,7 @@ import { CornerSprigs } from "./flowers";
 import { BourgStripes, Doodle, WOBBLE } from "./bourgondisch-art";
 import { BurgStripes, WavyCard } from "./burgundy-art";
 import { Vine } from "./landgoed-art";
+import { Bow, Coupe, River, Sparkle } from "./illustrated-art";
 import { Paperclip } from "./sunset";
 import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
@@ -23,6 +24,32 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
 function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "illustrated") {
+    const vars = { "--inv-background": c.background, "--inv-accent": c.accent, "--inv-text": c.text } as CSSProperties;
+    return (
+      <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-xl text-center" style={{ ...vars, background: c.background, color: c.text, containerType: "inline-size" }}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <River className="absolute inset-0 h-full w-full" />
+        <div aria-hidden="true" className="absolute" style={{ left: "5%", bottom: "6%", width: "22%", aspectRatio: "100 / 130", transform: "rotate(22deg)" }}>
+          <Coupe className="absolute inset-0 h-full w-full" />
+          <Bow className="absolute" style={{ left: "22%", top: "66%", width: "56%" }} />
+        </div>
+        <div aria-hidden="true" className="absolute" style={{ right: "5%", bottom: "7%", width: "22%", aspectRatio: "100 / 130", transform: "rotate(-24deg)" }}>
+          <Coupe className="absolute inset-0 h-full w-full" />
+          <Bow className="absolute" style={{ left: "22%", top: "66%", width: "56%" }} />
+        </div>
+        <Sparkle className="absolute" style={{ right: "14%", top: "14%", width: "6%" }} />
+        <p className="relative text-[2.2rem] leading-[0.92] lowercase" style={{ fontFamily: fontStack(theme.headingFont), letterSpacing: "-0.02em" }}>
+          emma
+          <br />& mats
+        </p>
+        <p className="relative mt-3 text-[0.5rem] lowercase" style={{ fontFamily: fontStack(theme.bodyFont) }}>
+          12.09.2027
+        </p>
+      </div>
+    );
+  }
 
   if (theme.style === "lago") {
     const vars = { "--inv-background": c.background, "--inv-accent": c.accent, "--inv-footerBackground": c.footerBackground } as CSSProperties;

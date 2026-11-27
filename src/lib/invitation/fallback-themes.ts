@@ -320,6 +320,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "square",
     style: "lago",
   },
+  {
+    slug: "illustrated",
+    title: "Illustrated",
+    description:
+      "Speels en getekend: kobaltblauw op boterkleurig papier, dikke retro-letters in kleine letters, glazen, strikken en een rivier van wijn.",
+    colors: {
+      background: "#f6f2cd",
+      surface: "#fbf8e3",
+      surfaceAlt: "#ebe6b9",
+      text: "#2339a8",
+      muted: "#4357b3",
+      line: "#cfcba0",
+      accent: "#a9b4e4",
+      buttonBackground: "#2339a8",
+      buttonText: "#f6f2cd",
+      footerBackground: "#2339a8",
+      footerText: "#f6f2cd",
+      envelope: "#2339a8",
+      envelopeCard: "#f6f2cd",
+    },
+    headingFont: "Young Serif",
+    bodyFont: "Lora",
+    scriptFont: "Young Serif",
+    buttonShape: "pill",
+    style: "illustrated",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({

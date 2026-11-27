@@ -13,9 +13,10 @@ export type ButtonShape = "pill" | "rounded" | "square";
  * - burgundy: poederblauw papier met bordeaux typemachinetekst, hoge hoofdletters, bordeaux strepen en golvende kaartjes
  * - landgoed: diep olijfgroen met crème boogpanelen, rankenkransen, sierlijk schrift en een hart met kanten rand
  * - lago: bosgroen en crème, dunne hoge hoofdletters, sierlijk schrift, dubbel fotokader en een RSVP-blok met strepen
+ * - illustrated: kobaltblauw op boterkleurig papier, dikke retro-letters in kleine letters, getekende glazen, strikken en een rivier van wijn
  * - modern: editorial zwart-wit met greige, extra grote letters, handschrift en witte kaarten
  */
-export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset" | "bourgondisch" | "burgundy" | "landgoed" | "lago";
+export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset" | "bourgondisch" | "burgundy" | "landgoed" | "lago" | "illustrated";
 
 export type ThemeColors = {
   background: string;

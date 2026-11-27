@@ -250,6 +250,15 @@ summary::-webkit-details-marker {
   .inv-swing { animation: inv-swing 4.5s ease-in-out infinite alternate; }
   .inv-zoom { animation: inv-zoom 16s ease-in-out infinite alternate; }
 
+  /* Illustrated: de rivier op het beginscherm loopt van de fles naar beneden in beeld zodra het blok zichtbaar wordt. */
+  .inv-appear .inv-pour {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 2.6s cubic-bezier(0.45, 0.05, 0.25, 1) 0.3s;
+  }
+  .inv-appear.inv-in .inv-pour {
+    clip-path: inset(0 0 0 0);
+  }
+
   /* Elke tekening beweegt in een eigen tempo en eigen fase, zodat het niet als één blok wiegt. */
   .inv-sway:nth-of-type(2n), .inv-sway-soft:nth-of-type(2n), .inv-sway-slow:nth-of-type(2n) { animation-duration: 7s; animation-delay: -2.5s; }
   .inv-sway:nth-of-type(3n), .inv-sway-soft:nth-of-type(3n), .inv-sway-slow:nth-of-type(3n) { animation-duration: 6s; animation-delay: -4s; }

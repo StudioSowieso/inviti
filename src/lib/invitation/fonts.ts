@@ -13,6 +13,7 @@ export const FONT_CATALOG: Record<string, { css2: string; kind: "serif" | "sans"
   "EB Garamond": { css2: "EB+Garamond:ital,wght@0,400;0,500;0,600;1,400", kind: "serif" },
   Italiana: { css2: "Italiana", kind: "serif" },
   Gloock: { css2: "Gloock", kind: "serif" },
+  "Young Serif": { css2: "Young+Serif", kind: "serif" },
   Oranienbaum: { css2: "Oranienbaum", kind: "serif" },
   "Courier Prime": { css2: "Courier+Prime:ital,wght@0,400;0,700;1,400", kind: "mono" },
   Inter: { css2: "Inter:wght@400;500;600", kind: "sans" },
@@ -56,7 +57,7 @@ export function googleFontsHref(...names: string[]) {
   return `https://fonts.googleapis.com/css2?${families.join("&")}&display=swap`;
 }
 
-/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon", "flowers", "sunset", "bourgondisch", "burgundy", "landgoed" en "lago"). */
+/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon", "flowers", "sunset", "bourgondisch", "burgundy", "landgoed", "lago" en "illustrated"). */
 export function themeFonts(theme: InvitationTheme) {
   return [theme.headingFont, theme.bodyFont, ...(theme.style !== "classic" ? [theme.scriptFont] : [])];
 }

@@ -24,6 +24,8 @@ import { BurgBlockSection } from "./burgundy";
 import { LandgoedBlockSection } from "./landgoed";
 import { LagoBlockSection } from "./lago";
 import { LagoEnvelope } from "./lago-envelope";
+import { IllustratedBlockSection } from "./illustrated";
+import { IllustratedEnvelope } from "./illustrated-envelope";
 import { LandgoedEnvelope } from "./landgoed-envelope";
 import { BurgEnvelope } from "./burgundy-envelope";
 import { LeafBlockSection } from "./leaf";
@@ -305,6 +307,7 @@ export function InvitationView({
   const burg = theme.style === "burgundy";
   const landgoed = theme.style === "landgoed";
   const lago = theme.style === "lago";
+  const illustrated = theme.style === "illustrated";
   // "nature" en "leaf" delen papiertextuur en de bijpassende envelop.
   const textured = theme.style === "nature" || leaf || flowers || sunset;
   // Alle stijlen behalve "classic" laten de navigatiebalk de knopkleuren van het thema volgen.
@@ -328,7 +331,9 @@ export function InvitationView({
           {lemon && <div aria-hidden="true" className="absolute inset-0" style={LEMON_STRIPES} />}
           {bourg && <BourgStripes className="absolute inset-0 h-full w-full" />}
           {visibleBlocks.map((b, i) =>
-            lago ? (
+            illustrated ? (
+              <IllustratedBlockSection key={blockKey(b)} block={b} config={config} index={i} />
+            ) : lago ? (
               <LagoBlockSection key={blockKey(b)} block={b} config={config} index={i} />
             ) : landgoed ? (
               <LandgoedBlockSection key={blockKey(b)} block={b} config={config} index={i} />
@@ -411,6 +416,8 @@ export function InvitationView({
       {stage !== "open" &&
         (config.animation === "reveal" ? (
           <RevealOverlay theme={theme} config={config} opening={stage === "opening"} onOpen={openReveal} />
+        ) : illustrated ? (
+          <IllustratedEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : lago ? (
           <LagoEnvelope config={config} opening={stage === "opening"} onOpen={openReveal} />
         ) : landgoed ? (
