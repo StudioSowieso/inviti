@@ -366,7 +366,7 @@ const THEMES: ThemeInput[] = [
       envelope: "#6b1d25",
       envelopeCard: "#f4f0ea",
     },
-    headingFont: "Italiana",
+    headingFont: "Cormorant Garamond",
     bodyFont: "EB Garamond",
     scriptFont: "Pinyon Script",
     buttonShape: "square",

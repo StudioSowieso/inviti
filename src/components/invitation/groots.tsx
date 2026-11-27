@@ -59,7 +59,7 @@ function Title({ title, eyebrow, tone, size = 17 }: { title: string; eyebrow?: s
   return (
     <header className="text-center">
       {eyebrow && <p style={{ ...caps(3.2, 0.26), color: soft(tone), marginBottom: "3cqw" }}>{eyebrow}</p>}
-      <h2 style={{ ...script, color: ink(tone), fontSize: `${size}cqw`, lineHeight: 1.05 }}>{title}</h2>
+      <h2 style={{ ...heading, color: ink(tone), fontSize: `${size * 0.62}cqw`, lineHeight: 1.1, letterSpacing: "0.01em" }}>{title}</h2>
     </header>
   );
 }
@@ -180,7 +180,7 @@ export function GrootsBlockSection({ block, config }: { block: Block; config: In
         <Wrap type={blockKey(block)} tone="paper" pad="8cqw 9cqw">
           <Rule h={10} />
           {block.title && (
-            <h2 style={{ ...script, fontSize: "14cqw", lineHeight: 1.1, marginTop: "7cqw" }}>{block.title}</h2>
+            <h2 style={{ ...heading, fontSize: "9cqw", lineHeight: 1.15, marginTop: "7cqw" }}>{block.title}</h2>
           )}
           {block.text && <Text tone="paper" className="mt-[5cqw]">{block.text}</Text>}
         </Wrap>
@@ -256,7 +256,7 @@ export function GrootsBlockSection({ block, config }: { block: Block; config: In
       return (
         <section data-block="footer" className="relative overflow-hidden text-center" style={{ background: col("footerBackground"), color: col("footerText"), ...CONTAINER }}>
           <div style={{ padding: "16cqw 8cqw 30cqw" }}>
-            <p style={{ ...script, fontSize: "20cqw", lineHeight: 1 }}>{block.closing || "Tot dan"}</p>
+            <p style={{ ...heading, fontSize: "12cqw", lineHeight: 1.05 }}>{block.closing || "Tot dan"}</p>
             <p style={{ ...caps(3.8, 0.26), marginTop: "7cqw" }}>{names}</p>
             {block.contactEmail && <p style={{ ...body, fontSize: "3.8cqw", marginTop: "8cqw", opacity: 0.85 }}>Vragen? mail naar {block.contactEmail}</p>}
             {(date || config.city) && <p style={{ ...caps(2.8, 0.24), marginTop: "4cqw", opacity: 0.7 }}>{[date, config.city].filter(Boolean).join("  ·  ")}</p>}
