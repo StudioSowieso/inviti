@@ -54,7 +54,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <PhoneFrame slugs={["leaf"]} className="w-full" />
           </div>
 
-          <p className="eyebrow hidden text-paper/50 lg:block">Een nieuw hoofdstuk begint met één beslissing</p>
+          <p className="eyebrow hidden text-paper/75! lg:block">Een nieuw hoofdstuk begint met één beslissing</p>
         </div>
       </aside>
 
