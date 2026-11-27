@@ -143,9 +143,6 @@ function LandgoedHero({ block, config, names }: { block: Extract<Block, { type: 
   const line = `linear-gradient(90deg, transparent, ${col("accent")})`;
   return (
     <section data-block="hero" className="relative overflow-hidden" style={{ background: col("surface"), ...CONTAINER }}>
-      {/* Takje rechts boven, goed in beeld */}
-      <Vine className="pointer-events-none absolute" style={{ right: "-6cqw", top: "8cqw", width: "58cqw", rotate: "16deg" }} />
-
       <div className="relative text-center" style={{ padding: "22cqw 8cqw 20cqw" }}>
         {/* Monogram */}
         <div className="flex items-center justify-center" style={{ ...heading, color: col("accent"), gap: "6cqw", fontSize: "17cqw", lineHeight: 1 }}>
