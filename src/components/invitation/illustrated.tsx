@@ -94,13 +94,13 @@ function Button({ children, href, tone }: { children: ReactNode; href?: string; 
 function Countdown({ date, time }: { date: string; time: string }) {
   const cells = useCountdown(date, time);
   return (
-    <div className="grid grid-cols-4 text-center" style={{ marginTop: "10cqw", gap: "1cqw" }}>
+    <div className="grid grid-cols-4 text-center" style={{ marginTop: "10cqw", gap: "2cqw" }}>
       {cells.map(([value, label]) => (
         <div key={label}>
-          <p className="tabular-nums" style={{ ...heading, color: col("footerText"), fontSize: "14cqw", lineHeight: 1 }}>
+          <p className="tabular-nums" style={{ ...heading, color: col("footerText"), fontSize: "9.5cqw", lineHeight: 1 }}>
             {value}
           </p>
-          <p className="lowercase" style={{ ...body, color: soft("blue"), fontSize: "3.4cqw", marginTop: "2cqw" }}>
+          <p className="lowercase" style={{ ...body, color: soft("blue"), fontSize: "3cqw", marginTop: "2cqw" }}>
             {label}
           </p>
         </div>
