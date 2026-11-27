@@ -25,6 +25,28 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
 
+  if (theme.style === "groots") {
+    return (
+      <div className="relative flex flex-col justify-center overflow-hidden rounded-xl px-3 py-6" style={{ background: c.background, color: c.text }}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <p className="text-center text-[0.4rem] tracking-[0.22em] uppercase" style={{ fontFamily: fontStack(theme.bodyFont) }}>
+          Wij gaan trouwen
+        </p>
+        <p className="mt-2 -ml-1 text-[2.6rem] leading-[0.9]" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+          Emma
+        </p>
+        <p className="-mt-1 -mr-3 flex items-end justify-between text-[2.6rem] leading-[0.9]" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+          <span className="mb-2 text-[0.7rem] uppercase" style={{ fontFamily: fontStack(theme.headingFont) }}>en</span>
+          Mats
+        </p>
+        <span aria-hidden="true" className="mx-auto mt-3 block h-5 w-px" style={{ background: c.text }} />
+        <p className="mt-2 text-center text-[0.8rem]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+          12.09.2027
+        </p>
+      </div>
+    );
+  }
+
   if (theme.style === "illustrated") {
     const vars = { "--inv-background": c.background, "--inv-accent": c.accent, "--inv-text": c.text } as CSSProperties;
     return (

@@ -12,6 +12,46 @@ type PaletteDef = { slug: string; title: string; colors: Partial<ThemeColors> };
  * horen bij elkaar, zodat een kleurkeuze het hele thema meeneemt.
  */
 const EXTRA_PALETTES: Record<string, PaletteDef[]> = {
+  groots: [
+    {
+      slug: "marine",
+      title: "Marine",
+      colors: {
+        background: "#eceff2",
+        surface: "#f6f8fa",
+        surfaceAlt: "#dde2e8",
+        text: "#142848",
+        muted: "#4b5d7a",
+        line: "#ccd3dc",
+        accent: "#142848",
+        buttonBackground: "#142848",
+        buttonText: "#eceff2",
+        footerBackground: "#10213c",
+        footerText: "#eceff2",
+        envelope: "#142848",
+        envelopeCard: "#eceff2",
+      },
+    },
+    {
+      slug: "bos",
+      title: "Bos",
+      colors: {
+        background: "#f0eee6",
+        surface: "#f8f7f1",
+        surfaceAlt: "#e3e0d3",
+        text: "#1f3d33",
+        muted: "#55695f",
+        line: "#d3d1c0",
+        accent: "#1f3d33",
+        buttonBackground: "#1f3d33",
+        buttonText: "#f0eee6",
+        footerBackground: "#183128",
+        footerText: "#f0eee6",
+        envelope: "#1f3d33",
+        envelopeCard: "#f0eee6",
+      },
+    },
+  ],
   illustrated: [
     {
       slug: "tomaat",

@@ -120,6 +120,7 @@ export const invitationTheme = defineType({
           { title: "Burgundy (poederblauw, bordeaux strepen, typemachinetekst)", value: "burgundy" },
           { title: "Landgoed (olijfgroen, boogpanelen, rankenkransen, hart met kant)", value: "landgoed" },
           { title: "Lago (bosgroen en crème, dunne hoofdletters, dubbel kader, strepen)", value: "lago" },
+          { title: "Groots (enorme handschriftnamen, kleine hoofdletters, dunne lijnen, één inktkleur)", value: "groots" },
           { title: "Illustrated (kobaltblauw op boterkleurig papier, getekende glazen en strikken, rivier van wijn)", value: "illustrated" },
         ],
         layout: "radio",

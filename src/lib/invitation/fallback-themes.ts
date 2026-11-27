@@ -346,6 +346,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "pill",
     style: "illustrated",
   },
+  {
+    slug: "groots",
+    title: "Groots",
+    description:
+      "Groots en tijdloos: enorme sierlijke handschriftnamen, kleine hoofdletters met veel letterruimte en dunne lijnen in diep bordeaux op gebroken wit.",
+    colors: {
+      background: "#f4f0ea",
+      surface: "#faf8f4",
+      surfaceAlt: "#e8e2d8",
+      text: "#6b1d25",
+      muted: "#855559",
+      line: "#d8cfc4",
+      accent: "#6b1d25",
+      buttonBackground: "#6b1d25",
+      buttonText: "#f4f0ea",
+      footerBackground: "#5a1820",
+      footerText: "#f4f0ea",
+      envelope: "#6b1d25",
+      envelopeCard: "#f4f0ea",
+    },
+    headingFont: "Italiana",
+    bodyFont: "EB Garamond",
+    scriptFont: "Pinyon Script",
+    buttonShape: "square",
+    style: "groots",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({
