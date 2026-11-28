@@ -36,7 +36,7 @@ const THEMES: ThemeInput[] = [
   },
   {
     slug: "nature",
-    title: "Nature",
+    title: "Landschap",
     description:
       "Zacht en natuurlijk: papieren textuur met gescheurde randen, olijfgroen, botanische lijntekeningen en sierlijk handschrift.",
     colors: {
@@ -62,7 +62,7 @@ const THEMES: ThemeInput[] = [
   },
   {
     slug: "leaf",
-    title: "Leaf",
+    title: "Blad",
     description:
       "Elegant en rustig: ivoor met olijfgroen, een boogvormige foto, dunne lijnen en sierlijke takjes.",
     colors: {
@@ -88,7 +88,7 @@ const THEMES: ThemeInput[] = [
   },
   {
     slug: "modern",
-    title: "Modern",
+    title: "Strak",
     description:
       "Strak en editorial: zwart-wit op greige, extra grote letters, sierlijk handschrift en veel witruimte.",
     colors: {
@@ -114,7 +114,7 @@ const THEMES: ThemeInput[] = [
   },
   {
     slug: "sweet",
-    title: "Sweet",
+    title: "Zoet",
     description:
       "Lief en speels: gestreept behang in blauw en groen, witte boogkaarten, een strikje en cijfers met verloop.",
     colors: {
@@ -140,7 +140,7 @@ const THEMES: ThemeInput[] = [
   },
   {
     slug: "lemon",
-    title: "Lemon",
+    title: "Limoen",
     description:
       "Zonnig en Italiaans: blauw-geel gestreept behang, crèmekaarten met gestreepte rand en getekende citroentakken met bloesem.",
     colors: {
@@ -166,7 +166,7 @@ const THEMES: ThemeInput[] = [
   },
   {
     slug: "flowers",
-    title: "Flowers",
+    title: "Bloemen",
     description:
       "Romantisch en luchtig: crèmekleurig papier met aquarel-wildbloemen in de hoeken, spatieuze hoofdletters en een zachte, olijfkleurige toon.",
     colors: {
@@ -192,7 +192,7 @@ const THEMES: ThemeInput[] = [
   },
   {
     slug: "sunset",
-    title: "Sunset",
+    title: "Zonsondergang",
     description:
       "Speels en warm: een oranje tafel met gestapelde kaartjes in perzik, rood en roze, golvende randen, halfronde kaartjes met paperclip en een vrolijk handschrift.",
     colors: {

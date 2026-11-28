@@ -9,15 +9,15 @@ type Card = { slug: string; label: string };
 
 /** Voorbeelden in de rij: uitnodigingsontwerpen en schermen uit de backoffice, om en om. */
 const CARDS: Card[] = [
-  { slug: "leaf", label: "Leaf" },
+  { slug: "leaf", label: "Blad" },
   { slug: "dashboard", label: "Dashboard" },
-  { slug: "flowers", label: "Flowers" },
+  { slug: "flowers", label: "Bloemen" },
   { slug: "versturen", label: "Versturen" },
-  { slug: "nature", label: "Nature" },
+  { slug: "nature", label: "Landschap" },
   { slug: "todo", label: "To-do's" },
-  { slug: "modern", label: "Modern" },
+  { slug: "modern", label: "Strak" },
   { slug: "gastenlijst", label: "Gastenlijst" },
-  { slug: "sweet", label: "Sweet" },
+  { slug: "sweet", label: "Zoet" },
 ];
 const N = CARDS.length;
 /** Afstand tussen twee items, in stage-eenheden (u). */
