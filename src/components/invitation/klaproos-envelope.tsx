@@ -87,7 +87,7 @@ export function KlaproosEnvelope({ config, opening, onOpen }: Props) {
               boxShadow: "0 5px 9px rgb(0 0 0 / .28)",
             }}
           >
-            <Sprig style={{ width: "9cqw", color: col("background") }} />
+            <Sprig style={{ width: "14cqw", color: col("background") }} />
           </div>
           <div
             className="absolute inset-0"

@@ -107,10 +107,10 @@ export function Sprig({ className, style }: ArtProps) {
     { x: 22, y: 20, a: -162, s: 0.65 },
   ];
   return (
-    <Svg viewBox="0 0 60 120" className={className} style={style} sw={0.9}>
+    <Svg viewBox="-18 -6 96 128" className={className} style={{ overflow: "visible", ...style }} sw={0.9}>
       <path d="M54 120 C50 100 40 80 32 58 C26 42 22 26 20 8" />
       {leaves.map((l, i) => (
-        <g key={i} transform={`translate(${l.x} ${l.y}) rotate(${l.a}) scale(${l.s * 0.8})`}>
+        <g key={i} transform={`translate(${l.x} ${l.y}) rotate(${l.a}) scale(${l.s * 0.55})`}>
           {LEAF}
         </g>
       ))}

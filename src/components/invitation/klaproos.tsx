@@ -151,8 +151,8 @@ export function KlaproosBlockSection({ block, config }: { block: Block; config: 
     case "countdown":
       return (
         <Wrap type="countdown" tone="sand" pad="16cqw 7cqw">
-          <Sprig className="absolute" style={{ left: "3cqw", top: "3cqw", width: "12cqw", color: col("accent") }} />
-          <Sprig className="absolute" style={{ right: "3cqw", top: "3cqw", width: "12cqw", color: col("accent"), transform: "scaleX(-1)" }} />
+          <Sprig className="absolute" style={{ left: "3cqw", top: "3cqw", width: "18cqw", color: col("accent") }} />
+          <Sprig className="absolute" style={{ right: "3cqw", top: "3cqw", width: "18cqw", color: col("accent"), transform: "scaleX(-1)" }} />
           <Title title={block.title} eyebrow={block.eyebrow} tone="sand" size={8.5} />
           <Countdown date={config.date} time={config.time} />
         </Wrap>
@@ -172,7 +172,7 @@ export function KlaproosBlockSection({ block, config }: { block: Block; config: 
                 </span>
               )}
             </div>
-            <Sprig className="absolute" style={{ right: "-8cqw", bottom: "-6cqw", width: "20cqw", color: col("accent"), transform: "rotate(14deg)" }} />
+            <Sprig className="absolute" style={{ right: "-8cqw", bottom: "-6cqw", width: "30cqw", color: col("accent"), transform: "rotate(14deg)" }} />
           </div>
           <div style={{ marginTop: "14cqw" }}>
             <Title title={block.title} eyebrow={block.eyebrow} tone="paper" />
@@ -186,7 +186,7 @@ export function KlaproosBlockSection({ block, config }: { block: Block; config: 
     case "text":
       return (
         <Wrap type={blockKey(block)} tone="paper" pad="8cqw 9cqw 12cqw">
-          <Sprig className="mx-auto" style={{ width: "10cqw", color: col("accent"), transform: "rotate(-8deg)" }} />
+          <Sprig className="mx-auto" style={{ width: "15cqw", color: col("accent"), transform: "rotate(-8deg)" }} />
           {block.title && (
             <h2 className="uppercase" style={{ ...heading, fontSize: "8cqw", lineHeight: 1.12, letterSpacing: "0.04em", marginTop: "6cqw" }}>
               {block.title}
@@ -234,7 +234,7 @@ export function KlaproosBlockSection({ block, config }: { block: Block; config: 
     case "dresscode":
       return (
         <Wrap type="dresscode" tone="paper" pad="8cqw 9cqw 16cqw">
-          <Sprig className="mx-auto" style={{ width: "10cqw", color: col("accent"), transform: "rotate(8deg) scaleX(-1)", marginBottom: "6cqw" }} />
+          <Sprig className="mx-auto" style={{ width: "15cqw", color: col("accent"), transform: "rotate(8deg) scaleX(-1)", marginBottom: "6cqw" }} />
           <Title title={block.title} eyebrow={block.eyebrow} tone="paper" size={8.5} />
           <Text tone="paper" className="mt-[6cqw]">{block.text}</Text>
           {block.colors.length > 0 && (
@@ -262,8 +262,8 @@ export function KlaproosBlockSection({ block, config }: { block: Block; config: 
     case "footer":
       return (
         <section data-block="footer" className="relative overflow-hidden text-center" style={{ background: col("footerBackground"), color: col("footerText"), ...fillOf("dark"), ...CONTAINER }}>
-          <Sprig className="absolute" style={{ left: "5cqw", top: "14cqw", width: "16cqw", color: line("dark") }} />
-          <Sprig className="absolute" style={{ right: "5cqw", top: "14cqw", width: "16cqw", color: line("dark"), transform: "scaleX(-1)" }} />
+          <Sprig className="absolute" style={{ left: "5cqw", top: "14cqw", width: "24cqw", color: line("dark") }} />
+          <Sprig className="absolute" style={{ right: "5cqw", top: "14cqw", width: "24cqw", color: line("dark"), transform: "scaleX(-1)" }} />
           <div style={{ padding: "18cqw 8cqw 30cqw" }}>
             <p style={{ ...script, fontSize: "17cqw", lineHeight: 1 }}>{block.closing || "Tot dan"}</p>
             <p className="uppercase" style={{ ...heading, fontSize: "6cqw", letterSpacing: "0.08em", marginTop: "7cqw" }}>{names}</p>
