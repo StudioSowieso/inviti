@@ -5,7 +5,6 @@ import type { Block, InvitationConfig, ThemeColors } from "@/lib/invitation/type
 import { StoryImg } from "./story-photo";
 import { useCountdown } from "./use-countdown";
 import { blockKey, mapsHref, formatDateLong } from "@/lib/invitation/format";
-import { NaturePhoto } from "./nature";
 
 /**
  * Stijl "lago": modern en Italiaans: dunne, hoge hoofdletters voor de namen, sierlijk schrift voor de accenten,
@@ -18,6 +17,9 @@ const col = (key: keyof ThemeColors) => `var(--inv-${key})`;
 const heading = { fontFamily: "var(--inv-heading)" } satisfies CSSProperties;
 const script = { fontFamily: "var(--inv-script)" } satisfies CSSProperties;
 const body = { fontFamily: "var(--inv-body)" } satisfies CSSProperties;
+
+/** Standaard achtergrondfoto van de beginpagina, tot iemand een eigen foto uploadt. */
+const LAGO_HERO_PHOTO = "/images/lago-hero.jpg";
 
 const CONTAINER: CSSProperties = { containerType: "inline-size" };
 
@@ -122,8 +124,8 @@ export function LagoBlockSection({ block, config }: { block: Block; config: Invi
       return (
         <section data-block="hero" className="relative overflow-hidden" style={{ ...CONTAINER }}>
           <div className="relative flex flex-col items-center justify-center text-center" style={{ minHeight: "165cqw", padding: "16cqw 6cqw" }}>
-            {/* Eigen foto (of een getekend landschap) met een doorzichtige groene laag eroverheen, zodat de tekst leesbaar blijft */}
-            {block.photo ? <StoryImg src={block.photo} /> : <NaturePhoto tone="warm" />}
+            {/* Eigen foto (anders de standaardfoto van het thema) met een doorzichtige groene laag eroverheen, zodat de tekst leesbaar blijft */}
+            <StoryImg src={block.photo || LAGO_HERO_PHOTO} />
             <div aria-hidden="true" className="absolute inset-0" style={{ background: `linear-gradient(180deg, color-mix(in srgb, ${col("footerBackground")} 58%, transparent), color-mix(in srgb, ${col("footerBackground")} 74%, transparent))` }} />
             <h1 className="relative" aria-label={names} style={{ color: col("background") }}>
               <span className="block uppercase" style={{ ...heading, fontSize: "20cqw", lineHeight: 0.98, letterSpacing: "0.02em" }}>
