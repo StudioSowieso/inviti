@@ -14,10 +14,11 @@ export type ButtonShape = "pill" | "rounded" | "square";
  * - landgoed: diep olijfgroen met crème boogpanelen, rankenkransen, sierlijk schrift en een hart met kanten rand
  * - lago: bosgroen en crème, dunne hoge hoofdletters, sierlijk schrift, dubbel fotokader en een RSVP-blok met strepen
  * - groots: enorme sierlijke handschriftnamen, kleine hoofdletters met veel letterruimte en dunne lijnen in één inktkleur
+ * - klaproos: gedrukt papier met klaprozen en takjes in één dunne lijn, fijne hoofdletters voor de namen en veel witruimte
  * - illustrated: kobaltblauw op boterkleurig papier, dikke retro-letters in kleine letters, getekende glazen, strikken en een rivier van wijn
  * - modern: editorial zwart-wit met greige, extra grote letters, handschrift en witte kaarten
  */
-export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset" | "bourgondisch" | "burgundy" | "landgoed" | "lago" | "illustrated" | "groots";
+export type ThemeStyle = "classic" | "nature" | "leaf" | "modern" | "sweet" | "lemon" | "flowers" | "sunset" | "bourgondisch" | "burgundy" | "landgoed" | "lago" | "illustrated" | "groots" | "klaproos";
 
 export type ThemeColors = {
   background: string;

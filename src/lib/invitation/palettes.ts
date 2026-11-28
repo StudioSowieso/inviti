@@ -12,6 +12,46 @@ type PaletteDef = { slug: string; title: string; colors: Partial<ThemeColors> };
  * horen bij elkaar, zodat een kleurkeuze het hele thema meeneemt.
  */
 const EXTRA_PALETTES: Record<string, PaletteDef[]> = {
+  klaproos: [
+    {
+      slug: "goud",
+      title: "Goud",
+      colors: {
+        background: "#f7f1e6",
+        surface: "#fcf9f2",
+        surfaceAlt: "#ece1cf",
+        text: "#4a3b28",
+        muted: "#7a6a52",
+        line: "#ddd0b8",
+        accent: "#9a7a48",
+        buttonBackground: "#5a4630",
+        buttonText: "#f7f1e6",
+        footerBackground: "#4a3b28",
+        footerText: "#f7f1e6",
+        envelope: "#efe4d0",
+        envelopeCard: "#fcf9f2",
+      },
+    },
+    {
+      slug: "salie",
+      title: "Salie",
+      colors: {
+        background: "#f4f3ea",
+        surface: "#faf9f3",
+        surfaceAlt: "#e4e6d6",
+        text: "#3c4631",
+        muted: "#6d7660",
+        line: "#d3d6c2",
+        accent: "#7d8a5e",
+        buttonBackground: "#4b573c",
+        buttonText: "#f4f3ea",
+        footerBackground: "#3c4631",
+        footerText: "#f4f3ea",
+        envelope: "#e9ebdb",
+        envelopeCard: "#faf9f3",
+      },
+    },
+  ],
   groots: [
     {
       slug: "marine",

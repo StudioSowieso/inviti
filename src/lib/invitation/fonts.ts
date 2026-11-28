@@ -57,7 +57,7 @@ export function googleFontsHref(...names: string[]) {
   return `https://fonts.googleapis.com/css2?${families.join("&")}&display=swap`;
 }
 
-/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon", "flowers", "sunset", "bourgondisch", "burgundy", "landgoed", "lago", "illustrated" en "groots"). */
+/** De lettertypes die een thema echt gebruikt (het scriptlettertype alleen bij de stijlen "nature", "leaf", "modern", "sweet", "lemon", "flowers", "sunset", "bourgondisch", "burgundy", "landgoed", "lago", "illustrated", "groots" en "klaproos"). */
 export function themeFonts(theme: InvitationTheme) {
   return [theme.headingFont, theme.bodyFont, ...(theme.style !== "classic" ? [theme.scriptFont] : [])];
 }

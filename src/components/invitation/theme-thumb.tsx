@@ -7,6 +7,7 @@ import { BourgStripes, Doodle, WOBBLE } from "./bourgondisch-art";
 import { BurgStripes, WavyCard } from "./burgundy-art";
 import { Vine } from "./landgoed-art";
 import { Bow, Coupe, River, Sparkle } from "./illustrated-art";
+import { Poppy, PoppyStem } from "./klaproos-art";
 import { Paperclip } from "./sunset";
 import { LemonBranch, LemonSprig } from "./lemon";
 import { NaturePhoto, SprigDivider, TornEdge } from "./nature";
@@ -24,6 +25,26 @@ export function ThemeThumb({ theme }: { theme: InvitationTheme }) {
 function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const c = theme.colors;
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
+
+  if (theme.style === "klaproos") {
+    // Zelfde opbouw als het beginscherm: klaprozen rechts en linksboven, de namen in de linker kolom
+    const nm = { fontFamily: fontStack(theme.headingFont), fontSize: "10cqw", lineHeight: 1.08, letterSpacing: "0.03em" } as CSSProperties;
+    return (
+      <div className="relative overflow-hidden rounded-xl" style={{ background: c.background, color: c.text, containerType: "inline-size", "--inv-fill": c.background } as CSSProperties}>
+        <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
+        <div className="relative" style={{ aspectRatio: "100 / 112" }}>
+          <Poppy className="absolute" style={{ left: "-7cqw", top: "-3cqw", width: "34cqw", color: c.accent, transform: "rotate(8deg)" }} />
+          <PoppyStem className="absolute" style={{ left: "54cqw", top: "22cqw", width: "54cqw", color: c.accent }} />
+          <div className="absolute" style={{ left: "11cqw", top: "44cqw" }}>
+            <p className="uppercase" style={{ fontFamily: fontStack(theme.bodyFont), fontSize: "3cqw", letterSpacing: "0.22em", marginBottom: "5cqw", whiteSpace: "nowrap" }}>Wij gaan trouwen</p>
+            <p className="uppercase" style={nm}>Emma <span style={{ fontSize: "0.5em" }}>&amp;</span></p>
+            <p className="uppercase" style={nm}>Mats</p>
+            <p className="uppercase" style={{ fontFamily: fontStack(theme.bodyFont), fontSize: "3.4cqw", letterSpacing: "0.14em", marginTop: "6cqw" }}>12.09.2027</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (theme.style === "groots") {
     // Zelfde opbouw als het beginscherm, in cqw zodat alles meeschaalt

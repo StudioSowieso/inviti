@@ -372,6 +372,32 @@ const THEMES: ThemeInput[] = [
     buttonShape: "square",
     style: "groots",
   },
+  {
+    slug: "klaproos",
+    title: "Klaproos",
+    description:
+      "Rustig en botanisch: klaprozen en takjes in één dunne lijn, fijne hoofdletters en veel witruimte op warm papier.",
+    colors: {
+      background: "#f8f4ee",
+      surface: "#fcfaf6",
+      surfaceAlt: "#eee7db",
+      text: "#4a4636",
+      muted: "#7a7660",
+      line: "#ddd5c6",
+      accent: "#7b7358",
+      buttonBackground: "#5b563f",
+      buttonText: "#f8f4ee",
+      footerBackground: "#4a4636",
+      footerText: "#f4efe6",
+      envelope: "#efe8dc",
+      envelopeCard: "#fcfaf6",
+    },
+    headingFont: "Italiana",
+    bodyFont: "Jost",
+    scriptFont: "Mrs Saint Delafield",
+    buttonShape: "square",
+    style: "klaproos",
+  },
 ];
 
 export const FALLBACK_THEMES: InvitationTheme[] = THEMES.map((t) => ({
