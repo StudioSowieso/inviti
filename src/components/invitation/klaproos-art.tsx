@@ -32,16 +32,17 @@ function Svg({ viewBox, className, style, children, sw = 1.1 }: ArtProps & { vie
 /** Eén klaproos van opzij gezien (past in 120 × 100), met de steel eronder op x = 60. */
 const BLOOM = (
   <g>
-    {/* achterste petalen links en rechts */}
-    <path d="M60 124 C26 112 4 84 9 52 C12 30 34 17 54 24 C49 52 50 92 60 124Z" fill={FILL} />
-    <path d="M60 124 C94 112 116 84 111 52 C108 30 86 17 66 24 C71 52 70 92 60 124Z" fill={FILL} />
-    <path d="M18 60 C24 46 32 40 40 38 M102 60 C96 46 88 40 80 38" strokeWidth={0.55} />
-    {/* voorste petaal met gegolfde rand */}
-    <path d="M33 62 C27 38 38 20 49 17 C54 9 66 9 71 17 C83 20 93 38 87 62 C84 92 72 114 60 124 C48 114 36 92 33 62Z" fill={FILL} />
-    <path d="M60 17 C57 50 58 90 60 122" strokeWidth={0.6} />
-    <path d="M41 30 C47 34 52 33 56 28 M64 28 C68 33 73 34 79 30" strokeWidth={0.55} />
-    <path d="M49 119 L14 101 M50 118 L15 95 M50 117 L17 88 M51 116 L19 82 M52 115 L22 76 M53 114 L26 70 M54 113 L31 65 M56 113 L37 60 M57 112 L43 56" strokeWidth={0.5} />
-    <path d="M71 119 L106 101 M70 118 L105 95 M70 117 L103 88 M69 116 L101 82 M68 115 L98 76 M67 114 L94 70 M66 113 L89 65 M64 113 L83 60 M63 112 L77 56" strokeWidth={0.5} />
+    {/* achterste petaal rechts */}
+    <path d="M62 120 C84 104 106 86 118 52 C121 36 112 22 102 22 C94 22 90 28 86 34 C80 60 70 96 62 120Z" fill={FILL} />
+    <path d="M65 114 Q81 75 103 48 M68 112 Q84 80 109 53 M69 112 Q83 89 108 65 M64 118 Q80 98 96 86 M65 119 Q75 106 90 96" strokeWidth={0.5} />
+    {/* gegolfd petaal links */}
+    <path d="M58 120 C36 108 14 92 5 68 C1 56 8 50 16 55 C20 48 28 50 32 46 C38 44 44 50 48 56 C54 76 58 100 58 120Z" fill={FILL} />
+    <path d="M55 117 Q38 87 16 71 M53 113 Q41 84 16 63 M52 111 Q45 85 21 60 M57 116 Q49 85 32 65 M56 113 Q53 85 37 61 M57 111 Q56 88 43 61 M59 117 Q58 93 49 76" strokeWidth={0.5} />
+    {/* groot voorste petaal */}
+    <path d="M60 123 C36 104 22 66 28 40 C32 20 50 8 70 9 C88 10 100 26 99 52 C98 80 80 108 60 123Z" fill={FILL} />
+    <path d="M30 34 C36 30 40 32 46 26" strokeWidth={0.5} />
+    <path d="M57 114 Q51 78 36 52 M57 109 Q54 72 39 37 M57 104 Q58 69 45 25 M59 112 Q64 67 55 31 M61 107 Q70 67 65 25 M63 103 Q76 69 77 22 M63 113 Q80 73 83 39 M65 110 Q82 80 90 44 M67 110 Q83 88 94 54 M64 117 Q82 97 90 76 M64 118 Q77 107 86 93" strokeWidth={0.5} />
+    <circle cx="60" cy="122" r="2.6" fill={FILL} strokeWidth={1.1} />
   </g>
 );
 
@@ -53,12 +54,12 @@ const BUD = (
   </g>
 );
 
-/** Een blad met middennerf en kleine zijnerven; wijst naar rechts, lengte 40. */
+/** Een blad met middennerf, zijnerven en getande rand; wijst naar rechts, lengte 60. */
 const LEAF = (
   <g>
-    <path d="M0 0 C6 -10 24 -14 40 -4 C30 2 16 8 0 0Z" fill={FILL} />
-    <path d="M2 -1 C14 -4 26 -5 38 -4" strokeWidth={0.8} />
-    <path d="M10 -3 L14 -9 M18 -4 L23 -10 M26 -4 L31 -8 M10 -2 L14 3 M19 -2 L24 2" strokeWidth={0.7} />
+    <path d="M0 0 C6 -14 22 -19 36 -14 C46 -11 54 -6 60 0 C52 5 42 9 32 10 C20 12 8 9 0 0Z" fill={FILL} />
+    <path d="M2 -1 C20 -4 42 -4 58 -1" strokeWidth={0.9} />
+    <path d="M10 -2 L16 -11 M18 -3 L25 -14 M27 -3 L35 -13 M36 -3 L43 -10 M13 -1 L18 6 M22 -1 L28 6 M31 -1 L38 5 M40 -1 L46 4" strokeWidth={0.55} />
   </g>
 );
 
@@ -73,9 +74,9 @@ export function PoppyStem({ className, style }: ArtProps) {
       <g transform="translate(112 238)">{BUD}</g>
       {/* hoofdsteel en bladeren */}
       <path d="M60 224 C58 262 66 300 59 340" />
-      <g transform="translate(60 262) rotate(-26) scale(1.15)">{LEAF}</g>
-      <g transform="translate(61 246) scale(-1 1) rotate(-30) scale(1.05)">{LEAF}</g>
-      <g transform="translate(60 312) rotate(-38) scale(0.9)">{LEAF}</g>
+      <g transform="translate(60 262) rotate(-26) scale(1)">{LEAF}</g>
+      <g transform="translate(61 246) scale(-1 1) rotate(-30) scale(0.85)">{LEAF}</g>
+      <g transform="translate(60 312) rotate(-38) scale(1)">{LEAF}</g>
       {/* onderste bloem */}
       <g transform="translate(0 100) rotate(8 60 124)">{BLOOM}</g>
       {/* bovenste bloem */}
