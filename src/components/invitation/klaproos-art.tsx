@@ -32,30 +32,19 @@ function Svg({ viewBox, className, style, children, sw = 1.1 }: ArtProps & { vie
 /** Eén klaproos van opzij gezien (past in 120 × 100), met de steel eronder op x = 60. */
 const BLOOM = (
   <g>
-    {/* uitwaaierend kroonblad links, golvend */}
-    <path d="M32 52 C18 50 4 40 6 28 C8 20 16 24 20 20 C24 14 32 18 36 24 C42 20 48 26 50 32" fill={FILL} />
-    <path d="M30.0 48 Q18.0 38.0 10.0 28.0 M30.8 48 Q19.8 38.3 12.8 28.6 M31.6 48 Q21.6 38.6 15.6 29.2 M32.4 48 Q23.4 38.9 18.4 29.8 M33.2 48 Q25.2 39.2 21.2 30.4 M34.0 48 Q27.0 39.5 24.0 31.0" strokeWidth={0.55} />
-    {/* kroonblad rechts achter */}
-    <path d="M70 26 C84 8 106 14 112 34 C114 48 104 58 92 60" fill={FILL} />
-    <path d="M92.0 54 Q98.0 42.0 100.0 30.0 M91.2 54 Q98.4 43.0 101.6 32.0 M90.4 54 Q98.8 44.0 103.2 34.0 M89.6 54 Q99.2 45.0 104.8 36.0 M88.8 54 Q99.6 46.0 106.4 38.0 M88.0 54 Q100.0 47.0 108.0 40.0" strokeWidth={0.55} />
-    {/* groot voorste kroonblad: rond, breed bovenaan, smal naar de voet */}
-    <path d="M24 46 C16 72 38 94 60 100 C84 94 104 72 96 48 C90 30 74 24 60 27 C44 25 28 32 24 46Z" fill={FILL} />
-    {/* open rand met golf */}
-    <path d="M24 46 C32 34 42 36 48 32 C54 28 66 28 72 32 C80 36 90 34 96 48" />
-    {/* binnenste vouw */}
-    <path d="M44 34 C46 46 52 58 60 66 C68 58 74 46 76 34" strokeWidth={0.8} />
-    <path d="M58 31 C58 40 60 50 60 62" strokeWidth={0.7} />
-    {/* fijne arcering vanaf de voet */}
-    <path d="M53.4 96 Q45.4 75.5 29.9 54.9 M54.2 96 Q49.2 78.1 37.5 60.2 M55.1 96 Q49.1 72.6 37.5 49.2 M55.9 96 Q52.3 75.9 43.9 55.8 M56.7 96 Q52.7 70.2 45.0 44.4 M57.5 96 Q55.4 74.2 50.4 52.5 M58.4 96 Q56.4 68.6 52.5 41.2 M59.2 96 Q58.5 73.4 56.8 50.7 M60.0 96 Q60.0 68.0 60.0 40.1 M60.8 96 Q61.5 73.4 63.2 50.7 M61.6 96 Q63.6 68.6 67.5 41.2 M62.5 96 Q64.6 74.2 69.6 52.5 M63.3 96 Q67.3 70.2 75.0 44.4 M64.1 96 Q67.7 75.9 76.1 55.8 M64.9 96 Q70.9 72.6 82.5 49.2 M65.8 96 Q70.8 78.1 82.5 60.2 M66.6 96 Q74.6 75.5 90.1 54.9" strokeWidth={0.55} />
-    {/* meeldraden */}
-    <path d="M50 30 C50 24 52 20 54 18 M60 27 C60 21 60 17 60 14 M70 30 C70 24 68 20 66 18" strokeWidth={0.7} />
-    <circle cx="54" cy="17" r="1.5" fill="currentColor" stroke="none" />
-    <circle cx="60" cy="13" r="1.5" fill="currentColor" stroke="none" />
-    <circle cx="66" cy="17" r="1.5" fill="currentColor" stroke="none" />
+    {/* achterste petalen links en rechts */}
+    <path d="M60 124 C26 112 4 84 9 52 C12 30 34 17 54 24 C49 52 50 92 60 124Z" fill={FILL} />
+    <path d="M60 124 C94 112 116 84 111 52 C108 30 86 17 66 24 C71 52 70 92 60 124Z" fill={FILL} />
+    <path d="M18 60 C24 46 32 40 40 38 M102 60 C96 46 88 40 80 38" strokeWidth={0.55} />
+    {/* voorste petaal met gegolfde rand */}
+    <path d="M33 62 C27 38 38 20 49 17 C54 9 66 9 71 17 C83 20 93 38 87 62 C84 92 72 114 60 124 C48 114 36 92 33 62Z" fill={FILL} />
+    <path d="M60 17 C57 50 58 90 60 122" strokeWidth={0.6} />
+    <path d="M41 30 C47 34 52 33 56 28 M64 28 C68 33 73 34 79 30" strokeWidth={0.55} />
+    <path d="M49 119 L14 101 M50 118 L15 95 M50 117 L17 88 M51 116 L19 82 M52 115 L22 76 M53 114 L26 70 M54 113 L31 65 M56 113 L37 60 M57 112 L43 56" strokeWidth={0.5} />
+    <path d="M71 119 L106 101 M70 118 L105 95 M70 117 L103 88 M69 116 L101 82 M68 115 L98 76 M67 114 L94 70 M66 113 L89 65 M64 113 L83 60 M63 112 L77 56" strokeWidth={0.5} />
   </g>
 );
 
-/** Knop met twee kelkblaadjes. */
 const BUD = (
   <g>
     <path d="M0 14 C-8 0 -4 -16 0 -22 C4 -16 8 0 0 14Z" fill={FILL} />
@@ -73,32 +62,34 @@ const LEAF = (
   </g>
 );
 
-/** Twee klaprozen aan een lange steel met blad en knop. Past in 140 × 300. */
+/** Twee klaprozen aan een lange steel met bladeren en een knop. Past in 140 × 340. */
 export function PoppyStem({ className, style }: ArtProps) {
   return (
-    <Svg viewBox="0 0 140 300" className={className} style={style}>
-      {/* steel en zijsteel */}
-      <path d="M72 97 C80 134 62 170 60 204 C58 240 66 270 62 300" />
-      <path d="M61 244 C72 230 98 220 110 200" />
-      <g transform="translate(110 192)">{BUD}</g>
-      {/* bladeren */}
-      <g transform="translate(62 230) rotate(-24)">{LEAF}</g>
-      <g transform="translate(62 214) scale(-1 1) rotate(-30)">{LEAF}</g>
-      <g transform="translate(64 262) rotate(-40) scale(0.8)">{LEAF}</g>
-      {/* onderste bloem, schuin */}
-      <g transform="translate(2 112) scale(0.92) rotate(9 60 100)">{BLOOM}</g>
+    <Svg viewBox="0 0 140 340" className={className} style={style}>
+      {/* steel van de bovenste bloem, achter de onderste langs */}
+      <path d="M66 104 C88 140 84 186 62 230" />
+      {/* zijsteel met knop */}
+      <path d="M60 296 C74 282 100 270 112 246" />
+      <g transform="translate(112 238)">{BUD}</g>
+      {/* hoofdsteel en bladeren */}
+      <path d="M60 224 C58 262 66 300 59 340" />
+      <g transform="translate(60 262) rotate(-26) scale(1.15)">{LEAF}</g>
+      <g transform="translate(61 246) scale(-1 1) rotate(-30) scale(1.05)">{LEAF}</g>
+      <g transform="translate(60 312) rotate(-38) scale(0.9)">{LEAF}</g>
+      {/* onderste bloem */}
+      <g transform="translate(0 100) rotate(8 60 124)">{BLOOM}</g>
       {/* bovenste bloem */}
-      <g transform="translate(14 -2) scale(0.95) rotate(-13 60 100)">{BLOOM}</g>
+      <g transform="translate(14 -4) scale(0.88) rotate(-12 60 124)">{BLOOM}</g>
     </Svg>
   );
 }
 
-/** Eén klaproos met steel en blad, voor kleine plekken. Past in 120 × 190. */
+/** Eén klaproos met steel en blad, voor kleine plekken. Past in 120 × 230. */
 export function Poppy({ className, style }: ArtProps) {
   return (
-    <Svg viewBox="0 0 120 190" className={className} style={style}>
-      <path d="M60 100 C58 128 64 156 56 190" />
-      <g transform="translate(58 150) rotate(-28)">{LEAF}</g>
+    <Svg viewBox="0 0 120 230" className={className} style={style}>
+      <path d="M60 124 C58 156 64 190 56 230" />
+      <g transform="translate(58 186) rotate(-28)">{LEAF}</g>
       <g transform="translate(0 0)">{BLOOM}</g>
     </Svg>
   );
