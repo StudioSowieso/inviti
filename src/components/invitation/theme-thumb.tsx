@@ -78,7 +78,8 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
     return (
       <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-xl text-center" style={{ ...vars, containerType: "inline-size" }}>
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
-        <NaturePhoto tone="warm" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/lago-hero.jpg" alt="" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
         <div aria-hidden="true" className="absolute inset-0" style={{ background: `color-mix(in srgb, ${c.footerBackground} 72%, transparent)` }} />
         <p className="relative text-[1.7rem] leading-[0.95] uppercase" style={{ fontFamily: fontStack(theme.headingFont), color: c.background }}>
           Emma
