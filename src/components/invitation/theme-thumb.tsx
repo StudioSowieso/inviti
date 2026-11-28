@@ -26,23 +26,28 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   const radius = theme.buttonShape === "pill" ? "999px" : theme.buttonShape === "rounded" ? "0.6rem" : "0.1rem";
 
   if (theme.style === "groots") {
+    // Zelfde opbouw als het beginscherm, in cqw zodat alles meeschaalt
+    const script = { fontFamily: fontStack(theme.scriptFont), fontSize: "31cqw", lineHeight: 0.95, whiteSpace: "nowrap" } as CSSProperties;
     return (
-      <div className="relative flex flex-col justify-center overflow-hidden rounded-xl px-3 py-6" style={{ background: c.background, color: c.text }}>
+      <div className="relative overflow-hidden rounded-xl" style={{ background: c.background, color: c.text, containerType: "inline-size" }}>
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
-        <p className="text-center text-[0.4rem] tracking-[0.22em] uppercase" style={{ fontFamily: fontStack(theme.bodyFont) }}>
-          Wij gaan trouwen
-        </p>
-        <p className="mt-2 -ml-1 text-[2.6rem] leading-[0.9]" style={{ fontFamily: fontStack(theme.scriptFont) }}>
-          Emma
-        </p>
-        <p className="-mt-1 -mr-3 flex items-end justify-between text-[2.6rem] leading-[0.9]" style={{ fontFamily: fontStack(theme.scriptFont) }}>
-          <span className="mb-2 text-[0.7rem] uppercase" style={{ fontFamily: fontStack(theme.headingFont) }}>en</span>
-          Mats
-        </p>
-        <span aria-hidden="true" className="mx-auto mt-3 block h-5 w-px" style={{ background: c.text }} />
-        <p className="mt-2 text-center text-[0.8rem]" style={{ fontFamily: fontStack(theme.headingFont) }}>
-          12.09.2027
-        </p>
+        <div className="relative" style={{ aspectRatio: "100 / 112" }}>
+          <p className="absolute inset-x-0 text-center uppercase" style={{ top: "8cqw", fontFamily: fontStack(theme.bodyFont), fontSize: "3.4cqw", letterSpacing: "0.24em" }}>
+            Wij gaan trouwen
+          </p>
+          <div className="absolute inset-x-0" style={{ top: "14cqw" }}>
+            <span className="block" style={{ ...script, marginLeft: "-1.5cqw", paddingLeft: "3cqw" }}>Emma</span>
+            <span className="flex items-end justify-between" style={{ marginTop: "-2cqw", padding: "0 3cqw 0 6cqw" }}>
+              <span className="uppercase" style={{ fontFamily: fontStack(theme.headingFont), fontSize: "7.4cqw", lineHeight: 1, marginBottom: "6cqw" }}>en</span>
+              <span style={{ ...script, marginRight: "-6cqw" }}>Mats</span>
+            </span>
+          </div>
+          <div className="absolute inset-x-0 text-center" style={{ top: "72cqw" }}>
+            <span aria-hidden="true" className="mx-auto block" style={{ width: "0.3cqw", height: "9cqw", background: c.text }} />
+            <p style={{ fontFamily: fontStack(theme.headingFont), fontSize: "9cqw", lineHeight: 1, marginTop: "4cqw", letterSpacing: "0.06em" }}>12.09.2027</p>
+            <p className="uppercase" style={{ fontFamily: fontStack(theme.bodyFont), fontSize: "3cqw", letterSpacing: "0.24em", marginTop: "3cqw" }}>Utrecht · 14:00 uur</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -363,39 +368,42 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
   }
 
   if (theme.style === "modern") {
+    // Het beginscherm in het klein: namen rechtsboven, de datum als reuzencijfers en het handschrift staand links
+    const rows = [
+      { t: "12", ml: "0.1rem" },
+      { t: "09", ml: "1.3rem" },
+      { t: "20", ml: "0.3rem" },
+      { t: "27", ml: "1.5rem" },
+    ];
     return (
-      <div
-        className="flex flex-col overflow-hidden rounded-xl border"
-        style={{ background: c.background, borderColor: c.line, color: c.text }}
-      >
+      <div className="flex flex-col overflow-hidden rounded-xl border p-1.5" style={{ background: c.background, borderColor: c.line, color: c.text }}>
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
-        <div className="flex flex-1 flex-col p-1.5">
-          <div className="relative flex flex-1 flex-col justify-center overflow-hidden rounded-lg px-3.5 pt-3 pb-3 text-center" style={{ background: c.surface }}>
-            <p className="text-right text-[0.5rem] tracking-[0.05em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
-              EMMA&amp;MATS
-            </p>
-            <p className="mt-0.5 text-[2.3rem] leading-[0.95] tracking-[0.02em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
-              12.09
-            </p>
-            <p className="text-[1.15rem] leading-none" style={{ fontFamily: fontStack(theme.scriptFont) }}>
+        <div className="relative flex flex-1 flex-col overflow-hidden rounded-lg px-3 pt-2.5 pb-2.5" style={{ background: c.surface }}>
+          <p className="text-right text-[0.5rem] tracking-[0.04em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+            Emma &amp; Mats
+          </p>
+          <div className="relative mt-1 flex-1">
+            <span
+              className="absolute top-1 left-0 whitespace-nowrap text-[1rem] leading-none"
+              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontFamily: fontStack(theme.scriptFont) }}
+            >
               Wij gaan trouwen
-            </p>
+            </span>
+            <div className="absolute top-0 right-1 flex flex-col items-start" style={{ fontFamily: fontStack(theme.headingFont) }} aria-hidden="true">
+              {rows.map((r, i) => (
+                <span key={i} className="block text-[2.6rem] leading-[0.84] tracking-[-0.02em]" style={{ marginLeft: r.ml, marginTop: i ? "-0.15rem" : 0 }}>
+                  {r.t}
+                </span>
+              ))}
+            </div>
           </div>
+          <p className="text-[0.85rem]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+            12.09.2027
+          </p>
+          <p className="mt-0.5 text-[0.32rem] tracking-[0.24em] uppercase" style={{ color: c.muted }}>
+            Utrecht
+          </p>
         </div>
-        <div className="px-4 py-3 text-center">
-          <span
-            className="inline-block px-4 py-1.5 text-[0.45rem] tracking-[0.12em]"
-            style={{
-              background: c.buttonBackground,
-              color: c.buttonText,
-              borderRadius: radius,
-              fontFamily: fontStack(theme.bodyFont),
-            }}
-          >
-            RSVP invullen
-          </span>
-        </div>
-        <div className="h-3" style={{ background: c.footerBackground }} />
       </div>
     );
   }
