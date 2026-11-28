@@ -371,36 +371,36 @@ function ThemeThumbInner({ theme }: { theme: InvitationTheme }) {
     // Het beginscherm in het klein: namen rechtsboven, de datum als reuzencijfers en het handschrift staand links
     const rows = [
       { t: "12", ml: "0.1rem" },
-      { t: "09", ml: "1.3rem" },
+      { t: "09", ml: "1.7rem" },
       { t: "20", ml: "0.3rem" },
-      { t: "27", ml: "1.5rem" },
+      { t: "27", ml: "1.7rem" },
     ];
     return (
       <div className="flex flex-col overflow-hidden rounded-xl border p-1.5" style={{ background: c.background, borderColor: c.line, color: c.text }}>
         <link rel="stylesheet" href={googleFontsHref(...themeFonts(theme))} precedence="inviti-fonts" />
-        <div className="relative flex flex-1 flex-col overflow-hidden rounded-lg px-3 pt-2.5 pb-2.5" style={{ background: c.surface }}>
-          <p className="text-right text-[0.5rem] tracking-[0.04em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+        <div className="relative flex flex-1 flex-col overflow-hidden rounded-lg px-3 pt-2 pb-2" style={{ background: c.surface }}>
+          <p className="text-right text-[0.65rem] tracking-[0.04em]" style={{ fontFamily: fontStack(theme.headingFont) }}>
             Emma &amp; Mats
           </p>
           <div className="relative mt-1 flex-1">
             <span
-              className="absolute top-1 left-0 whitespace-nowrap text-[1rem] leading-none"
+              className="absolute top-1 left-0 whitespace-nowrap text-[1.3rem] leading-none"
               style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontFamily: fontStack(theme.scriptFont) }}
             >
               Wij gaan trouwen
             </span>
             <div className="absolute top-0 right-1 flex flex-col items-start" style={{ fontFamily: fontStack(theme.headingFont) }} aria-hidden="true">
               {rows.map((r, i) => (
-                <span key={i} className="block text-[2.6rem] leading-[0.84] tracking-[-0.02em]" style={{ marginLeft: r.ml, marginTop: i ? "-0.15rem" : 0 }}>
+                <span key={i} className="block text-[3rem] leading-[0.84] tracking-[-0.02em]" style={{ marginLeft: r.ml, marginTop: i ? "-0.2rem" : 0 }}>
                   {r.t}
                 </span>
               ))}
             </div>
           </div>
-          <p className="text-[0.85rem]" style={{ fontFamily: fontStack(theme.headingFont) }}>
+          <p className="text-[1.05rem]" style={{ fontFamily: fontStack(theme.headingFont) }}>
             12.09.2027
           </p>
-          <p className="mt-0.5 text-[0.32rem] tracking-[0.24em] uppercase" style={{ color: c.muted }}>
+          <p className="text-[0.4rem] tracking-[0.24em] uppercase" style={{ color: c.muted }}>
             Utrecht
           </p>
         </div>
